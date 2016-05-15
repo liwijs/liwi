@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/store/AbstractConnection.js"],"names":[],"mappings":";;;;;IAAqB,kB,GAAN,MAAM,kBAAN,CAAyB,E;kBAAnB,kB","file":"AbstractConnection.js","sourcesContent":["export default class AbstractConnection {\n\n}\n"]}
