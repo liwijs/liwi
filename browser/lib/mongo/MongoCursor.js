@@ -59,15 +59,13 @@ var MongoCursor = /**
      * @function
      * @param {MongoStore} store
      * @param {Cursor} cursor
-     * @param {Object} criteria
     */
-    function MongoCursor(store, cursor, criteria) {
+    function MongoCursor(store, cursor) {
         _classCallCheck(this, MongoCursor);
 
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MongoCursor).call(this, store));
 
         _this._cursor = cursor;
-        _this._criteria = criteria;
         return _this;
     }
 

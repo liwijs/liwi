@@ -75,8 +75,8 @@ var MongoStore = /**
             throw new Error('Invalid collectionName: "' + collectionName + '"');
         }
 
-        _this._collection = connection.getConnection().then(function (connection) {
-            return _this._collection = connection.collection(collectionName);
+        _this._collection = connection.getConnection().then(function (db) {
+            return _this._collection = db.collection(collectionName);
         });
         return _this;
     }
@@ -94,7 +94,7 @@ var MongoStore = /**
                 object.created = new Date();
             }
 
-            return Promise.resolve(this._collection).then(function (collection) {
+            return this.collection.then(function (collection) {
                 return collection.insertOne(object);
             }).then(function (_ref) {
                 var result = _ref.result;
@@ -118,7 +118,7 @@ var MongoStore = /**
                 object.updated = new Date();
             }
 
-            return Promise.resolve(this._collection).then(function (collection) {
+            return this.collection.then(function (collection) {
                 return collection.updateOne({ _id: object._id }, object);
             }).then(function () {
                 return object;
@@ -160,7 +160,7 @@ var MongoStore = /**
                 * @param {Object} partialUpdate
                */function partialUpdateByKey(key, partialUpdate) {
             partialUpdate = this._partialUpdate(partialUpdate);
-            return Promise.resolve(this._collection).then(function (collection) {
+            return this.collection.then(function (collection) {
                 return collection.updateOne({ _id: key }, partialUpdate);
             });
         }
@@ -186,7 +186,7 @@ var MongoStore = /**
                 * @param {Object} partialUpdate
                */function partialUpdateMany(criteria, partialUpdate) {
             partialUpdate = this._partialUpdate(partialUpdate);
-            return Promise.resolve(this._collection).then(function (collection) {
+            return this.collection.then(function (collection) {
                 return collection.updateMany(criteria, partialUpdate);
             }).then(function (res) {
                 return null;
@@ -198,7 +198,7 @@ var MongoStore = /**
                 * @function
                 * @param {*} key
                */function deleteByKey(key) {
-            return Promise.resolve(this._collection).then(function (collection) {
+            return this.collection.then(function (collection) {
                 return collection.removeOne({ _id: key });
             }).then(function () {
                 return null;
@@ -217,13 +217,16 @@ var MongoStore = /**
         value: /**
                 * @function
                 * @param {Object} criteria
-               */function cursor(criteria) {
+                * @param {*} sort
+               */function cursor(criteria, sort) {
             var _this4 = this;
 
-            return Promise.resolve(this._collection).then(function (collection) {
-                return collection.find();
+            return this.collection.then(function (collection) {
+                return collection.find(criteria);
+            }).then(sort && function (cursor) {
+                return cursor.sort(sort);
             }).then(function (cursor) {
-                return new _MongoCursor2.default(_this4, cursor, criteria);
+                return new _MongoCursor2.default(_this4, cursor);
             });
         }
     }, {
@@ -240,7 +243,7 @@ var MongoStore = /**
                 * @function
                 * @param {Object} criteria
                */function findOne(criteria) {
-            return Promise.resolve(this._collection).then(function (collection) {
+            return this.collection.then(function (collection) {
                 return collection.find(criteria).limit(1).next();
             });
         }
@@ -249,6 +252,10 @@ var MongoStore = /**
         get: /**
               * @function
              */function get() {
+            if (this.connection.connectionFailed) {
+                return Promise.reject(new Error('MongoDB connection failed'));
+            }
+
             return Promise.resolve(this._collection);
         }
     }]);

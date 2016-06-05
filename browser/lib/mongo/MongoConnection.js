@@ -18,6 +18,10 @@ var _createClass = /**
                                                                                                                                                                                                                                                                                                                                                                             * @param staticProps
                                                                                                                                                                                                                                                                                                                                                                            */ function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; } ); }();
 
+var _nightingaleLogger = require('nightingale-logger');
+
+var _nightingaleLogger2 = _interopRequireDefault(_nightingaleLogger);
+
 var _AbstractConnection2 = require('../store/AbstractConnection');
 
 var _AbstractConnection3 = _interopRequireDefault(_AbstractConnection2);
@@ -51,6 +55,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 */
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var logger = new _nightingaleLogger2.default('liwi.mongo.MongoConnection');
+
 var MongoConnection = /**
                        * @function
                        * @param _AbstractConnection
@@ -78,28 +84,66 @@ var MongoConnection = /**
 
         var connectionString = 'mongodb://' + (config.has('user') ? config.get('user') + ':' + config.get('password') + '@' : '') + (config.get('host') + ':' + config.get('port') + '/' + config.get('database'));
 
-        var connectPromise = _mongodb.MongoClient.connect(connectionString).then(function (connection) {
-            _this._connection = connection;
-            _this._connecting = null;
-            _this.getConnection = function () {
-                return Promise.resolve(_this._connection);
-            };
-            return connection;
-        }).catch(function (err) {
-            _this.getConnection = function () {
-                return Promise.reject(err);
-            };
-            throw err;
-        });
-
-        _this.getConnection = function () {
-            return Promise.resolve(connectPromise);
-        };
-        _this._connecting = _this.getConnection();
+        _this.connect(connectionString);
         return _this;
     }
 
     _createClass(MongoConnection, [{
+        key: 'connect',
+        value: /**
+                * @function
+                * @param connectionString
+               */function connect(connectionString) {
+            var _this2 = this;
+
+            logger.info('connecting', { connectionString: connectionString });
+
+            var connectPromise = _mongodb.MongoClient.connect(connectionString).then(function (connection) {
+                logger.info('connected', { connectionString: connectionString });
+                connection.on('close', function () {
+                    logger.warn('close', { connectionString: connectionString });
+                    _this2.connectionFailed = true;
+                    _this2.getConnection = function () {
+                        return Promise.reject(new Error('MongoDB connection closed'));
+                    };
+                });
+                connection.on('timeout', function () {
+                    logger.warn('timeout', { connectionString: connectionString });
+                    _this2.connectionFailed = true;
+                    _this2.getConnection = function () {
+                        return Promise.reject(new Error('MongoDB connection timeout'));
+                    };
+                });
+                connection.on('reconnect', function () {
+                    logger.warn('reconnect', { connectionString: connectionString });
+                    _this2.connectionFailed = false;
+                    _this2.getConnection = function () {
+                        return Promise.resolve(_this2._connection);
+                    };
+                });
+                connection.on('error', function (err) {
+                    logger.warn('error', { connectionString: connectionString, err: err });
+                });
+
+                _this2._connection = connection;
+                _this2._connecting = null;
+                _this2.getConnection = function () {
+                    return Promise.resolve(_this2._connection);
+                };
+                return connection;
+            }).catch(function (err) {
+                // throw err;
+                process.nextTick(function () {
+                    return process.exit(1);
+                });
+            });
+
+            this.getConnection = function () {
+                return Promise.resolve(connectPromise);
+            };
+            this._connecting = this.getConnection();
+        }
+    }, {
         key: 'getConnection',
         value: /**
                 * @function
@@ -111,13 +155,16 @@ var MongoConnection = /**
         value: /**
                 * @function
                */function close() {
-            var _this2 = this;
+            var _this3 = this;
 
+            this.getConnection = function () {
+                return Promise.reject(new Error('Connection closed'));
+            };
             if (this._connection) {
                 return this._connection.close();
             } else if (this._connecting) {
                 return this._connecting.then(function () {
-                    return _this2.close();
+                    return _this3.close();
                 });
             }
         }

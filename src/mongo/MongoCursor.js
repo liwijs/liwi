@@ -3,10 +3,9 @@ import type Cursor from 'mongodb/lib/cursor';
 import AbstractCursor from '../store/AbstractCursor';
 
 export default class MongoCursor extends AbstractCursor<MongoStore> {
-    constructor(store:MongoStore, cursor:Cursor, criteria:Object) {
+    constructor(store:MongoStore, cursor:Cursor) {
         super(store);
         this._cursor = cursor;
-        this._criteria = criteria;
     }
 
     advance(count:number):void {

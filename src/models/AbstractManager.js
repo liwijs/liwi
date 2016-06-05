@@ -11,5 +11,4 @@ export default class AbstractManager<Store> extends EventEmitter {
     get store(): Store {
         return this._store;
     }
-
 }
