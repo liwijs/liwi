@@ -61,7 +61,10 @@ export default class MongoConnection extends AbstractConnection {
             })
             .catch(err => {
                 // throw err;
-                process.nextTick(() => process.exit(1));
+                process.nextTick(() => {
+                    console.error(err.message || err);
+                    process.exit(1);
+                });
             });
 
         this.getConnection = () => Promise.resolve(connectPromise);

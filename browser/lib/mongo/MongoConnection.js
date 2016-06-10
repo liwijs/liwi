@@ -134,7 +134,8 @@ var MongoConnection = /**
             }).catch(function (err) {
                 // throw err;
                 process.nextTick(function () {
-                    return process.exit(1);
+                    console.error(err.message || err);
+                    process.exit(1);
                 });
             });
 
