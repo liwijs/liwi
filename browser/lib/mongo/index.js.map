@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../src/mongo/index.js"],"names":[],"mappings":";;;;;;;;;;;;;;oDAES,O;;;;AAFT","file":"index.js","sourcesContent":["import MongoStore from './MongoStore';\nexport default MongoStore;\nexport { default as MongoConnection } from './MongoConnection';\n"]}

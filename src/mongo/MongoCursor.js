@@ -1,5 +1,5 @@
-import type MongoStore from './MongoStore';
-import type Cursor from 'mongodb/lib/cursor';
+import MongoStore from './MongoStore';
+import Cursor from 'mongodb/lib/cursor';
 import AbstractCursor from '../store/AbstractCursor';
 
 export default class MongoCursor extends AbstractCursor<MongoStore> {
@@ -25,7 +25,7 @@ export default class MongoCursor extends AbstractCursor<MongoStore> {
 
     limit(newLimit:number):Promise {
         this._cursor.limit(newLimit);
-        return Promise.resolve();
+        return Promise.resolve(this);
     }
 
     count(applyLimit:boolean = false) {

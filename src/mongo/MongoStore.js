@@ -1,6 +1,6 @@
-import type Collection from 'mongodb/lib/collection';
-import type Db from 'mongodb/lib/db';
-import type MongoConnection from './MongoConnection';
+import Collection from 'mongodb/lib/collection';
+import Db from 'mongodb/lib/db';
+import MongoConnection from './MongoConnection';
 import AbstractStore from '../store/AbstractStore';
 import MongoCursor from './MongoCursor';
 import { ObjectID } from 'mongodb';
@@ -99,7 +99,7 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
     }
 
 
-    cursor(criteria: Object, sort: ?Object): MongoCursor<ModelType> {
+    cursor(criteria: ?Object, sort: ?Object): Promise<MongoCursor<ModelType>> {
         return this.collection
             .then(collection => collection.find(criteria))
             .then(sort && (cursor => cursor.sort(sort)))
@@ -110,8 +110,10 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
         return this.findOne({ _id: key });
     }
 
-    findOne(criteria: Object): Promise<any> {
+    findOne(criteria: Object, sort: ?Object): Promise<Object> {
         return this.collection
-            .then(collection => collection.find(criteria).limit(1).next());
+            .then(collection => collection.find(criteria))
+            .then(sort && (cursor => cursor.sort(sort)))
+            .then(cursor => cursor.limit(1).next());
     }
 }

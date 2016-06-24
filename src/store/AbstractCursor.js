@@ -17,6 +17,10 @@ export default class AbstractCursor<Store, ObjectType> {
         throw new Error('next() missing implementation');
     }
 
+    nextResult(): Promise<any> {
+        return this.next().then(() => this.result());
+    }
+
     limit(newLimit: number): Promise {
         throw new Error('limit() missing implementation');
     }
