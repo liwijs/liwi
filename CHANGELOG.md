@@ -1,3 +1,7 @@
+### v0.4.0
+
+- [`2eec1e6`](https://github.com/liwijs/liwi/commit/2eec1e696f65e8879d29110566692c7340ad732e) 0.3.0 (Christophe Hurpeau)
+
 ### v0.3.0
 
 - [`7026920`](https://github.com/liwijs/liwi/commit/70269202d1c6c0a1b8e4d01c5c82866975626e97) pob, sort object in findOne (Christophe Hurpeau)
