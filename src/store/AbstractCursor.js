@@ -50,13 +50,13 @@ export default class AbstractCursor<Store, ObjectType> {
         return this.forEachKeys(() => this.result().then(result => callback(result)));
     }
 
-    *keysIterator() {
+    * keysIterator() {
         while (true) {
             yield this.next();
         }
     }
 
-    *[Symbol.iterator]() {
+    * [Symbol.iterator]() {
         for (let keyPromise of this.keysIterator()) {
             yield keyPromise.then(key => key && this.result());
         }

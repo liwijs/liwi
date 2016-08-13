@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _mongodb = require('mongodb');
+
 var _collection = require('mongodb/lib/collection');
 
 var _collection2 = _interopRequireDefault(_collection);
@@ -24,8 +26,6 @@ var _MongoCursor = require('./MongoCursor');
 
 var _MongoCursor2 = _interopRequireDefault(_MongoCursor);
 
-var _mongodb = require('mongodb');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class MongoStore extends _AbstractStore2.default {
@@ -41,6 +41,7 @@ class MongoStore extends _AbstractStore2.default {
 
         super(connection);
 
+        this.keyPath = '_id';
         if (!collectionName) {
             throw new Error(`Invalid collectionName: "${ collectionName }"`);
         }
@@ -96,10 +97,10 @@ class MongoStore extends _AbstractStore2.default {
 
         return _ref2(this.collection.then(collection => {
             return collection.insertOne(object);
-        }).then(_ref12 => {
-            let result = _ref12.result;
-            let connection = _ref12.connection;
-            let ops = _ref12.ops;
+        }).then(_ref11 => {
+            let result = _ref11.result;
+            let connection = _ref11.connection;
+            let ops = _ref11.ops;
 
             if (!result.ok || result.n !== 1) {
                 throw new Error('Fail to insert');
@@ -132,7 +133,7 @@ class MongoStore extends _AbstractStore2.default {
     updateSeveral(objects) {
         function _ref4(_id4) {
             if (!(_id4 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id4));
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Array<ModelType>>\n\nGot:\n' + _inspect(_id4));
             }
 
             return _id4;
@@ -238,25 +239,13 @@ class MongoStore extends _AbstractStore2.default {
         }));
     }
 
-    deleteOne(object) {
+    cursor(criteria, sort) {
         function _ref9(_id9) {
             if (!(_id9 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id9));
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<MongoCursor<ModelType>>\n\nGot:\n' + _inspect(_id9));
             }
 
             return _id9;
-        }
-
-        return _ref9(this.deleteByKey(object._id));
-    }
-
-    cursor(criteria, sort) {
-        function _ref10(_id10) {
-            if (!(_id10 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<MongoCursor<ModelType>>\n\nGot:\n' + _inspect(_id10));
-            }
-
-            return _id10;
         }
 
         if (!(criteria == null || criteria instanceof Object)) {
@@ -267,7 +256,7 @@ class MongoStore extends _AbstractStore2.default {
             throw new TypeError('Value of argument "sort" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(sort));
         }
 
-        return _ref10(this.collection.then(collection => {
+        return _ref9(this.collection.then(collection => {
             return collection.find(criteria);
         }).then(sort && (cursor => {
             return cursor.sort(sort);
@@ -281,12 +270,12 @@ class MongoStore extends _AbstractStore2.default {
     }
 
     findOne(criteria, sort) {
-        function _ref11(_id11) {
-            if (!(_id11 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Object>\n\nGot:\n' + _inspect(_id11));
+        function _ref10(_id10) {
+            if (!(_id10 instanceof Promise)) {
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Object>\n\nGot:\n' + _inspect(_id10));
             }
 
-            return _id11;
+            return _id10;
         }
 
         if (!(criteria instanceof Object)) {
@@ -297,7 +286,7 @@ class MongoStore extends _AbstractStore2.default {
             throw new TypeError('Value of argument "sort" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(sort));
         }
 
-        return _ref11(this.collection.then(collection => {
+        return _ref10(this.collection.then(collection => {
             return collection.find(criteria);
         }).then(sort && (cursor => {
             return cursor.sort(sort);

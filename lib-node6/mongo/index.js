@@ -3,22 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MongoConnection = undefined;
+exports.MongoConnection = exports.MongoStore = exports.default = undefined;
 
-var _MongoConnection = require('./MongoConnection');
+var _MongoStore2 = require('./MongoStore');
 
-Object.defineProperty(exports, 'MongoConnection', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_MongoConnection).default;
-  }
-});
+var _MongoStore3 = _interopRequireDefault(_MongoStore2);
 
-var _MongoStore = require('./MongoStore');
+var _MongoConnection2 = require('./MongoConnection');
 
-var _MongoStore2 = _interopRequireDefault(_MongoStore);
+var _MongoConnection3 = _interopRequireDefault(_MongoConnection2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _MongoStore2.default;
+exports.default = _MongoStore3.default;
+exports.MongoStore = _MongoStore3.default;
+exports.MongoConnection = _MongoConnection3.default;
 //# sourceMappingURL=index.js.map

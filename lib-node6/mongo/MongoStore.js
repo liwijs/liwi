@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _mongodb = require('mongodb');
+
 var _collection = require('mongodb/lib/collection');
 
 var _collection2 = _interopRequireDefault(_collection);
@@ -24,8 +26,6 @@ var _MongoCursor = require('./MongoCursor');
 
 var _MongoCursor2 = _interopRequireDefault(_MongoCursor);
 
-var _mongodb = require('mongodb');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class MongoStore extends _AbstractStore2.default {
@@ -33,6 +33,7 @@ class MongoStore extends _AbstractStore2.default {
     constructor(connection, collectionName) {
         super(connection);
 
+        this.keyPath = '_id';
         if (!collectionName) {
             throw new Error(`Invalid collectionName: "${ collectionName }"`);
         }
@@ -106,10 +107,6 @@ class MongoStore extends _AbstractStore2.default {
 
     deleteByKey(key) {
         return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => null);
-    }
-
-    deleteOne(object) {
-        return this.deleteByKey(object._id);
     }
 
     cursor(criteria, sort) {

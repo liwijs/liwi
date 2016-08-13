@@ -1,7 +1,7 @@
 import Logger from 'nightingale-logger';
-import AbstractConnection from '../store/AbstractConnection';
 import { MongoClient } from 'mongodb';
 import Db from 'mongodb/lib/db';
+import AbstractConnection from '../store/AbstractConnection';
 
 const logger = new Logger('liwi.mongo.MongoConnection');
 
@@ -60,11 +60,14 @@ export default class MongoConnection extends AbstractConnection {
                 return connection;
             })
             .catch(err => {
+                logger.info('not connected', { connectionString });
+                console.error(err.message || err);
                 // throw err;
                 process.nextTick(() => {
-                    console.error(err.message || err);
                     process.exit(1);
                 });
+
+                throw err;
             });
 
         this.getConnection = () => Promise.resolve(connectPromise);

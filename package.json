@@ -1,6 +1,6 @@
 {
   "name": "liwi",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
@@ -8,37 +8,58 @@
   "repository": "liwijs/liwi",
   "homepage": "https://github.com/liwijs/liwi",
   "main": "./lib/index.js",
+  "webpack:main": "./lib-webpack/index.js",
+  "webpack:main-dev": "./lib-webpack-dev/index.js",
+  "webpack:main-modern-browsers": "./lib-webpack-modern-browsers/index.js",
+  "webpack:main-modern-browsers-dev": "./lib-webpack-modern-browsers-dev/index.js",
+  "webpack:aliases": {
+    "./websocket-client.js": "./lib-webpack/websocket-client/index.js"
+  },
+  "webpack:aliases-dev": {
+    "./websocket-client.js": "./lib-webpack-dev/websocket-client/index.js"
+  },
+  "webpack:aliases-modern-browsers": {
+    "./websocket-client.js": "./lib-webpack-modern-browsers/websocket-client/index.js"
+  },
+  "webpack:aliases-modern-browsers-dev": {
+    "./websocket-client.js": "./lib-webpack-modern-browsers-dev/websocket-client/index.js"
+  },
   "scripts": {
     "build": "pob-build",
     "build:dev": "pob-build",
     "clean": "rm -Rf docs dist test/node6 coverage",
     "lint": "eslint --ext .js,.jsx --fix -c .eslintrc.yml src/",
     "prepublish": "ln -s ../../git-hooks/pre-commit .git/hooks/pre-commit || echo",
-    "preversion": "npm run lint && npm run build && npm run build && pob-repository-check-clean",
+    "preversion": "npm run lint && npm run build && pob-repository-check-clean",
     "release": "pob-repository-check-clean && pob-release",
     "version": "pob-version",
     "watch": "pob-watch",
     "watch:dev": "pob-watch"
   },
   "dependencies": {
-    "mongodb": "^2.1.18",
-    "nightingale-logger": "^1.1.1"
+    "mongodb": "^2.2.5",
+    "nightingale-logger": "^1.2.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.10.1",
-    "babel-eslint": "^6.0.4",
-    "babel-plugin-defines": "^2.0.0",
+    "babel-cli": "^6.11.4",
+    "babel-eslint": "^6.1.2",
+    "babel-plugin-defines": "^3.1.0",
     "babel-plugin-discard-module-references": "^1.0.0",
-    "babel-plugin-remove-dead-code": "^1.0.1",
+    "babel-plugin-import-rename": "^1.0.1",
+    "babel-plugin-remove-dead-code": "^1.1.0",
     "babel-plugin-typecheck": "^3.9.0",
-    "babel-preset-es2015-node6": "^0.2.0",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-es2015-node6": "^0.3.0",
     "babel-preset-flow": "^1.0.0",
-    "babel-preset-stage-1": "^6.5.0",
-    "eslint": "^2.12.0",
-    "eslint-config-airbnb-base": "^3.0.1",
-    "eslint-config-pob": "^6.1.1",
-    "eslint-plugin-import": "^1.8.0",
-    "pob-babel": "^1.0.0",
+    "babel-preset-modern-browsers": "^5.1.0",
+    "babel-preset-modern-browsers-stage-1": "^1.0.0",
+    "babel-preset-stage-1": "^6.13.0",
+    "eslint": "^3.3.0",
+    "eslint-config-airbnb-base": "^5.0.2",
+    "eslint-config-pob": "^6.1.5",
+    "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-import": "^1.13.0",
+    "pob-babel": "^6.0.2",
     "pob-release": "^2.0.5",
     "springbokjs-library": "^17.0.0",
     "xunit-file": "1.0.0"

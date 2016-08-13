@@ -1,0 +1,105 @@
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+import AbstractStore from '../store/AbstractStore';
+import WebsocketCursor from './WebsocketCursor';
+
+var WebsocketStore = function (_AbstractStore) {
+    _inherits(WebsocketStore, _AbstractStore);
+
+    function WebsocketStore(websocket, restName) {
+        _classCallCheck(this, WebsocketStore);
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WebsocketStore).call(this, websocket));
+
+        _this.keyPath = '_id';
+
+
+        if (!restName) {
+            throw new Error('Invalid restName: "' + restName + '"');
+        }
+
+        _this.restName = restName;
+        return _this;
+    }
+
+    _createClass(WebsocketStore, [{
+        key: 'emit',
+        value: function emit(type) {
+            if (!this.connection.isConnected()) {
+                throw new Error('Websocket is not connected');
+            }
+
+            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                args[_key - 1] = arguments[_key];
+            }
+
+            return this.connection.emit('rest', { type: type, restName: this.restName }, args);
+        }
+    }, {
+        key: 'insertOne',
+        value: function insertOne(object) {
+            return this.emit('insertOne', object);
+        }
+    }, {
+        key: 'updateOne',
+        value: function updateOne(object) {
+            return this.emit('updateOne', object);
+        }
+    }, {
+        key: 'updateSeveral',
+        value: function updateSeveral(objects) {
+            return this.emit('updateSeveral', objects);
+        }
+    }, {
+        key: 'partialUpdateByKey',
+        value: function partialUpdateByKey(key, partialUpdate) {
+            return this.emit('partialUpdateByKey', key, partialUpdate);
+        }
+    }, {
+        key: 'partialUpdateOne',
+        value: function partialUpdateOne(object, partialUpdate) {
+            return this.emit('partialUpdateOne', object, partialUpdate);
+        }
+    }, {
+        key: 'partialUpdateMany',
+        value: function partialUpdateMany(criteria, partialUpdate) {
+            return this.emit('partialUpdateMany', criteria, partialUpdate);
+        }
+    }, {
+        key: 'deleteByKey',
+        value: function deleteByKey(key) {
+            return this.emit('deleteByKey', key);
+        }
+    }, {
+        key: 'deleteOne',
+        value: function deleteOne(object) {
+            return this.emit('deleteOne', object);
+        }
+    }, {
+        key: 'cursor',
+        value: function cursor(criteria, sort) {
+            return Promise.resolve(new WebsocketCursor(this, { criteria: criteria, sort: sort }));
+        }
+    }, {
+        key: 'findByKey',
+        value: function findByKey(key) {
+            return this.findOne({ _id: key });
+        }
+    }, {
+        key: 'findOne',
+        value: function findOne(criteria, sort) {
+            return this.emit('findOne', criteria, sort);
+        }
+    }]);
+
+    return WebsocketStore;
+}(AbstractStore);
+
+export default WebsocketStore;
+//# sourceMappingURL=WebsocketStore.js.map

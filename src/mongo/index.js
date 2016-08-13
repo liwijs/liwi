@@ -1,3 +1,3 @@
-import MongoStore from './MongoStore';
-export default MongoStore;
-export { default as MongoConnection } from './MongoConnection';
+export default from './MongoStore';
+export MongoStore from './MongoStore';
+export MongoConnection from './MongoConnection';

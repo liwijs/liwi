@@ -8,15 +8,15 @@ var _nightingaleLogger = require('nightingale-logger');
 
 var _nightingaleLogger2 = _interopRequireDefault(_nightingaleLogger);
 
-var _AbstractConnection = require('../store/AbstractConnection');
-
-var _AbstractConnection2 = _interopRequireDefault(_AbstractConnection);
-
 var _mongodb = require('mongodb');
 
 var _db = require('mongodb/lib/db');
 
 var _db2 = _interopRequireDefault(_db);
+
+var _AbstractConnection = require('../store/AbstractConnection');
+
+var _AbstractConnection2 = _interopRequireDefault(_AbstractConnection);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -110,11 +110,14 @@ class MongoConnection extends _AbstractConnection2.default {
 
             return connection;
         }).catch(err => {
+            logger.info('not connected', { connectionString });
+            console.error(err.message || err);
             // throw err;
             process.nextTick(() => {
-                console.error(err.message || err);
                 process.exit(1);
             });
+
+            throw err;
         });
 
         this.getConnection = () => {

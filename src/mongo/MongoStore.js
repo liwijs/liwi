@@ -1,12 +1,13 @@
+import { ObjectID } from 'mongodb';
 import Collection from 'mongodb/lib/collection';
 import Db from 'mongodb/lib/db';
 import MongoConnection from './MongoConnection';
 import AbstractStore from '../store/AbstractStore';
 import MongoCursor from './MongoCursor';
-import { ObjectID } from 'mongodb';
 
 export default class MongoStore<ModelType> extends AbstractStore<MongoConnection> {
     _collection: Collection|Promise<Collection>;
+    keyPath = '_id';
 
     constructor(connection: MongoConnection, collectionName: string) {
         super(connection);
@@ -55,7 +56,7 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
             .then(() => object);
     }
 
-    updateSeveral(objects: Array<ModelType>): Promise<ModelType> {
+    updateSeveral(objects: Array<ModelType>): Promise<Array<ModelType>> {
         return Promise.all(objects.map(object => this.updateOne(object)));
     }
 
@@ -92,10 +93,6 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
         return this.collection
             .then(collection => collection.removeOne({ _id: key }))
             .then(() => null);
-    }
-
-    deleteOne(object: ModelType): Promise {
-        return this.deleteByKey(object._id);
     }
 
 
