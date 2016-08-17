@@ -74,10 +74,10 @@ export default class MongoStore extends AbstractStore {
 
         return _ref2(this.collection.then(collection => {
             return collection.insertOne(object);
-        }).then(_ref11 => {
-            var result = _ref11.result;
-            var connection = _ref11.connection;
-            var ops = _ref11.ops;
+        }).then(_ref12 => {
+            var result = _ref12.result;
+            var connection = _ref12.connection;
+            var ops = _ref12.ops;
 
             if (!result.ok || result.n !== 1) {
                 throw new Error('Fail to insert');
@@ -107,20 +107,40 @@ export default class MongoStore extends AbstractStore {
         }));
     }
 
-    updateSeveral(objects) {
+    upsertOne(object) {
         function _ref4(_id4) {
             if (!(_id4 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Array<ModelType>>\n\nGot:\n' + _inspect(_id4));
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id4));
             }
 
             return _id4;
+        }
+
+        if (!object.updated) {
+            object.updated = new Date();
+        }
+
+        return _ref4(this.collection.then(collection => {
+            return collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true });
+        }).then(() => {
+            return object;
+        }));
+    }
+
+    updateSeveral(objects) {
+        function _ref5(_id5) {
+            if (!(_id5 instanceof Promise)) {
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Array<ModelType>>\n\nGot:\n' + _inspect(_id5));
+            }
+
+            return _id5;
         }
 
         if (!Array.isArray(objects)) {
             throw new TypeError('Value of argument "objects" violates contract.\n\nExpected:\nArray<ModelType>\n\nGot:\n' + _inspect(objects));
         }
 
-        return _ref4(Promise.all(objects.map(object => {
+        return _ref5(Promise.all(objects.map(object => {
             return this.updateOne(object);
         })));
     }
@@ -142,28 +162,9 @@ export default class MongoStore extends AbstractStore {
     }
 
     partialUpdateByKey(key, partialUpdate) {
-        function _ref5(_id5) {
-            if (!(_id5 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id5));
-            }
-
-            return _id5;
-        }
-
-        if (!(partialUpdate instanceof Object)) {
-            throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
-        }
-
-        partialUpdate = this._partialUpdate(partialUpdate);
-        return _ref5(this.collection.then(collection => {
-            return collection.updateOne({ _id: key }, partialUpdate);
-        }));
-    }
-
-    partialUpdateOne(object, partialUpdate) {
         function _ref6(_id6) {
             if (!(_id6 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id6));
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id6));
             }
 
             return _id6;
@@ -174,15 +175,15 @@ export default class MongoStore extends AbstractStore {
         }
 
         partialUpdate = this._partialUpdate(partialUpdate);
-        return _ref6(this.partialUpdateByKey(object._id, partialUpdate).then(res => {
-            return this.findByKey(object._id);
+        return _ref6(this.collection.then(collection => {
+            return collection.updateOne({ _id: key }, partialUpdate);
         }));
     }
 
-    partialUpdateMany(criteria, partialUpdate) {
+    partialUpdateOne(object, partialUpdate) {
         function _ref7(_id7) {
             if (!(_id7 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id7));
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id7));
             }
 
             return _id7;
@@ -193,14 +194,12 @@ export default class MongoStore extends AbstractStore {
         }
 
         partialUpdate = this._partialUpdate(partialUpdate);
-        return _ref7(this.collection.then(collection => {
-            return collection.updateMany(criteria, partialUpdate);
-        }).then(res => {
-            return null;
-        })); // TODO return updated object
+        return _ref7(this.partialUpdateByKey(object._id, partialUpdate).then(res => {
+            return this.findByKey(object._id);
+        }));
     }
 
-    deleteByKey(key) {
+    partialUpdateMany(criteria, partialUpdate) {
         function _ref8(_id8) {
             if (!(_id8 instanceof Promise)) {
                 throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id8));
@@ -209,7 +208,28 @@ export default class MongoStore extends AbstractStore {
             return _id8;
         }
 
+        if (!(partialUpdate instanceof Object)) {
+            throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
+        }
+
+        partialUpdate = this._partialUpdate(partialUpdate);
         return _ref8(this.collection.then(collection => {
+            return collection.updateMany(criteria, partialUpdate);
+        }).then(res => {
+            return null;
+        })); // TODO return updated object
+    }
+
+    deleteByKey(key) {
+        function _ref9(_id9) {
+            if (!(_id9 instanceof Promise)) {
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id9));
+            }
+
+            return _id9;
+        }
+
+        return _ref9(this.collection.then(collection => {
             return collection.removeOne({ _id: key });
         }).then(() => {
             return null;
@@ -217,12 +237,12 @@ export default class MongoStore extends AbstractStore {
     }
 
     cursor(criteria, sort) {
-        function _ref9(_id9) {
-            if (!(_id9 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<MongoCursor<ModelType>>\n\nGot:\n' + _inspect(_id9));
+        function _ref10(_id10) {
+            if (!(_id10 instanceof Promise)) {
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<MongoCursor<ModelType>>\n\nGot:\n' + _inspect(_id10));
             }
 
-            return _id9;
+            return _id10;
         }
 
         if (!(criteria == null || criteria instanceof Object)) {
@@ -233,7 +253,7 @@ export default class MongoStore extends AbstractStore {
             throw new TypeError('Value of argument "sort" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(sort));
         }
 
-        return _ref9(this.collection.then(collection => {
+        return _ref10(this.collection.then(collection => {
             return collection.find(criteria);
         }).then(sort && (cursor => {
             return cursor.sort(sort);
@@ -247,12 +267,12 @@ export default class MongoStore extends AbstractStore {
     }
 
     findOne(criteria, sort) {
-        function _ref10(_id10) {
-            if (!(_id10 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Object>\n\nGot:\n' + _inspect(_id10));
+        function _ref11(_id11) {
+            if (!(_id11 instanceof Promise)) {
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Object>\n\nGot:\n' + _inspect(_id11));
             }
 
-            return _id10;
+            return _id11;
         }
 
         if (!(criteria instanceof Object)) {
@@ -263,7 +283,7 @@ export default class MongoStore extends AbstractStore {
             throw new TypeError('Value of argument "sort" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(sort));
         }
 
-        return _ref10(this.collection.then(collection => {
+        return _ref11(this.collection.then(collection => {
             return collection.find(criteria);
         }).then(sort && (cursor => {
             return cursor.sort(sort);

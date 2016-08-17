@@ -56,6 +56,16 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
             .then(() => object);
     }
 
+    upsertOne(object: ModelType): Promise<ModelType> {
+        if (!object.updated) {
+            object.updated = new Date();
+        }
+
+        return this.collection
+            .then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true }))
+            .then(() => object);
+    }
+
     updateSeveral(objects: Array<ModelType>): Promise<Array<ModelType>> {
         return Promise.all(objects.map(object => this.updateOne(object)));
     }

@@ -4,7 +4,7 @@ const logger = new Logger('liwi.rest-websocket');
 
 export default function init(io, restService) {
     io.on('connection', socket => {
-        socket.on('rest', ({ type, restName }: { type: string, restName: string }, args: Array, callback: Function) => {
+        socket.on('rest', ({ type, restName }: { type: string; restName: string }, args: Array, callback: Function) => {
             logger.info('rest', { type, restName, args });
             switch (type) {
                 case 'cursor toArray': {

@@ -26,7 +26,7 @@ export default function init(io, restService) {
 
         let nextIdCursor = 1;
 
-        socket.on('rest', ({ type, restName }: { type: string, restName: string }, args: Array, callback: Function) => {
+        socket.on('rest', ({ type, restName }: { type: string; restName: string }, args: Array, callback: Function) => {
             logger.info('rest', { type, restName, args });
             switch (type) {
                 case 'createCursor': {

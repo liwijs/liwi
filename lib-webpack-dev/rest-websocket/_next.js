@@ -52,7 +52,7 @@ export default function init(io, restService) {
             var restName = _arg2.restName;
 
             if (!(typeof type === 'string' && typeof restName === 'string')) {
-                throw new TypeError('Value of "{\n  type,\n  restName\n}" violates contract.\n\nExpected:\n{ type: string;\n  restName: string;\n}\n\nGot:\n' + _inspect({ type: type, restName: restName }));
+                throw new TypeError('Value of "{\n  type,\n  restName\n}" violates contract.\n\nExpected:\n{\n  type: string;\n  restName: string;\n}\n\nGot:\n' + _inspect({ type: type, restName: restName }));
             }
 
             logger.info('rest', { type: type, restName: restName, args: args });

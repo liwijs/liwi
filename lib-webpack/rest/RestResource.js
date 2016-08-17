@@ -17,7 +17,7 @@ var RestResourceService = function () {
     }, {
         key: "sort",
         value: function sort(connectedUser, _sort) {
-            return {};
+            return null;
         }
     }, {
         key: "transform",

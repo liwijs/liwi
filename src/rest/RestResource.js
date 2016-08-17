@@ -7,8 +7,8 @@ export default class RestResourceService {
         return {};
     }
 
-    sort(connectedUser: ?Object, sort: Object) {
-        return {};
+    sort(connectedUser: ?Object, sort: ?Object) {
+        return null;
     }
 
     transform(result: Object) {

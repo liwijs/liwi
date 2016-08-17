@@ -31,11 +31,11 @@ var RestResourceService = function () {
                 throw new TypeError("Value of argument \"connectedUser\" violates contract.\n\nExpected:\n?Object\n\nGot:\n" + _inspect(connectedUser));
             }
 
-            if (!(_sort instanceof Object)) {
-                throw new TypeError("Value of argument \"sort\" violates contract.\n\nExpected:\nObject\n\nGot:\n" + _inspect(_sort));
+            if (!(_sort == null || _sort instanceof Object)) {
+                throw new TypeError("Value of argument \"sort\" violates contract.\n\nExpected:\n?Object\n\nGot:\n" + _inspect(_sort));
             }
 
-            return {};
+            return null;
         }
     }, {
         key: "transform",

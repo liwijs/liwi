@@ -52,7 +52,7 @@ class RestService {
             }
 
             if (!(_arguments[1] != null && (_arguments[1].criteria == null || _arguments[1].criteria instanceof Object) && (_arguments[1].sort == null || _arguments[1].sort instanceof Object) && (_arguments[1].limit == null || typeof _arguments[1].limit === 'number'))) {
-                throw new TypeError('Value of argument 1 violates contract.\n\nExpected:\n{ criteria: ?Object;\n  sort: ?Object;\n  limit: ?number;\n}\n\nGot:\n' + _inspect(_arguments[1]));
+                throw new TypeError('Value of argument 1 violates contract.\n\nExpected:\n{\n  criteria: ?Object;\n  sort: ?Object;\n  limit: ?number;\n}\n\nGot:\n' + _inspect(_arguments[1]));
             }
 
             const restResource = _this.get(restName);

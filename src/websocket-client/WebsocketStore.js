@@ -2,8 +2,8 @@ import AbstractStore from '../store/AbstractStore';
 import WebsocketCursor from './WebsocketCursor';
 
 type WebsocketConnection = {
-    emit: Function,
-    isConnected: Function,
+    emit: Function;
+    isConnected: Function;
 }
 
 export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketConnection> {

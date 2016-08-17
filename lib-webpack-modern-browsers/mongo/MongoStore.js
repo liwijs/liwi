@@ -53,6 +53,14 @@ export default class MongoStore extends AbstractStore {
         return this.collection.then(collection => collection.updateOne({ _id: object._id }, object)).then(() => object);
     }
 
+    upsertOne(object) {
+        if (!object.updated) {
+            object.updated = new Date();
+        }
+
+        return this.collection.then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })).then(() => object);
+    }
+
     updateSeveral(objects) {
         return Promise.all(objects.map(object => this.updateOne(object)));
     }

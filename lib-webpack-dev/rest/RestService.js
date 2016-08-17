@@ -66,7 +66,7 @@ var RestService = function () {
                                     break;
                                 }
 
-                                throw new TypeError('Value of argument 1 violates contract.\n\nExpected:\n{ criteria: ?Object;\n  sort: ?Object;\n  limit: ?number;\n}\n\nGot:\n' + _inspect(_args[1]));
+                                throw new TypeError('Value of argument 1 violates contract.\n\nExpected:\n{\n  criteria: ?Object;\n  sort: ?Object;\n  limit: ?number;\n}\n\nGot:\n' + _inspect(_args[1]));
 
                             case 4:
                                 restResource = this.get(restName);

@@ -72,6 +72,19 @@ var MongoStore = function (_AbstractStore) {
             });
         }
     }, {
+        key: 'upsertOne',
+        value: function upsertOne(object) {
+            if (!object.updated) {
+                object.updated = new Date();
+            }
+
+            return this.collection.then(function (collection) {
+                return collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true });
+            }).then(function () {
+                return object;
+            });
+        }
+    }, {
         key: 'updateSeveral',
         value: function updateSeveral(objects) {
             var _this2 = this;

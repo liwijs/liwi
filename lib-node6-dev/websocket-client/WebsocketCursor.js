@@ -97,7 +97,7 @@ class WebsocketCursor extends _AbstractCursor2.default {
     next() {
         function _ref3(_id3) {
             if (!(_id3 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<?anyany>\n\nGot:\n' + _inspect(_id3));
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<?any>\n\nGot:\n' + _inspect(_id3));
             }
 
             return _id3;
@@ -118,7 +118,7 @@ class WebsocketCursor extends _AbstractCursor2.default {
     result() {
         function _ref4(_id4) {
             if (!(_id4 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<?ModelTypeModelType>\n\nGot:\n' + _inspect(_id4));
+                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<?ModelType>\n\nGot:\n' + _inspect(_id4));
             }
 
             return _id4;

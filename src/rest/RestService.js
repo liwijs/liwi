@@ -17,7 +17,7 @@ export default class RestService {
 
     async createCursor(
         restName: string,
-        { criteria, sort, limit }: { criteria: ?Object, sort: ?Object, limit: ?number }
+        { criteria, sort, limit }: { criteria: ?Object; sort: ?Object; limit: ?number }
     ): Promise {
         const restResource = this.get(restName);
         criteria = restResource.criteria(null, criteria || {});

@@ -13,7 +13,7 @@ class RestResourceService {
     }
 
     sort(connectedUser, sort) {
-        return {};
+        return null;
     }
 
     transform(result) {
