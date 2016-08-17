@@ -1,3 +1,7 @@
+### v0.4.1
+
+- [`0066629`](https://github.com/liwijs/liwi/commit/0066629fbcb34db4028a94937589d65b5108dd53) fix in RestResource sort and add upsertOne and update dependencies (Christophe Hurpeau)
+
 ### v0.4.0
 
 - [`2eec1e6`](https://github.com/liwijs/liwi/commit/2eec1e696f65e8879d29110566692c7340ad732e) 0.3.0 (Christophe Hurpeau)
