@@ -13,5 +13,18 @@ Object.defineProperty(exports, 'AbstractManager', {
   }
 });
 
+var _types = require('./types');
+
+Object.keys(_types).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _types[key];
+    }
+  });
+});
+
+//defines: #if !PRODUCTION = !false
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 //# sourceMappingURL=index.js.map

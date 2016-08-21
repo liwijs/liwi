@@ -10,95 +10,95 @@ import AbstractStore from '../store/AbstractStore';
 import WebsocketCursor from './WebsocketCursor';
 
 var WebsocketStore = function (_AbstractStore) {
-    _inherits(WebsocketStore, _AbstractStore);
+  _inherits(WebsocketStore, _AbstractStore);
 
-    function WebsocketStore(websocket, restName) {
-        _classCallCheck(this, WebsocketStore);
+  function WebsocketStore(websocket, restName) {
+    _classCallCheck(this, WebsocketStore);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WebsocketStore).call(this, websocket));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WebsocketStore).call(this, websocket));
 
-        _this.keyPath = '_id';
+    _this.keyPath = '_id';
 
 
-        if (!restName) {
-            throw new Error('Invalid restName: "' + restName + '"');
-        }
-
-        _this.restName = restName;
-        return _this;
+    if (!restName) {
+      throw new Error('Invalid restName: "' + restName + '"');
     }
 
-    _createClass(WebsocketStore, [{
-        key: 'emit',
-        value: function emit(type) {
-            if (!this.connection.isConnected()) {
-                throw new Error('Websocket is not connected');
-            }
+    _this.restName = restName;
+    return _this;
+  }
 
-            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-                args[_key - 1] = arguments[_key];
-            }
+  _createClass(WebsocketStore, [{
+    key: 'emit',
+    value: function emit(type) {
+      if (!this.connection.isConnected()) {
+        throw new Error('Websocket is not connected');
+      }
 
-            return this.connection.emit('rest', { type: type, restName: this.restName }, args);
-        }
-    }, {
-        key: 'insertOne',
-        value: function insertOne(object) {
-            return this.emit('insertOne', object);
-        }
-    }, {
-        key: 'updateOne',
-        value: function updateOne(object) {
-            return this.emit('updateOne', object);
-        }
-    }, {
-        key: 'updateSeveral',
-        value: function updateSeveral(objects) {
-            return this.emit('updateSeveral', objects);
-        }
-    }, {
-        key: 'partialUpdateByKey',
-        value: function partialUpdateByKey(key, partialUpdate) {
-            return this.emit('partialUpdateByKey', key, partialUpdate);
-        }
-    }, {
-        key: 'partialUpdateOne',
-        value: function partialUpdateOne(object, partialUpdate) {
-            return this.emit('partialUpdateOne', object, partialUpdate);
-        }
-    }, {
-        key: 'partialUpdateMany',
-        value: function partialUpdateMany(criteria, partialUpdate) {
-            return this.emit('partialUpdateMany', criteria, partialUpdate);
-        }
-    }, {
-        key: 'deleteByKey',
-        value: function deleteByKey(key) {
-            return this.emit('deleteByKey', key);
-        }
-    }, {
-        key: 'deleteOne',
-        value: function deleteOne(object) {
-            return this.emit('deleteOne', object);
-        }
-    }, {
-        key: 'cursor',
-        value: function cursor(criteria, sort) {
-            return Promise.resolve(new WebsocketCursor(this, { criteria: criteria, sort: sort }));
-        }
-    }, {
-        key: 'findByKey',
-        value: function findByKey(key) {
-            return this.findOne({ _id: key });
-        }
-    }, {
-        key: 'findOne',
-        value: function findOne(criteria, sort) {
-            return this.emit('findOne', criteria, sort);
-        }
-    }]);
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
 
-    return WebsocketStore;
+      return this.connection.emit('rest', { type: type, restName: this.restName }, args);
+    }
+  }, {
+    key: 'insertOne',
+    value: function insertOne(object) {
+      return this.emit('insertOne', object);
+    }
+  }, {
+    key: 'updateOne',
+    value: function updateOne(object) {
+      return this.emit('updateOne', object);
+    }
+  }, {
+    key: 'updateSeveral',
+    value: function updateSeveral(objects) {
+      return this.emit('updateSeveral', objects);
+    }
+  }, {
+    key: 'partialUpdateByKey',
+    value: function partialUpdateByKey(key, partialUpdate) {
+      return this.emit('partialUpdateByKey', key, partialUpdate);
+    }
+  }, {
+    key: 'partialUpdateOne',
+    value: function partialUpdateOne(object, partialUpdate) {
+      return this.emit('partialUpdateOne', object, partialUpdate);
+    }
+  }, {
+    key: 'partialUpdateMany',
+    value: function partialUpdateMany(criteria, partialUpdate) {
+      return this.emit('partialUpdateMany', criteria, partialUpdate);
+    }
+  }, {
+    key: 'deleteByKey',
+    value: function deleteByKey(key) {
+      return this.emit('deleteByKey', key);
+    }
+  }, {
+    key: 'deleteOne',
+    value: function deleteOne(object) {
+      return this.emit('deleteOne', object);
+    }
+  }, {
+    key: 'cursor',
+    value: function cursor(criteria, sort) {
+      return Promise.resolve(new WebsocketCursor(this, { criteria: criteria, sort: sort }));
+    }
+  }, {
+    key: 'findByKey',
+    value: function findByKey(key) {
+      return this.findOne({ _id: key });
+    }
+  }, {
+    key: 'findOne',
+    value: function findOne(criteria, sort) {
+      return this.emit('findOne', criteria, sort);
+    }
+  }]);
+
+  return WebsocketStore;
 }(AbstractStore);
 
 export default WebsocketStore;

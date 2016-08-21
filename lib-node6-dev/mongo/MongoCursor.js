@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _cursor = require('mongodb/lib/cursor');
@@ -19,153 +19,153 @@ var _AbstractCursor2 = _interopRequireDefault(_AbstractCursor);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class MongoCursor extends _AbstractCursor2.default {
-    constructor(store, cursor) {
-        if (!(store instanceof _MongoStore2.default)) {
-            throw new TypeError('Value of argument "store" violates contract.\n\nExpected:\nMongoStore\n\nGot:\n' + _inspect(store));
-        }
-
-        if (!(cursor instanceof _cursor2.default)) {
-            throw new TypeError('Value of argument "cursor" violates contract.\n\nExpected:\nCursor\n\nGot:\n' + _inspect(cursor));
-        }
-
-        super(store);
-        this._cursor = cursor;
+  constructor(store, cursor) {
+    if (!(store instanceof _MongoStore2.default)) {
+      throw new TypeError('Value of argument "store" violates contract.\n\nExpected:\nMongoStore\n\nGot:\n' + _inspect(store));
     }
 
-    advance(count) {
-        if (!(typeof count === 'number')) {
-            throw new TypeError('Value of argument "count" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect(count));
-        }
-
-        this._cursor.skip(count);
+    if (!(cursor instanceof _cursor2.default)) {
+      throw new TypeError('Value of argument "cursor" violates contract.\n\nExpected:\nCursor\n\nGot:\n' + _inspect(cursor));
     }
 
-    next() {
-        function _ref2(_id2) {
-            if (!(_id2 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<any>\n\nGot:\n' + _inspect(_id2));
-            }
+    super(store);
+    this._cursor = cursor;
+  }
 
-            return _id2;
-        }
-
-        return _ref2(this._cursor.next().then(value => {
-            this._result = value;
-            this.key = value && value._id;
-            return this.key;
-        }));
+  advance(count) {
+    if (!(typeof count === 'number')) {
+      throw new TypeError('Value of argument "count" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect(count));
     }
 
-    limit(newLimit) {
-        function _ref3(_id3) {
-            if (!(_id3 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id3));
-            }
+    this._cursor.skip(count);
+  }
 
-            return _id3;
-        }
+  next() {
+    function _ref2(_id2) {
+      if (!(_id2 instanceof Promise)) {
+        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<any>\n\nGot:\n' + _inspect(_id2));
+      }
 
-        if (!(typeof newLimit === 'number')) {
-            throw new TypeError('Value of argument "newLimit" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect(newLimit));
-        }
-
-        this._cursor.limit(newLimit);
-        return _ref3(Promise.resolve(this));
+      return _id2;
     }
 
-    count() {
-        let applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+    return _ref2(this._cursor.next().then(value => {
+      this._result = value;
+      this.key = value && value._id;
+      return this.key;
+    }));
+  }
 
-        if (!(typeof applyLimit === 'boolean')) {
-            throw new TypeError('Value of argument "applyLimit" violates contract.\n\nExpected:\nbool\n\nGot:\n' + _inspect(applyLimit));
-        }
+  limit(newLimit) {
+    function _ref3(_id3) {
+      if (!(_id3 instanceof Promise)) {
+        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id3));
+      }
 
-        return this._cursor.count(applyLimit);
+      return _id3;
     }
 
-    result() {
-        return Promise.resolve(this._result);
+    if (!(typeof newLimit === 'number')) {
+      throw new TypeError('Value of argument "newLimit" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect(newLimit));
     }
 
-    close() {
-        if (this._cursor) {
-            this._cursor.close();
-            this._cursor = this._store = this._result = undefined;
-        }
+    this._cursor.limit(newLimit);
+    return _ref3(Promise.resolve(this));
+  }
 
-        return Promise.resolve();
+  count() {
+    let applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+
+    if (!(typeof applyLimit === 'boolean')) {
+      throw new TypeError('Value of argument "applyLimit" violates contract.\n\nExpected:\nbool\n\nGot:\n' + _inspect(applyLimit));
     }
 
-    toArray() {
-        function _ref4(_id4) {
-            if (!(_id4 instanceof Promise)) {
-                throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Array>\n\nGot:\n' + _inspect(_id4));
-            }
+    return this._cursor.count(applyLimit);
+  }
 
-            return _id4;
-        }
+  result() {
+    return Promise.resolve(this._result);
+  }
 
-        return _ref4(this._cursor.toArray());
+  close() {
+    if (this._cursor) {
+      this._cursor.close();
+      this._cursor = this._store = this._result = undefined;
     }
+
+    return Promise.resolve();
+  }
+
+  toArray() {
+    function _ref4(_id4) {
+      if (!(_id4 instanceof Promise)) {
+        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Array>\n\nGot:\n' + _inspect(_id4));
+      }
+
+      return _id4;
+    }
+
+    return _ref4(this._cursor.toArray());
+  }
 }
 exports.default = MongoCursor;
 
 function _inspect(input, depth) {
-    const maxDepth = 4;
-    const maxKeys = 15;
+  const maxDepth = 4;
+  const maxKeys = 15;
 
-    if (depth === undefined) {
-        depth = 0;
-    }
+  if (depth === undefined) {
+    depth = 0;
+  }
 
-    depth += 1;
+  depth += 1;
 
-    if (input === null) {
-        return 'null';
-    } else if (input === undefined) {
-        return 'void';
-    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
-        return typeof input;
-    } else if (Array.isArray(input)) {
-        if (input.length > 0) {
-            if (depth > maxDepth) return '[...]';
+  if (input === null) {
+    return 'null';
+  } else if (input === undefined) {
+    return 'void';
+  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+    return typeof input;
+  } else if (Array.isArray(input)) {
+    if (input.length > 0) {
+      if (depth > maxDepth) return '[...]';
 
-            const first = _inspect(input[0], depth);
+      const first = _inspect(input[0], depth);
 
-            if (input.every(item => _inspect(item, depth) === first)) {
-                return first.trim() + '[]';
-            } else {
-                return '[' + input.slice(0, maxKeys).map(item => _inspect(item, depth)).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
-            }
-        } else {
-            return 'Array';
-        }
+      if (input.every(item => _inspect(item, depth) === first)) {
+        return first.trim() + '[]';
+      } else {
+        return '[' + input.slice(0, maxKeys).map(item => _inspect(item, depth)).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+      }
     } else {
-        const keys = Object.keys(input);
-
-        if (!keys.length) {
-            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-                return input.constructor.name;
-            } else {
-                return 'Object';
-            }
-        }
-
-        if (depth > maxDepth) return '{...}';
-        const indent = '  '.repeat(depth - 1);
-        let entries = keys.slice(0, maxKeys).map(key => {
-            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
-        }).join('\n  ' + indent);
-
-        if (keys.length >= maxKeys) {
-            entries += '\n  ' + indent + '...';
-        }
-
-        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
-        } else {
-            return '{\n  ' + indent + entries + '\n' + indent + '}';
-        }
+      return 'Array';
     }
+  } else {
+    const keys = Object.keys(input);
+
+    if (!keys.length) {
+      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+        return input.constructor.name;
+      } else {
+        return 'Object';
+      }
+    }
+
+    if (depth > maxDepth) return '{...}';
+    const indent = '  '.repeat(depth - 1);
+    let entries = keys.slice(0, maxKeys).map(key => {
+      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
+    }).join('\n  ' + indent);
+
+    if (keys.length >= maxKeys) {
+      entries += '\n  ' + indent + '...';
+    }
+
+    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+    } else {
+      return '{\n  ' + indent + entries + '\n' + indent + '}';
+    }
+  }
 }
 //# sourceMappingURL=MongoCursor.js.map

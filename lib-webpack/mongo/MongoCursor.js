@@ -11,69 +11,69 @@ import MongoStore from './MongoStore';
 import AbstractCursor from '../store/AbstractCursor';
 
 var MongoCursor = function (_AbstractCursor) {
-    _inherits(MongoCursor, _AbstractCursor);
+  _inherits(MongoCursor, _AbstractCursor);
 
-    function MongoCursor(store, cursor) {
-        _classCallCheck(this, MongoCursor);
+  function MongoCursor(store, cursor) {
+    _classCallCheck(this, MongoCursor);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MongoCursor).call(this, store));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MongoCursor).call(this, store));
 
-        _this._cursor = cursor;
-        return _this;
+    _this._cursor = cursor;
+    return _this;
+  }
+
+  _createClass(MongoCursor, [{
+    key: 'advance',
+    value: function advance(count) {
+      this._cursor.skip(count);
     }
+  }, {
+    key: 'next',
+    value: function next() {
+      var _this2 = this;
 
-    _createClass(MongoCursor, [{
-        key: 'advance',
-        value: function advance(count) {
-            this._cursor.skip(count);
-        }
-    }, {
-        key: 'next',
-        value: function next() {
-            var _this2 = this;
+      return this._cursor.next().then(function (value) {
+        _this2._result = value;
+        _this2.key = value && value._id;
+        return _this2.key;
+      });
+    }
+  }, {
+    key: 'limit',
+    value: function limit(newLimit) {
+      this._cursor.limit(newLimit);
+      return Promise.resolve(this);
+    }
+  }, {
+    key: 'count',
+    value: function count() {
+      var applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
 
-            return this._cursor.next().then(function (value) {
-                _this2._result = value;
-                _this2.key = value && value._id;
-                return _this2.key;
-            });
-        }
-    }, {
-        key: 'limit',
-        value: function limit(newLimit) {
-            this._cursor.limit(newLimit);
-            return Promise.resolve(this);
-        }
-    }, {
-        key: 'count',
-        value: function count() {
-            var applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+      return this._cursor.count(applyLimit);
+    }
+  }, {
+    key: 'result',
+    value: function result() {
+      return Promise.resolve(this._result);
+    }
+  }, {
+    key: 'close',
+    value: function close() {
+      if (this._cursor) {
+        this._cursor.close();
+        this._cursor = this._store = this._result = undefined;
+      }
 
-            return this._cursor.count(applyLimit);
-        }
-    }, {
-        key: 'result',
-        value: function result() {
-            return Promise.resolve(this._result);
-        }
-    }, {
-        key: 'close',
-        value: function close() {
-            if (this._cursor) {
-                this._cursor.close();
-                this._cursor = this._store = this._result = undefined;
-            }
+      return Promise.resolve();
+    }
+  }, {
+    key: 'toArray',
+    value: function toArray() {
+      return this._cursor.toArray();
+    }
+  }]);
 
-            return Promise.resolve();
-        }
-    }, {
-        key: 'toArray',
-        value: function toArray() {
-            return this._cursor.toArray();
-        }
-    }]);
-
-    return MongoCursor;
+  return MongoCursor;
 }(AbstractCursor);
 
 export default MongoCursor;

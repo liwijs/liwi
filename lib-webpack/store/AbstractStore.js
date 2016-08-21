@@ -5,24 +5,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 import assert from 'assert';
 
 var AbstractStore = function () {
-    /**
-     * @param {AbstractConnection} connection
-     */
-    function AbstractStore(connection) {
-        _classCallCheck(this, AbstractStore);
+  /**
+   * @param {AbstractConnection} connection
+   */
+  function AbstractStore(connection) {
+    _classCallCheck(this, AbstractStore);
 
-        assert(connection);
-        this._connection = connection;
+    assert(connection);
+    this._connection = connection;
+  }
+
+  _createClass(AbstractStore, [{
+    key: 'connection',
+    get: function get() {
+      return this._connection;
     }
+  }]);
 
-    _createClass(AbstractStore, [{
-        key: 'connection',
-        get: function get() {
-            return this._connection;
-        }
-    }]);
-
-    return AbstractStore;
+  return AbstractStore;
 }();
 
 export default AbstractStore;

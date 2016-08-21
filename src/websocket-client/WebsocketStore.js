@@ -2,71 +2,71 @@ import AbstractStore from '../store/AbstractStore';
 import WebsocketCursor from './WebsocketCursor';
 
 type WebsocketConnection = {
-    emit: Function;
-    isConnected: Function;
+    emit: Function,
+    isConnected: Function,
 }
 
 export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketConnection> {
-    keyPath = '_id';
+  keyPath = '_id';
 
-    constructor(websocket: WebsocketConnection, restName: string) {
-        super(websocket);
+  constructor(websocket: WebsocketConnection, restName: string) {
+    super(websocket);
 
-        if (!restName) {
-            throw new Error(`Invalid restName: "${restName}"`);
-        }
-
-        this.restName = restName;
+    if (!restName) {
+      throw new Error(`Invalid restName: "${restName}"`);
     }
 
-    emit(type, ...args) {
-        if (!this.connection.isConnected()) {
-            throw new Error('Websocket is not connected');
-        }
-        return this.connection.emit('rest', { type, restName: this.restName }, args);
-    }
+    this.restName = restName;
+  }
 
-    insertOne(object: ModelType): Promise<ModelType> {
-        return this.emit('insertOne', object);
+  emit(type, ...args) {
+    if (!this.connection.isConnected()) {
+      throw new Error('Websocket is not connected');
     }
+    return this.connection.emit('rest', { type, restName: this.restName }, args);
+  }
 
-    updateOne(object: ModelType): Promise<ModelType> {
-        return this.emit('updateOne', object);
-    }
+  insertOne(object: ModelType): Promise<ModelType> {
+    return this.emit('insertOne', object);
+  }
 
-    updateSeveral(objects: Array<ModelType>): Promise<Array<ModelType>> {
-        return this.emit('updateSeveral', objects);
-    }
+  updateOne(object: ModelType): Promise<ModelType> {
+    return this.emit('updateOne', object);
+  }
 
-    partialUpdateByKey(key: any, partialUpdate: Object): Promise {
-        return this.emit('partialUpdateByKey', key, partialUpdate);
-    }
+  updateSeveral(objects: Array<ModelType>): Promise<Array<ModelType>> {
+    return this.emit('updateSeveral', objects);
+  }
 
-    partialUpdateOne(object: ModelType, partialUpdate: Object): Promise<ModelType> {
-        return this.emit('partialUpdateOne', object, partialUpdate);
-    }
+  partialUpdateByKey(key: any, partialUpdate: Object): Promise {
+    return this.emit('partialUpdateByKey', key, partialUpdate);
+  }
 
-    partialUpdateMany(criteria, partialUpdate: Object): Promise {
-        return this.emit('partialUpdateMany', criteria, partialUpdate);
-    }
+  partialUpdateOne(object: ModelType, partialUpdate: Object): Promise<ModelType> {
+    return this.emit('partialUpdateOne', object, partialUpdate);
+  }
 
-    deleteByKey(key: any): Promise {
-        return this.emit('deleteByKey', key);
-    }
+  partialUpdateMany(criteria, partialUpdate: Object): Promise {
+    return this.emit('partialUpdateMany', criteria, partialUpdate);
+  }
 
-    deleteOne(object: ModelType): Promise {
-        return this.emit('deleteOne', object);
-    }
+  deleteByKey(key: any): Promise {
+    return this.emit('deleteByKey', key);
+  }
 
-    cursor(criteria: ?Object, sort: ?Object): Promise<WebsocketCursor<ModelType>> {
-        return Promise.resolve(new WebsocketCursor(this, { criteria, sort }));
-    }
+  deleteOne(object: ModelType): Promise {
+    return this.emit('deleteOne', object);
+  }
 
-    findByKey(key: any) {
-        return this.findOne({ _id: key });
-    }
+  cursor(criteria: ?Object, sort: ?Object): Promise<WebsocketCursor<ModelType>> {
+    return Promise.resolve(new WebsocketCursor(this, { criteria, sort }));
+  }
 
-    findOne(criteria: Object, sort: ?Object): Promise<Object> {
-        return this.emit('findOne', criteria, sort);
-    }
+  findByKey(key: any) {
+    return this.findOne({ _id: key });
+  }
+
+  findOne(criteria: Object, sort: ?Object): Promise<Object> {
+    return this.emit('findOne', criteria, sort);
+  }
 }

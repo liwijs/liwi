@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _AbstractStore = require('../store/AbstractStore');
@@ -16,72 +16,72 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class WebsocketStore extends _AbstractStore2.default {
 
-    constructor(websocket, restName) {
-        super(websocket);
+  constructor(websocket, restName) {
+    super(websocket);
 
-        this.keyPath = '_id';
-        if (!restName) {
-            throw new Error(`Invalid restName: "${ restName }"`);
-        }
-
-        this.restName = restName;
+    this.keyPath = '_id';
+    if (!restName) {
+      throw new Error(`Invalid restName: "${ restName }"`);
     }
 
-    emit(type) {
-        if (!this.connection.isConnected()) {
-            throw new Error('Websocket is not connected');
-        }
+    this.restName = restName;
+  }
 
-        for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-            args[_key - 1] = arguments[_key];
-        }
-
-        return this.connection.emit('rest', { type, restName: this.restName }, args);
+  emit(type) {
+    if (!this.connection.isConnected()) {
+      throw new Error('Websocket is not connected');
     }
 
-    insertOne(object) {
-        return this.emit('insertOne', object);
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
     }
 
-    updateOne(object) {
-        return this.emit('updateOne', object);
-    }
+    return this.connection.emit('rest', { type, restName: this.restName }, args);
+  }
 
-    updateSeveral(objects) {
-        return this.emit('updateSeveral', objects);
-    }
+  insertOne(object) {
+    return this.emit('insertOne', object);
+  }
 
-    partialUpdateByKey(key, partialUpdate) {
-        return this.emit('partialUpdateByKey', key, partialUpdate);
-    }
+  updateOne(object) {
+    return this.emit('updateOne', object);
+  }
 
-    partialUpdateOne(object, partialUpdate) {
-        return this.emit('partialUpdateOne', object, partialUpdate);
-    }
+  updateSeveral(objects) {
+    return this.emit('updateSeveral', objects);
+  }
 
-    partialUpdateMany(criteria, partialUpdate) {
-        return this.emit('partialUpdateMany', criteria, partialUpdate);
-    }
+  partialUpdateByKey(key, partialUpdate) {
+    return this.emit('partialUpdateByKey', key, partialUpdate);
+  }
 
-    deleteByKey(key) {
-        return this.emit('deleteByKey', key);
-    }
+  partialUpdateOne(object, partialUpdate) {
+    return this.emit('partialUpdateOne', object, partialUpdate);
+  }
 
-    deleteOne(object) {
-        return this.emit('deleteOne', object);
-    }
+  partialUpdateMany(criteria, partialUpdate) {
+    return this.emit('partialUpdateMany', criteria, partialUpdate);
+  }
 
-    cursor(criteria, sort) {
-        return Promise.resolve(new _WebsocketCursor2.default(this, { criteria, sort }));
-    }
+  deleteByKey(key) {
+    return this.emit('deleteByKey', key);
+  }
 
-    findByKey(key) {
-        return this.findOne({ _id: key });
-    }
+  deleteOne(object) {
+    return this.emit('deleteOne', object);
+  }
 
-    findOne(criteria, sort) {
-        return this.emit('findOne', criteria, sort);
-    }
+  cursor(criteria, sort) {
+    return Promise.resolve(new _WebsocketCursor2.default(this, { criteria, sort }));
+  }
+
+  findByKey(key) {
+    return this.findOne({ _id: key });
+  }
+
+  findOne(criteria, sort) {
+    return this.emit('findOne', criteria, sort);
+  }
 }
 exports.default = WebsocketStore;
 //# sourceMappingURL=WebsocketStore.js.map

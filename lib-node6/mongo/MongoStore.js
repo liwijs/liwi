@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _mongodb = require('mongodb');
@@ -30,104 +30,104 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class MongoStore extends _AbstractStore2.default {
 
-    constructor(connection, collectionName) {
-        super(connection);
+  constructor(connection, collectionName) {
+    super(connection);
 
-        this.keyPath = '_id';
-        if (!collectionName) {
-            throw new Error(`Invalid collectionName: "${ collectionName }"`);
-        }
-
-        this._collection = connection.getConnection().then(db => this._collection = db.collection(collectionName));
+    this.keyPath = '_id';
+    if (!collectionName) {
+      throw new Error(`Invalid collectionName: "${ collectionName }"`);
     }
 
-    get collection() {
-        if (this.connection.connectionFailed) {
-            return Promise.reject(new Error('MongoDB connection failed'));
-        }
+    this._collection = connection.getConnection().then(db => this._collection = db.collection(collectionName));
+  }
 
-        return Promise.resolve(this._collection);
+  get collection() {
+    if (this.connection.connectionFailed) {
+      return Promise.reject(new Error('MongoDB connection failed'));
     }
 
-    insertOne(object) {
-        if (!object._id) {
-            object._id = new _mongodb.ObjectID().toString();
-        }
-        if (!object.created) {
-            object.created = new Date();
-        }
+    return Promise.resolve(this._collection);
+  }
 
-        return this.collection.then(collection => collection.insertOne(object)).then(_ref => {
-            let result = _ref.result;
-            let connection = _ref.connection;
-            let ops = _ref.ops;
-
-            if (!result.ok || result.n !== 1) {
-                throw new Error('Fail to insert');
-            }
-        }).then(() => object);
+  insertOne(object) {
+    if (!object._id) {
+      object._id = new _mongodb.ObjectID().toString();
+    }
+    if (!object.created) {
+      object.created = new Date();
     }
 
-    updateOne(object) {
-        if (!object.updated) {
-            object.updated = new Date();
-        }
+    return this.collection.then(collection => collection.insertOne(object)).then(_ref => {
+      let result = _ref.result;
+      let connection = _ref.connection;
+      let ops = _ref.ops;
 
-        return this.collection.then(collection => collection.updateOne({ _id: object._id }, object)).then(() => object);
+      if (!result.ok || result.n !== 1) {
+        throw new Error('Fail to insert');
+      }
+    }).then(() => object);
+  }
+
+  updateOne(object) {
+    if (!object.updated) {
+      object.updated = new Date();
     }
 
-    upsertOne(object) {
-        if (!object.updated) {
-            object.updated = new Date();
-        }
+    return this.collection.then(collection => collection.updateOne({ _id: object._id }, object)).then(() => object);
+  }
 
-        return this.collection.then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })).then(() => object);
+  upsertOne(object) {
+    if (!object.updated) {
+      object.updated = new Date();
     }
 
-    updateSeveral(objects) {
-        return Promise.all(objects.map(object => this.updateOne(object)));
-    }
+    return this.collection.then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })).then(() => object);
+  }
 
-    _partialUpdate(partialUpdate) {
-        // https://docs.mongodb.com/manual/reference/operator/update/
-        // if has a mongo operator
-        if (Object.keys(partialUpdate).some(key => key[0] === '$')) {
-            return partialUpdate;
-        } else {
-            return { $set: partialUpdate };
-        }
-    }
+  updateSeveral(objects) {
+    return Promise.all(objects.map(object => this.updateOne(object)));
+  }
 
-    partialUpdateByKey(key, partialUpdate) {
-        partialUpdate = this._partialUpdate(partialUpdate);
-        return this.collection.then(collection => collection.updateOne({ _id: key }, partialUpdate));
+  _partialUpdate(partialUpdate) {
+    // https://docs.mongodb.com/manual/reference/operator/update/
+    // if has a mongo operator
+    if (Object.keys(partialUpdate).some(key => key[0] === '$')) {
+      return partialUpdate;
+    } else {
+      return { $set: partialUpdate };
     }
+  }
 
-    partialUpdateOne(object, partialUpdate) {
-        partialUpdate = this._partialUpdate(partialUpdate);
-        return this.partialUpdateByKey(object._id, partialUpdate).then(res => this.findByKey(object._id));
-    }
+  partialUpdateByKey(key, partialUpdate) {
+    partialUpdate = this._partialUpdate(partialUpdate);
+    return this.collection.then(collection => collection.updateOne({ _id: key }, partialUpdate));
+  }
 
-    partialUpdateMany(criteria, partialUpdate) {
-        partialUpdate = this._partialUpdate(partialUpdate);
-        return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(res => null); // TODO return updated object
-    }
+  partialUpdateOne(object, partialUpdate) {
+    partialUpdate = this._partialUpdate(partialUpdate);
+    return this.partialUpdateByKey(object._id, partialUpdate).then(res => this.findByKey(object._id));
+  }
 
-    deleteByKey(key) {
-        return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => null);
-    }
+  partialUpdateMany(criteria, partialUpdate) {
+    partialUpdate = this._partialUpdate(partialUpdate);
+    return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(res => null); // TODO return updated object
+  }
 
-    cursor(criteria, sort) {
-        return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => new _MongoCursor2.default(this, cursor));
-    }
+  deleteByKey(key) {
+    return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => null);
+  }
 
-    findByKey(key) {
-        return this.findOne({ _id: key });
-    }
+  cursor(criteria, sort) {
+    return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => new _MongoCursor2.default(this, cursor));
+  }
 
-    findOne(criteria, sort) {
-        return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => cursor.limit(1).next());
-    }
+  findByKey(key) {
+    return this.findOne({ _id: key });
+  }
+
+  findOne(criteria, sort) {
+    return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => cursor.limit(1).next());
+  }
 }
 exports.default = MongoStore;
 //# sourceMappingURL=MongoStore.js.map

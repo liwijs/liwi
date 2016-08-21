@@ -14,4 +14,6 @@ Object.defineProperty(exports, 'AbstractManager', {
 });
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+; //defines: #if !PRODUCTION = !true
 //# sourceMappingURL=index.js.map

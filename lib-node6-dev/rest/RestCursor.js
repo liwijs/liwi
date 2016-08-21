@@ -1,16 +1,22 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 class RestCursor {
-    constructor(cursor) {
-        this._cursor = cursor;
-    }
+  constructor(restResource, connectedUser, cursor) {
+    this._restResource = restResource;
+    this._connectedUser = connectedUser;
+    this._cursor = cursor;
+  }
 
-    toArray() {
-        return this._cursor.toArray();
-    }
+  toArray() {
+    return this._cursor.toArray().then(results => {
+      return results && results.map(result => {
+        return this._restResource.transform(result, this._connectedUser);
+      });
+    });
+  }
 }
 exports.default = RestCursor;
 //# sourceMappingURL=RestCursor.js.map

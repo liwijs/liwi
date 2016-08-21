@@ -3,30 +3,35 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RestResourceService = function () {
-    function RestResourceService(store) {
-        _classCallCheck(this, RestResourceService);
+  function RestResourceService(store) {
+    _classCallCheck(this, RestResourceService);
 
-        this.store = store;
+    this.store = store;
+  }
+
+  _createClass(RestResourceService, [{
+    key: "limit",
+    value: function limit(connectedUser, _limit) {
+      return _limit;
     }
+  }, {
+    key: "criteria",
+    value: function criteria(connectedUser, _criteria) {
+      return {};
+    }
+  }, {
+    key: "sort",
+    value: function sort(connectedUser, _sort) {
+      return null;
+    }
+  }, {
+    key: "transform",
+    value: function transform(result) {
+      return result;
+    }
+  }]);
 
-    _createClass(RestResourceService, [{
-        key: "criteria",
-        value: function criteria(connectedUser, _criteria) {
-            return {};
-        }
-    }, {
-        key: "sort",
-        value: function sort(connectedUser, _sort) {
-            return null;
-        }
-    }, {
-        key: "transform",
-        value: function transform(result) {
-            return result;
-        }
-    }]);
-
-    return RestResourceService;
+  return RestResourceService;
 }();
 
 export default RestResourceService;

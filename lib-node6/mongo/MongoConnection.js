@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _nightingaleLogger = require('nightingale-logger');
@@ -24,79 +24,79 @@ const logger = new _nightingaleLogger2.default('liwi.mongo.MongoConnection');
 
 class MongoConnection extends _AbstractConnection2.default {
 
-    constructor(config) {
-        super();
+  constructor(config) {
+    super();
 
-        if (!config.has('host')) {
-            config.set('host', 'localhost');
-        }
-        if (!config.has('port')) {
-            config.set('port', '27017');
-        }
-        if (!config.has('database')) {
-            throw new Error('Missing config database');
-        }
-
-        const connectionString = `mongodb://${ config.has('user') ? `${ config.get('user') }:${ config.get('password') }@` : '' }` + `${ config.get('host') }:${ config.get('port') }/${ config.get('database') }`;
-
-        this.connect(connectionString);
+    if (!config.has('host')) {
+      config.set('host', 'localhost');
+    }
+    if (!config.has('port')) {
+      config.set('port', '27017');
+    }
+    if (!config.has('database')) {
+      throw new Error('Missing config database');
     }
 
-    connect(connectionString) {
-        logger.info('connecting', { connectionString });
+    const connectionString = `mongodb://${ config.has('user') ? `${ config.get('user') }:${ config.get('password') }@` : '' }` + `${ config.get('host') }:${ config.get('port') }/${ config.get('database') }`;
 
-        const connectPromise = _mongodb.MongoClient.connect(connectionString).then(connection => {
-            logger.info('connected', { connectionString });
-            connection.on('close', () => {
-                logger.warn('close', { connectionString });
-                this.connectionFailed = true;
-                this.getConnection = () => Promise.reject(new Error('MongoDB connection closed'));
-            });
-            connection.on('timeout', () => {
-                logger.warn('timeout', { connectionString });
-                this.connectionFailed = true;
-                this.getConnection = () => Promise.reject(new Error('MongoDB connection timeout'));
-            });
-            connection.on('reconnect', () => {
-                logger.warn('reconnect', { connectionString });
-                this.connectionFailed = false;
-                this.getConnection = () => Promise.resolve(this._connection);
-            });
-            connection.on('error', err => {
-                logger.warn('error', { connectionString, err });
-            });
+    this.connect(connectionString);
+  }
 
-            this._connection = connection;
-            this._connecting = null;
-            this.getConnection = () => Promise.resolve(this._connection);
-            return connection;
-        }).catch(err => {
-            logger.info('not connected', { connectionString });
-            console.error(err.message || err);
-            // throw err;
-            process.nextTick(() => {
-                process.exit(1);
-            });
+  connect(connectionString) {
+    logger.info('connecting', { connectionString });
 
-            throw err;
-        });
+    const connectPromise = _mongodb.MongoClient.connect(connectionString).then(connection => {
+      logger.info('connected', { connectionString });
+      connection.on('close', () => {
+        logger.warn('close', { connectionString });
+        this.connectionFailed = true;
+        this.getConnection = () => Promise.reject(new Error('MongoDB connection closed'));
+      });
+      connection.on('timeout', () => {
+        logger.warn('timeout', { connectionString });
+        this.connectionFailed = true;
+        this.getConnection = () => Promise.reject(new Error('MongoDB connection timeout'));
+      });
+      connection.on('reconnect', () => {
+        logger.warn('reconnect', { connectionString });
+        this.connectionFailed = false;
+        this.getConnection = () => Promise.resolve(this._connection);
+      });
+      connection.on('error', err => {
+        logger.warn('error', { connectionString, err });
+      });
 
-        this.getConnection = () => Promise.resolve(connectPromise);
-        this._connecting = this.getConnection();
+      this._connection = connection;
+      this._connecting = null;
+      this.getConnection = () => Promise.resolve(this._connection);
+      return connection;
+    }).catch(err => {
+      logger.info('not connected', { connectionString });
+      console.error(err.message || err);
+      // throw err;
+      process.nextTick(() => {
+        process.exit(1);
+      });
+
+      throw err;
+    });
+
+    this.getConnection = () => Promise.resolve(connectPromise);
+    this._connecting = this.getConnection();
+  }
+
+  getConnection() {
+    throw new Error('call connect()');
+  }
+
+  close() {
+    this.getConnection = () => Promise.reject(new Error('Connection closed'));
+    if (this._connection) {
+      return this._connection.close();
+    } else if (this._connecting) {
+      return this._connecting.then(() => this.close());
     }
-
-    getConnection() {
-        throw new Error('call connect()');
-    }
-
-    close() {
-        this.getConnection = () => Promise.reject(new Error('Connection closed'));
-        if (this._connection) {
-            return this._connection.close();
-        } else if (this._connecting) {
-            return this._connecting.then(() => this.close());
-        }
-    }
+  }
 }
 exports.default = MongoConnection;
 //# sourceMappingURL=MongoConnection.js.map

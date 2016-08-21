@@ -1,24 +1,28 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 class RestResourceService {
-    constructor(store) {
-        this.store = store;
-    }
+  constructor(store) {
+    this.store = store;
+  }
 
-    criteria(connectedUser, criteria) {
-        return {};
-    }
+  limit(connectedUser, limit) {
+    return limit;
+  }
 
-    sort(connectedUser, sort) {
-        return null;
-    }
+  criteria(connectedUser, criteria) {
+    return {};
+  }
 
-    transform(result) {
-        return result;
-    }
+  sort(connectedUser, sort) {
+    return null;
+  }
+
+  transform(result) {
+    return result;
+  }
 }
 exports.default = RestResourceService;
 //# sourceMappingURL=RestResource.js.map

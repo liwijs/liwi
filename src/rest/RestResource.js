@@ -1,17 +1,21 @@
 export default class RestResourceService {
-    constructor(store) {
-        this.store = store;
-    }
+  constructor(store) {
+    this.store = store;
+  }
 
-    criteria(connectedUser: ?Object, criteria: Object) {
-        return {};
-    }
+  limit(connectedUser: ?Object, limit) {
+    return limit;
+  }
 
-    sort(connectedUser: ?Object, sort: ?Object) {
-        return null;
-    }
+  criteria(connectedUser: ?Object, criteria: Object) {
+    return {};
+  }
 
-    transform(result: Object) {
-        return result;
-    }
+  sort(connectedUser: ?Object, sort: ?Object) {
+    return null;
+  }
+
+  transform(result: Object) {
+    return result;
+  }
 }

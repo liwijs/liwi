@@ -5,7 +5,7 @@
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
   "license": "ISC",
-  "repository": "liwijs/liwi",
+  "repository": "git@github.com:liwijs/liwi.git",
   "homepage": "https://github.com/liwijs/liwi",
   "main": "./lib/index.js",
   "webpack:main": "./lib-webpack/index.js",
@@ -28,8 +28,8 @@
     "build": "pob-build",
     "build:dev": "pob-build",
     "clean": "rm -Rf docs dist test/node6 coverage",
-    "lint": "eslint --ext .js,.jsx --fix -c .eslintrc.yml src/",
-    "prepublish": "ln -s ../../git-hooks/pre-commit .git/hooks/pre-commit || echo",
+    "lint": "eslint --ext .js,.jsx --fix src/",
+    "prepublish": "ln -s ../../git-hooks/pre-commit .git/hooks/pre-commit 2>/dev/null || true ; ln -s ../../git-hooks/post-checkout .git/hooks/post-checkout 2>/dev/null || true ; ln -s ../../git-hooks/post-merge .git/hooks/post-merge 2>/dev/null || true",
     "preversion": "npm run lint && npm run build && pob-repository-check-clean",
     "release": "pob-repository-check-clean && pob-release",
     "version": "pob-version",
@@ -37,7 +37,8 @@
     "watch:dev": "pob-watch"
   },
   "dependencies": {
-    "mongodb": "^2.2.6",
+    "mongodb": "^2.2.7",
+    "msgpack-js": "^0.3.0",
     "nightingale-logger": "^1.2.0"
   },
   "devDependencies": {
@@ -51,12 +52,12 @@
     "babel-preset-stage-1": "^6.13.0",
     "eslint": "^3.3.1",
     "eslint-config-airbnb-base": "^5.0.2",
-    "eslint-config-pob": "^6.1.6",
+    "eslint-config-pob": "^7.0.1",
     "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-flowtype": "^2.11.0",
     "eslint-plugin-import": "^1.13.0",
-    "pob-babel": "^7.1.2",
-    "pob-release": "^2.1.0",
-    "springbokjs-library": "^17.0.0",
+    "pob-babel": "^7.2.1",
+    "pob-release": "^2.1.1",
     "xunit-file": "1.0.0"
   }
 }

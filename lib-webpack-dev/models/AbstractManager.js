@@ -7,27 +7,28 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 import EventEmitter from 'events';
+// import type { StoreInterface } from '../types';
 
 var AbstractManager = function (_EventEmitter) {
-    _inherits(AbstractManager, _EventEmitter);
+  _inherits(AbstractManager, _EventEmitter);
 
-    function AbstractManager(store) {
-        _classCallCheck(this, AbstractManager);
+  function AbstractManager(store) {
+    _classCallCheck(this, AbstractManager);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AbstractManager).call(this));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AbstractManager).call(this));
 
-        _this._store = store;
-        return _this;
+    _this._store = store;
+    return _this;
+  }
+
+  _createClass(AbstractManager, [{
+    key: 'store',
+    get: function get() {
+      return this._store;
     }
+  }]);
 
-    _createClass(AbstractManager, [{
-        key: 'store',
-        get: function get() {
-            return this._store;
-        }
-    }]);
-
-    return AbstractManager;
+  return AbstractManager;
 }(EventEmitter);
 
 export default AbstractManager;

@@ -3,20 +3,28 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RestCursor = function () {
-    function RestCursor(cursor) {
-        _classCallCheck(this, RestCursor);
+  function RestCursor(restResource, connectedUser, cursor) {
+    _classCallCheck(this, RestCursor);
 
-        this._cursor = cursor;
+    this._restResource = restResource;
+    this._connectedUser = connectedUser;
+    this._cursor = cursor;
+  }
+
+  _createClass(RestCursor, [{
+    key: "toArray",
+    value: function toArray() {
+      var _this = this;
+
+      return this._cursor.toArray().then(function (results) {
+        return results && results.map(function (result) {
+          return _this._restResource.transform(result, _this._connectedUser);
+        });
+      });
     }
+  }]);
 
-    _createClass(RestCursor, [{
-        key: "toArray",
-        value: function toArray() {
-            return this._cursor.toArray();
-        }
-    }]);
-
-    return RestCursor;
+  return RestCursor;
 }();
 
 export default RestCursor;

@@ -10,109 +10,109 @@ import WebsocketStore from './WebsocketStore';
 import AbstractCursor from '../store/AbstractCursor';
 
 var WebsocketCursor = function (_AbstractCursor) {
-    _inherits(WebsocketCursor, _AbstractCursor);
+  _inherits(WebsocketCursor, _AbstractCursor);
 
-    function WebsocketCursor(store, options) {
-        _classCallCheck(this, WebsocketCursor);
+  function WebsocketCursor(store, options) {
+    _classCallCheck(this, WebsocketCursor);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WebsocketCursor).call(this, store));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WebsocketCursor).call(this, store));
 
-        _this._options = options;
-        return _this;
+    _this._options = options;
+    return _this;
+  }
+
+  /* options */
+
+  _createClass(WebsocketCursor, [{
+    key: 'limit',
+    value: function limit(newLimit) {
+      if (this._idCursor) throw new Error('Cursor already created');
+      this._options.limit = newLimit;
+      return Promise.resolve(this);
     }
 
-    /* options */
+    /* results */
 
-    _createClass(WebsocketCursor, [{
-        key: 'limit',
-        value: function limit(newLimit) {
-            if (this._idCursor) throw new Error('Cursor already created');
-            this._options.limit = newLimit;
-            return Promise.resolve(this);
-        }
+  }, {
+    key: '_create',
+    value: function _create() {
+      var _this2 = this;
 
-        /* results */
+      if (this._idCursor) throw new Error('Cursor already created');
+      return this.store.connection.emit('createCursor', this._options).then(function (idCursor) {
+        if (!idCursor) return;
+        _this2._idCursor = idCursor;
+      });
+    }
+  }, {
+    key: 'emit',
+    value: function emit(type) {
+      var _this3 = this;
 
-    }, {
-        key: '_create',
-        value: function _create() {
-            var _this2 = this;
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
 
-            if (this._idCursor) throw new Error('Cursor already created');
-            return this.store.connection.emit('createCursor', this._options).then(function (idCursor) {
-                if (!idCursor) return;
-                _this2._idCursor = idCursor;
-            });
-        }
-    }, {
-        key: 'emit',
-        value: function emit(type) {
-            var _this3 = this;
+      if (!this._idCursor) {
+        return this._create().then(function () {
+          return _this3.emit.apply(_this3, [type].concat(args));
+        });
+      }
 
-            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-                args[_key - 1] = arguments[_key];
-            }
+      return this.store.emit('cursor', { type: type, id: this._idCursor }, args);
+    }
+  }, {
+    key: 'advance',
+    value: function advance(count) {
+      this.emit('advance', count);
+      return this;
+    }
+  }, {
+    key: 'next',
+    value: function next() {
+      var _this4 = this;
 
-            if (!this._idCursor) {
-                return this._create().then(function () {
-                    return _this3.emit.apply(_this3, [type].concat(args));
-                });
-            }
+      return this.emit('next').then(function (result) {
+        _this4._result = result;
+        _this4.key = result && result[_this4._store.keyPath];
+        return _this4.key;
+      });
+    }
+  }, {
+    key: 'result',
+    value: function result() {
+      return Promise.resolve(this._result);
+    }
+  }, {
+    key: 'count',
+    value: function count() {
+      var applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
 
-            return this.store.emit('cursor', { type: type, id: this._idCursor }, args);
-        }
-    }, {
-        key: 'advance',
-        value: function advance(count) {
-            this.emit('advance', count);
-            return this;
-        }
-    }, {
-        key: 'next',
-        value: function next() {
-            var _this4 = this;
+      return this.emit('count', applyLimit);
+    }
+  }, {
+    key: 'close',
+    value: function close() {
+      if (!this._store) return Promise.resolve();
 
-            return this.emit('next').then(function (result) {
-                _this4._result = result;
-                _this4.key = result && result[_this4._store.keyPath];
-                return _this4.key;
-            });
-        }
-    }, {
-        key: 'result',
-        value: function result() {
-            return Promise.resolve(this._result);
-        }
-    }, {
-        key: 'count',
-        value: function count() {
-            var applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+      var closedPromise = this._idCursor ? this.emit('close') : Promise.resolve();
+      this._idCursor = this._options = null;
+      this._store = this._result = undefined;
+      return closedPromise;
+    }
+  }, {
+    key: 'toArray',
+    value: function toArray() {
+      var _this5 = this;
 
-            return this.emit('count', applyLimit);
-        }
-    }, {
-        key: 'close',
-        value: function close() {
-            if (!this._store) return Promise.resolve();
+      return this.store.emit('cursor toArray', this._options, function (result) {
+        _this5.close();
+        return result;
+      });
+    }
+  }]);
 
-            var closedPromise = this._idCursor ? this.emit('close') : Promise.resolve();
-            this._idCursor = this._options = null;
-            this._store = this._result = undefined;
-            return closedPromise;
-        }
-    }, {
-        key: 'toArray',
-        value: function toArray() {
-            var _this5 = this;
-
-            return this.store.emit('cursor toArray', this._options, function (result) {
-                _this5.close();
-                return result;
-            });
-        }
-    }]);
-
-    return WebsocketCursor;
+  return WebsocketCursor;
 }(AbstractCursor);
 
 export default WebsocketCursor;
