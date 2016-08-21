@@ -1,3 +1,7 @@
+### v0.5.0
+
+- [`346966b`](https://github.com/liwijs/liwi/commit/346966ba8b5ea3cf221bc62ea70ac703efff0f97) websocket and other stuff (Christophe Hurpeau)
+
 ### v0.4.1
 
 - [`0066629`](https://github.com/liwijs/liwi/commit/0066629fbcb34db4028a94937589d65b5108dd53) fix in RestResource sort and add upsertOne and update dependencies (Christophe Hurpeau)
