@@ -4,7 +4,7 @@ const MAX_OPENED_CURSORS = 5;
 const logger = new Logger('liwi.rest-websocket');
 
 export default function init(io, restService) {
-  io.on('connection', socket => {
+  io.on('connection', (socket) => {
     let openCursors = new Map();
     let timeouts = new Map();
     let activeListeners = new Map();
@@ -28,7 +28,7 @@ export default function init(io, restService) {
 
     socket.on('rest', (
       { type, restName }: { type: string, restName: string },
-      args: Array,
+      args: Array<any>,
       callback: Function,
     ) => {
       logger.info('rest', { type, restName, args });

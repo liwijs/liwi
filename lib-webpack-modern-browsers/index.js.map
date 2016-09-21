@@ -1,1 +1,1 @@
-{"version":3,"sources":["../src/index.js"],"names":[],"mappings":"AAAA,SAAS,WAAW,eAApB,QAA2C,0BAA3C;EACyB","file":"index.js","sourcesContent":["export { default as AbstractManager } from './models/AbstractManager';\nexport * from './types'; // #if !PRODUCTION\n"]}
+{"version":3,"sources":["../src/index.js"],"names":["default","AbstractManager"],"mappings":"AAAA,SAASA,WAAWC,eAApB,QAA2C,0BAA3C;EACyB","file":"index.js","sourcesContent":["export { default as AbstractManager } from './models/AbstractManager';\nexport * from './types'; // #if !PRODUCTION\n"]}

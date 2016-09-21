@@ -19,7 +19,7 @@ var MongoConnection = function (_AbstractConnection) {
   function MongoConnection(config) {
     _classCallCheck(this, MongoConnection);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MongoConnection).call(this));
+    var _this = _possibleConstructorReturn(this, (MongoConnection.__proto__ || Object.getPrototypeOf(MongoConnection)).call(this));
 
     if (!config.has('host')) {
       config.set('host', 'localhost');

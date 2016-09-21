@@ -15,7 +15,7 @@ export default class MongoStore extends AbstractStore {
       throw new Error(`Invalid collectionName: "${ collectionName }"`);
     }
 
-    this._collection = connection.getConnection().then(db => this._collection = db.collection(collectionName));
+    this._collection = connection.getConnection().then(db => this._collection = db.collection(collectionName)).catch(err => this._collection = Promise.reject(err));
   }
 
   get collection() {
@@ -24,6 +24,10 @@ export default class MongoStore extends AbstractStore {
     }
 
     return Promise.resolve(this._collection);
+  }
+
+  create() {
+    return Promise.resolve();
   }
 
   insertOne(object) {
@@ -46,6 +50,10 @@ export default class MongoStore extends AbstractStore {
   }
 
   updateOne(object) {
+    return this.replaceOne(object);
+  }
+
+  replaceOne(object) {
     if (!object.updated) {
       object.updated = new Date();
     }
@@ -61,7 +69,7 @@ export default class MongoStore extends AbstractStore {
     return this.collection.then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })).then(() => object);
   }
 
-  updateSeveral(objects) {
+  replaceSeveral(objects) {
     return Promise.all(objects.map(object => this.updateOne(object)));
   }
 

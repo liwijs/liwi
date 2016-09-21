@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _tcombForked = require('tcomb-forked');
+
+var _tcombForked2 = _interopRequireDefault(_tcombForked);
+
 var _AbstractStore = require('../store/AbstractStore');
 
 var _AbstractStore2 = _interopRequireDefault(_AbstractStore);
@@ -12,32 +16,25 @@ var _WebsocketCursor = require('./WebsocketCursor');
 
 var _WebsocketCursor2 = _interopRequireDefault(_WebsocketCursor);
 
+var _msgpack = require('../msgpack');
+
+var _Query = require('./Query');
+
+var _Query2 = _interopRequireDefault(_Query);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const WebsocketConnection = function () {
-  function WebsocketConnection(input) {
-    return input != null && typeof input.emit === 'function' && typeof input.isConnected === 'function';
-  }
-
-  ;
-  Object.defineProperty(WebsocketConnection, Symbol.hasInstance, {
-    value: function value(input) {
-      return WebsocketConnection(input);
-    }
-  });
-  return WebsocketConnection;
-}();
+const WebsocketConnection = _tcombForked2.default.interface({
+  emit: _tcombForked2.default.Function,
+  isConnected: _tcombForked2.default.Function
+}, 'WebsocketConnection');
 
 class WebsocketStore extends _AbstractStore2.default {
 
   constructor(websocket, restName) {
-    if (!WebsocketConnection(websocket)) {
-      throw new TypeError('Value of argument "websocket" violates contract.\n\nExpected:\nWebsocketConnection\n\nGot:\n' + _inspect(websocket));
-    }
+    _assert(websocket, WebsocketConnection, 'websocket');
 
-    if (!(typeof restName === 'string')) {
-      throw new TypeError('Value of argument "restName" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect(restName));
-    }
+    _assert(restName, _tcombForked2.default.String, 'restName');
 
     super(websocket);
 
@@ -49,8 +46,14 @@ class WebsocketStore extends _AbstractStore2.default {
     this.restName = restName;
   }
 
+  createQuery(key) {
+    _assert(key, _tcombForked2.default.String, 'key');
+
+    return new _Query2.default(this, key);
+  }
+
   emit(type) {
-    if (!this.connection.isConnected()) {
+    if (this.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
     }
 
@@ -58,223 +61,128 @@ class WebsocketStore extends _AbstractStore2.default {
       args[_key - 1] = arguments[_key];
     }
 
-    return this.connection.emit('rest', { type, restName: this.restName }, args);
+    return this.connection.emit('rest', {
+      type,
+      restName: this.restName,
+      buffer: args && (0, _msgpack.encode)(args)
+    }).then(result => (0, _msgpack.decode)(result));
   }
 
   insertOne(object) {
-    function _ref(_id) {
-      if (!(_id instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id));
-      }
+    _assert(object, _tcombForked2.default.Any, 'object');
 
-      return _id;
-    }
-
-    return _ref(this.emit('insertOne', object));
+    return _assert(function () {
+      return this.emit('insertOne', object);
+    }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
   updateOne(object) {
-    function _ref2(_id2) {
-      if (!(_id2 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id2));
-      }
+    _assert(object, _tcombForked2.default.Any, 'object');
 
-      return _id2;
-    }
-
-    return _ref2(this.emit('updateOne', object));
+    return _assert(function () {
+      return this.emit('updateOne', object);
+    }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
   updateSeveral(objects) {
-    function _ref3(_id3) {
-      if (!(_id3 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Array<ModelType>>\n\nGot:\n' + _inspect(_id3));
-      }
+    _assert(objects, _tcombForked2.default.list(_tcombForked2.default.Any), 'objects');
 
-      return _id3;
-    }
-
-    if (!Array.isArray(objects)) {
-      throw new TypeError('Value of argument "objects" violates contract.\n\nExpected:\nArray<ModelType>\n\nGot:\n' + _inspect(objects));
-    }
-
-    return _ref3(this.emit('updateSeveral', objects));
+    return _assert(function () {
+      return this.emit('updateSeveral', objects);
+    }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
   partialUpdateByKey(key, partialUpdate) {
-    function _ref4(_id4) {
-      if (!(_id4 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id4));
-      }
+    _assert(key, _tcombForked2.default.Any, 'key');
 
-      return _id4;
-    }
+    _assert(partialUpdate, _tcombForked2.default.Object, 'partialUpdate');
 
-    if (!(partialUpdate instanceof Object)) {
-      throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
-    }
-
-    return _ref4(this.emit('partialUpdateByKey', key, partialUpdate));
+    return _assert(function () {
+      return this.emit('partialUpdateByKey', key, partialUpdate);
+    }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
   partialUpdateOne(object, partialUpdate) {
-    function _ref5(_id5) {
-      if (!(_id5 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id5));
-      }
+    _assert(object, _tcombForked2.default.Any, 'object');
 
-      return _id5;
-    }
+    _assert(partialUpdate, _tcombForked2.default.Object, 'partialUpdate');
 
-    if (!(partialUpdate instanceof Object)) {
-      throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
-    }
-
-    return _ref5(this.emit('partialUpdateOne', object, partialUpdate));
+    return _assert(function () {
+      return this.emit('partialUpdateOne', object, partialUpdate);
+    }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
   partialUpdateMany(criteria, partialUpdate) {
-    function _ref6(_id6) {
-      if (!(_id6 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id6));
-      }
+    _assert(partialUpdate, _tcombForked2.default.Object, 'partialUpdate');
 
-      return _id6;
-    }
-
-    if (!(partialUpdate instanceof Object)) {
-      throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
-    }
-
-    return _ref6(this.emit('partialUpdateMany', criteria, partialUpdate));
+    return _assert(function () {
+      return this.emit('partialUpdateMany', criteria, partialUpdate);
+    }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
   deleteByKey(key) {
-    function _ref7(_id7) {
-      if (!(_id7 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id7));
-      }
+    _assert(key, _tcombForked2.default.Any, 'key');
 
-      return _id7;
-    }
-
-    return _ref7(this.emit('deleteByKey', key));
+    return _assert(function () {
+      return this.emit('deleteByKey', key);
+    }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
   deleteOne(object) {
-    function _ref8(_id8) {
-      if (!(_id8 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id8));
-      }
+    _assert(object, _tcombForked2.default.Any, 'object');
 
-      return _id8;
-    }
-
-    return _ref8(this.emit('deleteOne', object));
+    return _assert(function () {
+      return this.emit('deleteOne', object);
+    }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
   cursor(criteria, sort) {
-    function _ref9(_id9) {
-      if (!(_id9 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<WebsocketCursor<ModelType>>\n\nGot:\n' + _inspect(_id9));
-      }
+    _assert(criteria, _tcombForked2.default.maybe(_tcombForked2.default.Object), 'criteria');
 
-      return _id9;
-    }
+    _assert(sort, _tcombForked2.default.maybe(_tcombForked2.default.Object), 'sort');
 
-    if (!(criteria == null || criteria instanceof Object)) {
-      throw new TypeError('Value of argument "criteria" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(criteria));
-    }
-
-    if (!(sort == null || sort instanceof Object)) {
-      throw new TypeError('Value of argument "sort" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(sort));
-    }
-
-    return _ref9(Promise.resolve(new _WebsocketCursor2.default(this, { criteria, sort })));
+    return _assert(function () {
+      return Promise.resolve(new _WebsocketCursor2.default(this, { criteria, sort }));
+    }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
   findByKey(key) {
+    _assert(key, _tcombForked2.default.Any, 'key');
+
     return this.findOne({ _id: key });
   }
 
   findOne(criteria, sort) {
-    function _ref10(_id10) {
-      if (!(_id10 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Object>\n\nGot:\n' + _inspect(_id10));
-      }
+    _assert(criteria, _tcombForked2.default.Object, 'criteria');
 
-      return _id10;
-    }
+    _assert(sort, _tcombForked2.default.maybe(_tcombForked2.default.Object), 'sort');
 
-    if (!(criteria instanceof Object)) {
-      throw new TypeError('Value of argument "criteria" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(criteria));
-    }
-
-    if (!(sort == null || sort instanceof Object)) {
-      throw new TypeError('Value of argument "sort" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(sort));
-    }
-
-    return _ref10(this.emit('findOne', criteria, sort));
+    return _assert(function () {
+      return this.emit('findOne', criteria, sort);
+    }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 }
 exports.default = WebsocketStore;
 
-function _inspect(input, depth) {
-  const maxDepth = 4;
-  const maxKeys = 15;
-
-  if (depth === undefined) {
-    depth = 0;
+function _assert(x, type, name) {
+  function message() {
+    return 'Invalid value ' + _tcombForked2.default.stringify(x) + ' supplied to ' + name + ' (expected a ' + _tcombForked2.default.getTypeName(type) + ')';
   }
 
-  depth += 1;
+  if (_tcombForked2.default.isType(type)) {
+    if (!type.is(x)) {
+      type(x, [name + ': ' + _tcombForked2.default.getTypeName(type)]);
 
-  if (input === null) {
-    return 'null';
-  } else if (input === undefined) {
-    return 'void';
-  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
-    return typeof input;
-  } else if (Array.isArray(input)) {
-    if (input.length > 0) {
-      if (depth > maxDepth) return '[...]';
-
-      const first = _inspect(input[0], depth);
-
-      if (input.every(item => _inspect(item, depth) === first)) {
-        return first.trim() + '[]';
-      } else {
-        return '[' + input.slice(0, maxKeys).map(item => _inspect(item, depth)).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
-      }
-    } else {
-      return 'Array';
-    }
-  } else {
-    const keys = Object.keys(input);
-
-    if (!keys.length) {
-      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-        return input.constructor.name;
-      } else {
-        return 'Object';
-      }
+      _tcombForked2.default.fail(message());
     }
 
-    if (depth > maxDepth) return '{...}';
-    const indent = '  '.repeat(depth - 1);
-    let entries = keys.slice(0, maxKeys).map(key => {
-      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
-    }).join('\n  ' + indent);
-
-    if (keys.length >= maxKeys) {
-      entries += '\n  ' + indent + '...';
-    }
-
-    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
-    } else {
-      return '{\n  ' + indent + entries + '\n' + indent + '}';
-    }
+    return type(x);
   }
+
+  if (!(x instanceof type)) {
+    _tcombForked2.default.fail(message());
+  }
+
+  return x;
 }
 //# sourceMappingURL=WebsocketStore.js.map

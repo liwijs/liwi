@@ -15,7 +15,7 @@ var WebsocketCursor = function (_AbstractCursor) {
   function WebsocketCursor(store, options) {
     _classCallCheck(this, WebsocketCursor);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WebsocketCursor).call(this, store));
+    var _this = _possibleConstructorReturn(this, (WebsocketCursor.__proto__ || Object.getPrototypeOf(WebsocketCursor)).call(this, store));
 
     _this._options = options;
     return _this;
@@ -105,7 +105,7 @@ var WebsocketCursor = function (_AbstractCursor) {
     value: function toArray() {
       var _this5 = this;
 
-      return this.store.emit('cursor toArray', this._options, function (result) {
+      return this.store.emit('cursor toArray', this._options).then(function (result) {
         _this5.close();
         return result;
       });

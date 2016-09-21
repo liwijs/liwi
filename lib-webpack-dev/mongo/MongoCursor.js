@@ -1,6 +1,6 @@
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+import _t from 'tcomb-forked';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16,17 +16,13 @@ var MongoCursor = function (_AbstractCursor) {
   _inherits(MongoCursor, _AbstractCursor);
 
   function MongoCursor(store, cursor) {
+    _assert(store, MongoStore, 'store');
+
+    _assert(cursor, Cursor, 'cursor');
+
     _classCallCheck(this, MongoCursor);
 
-    if (!(store instanceof MongoStore)) {
-      throw new TypeError('Value of argument "store" violates contract.\n\nExpected:\nMongoStore\n\nGot:\n' + _inspect(store));
-    }
-
-    if (!(cursor instanceof Cursor)) {
-      throw new TypeError('Value of argument "cursor" violates contract.\n\nExpected:\nCursor\n\nGot:\n' + _inspect(cursor));
-    }
-
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MongoCursor).call(this, store));
+    var _this = _possibleConstructorReturn(this, (MongoCursor.__proto__ || Object.getPrototypeOf(MongoCursor)).call(this, store));
 
     _this._cursor = cursor;
     return _this;
@@ -35,9 +31,7 @@ var MongoCursor = function (_AbstractCursor) {
   _createClass(MongoCursor, [{
     key: 'advance',
     value: function advance(count) {
-      if (!(typeof count === 'number')) {
-        throw new TypeError('Value of argument "count" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect(count));
-      }
+      _assert(count, _t.Number, 'count');
 
       this._cursor.skip(count);
     }
@@ -46,46 +40,26 @@ var MongoCursor = function (_AbstractCursor) {
     value: function next() {
       var _this2 = this;
 
-      function _ref2(_id2) {
-        if (!(_id2 instanceof Promise)) {
-          throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<any>\n\nGot:\n' + _inspect(_id2));
-        }
-
-        return _id2;
-      }
-
-      return _ref2(this._cursor.next().then(function (value) {
+      return this._cursor.next().then(function (value) {
         _this2._result = value;
         _this2.key = value && value._id;
         return _this2.key;
-      }));
+      });
     }
   }, {
     key: 'limit',
     value: function limit(newLimit) {
-      function _ref3(_id3) {
-        if (!(_id3 instanceof Promise)) {
-          throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id3));
-        }
-
-        return _id3;
-      }
-
-      if (!(typeof newLimit === 'number')) {
-        throw new TypeError('Value of argument "newLimit" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect(newLimit));
-      }
+      _assert(newLimit, _t.Number, 'newLimit');
 
       this._cursor.limit(newLimit);
-      return _ref3(Promise.resolve(this));
+      return Promise.resolve(this);
     }
   }, {
     key: 'count',
     value: function count() {
       var applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
 
-      if (!(typeof applyLimit === 'boolean')) {
-        throw new TypeError('Value of argument "applyLimit" violates contract.\n\nExpected:\nbool\n\nGot:\n' + _inspect(applyLimit));
-      }
+      _assert(applyLimit, _t.Boolean, 'applyLimit');
 
       return this._cursor.count(applyLimit);
     }
@@ -107,15 +81,7 @@ var MongoCursor = function (_AbstractCursor) {
   }, {
     key: 'toArray',
     value: function toArray() {
-      function _ref4(_id4) {
-        if (!(_id4 instanceof Promise)) {
-          throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Array>\n\nGot:\n' + _inspect(_id4));
-        }
-
-        return _id4;
-      }
-
-      return _ref4(this._cursor.toArray());
+      return this._cursor.toArray();
     }
   }]);
 
@@ -124,76 +90,25 @@ var MongoCursor = function (_AbstractCursor) {
 
 export default MongoCursor;
 
-function _inspect(input, depth) {
-  var maxDepth = 4;
-  var maxKeys = 15;
-
-  if (depth === undefined) {
-    depth = 0;
+function _assert(x, type, name) {
+  function message() {
+    return 'Invalid value ' + _t.stringify(x) + ' supplied to ' + name + ' (expected a ' + _t.getTypeName(type) + ')';
   }
 
-  depth += 1;
+  if (_t.isType(type)) {
+    if (!type.is(x)) {
+      type(x, [name + ': ' + _t.getTypeName(type)]);
 
-  if (input === null) {
-    return 'null';
-  } else if (input === undefined) {
-    return 'void';
-  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
-    return typeof input === 'undefined' ? 'undefined' : _typeof(input);
-  } else if (Array.isArray(input)) {
-    if (input.length > 0) {
-      var _ret = function () {
-        if (depth > maxDepth) return {
-            v: '[...]'
-          };
-
-        var first = _inspect(input[0], depth);
-
-        if (input.every(function (item) {
-          return _inspect(item, depth) === first;
-        })) {
-          return {
-            v: first.trim() + '[]'
-          };
-        } else {
-          return {
-            v: '[' + input.slice(0, maxKeys).map(function (item) {
-              return _inspect(item, depth);
-            }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']'
-          };
-        }
-      }();
-
-      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
-    } else {
-      return 'Array';
-    }
-  } else {
-    var keys = Object.keys(input);
-
-    if (!keys.length) {
-      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-        return input.constructor.name;
-      } else {
-        return 'Object';
-      }
+      _t.fail(message());
     }
 
-    if (depth > maxDepth) return '{...}';
-    var indent = '  '.repeat(depth - 1);
-    var entries = keys.slice(0, maxKeys).map(function (key) {
-      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
-    }).join('\n  ' + indent);
-
-    if (keys.length >= maxKeys) {
-      entries += '\n  ' + indent + '...';
-    }
-
-    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
-    } else {
-      return '{\n  ' + indent + entries + '\n' + indent + '}';
-    }
+    return type(x);
   }
+
+  if (!(x instanceof type)) {
+    _t.fail(message());
+  }
+
+  return x;
 }
 //# sourceMappingURL=MongoCursor.js.map

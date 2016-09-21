@@ -15,7 +15,7 @@ var AbstractManager = function (_EventEmitter) {
   function AbstractManager(store) {
     _classCallCheck(this, AbstractManager);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AbstractManager).call(this));
+    var _this = _possibleConstructorReturn(this, (AbstractManager.__proto__ || Object.getPrototypeOf(AbstractManager)).call(this));
 
     _this._store = store;
     return _this;

@@ -17,7 +17,8 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
     }
 
     this._collection = connection.getConnection()
-            .then((db: Db) => this._collection = db.collection(collectionName));
+      .then((db: Db) => this._collection = db.collection(collectionName))
+      .catch(err => this._collection = Promise.reject(err));
   }
 
   get collection(): Promise<Collection> {
@@ -26,6 +27,10 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
     }
 
     return Promise.resolve(this._collection);
+  }
+
+  create(): Promise {
+    return Promise.resolve();
   }
 
   insertOne(object: ModelType): Promise<ModelType> {
@@ -37,23 +42,27 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
     }
 
     return this.collection
-            .then(collection => collection.insertOne(object))
-            .then(({ result, connection, ops }) => {
-              if (!result.ok || result.n !== 1) {
-                throw new Error('Fail to insert');
-              }
-            })
-            .then(() => object);
+      .then(collection => collection.insertOne(object))
+      .then(({ result, connection, ops }) => {
+        if (!result.ok || result.n !== 1) {
+          throw new Error('Fail to insert');
+        }
+      })
+      .then(() => object);
   }
 
-  updateOne(object: ModelType): Promise<ModelType> {
+  updateOne(object) {
+    return this.replaceOne(object);
+  }
+
+  replaceOne(object: ModelType): Promise<ModelType> {
     if (!object.updated) {
       object.updated = new Date();
     }
 
     return this.collection
-            .then(collection => collection.updateOne({ _id: object._id }, object))
-            .then(() => object);
+      .then(collection => collection.updateOne({ _id: object._id }, object))
+      .then(() => object);
   }
 
   upsertOne(object: ModelType): Promise<ModelType> {
@@ -62,19 +71,19 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
     }
 
     return this.collection
-            .then(collection => (
-              collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })
-            ))
-            .then(() => object);
+      .then(collection => (
+        collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })
+      ))
+      .then(() => object);
   }
 
-  updateSeveral(objects: Array<ModelType>): Promise<Array<ModelType>> {
+  replaceSeveral(objects: Array<ModelType>): Promise<Array<ModelType>> {
     return Promise.all(objects.map(object => this.updateOne(object)));
   }
 
   _partialUpdate(partialUpdate: Object) {
-        // https://docs.mongodb.com/manual/reference/operator/update/
-        // if has a mongo operator
+    // https://docs.mongodb.com/manual/reference/operator/update/
+    // if has a mongo operator
     if (Object.keys(partialUpdate).some(key => key[0] === '$')) {
       return partialUpdate;
     } else {
@@ -85,34 +94,34 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
   partialUpdateByKey(key: any, partialUpdate: Object): Promise {
     partialUpdate = this._partialUpdate(partialUpdate);
     return this.collection
-            .then(collection => collection.updateOne({ _id: key }, partialUpdate));
+      .then(collection => collection.updateOne({ _id: key }, partialUpdate));
   }
 
   partialUpdateOne(object: ModelType, partialUpdate: Object): Promise<ModelType> {
     partialUpdate = this._partialUpdate(partialUpdate);
     return this.partialUpdateByKey(object._id, partialUpdate)
-            .then(res => this.findByKey(object._id));
+      .then(res => this.findByKey(object._id));
   }
 
   partialUpdateMany(criteria, partialUpdate: Object): Promise {
     partialUpdate = this._partialUpdate(partialUpdate);
     return this.collection
-            .then(collection => collection.updateMany(criteria, partialUpdate))
-            .then(res => null); // TODO return updated object
+      .then(collection => collection.updateMany(criteria, partialUpdate))
+      .then(res => null); // TODO return updated object
   }
 
   deleteByKey(key: any): Promise {
     return this.collection
-            .then(collection => collection.removeOne({ _id: key }))
-            .then(() => null);
+      .then(collection => collection.removeOne({ _id: key }))
+      .then(() => null);
   }
 
 
   cursor(criteria: ?Object, sort: ?Object): Promise<MongoCursor<ModelType>> {
     return this.collection
-            .then(collection => collection.find(criteria))
-            .then(sort && (cursor => cursor.sort(sort)))
-            .then(cursor => new MongoCursor(this, cursor));
+      .then(collection => collection.find(criteria))
+      .then(sort && (cursor => cursor.sort(sort)))
+      .then(cursor => new MongoCursor(this, cursor));
   }
 
   findByKey(key: any) {
@@ -121,8 +130,8 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
 
   findOne(criteria: Object, sort: ?Object): Promise<Object> {
     return this.collection
-            .then(collection => collection.find(criteria))
-            .then(sort && (cursor => cursor.sort(sort)))
-            .then(cursor => cursor.limit(1).next());
+      .then(collection => collection.find(criteria))
+      .then(sort && (cursor => cursor.sort(sort)))
+      .then(cursor => cursor.limit(1).next());
   }
 }

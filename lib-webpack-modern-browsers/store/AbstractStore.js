@@ -12,5 +12,9 @@ export default class AbstractStore {
   get connection() {
     return this._connection;
   }
+
+  findAll(criteria, sort) {
+    return this.cursor(criteria, sort).then(cursor => cursor.toArray());
+  }
 }
 //# sourceMappingURL=AbstractStore.js.map

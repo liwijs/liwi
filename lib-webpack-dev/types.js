@@ -1,28 +1,29 @@
-export var CursorInterface = function () {
-    function CursorInterface(input) {
-        return input != null && StoreInterface(input.store) && typeof input.close === 'function' && typeof input.next === 'function' && typeof input.nextResult === 'function' && typeof input.limit === 'function' && typeof input.count === 'function' && typeof input.result === 'function' && typeof input.delete === 'function' && typeof input.forEachKeys === 'function' && typeof input.forEach === 'function';
-    }
+import _t from "tcomb-forked";
+export var CursorInterface = _t.interface({
+    close: _t.Function,
+    next: _t.Function,
+    nextResult: _t.Function,
+    limit: _t.Function,
+    count: _t.Function,
+    result: _t.Function,
+    delete: _t.Function,
+    forEachKeys: _t.Function,
+    forEach: _t.Function
+}, "CursorInterface");
 
-    ;
-    Object.defineProperty(CursorInterface, Symbol.hasInstance, {
-        value: function value(input) {
-            return CursorInterface(input);
-        }
-    });
-    return CursorInterface;
-}();
-
-export var StoreInterface = function () {
-    function StoreInterface(input) {
-        return input != null && typeof input.insertOne === 'function' && typeof input.updateOne === 'function' && typeof input.upsertOne === 'function' && typeof input.updateSeveral === 'function' && typeof input.partialUpdateByKey === 'function' && typeof input.partialUpdateOne === 'function' && typeof input.partialUpdateMany === 'function' && typeof input.deleteByKey === 'function' && typeof input.cursor === 'function' && typeof input.findByKey === 'function' && typeof input.findOne === 'function';
-    }
-
-    ;
-    Object.defineProperty(StoreInterface, Symbol.hasInstance, {
-        value: function value(input) {
-            return StoreInterface(input);
-        }
-    });
-    return StoreInterface;
-}();
+export var StoreInterface = _t.interface({
+    create: _t.Function,
+    insertOne: _t.Function,
+    replaceOne: _t.Function,
+    upsertOne: _t.Function,
+    updateSeveral: _t.Function,
+    partialUpdateByKey: _t.Function,
+    partialUpdateOne: _t.Function,
+    partialUpdateMany: _t.Function,
+    deleteByKey: _t.Function,
+    cursor: _t.Function,
+    findAll: _t.Function,
+    findByKey: _t.Function,
+    findOne: _t.Function
+}, "StoreInterface");
 //# sourceMappingURL=types.js.map

@@ -34,42 +34,42 @@ export default class MongoConnection extends AbstractConnection {
     logger.info('connecting', { connectionString });
 
     const connectPromise = MongoClient.connect(connectionString)
-            .then(connection => {
-              logger.info('connected', { connectionString });
-              connection.on('close', () => {
-                logger.warn('close', { connectionString });
-                this.connectionFailed = true;
-                this.getConnection = () => Promise.reject(new Error('MongoDB connection closed'));
-              });
-              connection.on('timeout', () => {
-                logger.warn('timeout', { connectionString });
-                this.connectionFailed = true;
-                this.getConnection = () => Promise.reject(new Error('MongoDB connection timeout'));
-              });
-              connection.on('reconnect', () => {
-                logger.warn('reconnect', { connectionString });
-                this.connectionFailed = false;
-                this.getConnection = () => Promise.resolve(this._connection);
-              });
-              connection.on('error', err => {
-                logger.warn('error', { connectionString, err });
-              });
+      .then((connection) => {
+        logger.info('connected', { connectionString });
+        connection.on('close', () => {
+          logger.warn('close', { connectionString });
+          this.connectionFailed = true;
+          this.getConnection = () => Promise.reject(new Error('MongoDB connection closed'));
+        });
+        connection.on('timeout', () => {
+          logger.warn('timeout', { connectionString });
+          this.connectionFailed = true;
+          this.getConnection = () => Promise.reject(new Error('MongoDB connection timeout'));
+        });
+        connection.on('reconnect', () => {
+          logger.warn('reconnect', { connectionString });
+          this.connectionFailed = false;
+          this.getConnection = () => Promise.resolve(this._connection);
+        });
+        connection.on('error', (err) => {
+          logger.warn('error', { connectionString, err });
+        });
 
-              this._connection = connection;
-              this._connecting = null;
-              this.getConnection = () => Promise.resolve(this._connection);
-              return connection;
-            })
-            .catch(err => {
-              logger.info('not connected', { connectionString });
-              console.error(err.message || err);
-                // throw err;
-              process.nextTick(() => {
-                process.exit(1);
-              });
+        this._connection = connection;
+        this._connecting = null;
+        this.getConnection = () => Promise.resolve(this._connection);
+        return connection;
+      })
+      .catch((err) => {
+        logger.info('not connected', { connectionString });
+        console.error(err.message || err);
+          // throw err;
+        process.nextTick(() => {
+          process.exit(1);
+        });
 
-              throw err;
-            });
+        throw err;
+      });
 
     this.getConnection = () => Promise.resolve(connectPromise);
     this._connecting = this.getConnection();

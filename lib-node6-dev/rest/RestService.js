@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _tcombForked = require('tcomb-forked');
+
+var _tcombForked2 = _interopRequireDefault(_tcombForked);
+
 var _RestCursor = require('./RestCursor');
 
 var _RestCursor2 = _interopRequireDefault(_RestCursor);
@@ -14,25 +18,19 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 class RestService {
   constructor(restResources) {
-    if (!(restResources instanceof Map)) {
-      throw new TypeError('Value of argument "restResources" violates contract.\n\nExpected:\nMap\n\nGot:\n' + _inspect(restResources));
-    }
+    _assert(restResources, Map, 'restResources');
 
     this.restResources = restResources;
   }
 
   addRestResource(key, restResource) {
-    if (!(typeof key === 'string')) {
-      throw new TypeError('Value of argument "key" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect(key));
-    }
+    _assert(key, _tcombForked2.default.String, 'key');
 
     this.restResources.set(key, restResource);
   }
 
   get(key) {
-    if (!(typeof key === 'string')) {
-      throw new TypeError('Value of argument "key" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect(key));
-    }
+    _assert(key, _tcombForked2.default.String, 'key');
 
     const restResource = this.restResources.get(key);
     if (!restResource) throw new Error(`Invalid rest resource: "${ key }"`);
@@ -40,93 +38,62 @@ class RestService {
   }
 
   createCursor(restName, connectedUser, _ref) {
-    var _arguments = arguments,
-        _this = this;
+    var _assert2 = _assert(_ref, _tcombForked2.default.interface({
+      criteria: _tcombForked2.default.maybe(_tcombForked2.default.Object),
+      sort: _tcombForked2.default.maybe(_tcombForked2.default.Object),
+      limit: _tcombForked2.default.maybe(_tcombForked2.default.Number)
+    }), '{ criteria, sort, limit }');
 
-    let criteria = _ref.criteria;
-    let sort = _ref.sort;
-    let limit = _ref.limit;
-    return _asyncToGenerator(function* () {
-      if (!(typeof restName === 'string')) {
-        throw new TypeError('Value of argument "restName" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect(restName));
-      }
+    let criteria = _assert2.criteria;
+    let sort = _assert2.sort;
+    let limit = _assert2.limit;
 
-      if (!(connectedUser == null || connectedUser instanceof Object)) {
-        throw new TypeError('Value of argument "connectedUser" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(connectedUser));
-      }
+    _assert(restName, _tcombForked2.default.String, 'restName');
 
-      if (!(_arguments[2] != null && (_arguments[2].criteria == null || _arguments[2].criteria instanceof Object) && (_arguments[2].sort == null || _arguments[2].sort instanceof Object) && (_arguments[2].limit == null || typeof _arguments[2].limit === 'number'))) {
-        throw new TypeError('Value of argument 2 violates contract.\n\nExpected:\n{\n  criteria: ?Object;\n  sort: ?Object;\n  limit: ?number;\n}\n\nGot:\n' + _inspect(_arguments[2]));
-      }
+    _assert(connectedUser, _tcombForked2.default.maybe(_tcombForked2.default.Object), 'connectedUser');
 
-      const restResource = _this.get(restName);
+    _assert({
+      criteria,
+      sort,
+      limit
+    }, _tcombForked2.default.interface({
+      criteria: _tcombForked2.default.maybe(_tcombForked2.default.Object),
+      sort: _tcombForked2.default.maybe(_tcombForked2.default.Object),
+      limit: _tcombForked2.default.maybe(_tcombForked2.default.Number)
+    }), '{ criteria, sort, limit }');
+
+    return _assert(_asyncToGenerator(function* () {
+      const restResource = this.get(restName);
       criteria = restResource.criteria(connectedUser, criteria || {});
       sort = restResource.sort(connectedUser, sort);
       const cursor = yield restResource.store.cursor(criteria, sort);
       limit = restResource.limit(limit);
       if (limit) cursor.limit(connectedUser, limit);
       return new _RestCursor2.default(restResource, connectedUser, cursor);
-    })();
+    }).apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 }
 exports.default = RestService;
 
-function _inspect(input, depth) {
-  const maxDepth = 4;
-  const maxKeys = 15;
-
-  if (depth === undefined) {
-    depth = 0;
+function _assert(x, type, name) {
+  function message() {
+    return 'Invalid value ' + _tcombForked2.default.stringify(x) + ' supplied to ' + name + ' (expected a ' + _tcombForked2.default.getTypeName(type) + ')';
   }
 
-  depth += 1;
+  if (_tcombForked2.default.isType(type)) {
+    if (!type.is(x)) {
+      type(x, [name + ': ' + _tcombForked2.default.getTypeName(type)]);
 
-  if (input === null) {
-    return 'null';
-  } else if (input === undefined) {
-    return 'void';
-  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
-    return typeof input;
-  } else if (Array.isArray(input)) {
-    if (input.length > 0) {
-      if (depth > maxDepth) return '[...]';
-
-      const first = _inspect(input[0], depth);
-
-      if (input.every(item => _inspect(item, depth) === first)) {
-        return first.trim() + '[]';
-      } else {
-        return '[' + input.slice(0, maxKeys).map(item => _inspect(item, depth)).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
-      }
-    } else {
-      return 'Array';
-    }
-  } else {
-    const keys = Object.keys(input);
-
-    if (!keys.length) {
-      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-        return input.constructor.name;
-      } else {
-        return 'Object';
-      }
+      _tcombForked2.default.fail(message());
     }
 
-    if (depth > maxDepth) return '{...}';
-    const indent = '  '.repeat(depth - 1);
-    let entries = keys.slice(0, maxKeys).map(key => {
-      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
-    }).join('\n  ' + indent);
-
-    if (keys.length >= maxKeys) {
-      entries += '\n  ' + indent + '...';
-    }
-
-    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
-    } else {
-      return '{\n  ' + indent + entries + '\n' + indent + '}';
-    }
+    return type(x);
   }
+
+  if (!(x instanceof type)) {
+    _tcombForked2.default.fail(message());
+  }
+
+  return x;
 }
 //# sourceMappingURL=RestService.js.map

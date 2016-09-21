@@ -19,7 +19,7 @@ var MongoStore = function (_AbstractStore) {
   function MongoStore(connection, collectionName) {
     _classCallCheck(this, MongoStore);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MongoStore).call(this, connection));
+    var _this = _possibleConstructorReturn(this, (MongoStore.__proto__ || Object.getPrototypeOf(MongoStore)).call(this, connection));
 
     _this.keyPath = '_id';
 
@@ -30,11 +30,18 @@ var MongoStore = function (_AbstractStore) {
 
     _this._collection = connection.getConnection().then(function (db) {
       return _this._collection = db.collection(collectionName);
+    }).catch(function (err) {
+      return _this._collection = Promise.reject(err);
     });
     return _this;
   }
 
   _createClass(MongoStore, [{
+    key: 'create',
+    value: function create() {
+      return Promise.resolve();
+    }
+  }, {
     key: 'insertOne',
     value: function insertOne(object) {
       if (!object._id) {
@@ -61,6 +68,11 @@ var MongoStore = function (_AbstractStore) {
   }, {
     key: 'updateOne',
     value: function updateOne(object) {
+      return this.replaceOne(object);
+    }
+  }, {
+    key: 'replaceOne',
+    value: function replaceOne(object) {
       if (!object.updated) {
         object.updated = new Date();
       }
@@ -85,8 +97,8 @@ var MongoStore = function (_AbstractStore) {
       });
     }
   }, {
-    key: 'updateSeveral',
-    value: function updateSeveral(objects) {
+    key: 'replaceSeveral',
+    value: function replaceSeveral(objects) {
       var _this2 = this;
 
       return Promise.all(objects.map(function (object) {

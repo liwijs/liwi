@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _tcombForked = require('tcomb-forked');
+
+var _tcombForked2 = _interopRequireDefault(_tcombForked);
+
 var _nightingaleLogger = require('nightingale-logger');
 
 var _nightingaleLogger2 = _interopRequireDefault(_nightingaleLogger);
@@ -25,9 +29,7 @@ const logger = new _nightingaleLogger2.default('liwi.mongo.MongoConnection');
 class MongoConnection extends _AbstractConnection2.default {
 
   constructor(config) {
-    if (!(config instanceof Map)) {
-      throw new TypeError('Value of argument "config" violates contract.\n\nExpected:\nMap\n\nGot:\n' + _inspect(config));
-    }
+    _assert(config, Map, 'config');
 
     super();
 
@@ -54,60 +56,25 @@ class MongoConnection extends _AbstractConnection2.default {
       connection.on('close', () => {
         logger.warn('close', { connectionString });
         this.connectionFailed = true;
-        this.getConnection = () => {
-          return Promise.reject(new Error('MongoDB connection closed'));
-        };
-
-        if (!(typeof this.getConnection === 'function')) {
-          throw new TypeError('Value of "this.getConnection" violates contract.\n\nExpected:\n() => Promise<Db>\n\nGot:\n' + _inspect(this.getConnection));
-        }
+        this.getConnection = () => Promise.reject(new Error('MongoDB connection closed'));
       });
       connection.on('timeout', () => {
         logger.warn('timeout', { connectionString });
         this.connectionFailed = true;
-        this.getConnection = () => {
-          return Promise.reject(new Error('MongoDB connection timeout'));
-        };
-
-        if (!(typeof this.getConnection === 'function')) {
-          throw new TypeError('Value of "this.getConnection" violates contract.\n\nExpected:\n() => Promise<Db>\n\nGot:\n' + _inspect(this.getConnection));
-        }
+        this.getConnection = () => Promise.reject(new Error('MongoDB connection timeout'));
       });
       connection.on('reconnect', () => {
         logger.warn('reconnect', { connectionString });
         this.connectionFailed = false;
-        this.getConnection = () => {
-          return Promise.resolve(this._connection);
-        };
-
-        if (!(typeof this.getConnection === 'function')) {
-          throw new TypeError('Value of "this.getConnection" violates contract.\n\nExpected:\n() => Promise<Db>\n\nGot:\n' + _inspect(this.getConnection));
-        }
+        this.getConnection = () => Promise.resolve(this._connection);
       });
       connection.on('error', err => {
         logger.warn('error', { connectionString, err });
       });
 
       this._connection = connection;
-
-      if (!(this._connection instanceof _db2.default || this._connection == null)) {
-        throw new TypeError('Value of "this._connection" violates contract.\n\nExpected:\nDb | null\n\nGot:\n' + _inspect(this._connection));
-      }
-
       this._connecting = null;
-
-      if (!(this._connecting instanceof Promise || this._connecting == null)) {
-        throw new TypeError('Value of "this._connecting" violates contract.\n\nExpected:\nPromise | null\n\nGot:\n' + _inspect(this._connecting));
-      }
-
-      this.getConnection = () => {
-        return Promise.resolve(this._connection);
-      };
-
-      if (!(typeof this.getConnection === 'function')) {
-        throw new TypeError('Value of "this.getConnection" violates contract.\n\nExpected:\n() => Promise<Db>\n\nGot:\n' + _inspect(this.getConnection));
-      }
-
+      this.getConnection = () => Promise.resolve(this._connection);
       return connection;
     }).catch(err => {
       logger.info('not connected', { connectionString });
@@ -120,101 +87,46 @@ class MongoConnection extends _AbstractConnection2.default {
       throw err;
     });
 
-    this.getConnection = () => {
-      return Promise.resolve(connectPromise);
-    };
-
-    if (!(typeof this.getConnection === 'function')) {
-      throw new TypeError('Value of "this.getConnection" violates contract.\n\nExpected:\n() => Promise<Db>\n\nGot:\n' + _inspect(this.getConnection));
-    }
-
+    this.getConnection = () => Promise.resolve(connectPromise);
     this._connecting = this.getConnection();
-
-    if (!(this._connecting instanceof Promise || this._connecting == null)) {
-      throw new TypeError('Value of "this._connecting" violates contract.\n\nExpected:\nPromise | null\n\nGot:\n' + _inspect(this._connecting));
-    }
   }
 
   getConnection() {
-    throw new Error('call connect()');
+    return _assert(function () {
+      throw new Error('call connect()');
+    }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
   close() {
-    this.getConnection = () => {
-      return Promise.reject(new Error('Connection closed'));
-    };
-
-    if (!(typeof this.getConnection === 'function')) {
-      throw new TypeError('Value of "this.getConnection" violates contract.\n\nExpected:\n() => Promise<Db>\n\nGot:\n' + _inspect(this.getConnection));
-    }
-
+    this.getConnection = () => Promise.reject(new Error('Connection closed'));
     if (this._connection) {
       return this._connection.close();
     } else if (this._connecting) {
-      return this._connecting.then(() => {
-        return this.close();
-      });
+      return this._connecting.then(() => this.close());
     }
   }
 }
 exports.default = MongoConnection;
 
-function _inspect(input, depth) {
-  const maxDepth = 4;
-  const maxKeys = 15;
-
-  if (depth === undefined) {
-    depth = 0;
+function _assert(x, type, name) {
+  function message() {
+    return 'Invalid value ' + _tcombForked2.default.stringify(x) + ' supplied to ' + name + ' (expected a ' + _tcombForked2.default.getTypeName(type) + ')';
   }
 
-  depth += 1;
+  if (_tcombForked2.default.isType(type)) {
+    if (!type.is(x)) {
+      type(x, [name + ': ' + _tcombForked2.default.getTypeName(type)]);
 
-  if (input === null) {
-    return 'null';
-  } else if (input === undefined) {
-    return 'void';
-  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
-    return typeof input;
-  } else if (Array.isArray(input)) {
-    if (input.length > 0) {
-      if (depth > maxDepth) return '[...]';
-
-      const first = _inspect(input[0], depth);
-
-      if (input.every(item => _inspect(item, depth) === first)) {
-        return first.trim() + '[]';
-      } else {
-        return '[' + input.slice(0, maxKeys).map(item => _inspect(item, depth)).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
-      }
-    } else {
-      return 'Array';
-    }
-  } else {
-    const keys = Object.keys(input);
-
-    if (!keys.length) {
-      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-        return input.constructor.name;
-      } else {
-        return 'Object';
-      }
+      _tcombForked2.default.fail(message());
     }
 
-    if (depth > maxDepth) return '{...}';
-    const indent = '  '.repeat(depth - 1);
-    let entries = keys.slice(0, maxKeys).map(key => {
-      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
-    }).join('\n  ' + indent);
-
-    if (keys.length >= maxKeys) {
-      entries += '\n  ' + indent + '...';
-    }
-
-    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
-    } else {
-      return '{\n  ' + indent + entries + '\n' + indent + '}';
-    }
+    return type(x);
   }
+
+  if (!(x instanceof type)) {
+    _tcombForked2.default.fail(message());
+  }
+
+  return x;
 }
 //# sourceMappingURL=MongoConnection.js.map

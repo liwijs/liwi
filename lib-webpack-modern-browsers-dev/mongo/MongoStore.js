@@ -1,3 +1,4 @@
+import _t from 'tcomb-forked';
 import { ObjectID } from 'mongodb';
 import Collection from 'mongodb/lib/collection';
 import Db from 'mongodb/lib/db';
@@ -8,13 +9,9 @@ import MongoCursor from './MongoCursor';
 export default class MongoStore extends AbstractStore {
 
   constructor(connection, collectionName) {
-    if (!(connection instanceof MongoConnection)) {
-      throw new TypeError('Value of argument "connection" violates contract.\n\nExpected:\nMongoConnection\n\nGot:\n' + _inspect(connection));
-    }
+    _assert(connection, MongoConnection, 'connection');
 
-    if (!(typeof collectionName === 'string')) {
-      throw new TypeError('Value of argument "collectionName" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect(collectionName));
-    }
+    _assert(collectionName, _t.String, 'collectionName');
 
     super(connection);
 
@@ -24,137 +21,93 @@ export default class MongoStore extends AbstractStore {
     }
 
     this._collection = connection.getConnection().then(db => {
-      if (!(db instanceof Db)) {
-        throw new TypeError('Value of argument "db" violates contract.\n\nExpected:\nDb\n\nGot:\n' + _inspect(db));
-      }
+      _assert(db, Db, 'db');
 
       return this._collection = db.collection(collectionName);
-
-      if (!(this._collection instanceof Collection || this._collection instanceof Promise)) {
-        throw new TypeError('Value of "this._collection" violates contract.\n\nExpected:\nCollection | Promise<Collection>\n\nGot:\n' + _inspect(this._collection));
-      }
-    });
-
-    if (!(this._collection instanceof Collection || this._collection instanceof Promise)) {
-      throw new TypeError('Value of "this._collection" violates contract.\n\nExpected:\nCollection | Promise<Collection>\n\nGot:\n' + _inspect(this._collection));
-    }
+    }).catch(err => this._collection = Promise.reject(err));
   }
 
   get collection() {
-    function _ref(_id) {
-      if (!(_id instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Collection>\n\nGot:\n' + _inspect(_id));
+    return _assert(function () {
+      if (this.connection.connectionFailed) {
+        return Promise.reject(new Error('MongoDB connection failed'));
       }
 
-      return _id;
-    }
+      return Promise.resolve(this._collection);
+    }.apply(this, arguments), _t.Promise, 'return value');
+  }
 
-    if (this.connection.connectionFailed) {
-      return _ref(Promise.reject(new Error('MongoDB connection failed')));
-    }
-
-    return _ref(Promise.resolve(this._collection));
+  create() {
+    return _assert(function () {
+      return Promise.resolve();
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   insertOne(object) {
-    function _ref2(_id2) {
-      if (!(_id2 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id2));
+    _assert(object, _t.Any, 'object');
+
+    return _assert(function () {
+      if (!object._id) {
+        object._id = new ObjectID().toString();
+      }
+      if (!object.created) {
+        object.created = new Date();
       }
 
-      return _id2;
-    }
+      return this.collection.then(collection => collection.insertOne(object)).then(_ref => {
+        var result = _ref.result;
+        var connection = _ref.connection;
+        var ops = _ref.ops;
 
-    if (!object._id) {
-      object._id = new ObjectID().toString();
-    }
-    if (!object.created) {
-      object.created = new Date();
-    }
-
-    return _ref2(this.collection.then(collection => {
-      return collection.insertOne(object);
-    }).then(_ref12 => {
-      var result = _ref12.result;
-      var connection = _ref12.connection;
-      var ops = _ref12.ops;
-
-      if (!result.ok || result.n !== 1) {
-        throw new Error('Fail to insert');
-      }
-    }).then(() => {
-      return object;
-    }));
+        if (!result.ok || result.n !== 1) {
+          throw new Error('Fail to insert');
+        }
+      }).then(() => object);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   updateOne(object) {
-    function _ref3(_id3) {
-      if (!(_id3 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id3));
+    return this.replaceOne(object);
+  }
+
+  replaceOne(object) {
+    _assert(object, _t.Any, 'object');
+
+    return _assert(function () {
+      if (!object.updated) {
+        object.updated = new Date();
       }
 
-      return _id3;
-    }
-
-    if (!object.updated) {
-      object.updated = new Date();
-    }
-
-    return _ref3(this.collection.then(collection => {
-      return collection.updateOne({ _id: object._id }, object);
-    }).then(() => {
-      return object;
-    }));
+      return this.collection.then(collection => collection.updateOne({ _id: object._id }, object)).then(() => object);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   upsertOne(object) {
-    function _ref4(_id4) {
-      if (!(_id4 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id4));
+    _assert(object, _t.Any, 'object');
+
+    return _assert(function () {
+      if (!object.updated) {
+        object.updated = new Date();
       }
 
-      return _id4;
-    }
-
-    if (!object.updated) {
-      object.updated = new Date();
-    }
-
-    return _ref4(this.collection.then(collection => {
-      return collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true });
-    }).then(() => {
-      return object;
-    }));
+      return this.collection.then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })).then(() => object);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
-  updateSeveral(objects) {
-    function _ref5(_id5) {
-      if (!(_id5 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Array<ModelType>>\n\nGot:\n' + _inspect(_id5));
-      }
+  replaceSeveral(objects) {
+    _assert(objects, _t.list(_t.Any), 'objects');
 
-      return _id5;
-    }
-
-    if (!Array.isArray(objects)) {
-      throw new TypeError('Value of argument "objects" violates contract.\n\nExpected:\nArray<ModelType>\n\nGot:\n' + _inspect(objects));
-    }
-
-    return _ref5(Promise.all(objects.map(object => {
-      return this.updateOne(object);
-    })));
+    return _assert(function () {
+      return Promise.all(objects.map(object => this.updateOne(object)));
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   _partialUpdate(partialUpdate) {
-    if (!(partialUpdate instanceof Object)) {
-      throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
-    }
+    _assert(partialUpdate, _t.Object, 'partialUpdate');
 
     // https://docs.mongodb.com/manual/reference/operator/update/
     // if has a mongo operator
-    if (Object.keys(partialUpdate).some(key => {
-      return key[0] === '$';
-    })) {
+    if (Object.keys(partialUpdate).some(key => key[0] === '$')) {
       return partialUpdate;
     } else {
       return { $set: partialUpdate };
@@ -162,203 +115,90 @@ export default class MongoStore extends AbstractStore {
   }
 
   partialUpdateByKey(key, partialUpdate) {
-    function _ref6(_id6) {
-      if (!(_id6 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id6));
-      }
+    _assert(key, _t.Any, 'key');
 
-      return _id6;
-    }
+    _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-    if (!(partialUpdate instanceof Object)) {
-      throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
-    }
-
-    partialUpdate = this._partialUpdate(partialUpdate);
-    return _ref6(this.collection.then(collection => {
-      return collection.updateOne({ _id: key }, partialUpdate);
-    }));
+    return _assert(function () {
+      partialUpdate = this._partialUpdate(partialUpdate);
+      return this.collection.then(collection => collection.updateOne({ _id: key }, partialUpdate));
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   partialUpdateOne(object, partialUpdate) {
-    function _ref7(_id7) {
-      if (!(_id7 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id7));
-      }
+    _assert(object, _t.Any, 'object');
 
-      return _id7;
-    }
+    _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-    if (!(partialUpdate instanceof Object)) {
-      throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
-    }
-
-    partialUpdate = this._partialUpdate(partialUpdate);
-    return _ref7(this.partialUpdateByKey(object._id, partialUpdate).then(res => {
-      return this.findByKey(object._id);
-    }));
+    return _assert(function () {
+      partialUpdate = this._partialUpdate(partialUpdate);
+      return this.partialUpdateByKey(object._id, partialUpdate).then(res => this.findByKey(object._id));
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   partialUpdateMany(criteria, partialUpdate) {
-    function _ref8(_id8) {
-      if (!(_id8 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id8));
-      }
+    _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-      return _id8;
-    }
-
-    if (!(partialUpdate instanceof Object)) {
-      throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
-    }
-
-    partialUpdate = this._partialUpdate(partialUpdate);
-    return _ref8(this.collection.then(collection => {
-      return collection.updateMany(criteria, partialUpdate);
-    }).then(res => {
-      return null;
-    })); // TODO return updated object
+    return _assert(function () {
+      partialUpdate = this._partialUpdate(partialUpdate);
+      return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(res => null); // TODO return updated object
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   deleteByKey(key) {
-    function _ref9(_id9) {
-      if (!(_id9 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id9));
-      }
+    _assert(key, _t.Any, 'key');
 
-      return _id9;
-    }
-
-    return _ref9(this.collection.then(collection => {
-      return collection.removeOne({ _id: key });
-    }).then(() => {
-      return null;
-    }));
+    return _assert(function () {
+      return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => null);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   cursor(criteria, sort) {
-    function _ref10(_id10) {
-      if (!(_id10 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<MongoCursor<ModelType>>\n\nGot:\n' + _inspect(_id10));
-      }
+    _assert(criteria, _t.maybe(_t.Object), 'criteria');
 
-      return _id10;
-    }
+    _assert(sort, _t.maybe(_t.Object), 'sort');
 
-    if (!(criteria == null || criteria instanceof Object)) {
-      throw new TypeError('Value of argument "criteria" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(criteria));
-    }
-
-    if (!(sort == null || sort instanceof Object)) {
-      throw new TypeError('Value of argument "sort" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(sort));
-    }
-
-    return _ref10(this.collection.then(collection => {
-      return collection.find(criteria);
-    }).then(sort && (cursor => {
-      return cursor.sort(sort);
-    })).then(cursor => {
-      return new MongoCursor(this, cursor);
-    }));
+    return _assert(function () {
+      return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => new MongoCursor(this, cursor));
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   findByKey(key) {
+    _assert(key, _t.Any, 'key');
+
     return this.findOne({ _id: key });
   }
 
   findOne(criteria, sort) {
-    function _ref11(_id11) {
-      if (!(_id11 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Object>\n\nGot:\n' + _inspect(_id11));
-      }
+    _assert(criteria, _t.Object, 'criteria');
 
-      return _id11;
-    }
+    _assert(sort, _t.maybe(_t.Object), 'sort');
 
-    if (!(criteria instanceof Object)) {
-      throw new TypeError('Value of argument "criteria" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(criteria));
-    }
-
-    if (!(sort == null || sort instanceof Object)) {
-      throw new TypeError('Value of argument "sort" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(sort));
-    }
-
-    return _ref11(this.collection.then(collection => {
-      return collection.find(criteria);
-    }).then(sort && (cursor => {
-      return cursor.sort(sort);
-    })).then(cursor => {
-      return cursor.limit(1).next();
-    }));
+    return _assert(function () {
+      return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => cursor.limit(1).next());
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 }
 
-function _inspect(input, depth) {
-  var maxDepth = 4;
-  var maxKeys = 15;
-
-  if (depth === undefined) {
-    depth = 0;
+function _assert(x, type, name) {
+  function message() {
+    return 'Invalid value ' + _t.stringify(x) + ' supplied to ' + name + ' (expected a ' + _t.getTypeName(type) + ')';
   }
 
-  depth += 1;
+  if (_t.isType(type)) {
+    if (!type.is(x)) {
+      type(x, [name + ': ' + _t.getTypeName(type)]);
 
-  if (input === null) {
-    return 'null';
-  } else if (input === undefined) {
-    return 'void';
-  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
-    return typeof input;
-  } else if (Array.isArray(input)) {
-    if (input.length > 0) {
-      var _ret = function () {
-        if (depth > maxDepth) return {
-            v: '[...]'
-          };
-
-        var first = _inspect(input[0], depth);
-
-        if (input.every(item => _inspect(item, depth) === first)) {
-          return {
-            v: first.trim() + '[]'
-          };
-        } else {
-          return {
-            v: '[' + input.slice(0, maxKeys).map(item => _inspect(item, depth)).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']'
-          };
-        }
-      }();
-
-      if (typeof _ret === "object") return _ret.v;
-    } else {
-      return 'Array';
-    }
-  } else {
-    var keys = Object.keys(input);
-
-    if (!keys.length) {
-      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-        return input.constructor.name;
-      } else {
-        return 'Object';
-      }
+      _t.fail(message());
     }
 
-    if (depth > maxDepth) return '{...}';
-    var indent = '  '.repeat(depth - 1);
-    var entries = keys.slice(0, maxKeys).map(key => {
-      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
-    }).join('\n  ' + indent);
-
-    if (keys.length >= maxKeys) {
-      entries += '\n  ' + indent + '...';
-    }
-
-    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
-    } else {
-      return '{\n  ' + indent + entries + '\n' + indent + '}';
-    }
+    return type(x);
   }
+
+  if (!(x instanceof type)) {
+    _t.fail(message());
+  }
+
+  return x;
 }
 //# sourceMappingURL=MongoStore.js.map

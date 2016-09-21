@@ -1,5 +1,7 @@
 import AbstractStore from '../store/AbstractStore';
 import WebsocketCursor from './WebsocketCursor';
+import { encode, decode } from '../msgpack';
+import Query from './Query';
 
 type WebsocketConnection = {
     emit: Function,
@@ -19,11 +21,20 @@ export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketCo
     this.restName = restName;
   }
 
+  createQuery(key: string) {
+    return new Query(this, key);
+  }
+
   emit(type, ...args) {
-    if (!this.connection.isConnected()) {
+    if (this.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
     }
-    return this.connection.emit('rest', { type, restName: this.restName }, args);
+
+    return this.connection.emit('rest', {
+      type,
+      restName: this.restName,
+      buffer: args && encode(args),
+    }).then(result => decode(result));
   }
 
   insertOne(object: ModelType): Promise<ModelType> {

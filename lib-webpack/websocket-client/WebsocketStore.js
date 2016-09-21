@@ -8,6 +8,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 import AbstractStore from '../store/AbstractStore';
 import WebsocketCursor from './WebsocketCursor';
+import { encode, decode } from '../msgpack';
+import Query from './Query';
 
 var WebsocketStore = function (_AbstractStore) {
   _inherits(WebsocketStore, _AbstractStore);
@@ -15,7 +17,7 @@ var WebsocketStore = function (_AbstractStore) {
   function WebsocketStore(websocket, restName) {
     _classCallCheck(this, WebsocketStore);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WebsocketStore).call(this, websocket));
+    var _this = _possibleConstructorReturn(this, (WebsocketStore.__proto__ || Object.getPrototypeOf(WebsocketStore)).call(this, websocket));
 
     _this.keyPath = '_id';
 
@@ -29,9 +31,14 @@ var WebsocketStore = function (_AbstractStore) {
   }
 
   _createClass(WebsocketStore, [{
+    key: 'createQuery',
+    value: function createQuery(key) {
+      return new Query(this, key);
+    }
+  }, {
     key: 'emit',
     value: function emit(type) {
-      if (!this.connection.isConnected()) {
+      if (this.connection.isDisconnected()) {
         throw new Error('Websocket is not connected');
       }
 
@@ -39,7 +46,13 @@ var WebsocketStore = function (_AbstractStore) {
         args[_key - 1] = arguments[_key];
       }
 
-      return this.connection.emit('rest', { type: type, restName: this.restName }, args);
+      return this.connection.emit('rest', {
+        type: type,
+        restName: this.restName,
+        buffer: args && encode(args)
+      }).then(function (result) {
+        return decode(result);
+      });
     }
   }, {
     key: 'insertOne',

@@ -1,4 +1,4 @@
-export default class AbstractCursor<Store, ObjectType> {
+export default class AbstractCursor<Store, ModelType> {
   key: any;
 
   constructor(store: Store) {
@@ -29,7 +29,7 @@ export default class AbstractCursor<Store, ObjectType> {
     throw new Error('count() missing implementation');
   }
 
-  result(): Promise<ObjectType> {
+  result(): Promise<ModelType> {
     return this.store.findByKey(this.key);
   }
 

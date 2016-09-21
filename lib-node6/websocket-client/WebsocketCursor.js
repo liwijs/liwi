@@ -84,7 +84,7 @@ class WebsocketCursor extends _AbstractCursor2.default {
   }
 
   toArray() {
-    return this.store.emit('cursor toArray', this._options, result => {
+    return this.store.emit('cursor toArray', this._options).then(result => {
       this.close();
       return result;
     });

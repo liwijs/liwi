@@ -8,6 +8,10 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 exports.default = init;
 
+var _tcombForked = require('tcomb-forked');
+
+var _tcombForked2 = _interopRequireDefault(_tcombForked);
+
 var _nightingaleLogger = require('nightingale-logger');
 
 var _nightingaleLogger2 = _interopRequireDefault(_nightingaleLogger);
@@ -31,37 +35,35 @@ function init(io, restService) {
     };
 
     socket.on('disconnect', () => {
-      openCursors.forEach(cursor => {
-        return cursor.close();
-      });
-      timeouts.forEach(timeout => {
-        return clearTimeout(timeout);
-      });
-      activeListeners.forEach(listener => {
-        return listener.close();
-      });
+      openCursors.forEach(cursor => cursor.close());
+      timeouts.forEach(timeout => clearTimeout(timeout));
+      activeListeners.forEach(listener => listener.close());
 
       openCursors = timeouts = activeListeners = null;
     });
 
     let nextIdCursor = 1;
 
-    socket.on('rest', (_arg, args, callback) => {
-      if (!Array.isArray(args)) {
-        throw new TypeError('Value of argument "args" violates contract.\n\nExpected:\nArray\n\nGot:\n' + _inspect(args));
-      }
+    socket.on('rest', (_ref, args, callback) => {
+      var _assert2 = _assert(_ref, _tcombForked2.default.interface({
+        type: _tcombForked2.default.String,
+        restName: _tcombForked2.default.String
+      }), '{ type, restName }');
 
-      if (!(typeof callback === 'function')) {
-        throw new TypeError('Value of argument "callback" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(callback));
-      }
+      let type = _assert2.type;
+      let restName = _assert2.restName;
 
-      var _arg2 = _arg;
-      var type = _arg2.type;
-      var restName = _arg2.restName;
+      _assert({
+        type,
+        restName
+      }, _tcombForked2.default.interface({
+        type: _tcombForked2.default.String,
+        restName: _tcombForked2.default.String
+      }), '{ type, restName }');
 
-      if (!(typeof type === 'string' && typeof restName === 'string')) {
-        throw new TypeError('Value of "{\n  type,\n  restName\n}" violates contract.\n\nExpected:\n{\n  type: string;\n  restName: string;\n}\n\nGot:\n' + _inspect({ type, restName }));
-      }
+      _assert(args, _tcombForked2.default.list(_tcombForked2.default.Any), 'args');
+
+      _assert(callback, _tcombForked2.default.Function, 'callback');
 
       logger.info('rest', { type, restName, args });
       switch (type) {
@@ -92,13 +94,7 @@ function init(io, restService) {
 
             const options = _args2[0];
 
-            return restService.createCursor(restName, options).then(cursor => {
-              return cursor.toArray();
-            }).then(results => {
-              return callback(null, results);
-            }).catch(err => {
-              return callback(err.message);
-            });
+            return restService.createCursor(restName, options).then(cursor => cursor.toArray()).then(results => callback(null, results)).catch(err => callback(err.message));
           }
 
         case 'cursor':
@@ -121,11 +117,7 @@ function init(io, restService) {
               case 'advance':
               case 'next':
               case 'count':
-                return cursor[type](...cursorArgs).then(result => {
-                  return callback(null, result);
-                }).catch(err => {
-                  return callback(err.message || err);
-                });
+                return cursor[type](...cursorArgs).then(result => callback(null, result)).catch(err => callback(err.message || err));
               /* cursor.next().then((key) => {
                   if (!key) return callback(null);
                   return cursor.result();
@@ -152,11 +144,7 @@ function init(io, restService) {
         case 'deleteByKey':
         case 'deleteOne':
         case 'findOne':
-          return restService[type](restName, ...args).then(result => {
-            return callback(null, result);
-          }).catch(err => {
-            return callback(err.message || err);
-          });
+          return restService[type](restName, ...args).then(result => callback(null, result)).catch(err => callback(err.message || err));
 
         default:
           callback(`Unknown command: "${ type }"`);
@@ -165,62 +153,25 @@ function init(io, restService) {
   });
 }
 
-function _inspect(input, depth) {
-  const maxDepth = 4;
-  const maxKeys = 15;
-
-  if (depth === undefined) {
-    depth = 0;
+function _assert(x, type, name) {
+  function message() {
+    return 'Invalid value ' + _tcombForked2.default.stringify(x) + ' supplied to ' + name + ' (expected a ' + _tcombForked2.default.getTypeName(type) + ')';
   }
 
-  depth += 1;
+  if (_tcombForked2.default.isType(type)) {
+    if (!type.is(x)) {
+      type(x, [name + ': ' + _tcombForked2.default.getTypeName(type)]);
 
-  if (input === null) {
-    return 'null';
-  } else if (input === undefined) {
-    return 'void';
-  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
-    return typeof input;
-  } else if (Array.isArray(input)) {
-    if (input.length > 0) {
-      if (depth > maxDepth) return '[...]';
-
-      const first = _inspect(input[0], depth);
-
-      if (input.every(item => _inspect(item, depth) === first)) {
-        return first.trim() + '[]';
-      } else {
-        return '[' + input.slice(0, maxKeys).map(item => _inspect(item, depth)).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
-      }
-    } else {
-      return 'Array';
-    }
-  } else {
-    const keys = Object.keys(input);
-
-    if (!keys.length) {
-      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-        return input.constructor.name;
-      } else {
-        return 'Object';
-      }
+      _tcombForked2.default.fail(message());
     }
 
-    if (depth > maxDepth) return '{...}';
-    const indent = '  '.repeat(depth - 1);
-    let entries = keys.slice(0, maxKeys).map(key => {
-      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
-    }).join('\n  ' + indent);
-
-    if (keys.length >= maxKeys) {
-      entries += '\n  ' + indent + '...';
-    }
-
-    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
-    } else {
-      return '{\n  ' + indent + entries + '\n' + indent + '}';
-    }
+    return type(x);
   }
+
+  if (!(x instanceof type)) {
+    _tcombForked2.default.fail(message());
+  }
+
+  return x;
 }
 //# sourceMappingURL=_next.js.map

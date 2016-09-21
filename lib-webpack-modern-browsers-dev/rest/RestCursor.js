@@ -6,11 +6,7 @@ export default class RestCursor {
   }
 
   toArray() {
-    return this._cursor.toArray().then(results => {
-      return results && results.map(result => {
-        return this._restResource.transform(result, this._connectedUser);
-      });
-    });
+    return this._cursor.toArray().then(results => results && results.map(result => this._restResource.transform(result, this._connectedUser)));
   }
 }
 //# sourceMappingURL=RestCursor.js.map

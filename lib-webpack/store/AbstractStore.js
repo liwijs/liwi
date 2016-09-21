@@ -16,6 +16,13 @@ var AbstractStore = function () {
   }
 
   _createClass(AbstractStore, [{
+    key: 'findAll',
+    value: function findAll(criteria, sort) {
+      return this.cursor(criteria, sort).then(function (cursor) {
+        return cursor.toArray();
+      });
+    }
+  }, {
     key: 'connection',
     get: function get() {
       return this._connection;

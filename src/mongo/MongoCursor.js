@@ -2,7 +2,7 @@ import Cursor from 'mongodb/lib/cursor';
 import MongoStore from './MongoStore';
 import AbstractCursor from '../store/AbstractCursor';
 
-export default class MongoCursor extends AbstractCursor<MongoStore> {
+export default class MongoCursor<ModelType> extends AbstractCursor<MongoStore, ModelType> {
   constructor(store:MongoStore, cursor:Cursor) {
     super(store);
     this._cursor = cursor;
@@ -14,13 +14,11 @@ export default class MongoCursor extends AbstractCursor<MongoStore> {
 
   next():Promise<any> {
     return this._cursor.next()
-            .then(
-                value => {
-                  this._result = value;
-                  this.key = value && value._id;
-                  return this.key;
-                },
-            );
+      .then((value) => {
+        this._result = value;
+        this.key = value && value._id;
+        return this.key;
+      });
   }
 
   limit(newLimit:number):Promise {
@@ -45,7 +43,7 @@ export default class MongoCursor extends AbstractCursor<MongoStore> {
     return Promise.resolve();
   }
 
-  toArray():Promise<Array> {
+  toArray():Promise<Array<ModelType>> {
     return this._cursor.toArray();
   }
 }

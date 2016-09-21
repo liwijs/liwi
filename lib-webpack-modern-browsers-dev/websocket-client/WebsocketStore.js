@@ -1,30 +1,20 @@
+import _t from 'tcomb-forked';
 import AbstractStore from '../store/AbstractStore';
 import WebsocketCursor from './WebsocketCursor';
+import { encode, decode } from '../msgpack';
+import Query from './Query';
 
-var WebsocketConnection = function () {
-  function WebsocketConnection(input) {
-    return input != null && typeof input.emit === 'function' && typeof input.isConnected === 'function';
-  }
-
-  ;
-  Object.defineProperty(WebsocketConnection, Symbol.hasInstance, {
-    value: function value(input) {
-      return WebsocketConnection(input);
-    }
-  });
-  return WebsocketConnection;
-}();
+var WebsocketConnection = _t.interface({
+  emit: _t.Function,
+  isConnected: _t.Function
+}, 'WebsocketConnection');
 
 export default class WebsocketStore extends AbstractStore {
 
   constructor(websocket, restName) {
-    if (!WebsocketConnection(websocket)) {
-      throw new TypeError('Value of argument "websocket" violates contract.\n\nExpected:\nWebsocketConnection\n\nGot:\n' + _inspect(websocket));
-    }
+    _assert(websocket, WebsocketConnection, 'websocket');
 
-    if (!(typeof restName === 'string')) {
-      throw new TypeError('Value of argument "restName" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect(restName));
-    }
+    _assert(restName, _t.String, 'restName');
 
     super(websocket);
 
@@ -36,8 +26,14 @@ export default class WebsocketStore extends AbstractStore {
     this.restName = restName;
   }
 
+  createQuery(key) {
+    _assert(key, _t.String, 'key');
+
+    return new Query(this, key);
+  }
+
   emit(type) {
-    if (!this.connection.isConnected()) {
+    if (this.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
     }
 
@@ -45,232 +41,127 @@ export default class WebsocketStore extends AbstractStore {
       args[_key - 1] = arguments[_key];
     }
 
-    return this.connection.emit('rest', { type, restName: this.restName }, args);
+    return this.connection.emit('rest', {
+      type,
+      restName: this.restName,
+      buffer: args && encode(args)
+    }).then(result => decode(result));
   }
 
   insertOne(object) {
-    function _ref(_id) {
-      if (!(_id instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id));
-      }
+    _assert(object, _t.Any, 'object');
 
-      return _id;
-    }
-
-    return _ref(this.emit('insertOne', object));
+    return _assert(function () {
+      return this.emit('insertOne', object);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   updateOne(object) {
-    function _ref2(_id2) {
-      if (!(_id2 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id2));
-      }
+    _assert(object, _t.Any, 'object');
 
-      return _id2;
-    }
-
-    return _ref2(this.emit('updateOne', object));
+    return _assert(function () {
+      return this.emit('updateOne', object);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   updateSeveral(objects) {
-    function _ref3(_id3) {
-      if (!(_id3 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Array<ModelType>>\n\nGot:\n' + _inspect(_id3));
-      }
+    _assert(objects, _t.list(_t.Any), 'objects');
 
-      return _id3;
-    }
-
-    if (!Array.isArray(objects)) {
-      throw new TypeError('Value of argument "objects" violates contract.\n\nExpected:\nArray<ModelType>\n\nGot:\n' + _inspect(objects));
-    }
-
-    return _ref3(this.emit('updateSeveral', objects));
+    return _assert(function () {
+      return this.emit('updateSeveral', objects);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   partialUpdateByKey(key, partialUpdate) {
-    function _ref4(_id4) {
-      if (!(_id4 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id4));
-      }
+    _assert(key, _t.Any, 'key');
 
-      return _id4;
-    }
+    _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-    if (!(partialUpdate instanceof Object)) {
-      throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
-    }
-
-    return _ref4(this.emit('partialUpdateByKey', key, partialUpdate));
+    return _assert(function () {
+      return this.emit('partialUpdateByKey', key, partialUpdate);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   partialUpdateOne(object, partialUpdate) {
-    function _ref5(_id5) {
-      if (!(_id5 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<ModelType>\n\nGot:\n' + _inspect(_id5));
-      }
+    _assert(object, _t.Any, 'object');
 
-      return _id5;
-    }
+    _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-    if (!(partialUpdate instanceof Object)) {
-      throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
-    }
-
-    return _ref5(this.emit('partialUpdateOne', object, partialUpdate));
+    return _assert(function () {
+      return this.emit('partialUpdateOne', object, partialUpdate);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   partialUpdateMany(criteria, partialUpdate) {
-    function _ref6(_id6) {
-      if (!(_id6 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id6));
-      }
+    _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-      return _id6;
-    }
-
-    if (!(partialUpdate instanceof Object)) {
-      throw new TypeError('Value of argument "partialUpdate" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(partialUpdate));
-    }
-
-    return _ref6(this.emit('partialUpdateMany', criteria, partialUpdate));
+    return _assert(function () {
+      return this.emit('partialUpdateMany', criteria, partialUpdate);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   deleteByKey(key) {
-    function _ref7(_id7) {
-      if (!(_id7 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id7));
-      }
+    _assert(key, _t.Any, 'key');
 
-      return _id7;
-    }
-
-    return _ref7(this.emit('deleteByKey', key));
+    return _assert(function () {
+      return this.emit('deleteByKey', key);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   deleteOne(object) {
-    function _ref8(_id8) {
-      if (!(_id8 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise\n\nGot:\n' + _inspect(_id8));
-      }
+    _assert(object, _t.Any, 'object');
 
-      return _id8;
-    }
-
-    return _ref8(this.emit('deleteOne', object));
+    return _assert(function () {
+      return this.emit('deleteOne', object);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   cursor(criteria, sort) {
-    function _ref9(_id9) {
-      if (!(_id9 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<WebsocketCursor<ModelType>>\n\nGot:\n' + _inspect(_id9));
-      }
+    _assert(criteria, _t.maybe(_t.Object), 'criteria');
 
-      return _id9;
-    }
+    _assert(sort, _t.maybe(_t.Object), 'sort');
 
-    if (!(criteria == null || criteria instanceof Object)) {
-      throw new TypeError('Value of argument "criteria" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(criteria));
-    }
-
-    if (!(sort == null || sort instanceof Object)) {
-      throw new TypeError('Value of argument "sort" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(sort));
-    }
-
-    return _ref9(Promise.resolve(new WebsocketCursor(this, { criteria, sort })));
+    return _assert(function () {
+      return Promise.resolve(new WebsocketCursor(this, { criteria, sort }));
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 
   findByKey(key) {
+    _assert(key, _t.Any, 'key');
+
     return this.findOne({ _id: key });
   }
 
   findOne(criteria, sort) {
-    function _ref10(_id10) {
-      if (!(_id10 instanceof Promise)) {
-        throw new TypeError('Function return value violates contract.\n\nExpected:\nPromise<Object>\n\nGot:\n' + _inspect(_id10));
-      }
+    _assert(criteria, _t.Object, 'criteria');
 
-      return _id10;
-    }
+    _assert(sort, _t.maybe(_t.Object), 'sort');
 
-    if (!(criteria instanceof Object)) {
-      throw new TypeError('Value of argument "criteria" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(criteria));
-    }
-
-    if (!(sort == null || sort instanceof Object)) {
-      throw new TypeError('Value of argument "sort" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(sort));
-    }
-
-    return _ref10(this.emit('findOne', criteria, sort));
+    return _assert(function () {
+      return this.emit('findOne', criteria, sort);
+    }.apply(this, arguments), _t.Promise, 'return value');
   }
 }
 
-function _inspect(input, depth) {
-  var maxDepth = 4;
-  var maxKeys = 15;
-
-  if (depth === undefined) {
-    depth = 0;
+function _assert(x, type, name) {
+  function message() {
+    return 'Invalid value ' + _t.stringify(x) + ' supplied to ' + name + ' (expected a ' + _t.getTypeName(type) + ')';
   }
 
-  depth += 1;
+  if (_t.isType(type)) {
+    if (!type.is(x)) {
+      type(x, [name + ': ' + _t.getTypeName(type)]);
 
-  if (input === null) {
-    return 'null';
-  } else if (input === undefined) {
-    return 'void';
-  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
-    return typeof input;
-  } else if (Array.isArray(input)) {
-    if (input.length > 0) {
-      var _ret = function () {
-        if (depth > maxDepth) return {
-            v: '[...]'
-          };
-
-        var first = _inspect(input[0], depth);
-
-        if (input.every(item => _inspect(item, depth) === first)) {
-          return {
-            v: first.trim() + '[]'
-          };
-        } else {
-          return {
-            v: '[' + input.slice(0, maxKeys).map(item => _inspect(item, depth)).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']'
-          };
-        }
-      }();
-
-      if (typeof _ret === "object") return _ret.v;
-    } else {
-      return 'Array';
-    }
-  } else {
-    var keys = Object.keys(input);
-
-    if (!keys.length) {
-      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-        return input.constructor.name;
-      } else {
-        return 'Object';
-      }
+      _t.fail(message());
     }
 
-    if (depth > maxDepth) return '{...}';
-    var indent = '  '.repeat(depth - 1);
-    var entries = keys.slice(0, maxKeys).map(key => {
-      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
-    }).join('\n  ' + indent);
-
-    if (keys.length >= maxKeys) {
-      entries += '\n  ' + indent + '...';
-    }
-
-    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
-    } else {
-      return '{\n  ' + indent + entries + '\n' + indent + '}';
-    }
+    return type(x);
   }
+
+  if (!(x instanceof type)) {
+    _t.fail(message());
+  }
+
+  return x;
 }
 //# sourceMappingURL=WebsocketStore.js.map

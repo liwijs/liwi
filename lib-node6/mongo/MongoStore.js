@@ -38,7 +38,7 @@ class MongoStore extends _AbstractStore2.default {
       throw new Error(`Invalid collectionName: "${ collectionName }"`);
     }
 
-    this._collection = connection.getConnection().then(db => this._collection = db.collection(collectionName));
+    this._collection = connection.getConnection().then(db => this._collection = db.collection(collectionName)).catch(err => this._collection = Promise.reject(err));
   }
 
   get collection() {
@@ -47,6 +47,10 @@ class MongoStore extends _AbstractStore2.default {
     }
 
     return Promise.resolve(this._collection);
+  }
+
+  create() {
+    return Promise.resolve();
   }
 
   insertOne(object) {
@@ -69,6 +73,10 @@ class MongoStore extends _AbstractStore2.default {
   }
 
   updateOne(object) {
+    return this.replaceOne(object);
+  }
+
+  replaceOne(object) {
     if (!object.updated) {
       object.updated = new Date();
     }
@@ -84,7 +92,7 @@ class MongoStore extends _AbstractStore2.default {
     return this.collection.then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })).then(() => object);
   }
 
-  updateSeveral(objects) {
+  replaceSeveral(objects) {
     return Promise.all(objects.map(object => this.updateOne(object)));
   }
 

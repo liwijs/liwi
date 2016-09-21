@@ -1,5 +1,5 @@
 export type CursorInterface<ModelType> = {
-    store: StoreInterface,
+    // store: StoreInterface,
 
     close(): Promise|void,
 
@@ -21,9 +21,11 @@ export type CursorInterface<ModelType> = {
 };
 
 export type StoreInterface<ModelType> = {
+    create(): Promise,
+
     insertOne(object: ModelType): Promise<ModelType>,
 
-    updateOne(object: ModelType): Promise<ModelType>,
+    replaceOne(object: ModelType): Promise<ModelType>,
 
     upsertOne(object: ModelType): Promise<ModelType>,
 
@@ -38,6 +40,8 @@ export type StoreInterface<ModelType> = {
     deleteByKey(key: any): Promise<void>,
 
     cursor(criteria: ?Object, sort: ?Object): Promise<CursorInterface<ModelType>>,
+
+    findAll(criteria: ?Object, sort: ?Object): Promise<Array<ModelType>>,
 
     findByKey(key: any): Promise<?ModelType>,
 

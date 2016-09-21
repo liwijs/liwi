@@ -16,7 +16,7 @@ var MongoCursor = function (_AbstractCursor) {
   function MongoCursor(store, cursor) {
     _classCallCheck(this, MongoCursor);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MongoCursor).call(this, store));
+    var _this = _possibleConstructorReturn(this, (MongoCursor.__proto__ || Object.getPrototypeOf(MongoCursor)).call(this, store));
 
     _this._cursor = cursor;
     return _this;

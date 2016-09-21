@@ -12,4 +12,8 @@ export default class AbstractStore<Connection> {
   get connection(): Connection {
     return this._connection;
   }
+
+  findAll(criteria: ?Object, sort: ?Object): Promise {
+    return this.cursor(criteria, sort).then(cursor => cursor.toArray());
+  }
 }

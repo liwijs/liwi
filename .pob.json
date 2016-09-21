@@ -5,6 +5,6 @@
     "webpack"
   ],
   "react": false,
-  "testing": false,
+  "testing": true,
   "documentation": false
 }

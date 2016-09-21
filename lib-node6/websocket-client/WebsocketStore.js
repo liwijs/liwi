@@ -12,6 +12,12 @@ var _WebsocketCursor = require('./WebsocketCursor');
 
 var _WebsocketCursor2 = _interopRequireDefault(_WebsocketCursor);
 
+var _msgpack = require('../msgpack');
+
+var _Query = require('./Query');
+
+var _Query2 = _interopRequireDefault(_Query);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class WebsocketStore extends _AbstractStore2.default {
@@ -27,8 +33,12 @@ class WebsocketStore extends _AbstractStore2.default {
     this.restName = restName;
   }
 
+  createQuery(key) {
+    return new _Query2.default(this, key);
+  }
+
   emit(type) {
-    if (!this.connection.isConnected()) {
+    if (this.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
     }
 
@@ -36,7 +46,11 @@ class WebsocketStore extends _AbstractStore2.default {
       args[_key - 1] = arguments[_key];
     }
 
-    return this.connection.emit('rest', { type, restName: this.restName }, args);
+    return this.connection.emit('rest', {
+      type,
+      restName: this.restName,
+      buffer: args && (0, _msgpack.encode)(args)
+    }).then(result => (0, _msgpack.decode)(result));
   }
 
   insertOne(object) {
