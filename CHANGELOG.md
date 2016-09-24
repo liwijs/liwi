@@ -1,3 +1,7 @@
+### v0.7.1
+
+- [`24320dc`](https://github.com/liwijs/liwi/commit/24320dc91408628d2c1ef885ad0082d92213f2b8) fix: rethinkdb close feed when feed is not yet open (Christophe Hurpeau)
+
 ### v0.7.0
 
 - [`f11f054`](https://github.com/liwijs/liwi/commit/f11f0540e1ddde92ef0a1e13b16ad85054b274d6) rethink-db, react, query, and msgpack (Christophe Hurpeau)
