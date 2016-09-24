@@ -1,3 +1,8 @@
+### v0.7.0
+
+- [`f11f054`](https://github.com/liwijs/liwi/commit/f11f0540e1ddde92ef0a1e13b16ad85054b274d6) rethink-db, react, query, and msgpack (Christophe Hurpeau)
+- [`b02b2f4`](https://github.com/liwijs/liwi/commit/b02b2f4935d35e5baed9608e1ff9c47789f4b6b4) realtime with rethinkdb (Christophe Hurpeau)
+
 ### v0.5.0
 
 - [`346966b`](https://github.com/liwijs/liwi/commit/346966ba8b5ea3cf221bc62ea70ac703efff0f97) websocket and other stuff (Christophe Hurpeau)
