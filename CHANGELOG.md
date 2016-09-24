@@ -1,3 +1,9 @@
+### v0.7.2
+
+- [`69109a8`](https://github.com/liwijs/liwi/commit/69109a81e42907277cf268dccdd13cc62fae23bb) fix: close rethinkdb connection (Christophe Hurpeau)
+- [`753e129`](https://github.com/liwijs/liwi/commit/753e129a53a209aa6f592af37579288010289721) chore(package): update dependencies (Christophe Hurpeau)
+
+
 ### v0.7.1
 
 - [`24320dc`](https://github.com/liwijs/liwi/commit/24320dc91408628d2c1ef885ad0082d92213f2b8) fix: rethinkdb close feed when feed is not yet open (Christophe Hurpeau)
