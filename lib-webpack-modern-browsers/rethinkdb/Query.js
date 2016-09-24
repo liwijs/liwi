@@ -24,6 +24,7 @@ export default class Query extends AbstractQuery {
       }
 
       feed.each(callback);
+      return feed;
     });
 
     if (args.length === 0) this._promise = promise;
@@ -43,7 +44,7 @@ export default class Query extends AbstractQuery {
     if (feed) {
       feed.close();
     } else if (promise) {
-      promise.then(() => feed.close());
+      promise.then(feed => feed.close());
     }
   }
 }

@@ -55,6 +55,7 @@ class Query extends _AbstractQuery2.default {
         }
 
         feed.each(callback);
+        return feed;
       });
 
       if (args.length === 0) this._promise = promise;
@@ -75,7 +76,7 @@ class Query extends _AbstractQuery2.default {
     if (feed) {
       feed.close();
     } else if (promise) {
-      promise.then(() => feed.close());
+      promise.then(feed => feed.close());
     }
   }
 }

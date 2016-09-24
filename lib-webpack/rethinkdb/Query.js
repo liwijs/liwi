@@ -45,6 +45,7 @@ var Query = function (_AbstractQuery) {
         }
 
         feed.each(callback);
+        return feed;
       });
 
       if (args.length === 0) this._promise = promise;
@@ -67,7 +68,7 @@ var Query = function (_AbstractQuery) {
       if (feed) {
         feed.close();
       } else if (promise) {
-        promise.then(function () {
+        promise.then(function (feed) {
           return feed.close();
         });
       }
