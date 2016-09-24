@@ -24,7 +24,7 @@ var _AbstractConnection2 = _interopRequireDefault(_AbstractConnection);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = new _nightingaleLogger2.default('liwi.mongo.MongoConnection');
+const logger = new _nightingaleLogger2.default('liwi.mongo.RethinkConnection');
 
 class RethinkConnection extends _AbstractConnection2.default {
 
