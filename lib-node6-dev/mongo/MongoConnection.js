@@ -100,7 +100,9 @@ class MongoConnection extends _AbstractConnection2.default {
   close() {
     this.getConnection = () => Promise.reject(new Error('Connection closed'));
     if (this._connection) {
-      return this._connection.close();
+      return this._connection.close().then(() => {
+        this._connection = null;
+      });
     } else if (this._connecting) {
       return this._connecting.then(() => this.close());
     }

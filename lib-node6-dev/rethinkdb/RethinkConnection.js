@@ -80,7 +80,9 @@ class RethinkConnection extends _AbstractConnection2.default {
   close() {
     this.getConnection = () => Promise.reject(new Error('Connection closed'));
     if (this._connection) {
-      return this._connection.close();
+      return this._connection.getPoolMaster().drain().then(() => {
+        this._connection = null;
+      });
     } else if (this._connecting) {
       return this.getConnection().then(() => this.close());
     }

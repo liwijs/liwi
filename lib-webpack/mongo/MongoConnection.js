@@ -107,7 +107,9 @@ var MongoConnection = function (_AbstractConnection) {
         return Promise.reject(new Error('Connection closed'));
       };
       if (this._connection) {
-        return this._connection.close();
+        return this._connection.close().then(function () {
+          _this3._connection = null;
+        });
       } else if (this._connecting) {
         return this._connecting.then(function () {
           return _this3.close();
