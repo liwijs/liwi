@@ -1,6 +1,6 @@
 import Logger from 'nightingale-logger';
 import { MongoClient } from 'mongodb';
-import Db from 'mongodb/lib/db';
+
 import AbstractConnection from '../store/AbstractConnection';
 
 var logger = new Logger('liwi.mongo.MongoConnection');

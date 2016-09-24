@@ -1,6 +1,6 @@
 import Logger from 'nightingale-logger';
 import AbstractQuery from '../store/AbstractQuery';
-import WebsocketStore from './WebsocketStore';
+
 import { decode } from '../msgpack';
 
 var logger = new Logger('liwi.websocket-client.query');

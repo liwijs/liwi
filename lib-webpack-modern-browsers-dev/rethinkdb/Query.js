@@ -1,6 +1,5 @@
 import _t from 'tcomb-forked';
 import AbstractQuery from '../store/AbstractQuery';
-import RethinkStore from './RethinkStore';
 
 var SubscribeReturnType = _t.interface({
   cancel: _t.Function,

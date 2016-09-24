@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import AbstractStore from './AbstractStore';
+
 
 export default class AbstractQuery {
 
@@ -23,5 +22,5 @@ export default class AbstractQuery {
 
     return this._subscribe(callback, false, args);
   }
-}
+} // eslint-disable-next-line no-unused-vars
 //# sourceMappingURL=AbstractQuery.js.map

@@ -10,10 +10,6 @@ var _tcombForked2 = _interopRequireDefault(_tcombForked);
 
 var _mongodb = require('mongodb');
 
-var _collection = require('mongodb/lib/collection');
-
-var _collection2 = _interopRequireDefault(_collection);
-
 var _db = require('mongodb/lib/db');
 
 var _db2 = _interopRequireDefault(_db);

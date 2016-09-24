@@ -4,10 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _WebsocketStore = require('./WebsocketStore');
-
-var _WebsocketStore2 = _interopRequireDefault(_WebsocketStore);
-
 var _AbstractCursor = require('../store/AbstractCursor');
 
 var _AbstractCursor2 = _interopRequireDefault(_AbstractCursor);

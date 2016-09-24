@@ -1,4 +1,4 @@
-import WebsocketStore from './WebsocketStore';
+
 import AbstractCursor from '../store/AbstractCursor';
 
 export default class WebsocketCursor extends AbstractCursor {

@@ -1,5 +1,4 @@
-import Cursor from 'mongodb/lib/cursor';
-import MongoStore from './MongoStore';
+
 import AbstractCursor from '../store/AbstractCursor';
 
 export default class MongoCursor extends AbstractCursor {

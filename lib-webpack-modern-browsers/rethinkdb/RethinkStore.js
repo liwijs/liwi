@@ -1,4 +1,4 @@
-import RethinkConnection from './RethinkConnection';
+
 import AbstractStore from '../store/AbstractStore';
 import Query from './Query';
 // import RethinkCursor from './RethinkCursor';

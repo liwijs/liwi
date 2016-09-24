@@ -1,7 +1,5 @@
 import { ObjectID } from 'mongodb';
-import Collection from 'mongodb/lib/collection';
-import Db from 'mongodb/lib/db';
-import MongoConnection from './MongoConnection';
+
 import AbstractStore from '../store/AbstractStore';
 import MongoCursor from './MongoCursor';
 

@@ -4,14 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _cursor = require('mongodb/lib/cursor');
-
-var _cursor2 = _interopRequireDefault(_cursor);
-
-var _MongoStore = require('./MongoStore');
-
-var _MongoStore2 = _interopRequireDefault(_MongoStore);
-
 var _AbstractCursor = require('../store/AbstractCursor');
 
 var _AbstractCursor2 = _interopRequireDefault(_AbstractCursor);

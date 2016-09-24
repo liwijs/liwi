@@ -4,10 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _RethinkConnection = require('./RethinkConnection');
-
-var _RethinkConnection2 = _interopRequireDefault(_RethinkConnection);
-
 var _AbstractStore = require('../store/AbstractStore');
 
 var _AbstractStore2 = _interopRequireDefault(_AbstractStore);

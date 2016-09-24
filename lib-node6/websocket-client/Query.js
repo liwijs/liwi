@@ -12,10 +12,6 @@ var _AbstractQuery = require('../store/AbstractQuery');
 
 var _AbstractQuery2 = _interopRequireDefault(_AbstractQuery);
 
-var _WebsocketStore = require('./WebsocketStore');
-
-var _WebsocketStore2 = _interopRequireDefault(_WebsocketStore);
-
 var _msgpack = require('../msgpack');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

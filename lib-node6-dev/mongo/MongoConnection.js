@@ -14,10 +14,6 @@ var _nightingaleLogger2 = _interopRequireDefault(_nightingaleLogger);
 
 var _mongodb = require('mongodb');
 
-var _db = require('mongodb/lib/db');
-
-var _db2 = _interopRequireDefault(_db);
-
 var _AbstractConnection = require('../store/AbstractConnection');
 
 var _AbstractConnection2 = _interopRequireDefault(_AbstractConnection);

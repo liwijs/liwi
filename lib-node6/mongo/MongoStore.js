@@ -6,18 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _mongodb = require('mongodb');
 
-var _collection = require('mongodb/lib/collection');
-
-var _collection2 = _interopRequireDefault(_collection);
-
-var _db = require('mongodb/lib/db');
-
-var _db2 = _interopRequireDefault(_db);
-
-var _MongoConnection = require('./MongoConnection');
-
-var _MongoConnection2 = _interopRequireDefault(_MongoConnection);
-
 var _AbstractStore = require('../store/AbstractStore');
 
 var _AbstractStore2 = _interopRequireDefault(_AbstractStore);

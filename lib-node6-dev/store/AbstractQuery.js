@@ -8,10 +8,6 @@ var _tcombForked = require('tcomb-forked');
 
 var _tcombForked2 = _interopRequireDefault(_tcombForked);
 
-var _AbstractStore = require('./AbstractStore');
-
-var _AbstractStore2 = _interopRequireDefault(_AbstractStore);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class AbstractQuery {

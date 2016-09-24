@@ -1,5 +1,5 @@
 import AbstractQuery from '../store/AbstractQuery';
-import RethinkStore from './RethinkStore';
+
 
 export default class Query extends AbstractQuery {
   fetch(callback) {

@@ -12,10 +12,6 @@ var _AbstractQuery = require('../store/AbstractQuery');
 
 var _AbstractQuery2 = _interopRequireDefault(_AbstractQuery);
 
-var _RethinkStore = require('./RethinkStore');
-
-var _RethinkStore2 = _interopRequireDefault(_RethinkStore);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const SubscribeReturnType = _tcombForked2.default.interface({
