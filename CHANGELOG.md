@@ -1,3 +1,7 @@
+### v0.7.3
+
+- [`74d1fc9`](https://github.com/liwijs/liwi/commit/74d1fc94aa503f5d714ab08e47be8f5f0b9f04b7) fix: rethink connection logger name (Christophe Hurpeau)
+
 ### v0.7.2
 
 - [`69109a8`](https://github.com/liwijs/liwi/commit/69109a81e42907277cf268dccdd13cc62fae23bb) fix: close rethinkdb connection (Christophe Hurpeau)
