@@ -17,14 +17,11 @@ export default class RestService {
     return restResource;
   }
 
-  createCursor(restName, connectedUser, _ref) {
-    var _this = this;
-
+  createCursor(restResource, connectedUser, _ref) {
     var criteria = _ref.criteria;
     var sort = _ref.sort;
     var limit = _ref.limit;
     return _asyncToGenerator(function* () {
-      var restResource = _this.get(restName);
       criteria = restResource.criteria(connectedUser, criteria || {});
       sort = restResource.sort(connectedUser, sort);
       var cursor = yield restResource.store.cursor(criteria, sort);

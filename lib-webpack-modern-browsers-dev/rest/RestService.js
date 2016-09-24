@@ -25,12 +25,10 @@ export default class RestService {
     return restResource;
   }
 
-  createCursor(restName, connectedUser, _ref) {
+  createCursor(restResource, connectedUser, _ref) {
     var criteria = _ref.criteria;
     var sort = _ref.sort;
     var limit = _ref.limit;
-
-    _assert(restName, _t.String, 'restName');
 
     _assert(connectedUser, _t.maybe(_t.Object), 'connectedUser');
 
@@ -45,7 +43,6 @@ export default class RestService {
     }), '{ criteria, sort, limit }');
 
     return _assert(_asyncToGenerator(function* () {
-      var restResource = this.get(restName);
       criteria = restResource.criteria(connectedUser, criteria || {});
       sort = restResource.sort(connectedUser, sort);
       var cursor = yield restResource.store.cursor(criteria, sort);

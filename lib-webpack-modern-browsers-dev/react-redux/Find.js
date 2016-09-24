@@ -9,7 +9,7 @@ export default class FindComponent extends Component {
     var action = _props.action;
     var dispatch = _props.dispatch;
 
-    this._find = query.run().then(result => {
+    this._find = query.fetch(result => {
       if (!this._find) return;
       dispatch(action(result));
       delete this._find;

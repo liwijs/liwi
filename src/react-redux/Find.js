@@ -11,7 +11,7 @@ export default class FindComponent extends Component {
 
   componentDidMount() {
     const { query, action, dispatch } = this.props;
-    this._find = query.run().then((result) => {
+    this._find = query.fetch((result) => {
       if (!this._find) return;
       dispatch(action(result));
       delete this._find;

@@ -28,7 +28,7 @@ var FindComponent = function (_Component) {
       var action = _props.action;
       var dispatch = _props.dispatch;
 
-      this._find = query.run().then(function (result) {
+      this._find = query.fetch(function (result) {
         if (!_this2._find) return;
         dispatch(action(result));
         delete _this2._find;

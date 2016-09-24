@@ -15,24 +15,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 class FindAndSubscribeComponent extends _react.Component {
 
   componentDidMount() {
+    // console.log('FindAndSubscribe: did mount');
     var _props = this.props;
     const query = _props.query;
     const action = _props.action;
     const dispatch = _props.dispatch;
 
-    this._find = query.fetch(result => {
-      if (!this._find) return;
-      dispatch(action(result));
-      delete this._find;
+    this._subscribe = query.fetchAndSubscribe((err, result) => {
+      if (err) {
+        // eslint-disable-next-line no-undef, no-alert
+        alert(`Unexpected error: ${ err }`);
+        return;
+      }
+
+      dispatch(action(result, true));
     });
-    this._subscribe = query.subscribe(result => dispatch(action(result, true)));
   }
 
   componentWillUnmount() {
-    if (this._find) {
-      // this._find.cancel();
-      delete this._find;
-    }
+    // console.log('FindAndSubscribe: will unmount');
     if (this._subscribe) {
       this._subscribe.stop();
       delete this._subscribe;
@@ -40,7 +41,6 @@ class FindAndSubscribeComponent extends _react.Component {
   }
 
   render() {
-    throw new Error('Will be implemented next minor');
     return this.props.children;
   }
 }

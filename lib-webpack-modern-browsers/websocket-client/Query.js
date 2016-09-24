@@ -1,4 +1,9 @@
+import Logger from 'nightingale-logger';
 import AbstractQuery from '../store/AbstractQuery';
+import WebsocketStore from './WebsocketStore';
+import { decode } from '../msgpack';
+
+var logger = new Logger('liwi.websocket-client.query');
 
 export default class Query extends AbstractQuery {
   constructor(store, key) {
@@ -7,27 +12,42 @@ export default class Query extends AbstractQuery {
   }
 
   fetch(callback) {
-    return this.store.emit('query:fetch', this.key).then(callback);
+    return this.store.emit('fetch', this.key).then(callback);
   }
 
-  subscribe(callback) {
-    throw new Error('Will be implemented next minor');
-    // let subscribeKey;
-    var promise = this.store.emit('query:subscribe', this.key).then(eventName => {
-      // subscribeKey = eventName;
-      // this.connection.on(eventName, callback);
+  _subscribe(callback) {
+    var _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+    var args = arguments[2];
+
+    var eventName = `subscribe:${ this.store.restName }.${ this.key }`;
+    this.store.connection.on(eventName, (err, result) => {
+      callback(err, decode(result));
+    });
+
+    var _stopEmitSubscribe = undefined;
+    var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(stopEmitSubscribe => {
+      _stopEmitSubscribe = stopEmitSubscribe;
+      logger.info('subscribed');
+    }).catch(err => {
+      this.store.connection.off(eventName, callback);
+      throw err;
     });
 
     var stop = () => {
       if (!promise) return;
+      _stopEmitSubscribe();
       promise.then(() => {
         promise = null;
-        // this.store.emit('query:subscribe:stop', subscribeKey);
+        this.store.connection.off(eventName, callback);
       });
     };
-    var cancel = stop;
 
-    return { cancel, stop };
+    return {
+      cancel: stop,
+      stop,
+      then: cb => Promise.resolve(promise).then(cb)
+    };
   }
 }
 //# sourceMappingURL=Query.js.map

@@ -1,13 +1,20 @@
 import _t from 'tcomb-forked';
+import Logger from 'nightingale-logger';
 import AbstractQuery from '../store/AbstractQuery';
+import WebsocketStore from './WebsocketStore';
+import { decode } from '../msgpack';
 
 var SubscribeReturnType = _t.interface({
   cancel: _t.Function,
   stop: _t.Function
 }, 'SubscribeReturnType');
 
+var logger = new Logger('liwi.websocket-client.query');
+
 export default class Query extends AbstractQuery {
   constructor(store, key) {
+    _assert(store, WebsocketStore, 'store');
+
     _assert(key, _t.String, 'key');
 
     super(store);
@@ -18,31 +25,48 @@ export default class Query extends AbstractQuery {
     _assert(callback, _t.maybe(_t.Function), 'callback');
 
     return _assert(function () {
-      return this.store.emit('query:fetch', this.key).then(callback);
+      return this.store.emit('fetch', this.key).then(callback);
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
-  subscribe(callback) {
+  _subscribe(callback) {
+    var _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+    var args = arguments[2];
+
     _assert(callback, _t.Function, 'callback');
 
+    _assert(args, _t.list(_t.Any), 'args');
+
     return _assert(function () {
-      throw new Error('Will be implemented next minor');
-      // let subscribeKey;
-      var promise = this.store.emit('query:subscribe', this.key).then(eventName => {
-        // subscribeKey = eventName;
-        // this.connection.on(eventName, callback);
+      var eventName = `subscribe:${ this.store.restName }.${ this.key }`;
+      this.store.connection.on(eventName, (err, result) => {
+        callback(err, decode(result));
+      });
+
+      var _stopEmitSubscribe = undefined;
+      var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(stopEmitSubscribe => {
+        _stopEmitSubscribe = stopEmitSubscribe;
+        logger.info('subscribed');
+      }).catch(err => {
+        this.store.connection.off(eventName, callback);
+        throw err;
       });
 
       var stop = () => {
         if (!promise) return;
+        _stopEmitSubscribe();
         promise.then(() => {
           promise = null;
-          // this.store.emit('query:subscribe:stop', subscribeKey);
+          this.store.connection.off(eventName, callback);
         });
       };
-      var cancel = stop;
 
-      return { cancel, stop };
+      return {
+        cancel: stop,
+        stop,
+        then: cb => Promise.resolve(promise).then(cb)
+      };
     }.apply(this, arguments), SubscribeReturnType, 'return value');
   }
 }

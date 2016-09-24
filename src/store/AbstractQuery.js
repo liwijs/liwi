@@ -10,4 +10,11 @@ export default class AbstractQuery<Store: AbstractStore> {
     this.queryCallback = queryCallback;
   }
 
+  fetchAndSubscribe(callback: Function, ...args) {
+    return this._subscribe(callback, true, args);
+  }
+
+  subscribe(callback: Function, ...args) {
+    return this._subscribe(callback, false, args);
+  }
 }

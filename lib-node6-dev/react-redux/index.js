@@ -3,7 +3,22 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.FindAndSubscribe = exports.Find = undefined;
+exports.subscribeReducer = exports.createSubscribeAction = exports.FindAndSubscribe = exports.Find = undefined;
+
+var _redux = require('./redux');
+
+Object.defineProperty(exports, 'createSubscribeAction', {
+  enumerable: true,
+  get: function get() {
+    return _redux.createSubscribeAction;
+  }
+});
+Object.defineProperty(exports, 'subscribeReducer', {
+  enumerable: true,
+  get: function get() {
+    return _redux.subscribeReducer;
+  }
+});
 
 var _Find2 = require('./Find');
 

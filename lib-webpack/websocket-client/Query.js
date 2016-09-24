@@ -6,7 +6,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+import Logger from 'nightingale-logger';
 import AbstractQuery from '../store/AbstractQuery';
+import WebsocketStore from './WebsocketStore';
+import { decode } from '../msgpack';
+
+var logger = new Logger('liwi.websocket-client.query');
 
 var Query = function (_AbstractQuery) {
   _inherits(Query, _AbstractQuery);
@@ -23,28 +28,47 @@ var Query = function (_AbstractQuery) {
   _createClass(Query, [{
     key: 'fetch',
     value: function fetch(callback) {
-      return this.store.emit('query:fetch', this.key).then(callback);
+      return this.store.emit('fetch', this.key).then(callback);
     }
   }, {
-    key: 'subscribe',
-    value: function subscribe(callback) {
-      throw new Error('Will be implemented next minor');
-      // let subscribeKey;
-      var promise = this.store.emit('query:subscribe', this.key).then(function (eventName) {
-        // subscribeKey = eventName;
-        // this.connection.on(eventName, callback);
+    key: '_subscribe',
+    value: function _subscribe(callback) {
+      var _this2 = this;
+
+      var _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+      var args = arguments[2];
+
+      var eventName = 'subscribe:' + this.store.restName + '.' + this.key;
+      this.store.connection.on(eventName, function (err, result) {
+        callback(err, decode(result));
+      });
+
+      var _stopEmitSubscribe = undefined;
+      var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
+        _stopEmitSubscribe = stopEmitSubscribe;
+        logger.info('subscribed');
+      }).catch(function (err) {
+        _this2.store.connection.off(eventName, callback);
+        throw err;
       });
 
       var stop = function stop() {
         if (!promise) return;
+        _stopEmitSubscribe();
         promise.then(function () {
           promise = null;
-          // this.store.emit('query:subscribe:stop', subscribeKey);
+          _this2.store.connection.off(eventName, callback);
         });
       };
-      var cancel = stop;
 
-      return { cancel: cancel, stop: stop };
+      return {
+        cancel: stop,
+        stop: stop,
+        then: function then(cb) {
+          return Promise.resolve(promise).then(cb);
+        }
+      };
     }
   }]);
 

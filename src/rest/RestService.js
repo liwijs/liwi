@@ -16,11 +16,10 @@ export default class RestService {
   }
 
   async createCursor(
-        restName: string,
-        connectedUser: ?Object,
-        { criteria, sort, limit }: { criteria: ?Object, sort: ?Object, limit: ?number },
-    ): Promise {
-    const restResource = this.get(restName);
+    restResource,
+    connectedUser: ?Object,
+    { criteria, sort, limit }: { criteria: ?Object, sort: ?Object, limit: ?number },
+  ): Promise {
     criteria = restResource.criteria(connectedUser, criteria || {});
     sort = restResource.sort(connectedUser, sort);
     const cursor = await restResource.store.cursor(criteria, sort);

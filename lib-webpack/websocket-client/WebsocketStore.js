@@ -19,7 +19,7 @@ var WebsocketStore = function (_AbstractStore) {
 
     var _this = _possibleConstructorReturn(this, (WebsocketStore.__proto__ || Object.getPrototypeOf(WebsocketStore)).call(this, websocket));
 
-    _this.keyPath = '_id';
+    _this.keyPath = 'id';
 
 
     if (!restName) {
@@ -51,7 +51,26 @@ var WebsocketStore = function (_AbstractStore) {
         restName: this.restName,
         buffer: args && encode(args)
       }).then(function (result) {
-        return decode(result);
+        return result && decode(result);
+      });
+    }
+  }, {
+    key: 'emitSubscribe',
+    value: function emitSubscribe(type) {
+      var _this2 = this;
+
+      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        args[_key2 - 1] = arguments[_key2];
+      }
+
+      var emit = function emit() {
+        return _this2.emit.apply(_this2, [type].concat(args));
+      };
+      return emit().then(function (result) {
+        _this2.connection.on('reconnect', emit);
+        return function () {
+          return _this2.connection.off('reconnect', emit);
+        };
       });
     }
   }, {
@@ -102,7 +121,7 @@ var WebsocketStore = function (_AbstractStore) {
   }, {
     key: 'findByKey',
     value: function findByKey(key) {
-      return this.findOne({ _id: key });
+      return this.findOne({ id: key });
     }
   }, {
     key: 'findOne',

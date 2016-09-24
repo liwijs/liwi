@@ -8,7 +8,7 @@ export default class WebsocketStore extends AbstractStore {
   constructor(websocket, restName) {
     super(websocket);
 
-    this.keyPath = '_id';
+    this.keyPath = 'id';
     if (!restName) {
       throw new Error(`Invalid restName: "${ restName }"`);
     }
@@ -33,7 +33,19 @@ export default class WebsocketStore extends AbstractStore {
       type,
       restName: this.restName,
       buffer: args && encode(args)
-    }).then(result => decode(result));
+    }).then(result => result && decode(result));
+  }
+
+  emitSubscribe(type) {
+    for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+      args[_key2 - 1] = arguments[_key2];
+    }
+
+    var emit = () => this.emit(type, ...args);
+    return emit().then(result => {
+      this.connection.on('reconnect', emit);
+      return () => this.connection.off('reconnect', emit);
+    });
   }
 
   insertOne(object) {
@@ -73,7 +85,7 @@ export default class WebsocketStore extends AbstractStore {
   }
 
   findByKey(key) {
-    return this.findOne({ _id: key });
+    return this.findOne({ id: key });
   }
 
   findOne(criteria, sort) {

@@ -20,7 +20,7 @@ class FindComponent extends _react.Component {
     const action = _props.action;
     const dispatch = _props.dispatch;
 
-    this._find = query.run().then(result => {
+    this._find = query.fetch(result => {
       if (!this._find) return;
       dispatch(action(result));
       delete this._find;

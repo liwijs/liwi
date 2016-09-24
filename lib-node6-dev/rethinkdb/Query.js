@@ -32,28 +32,6 @@ class Query extends _AbstractQuery2.default {
     }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
-  fetchAndSubscribe(callback) {
-    _assert(callback, _tcombForked2.default.Function, 'callback');
-
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    return this.subscribe(callback, true, args);
-  }
-
-  subscribe(callback) {
-    _assert(callback, _tcombForked2.default.Function, 'callback');
-
-    throw new Error('Will be implemented next minor');
-
-    for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-      args[_key2 - 1] = arguments[_key2];
-    }
-
-    return this.subscribe(callback, false, args);
-  }
-
   _subscribe(callback) {
     let _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
@@ -64,41 +42,33 @@ class Query extends _AbstractQuery2.default {
     _assert(args, _tcombForked2.default.list(_tcombForked2.default.Any), 'args');
 
     return _assert(function () {
-      throw new Error('Will be implemented next minor');
-      if (args.length === 0 && (!this._subscribers || this._subscribers.length === 0)) {
-        if (!this._subscribers) this._subscribers = new Set();
-        this._subscribers.add(callback);
-      }
-
       let _feed;
-      let promise = this.queryCallback(this.store.query()).changes({ includeInitial: _includeInitial }).then(feed => {
+      let promise = this.queryCallback(this.store.query()).changes({
+        includeInitial: _includeInitial,
+        includeStates: true,
+        includeTypes: true,
+        includeOffsets: true
+      }).then(feed => {
         if (args.length === 0) {
           _feed = feed;
-          this._feed = feed;
           delete this._promise;
         }
+
         feed.each(callback);
       });
 
       if (args.length === 0) this._promise = promise;
 
       const stop = () => {
-        if (args.length === 0) {
-          this._subscribers.remove(callback);
-          this._checkFeedClose();
-        } else {
-          this.closeFeed(_feed, promise);
-        }
+        this.closeFeed(_feed, promise);
       };
 
-      return { stop, cancel: stop };
+      return {
+        stop,
+        cancel: stop,
+        then: (cb, errCb) => promise.then(cb, errCb)
+      };
     }.apply(this, arguments), SubscribeReturnType, 'return value');
-  }
-
-  _checkFeedClose() {
-    if (!this._subscribers || this._subscribers.length === 0) {
-      this.closeFeed(this._feed, this._promise);
-    }
   }
 
   closeFeed(feed, promise) {

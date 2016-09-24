@@ -25,6 +25,7 @@
     "watch": "pob-watch"
   },
   "dependencies": {
+    "deep-equal": "^1.0.1",
     "mongodb": "^2.2.10",
     "msgpack5": "^3.4.0",
     "nightingale-logger": "^1.3.0",

@@ -1,3 +1,5 @@
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -10,6 +12,14 @@ var logger = new Logger('liwi.rest-websocket');
 
 export default function init(io, restService) {
   io.on('connection', function (socket) {
+    var openWatchers = new Set();
+
+    socket.on('disconnect', function () {
+      openWatchers.forEach(function (watcher) {
+        return watcher.stop();
+      });
+    });
+
     socket.on('rest', function (_ref, args, callback) {
       var type = _ref.type;
       var restName = _ref.restName;
@@ -19,8 +29,9 @@ export default function init(io, restService) {
 
         callback = args;
         args = decode(buffer);
-        console.log(args);
       }
+
+      var restResource = restService.get(restName);
 
       logger.info('rest', { type: type, restName: restName, args: args });
       switch (type) {
@@ -32,7 +43,7 @@ export default function init(io, restService) {
 
             var options = _args2[0];
 
-            return restService.createCursor(restName, socket.user, options).then(function (cursor) {
+            return restService.createCursor(restResource, socket.user, options).then(function (cursor) {
               return cursor.toArray();
             }).then(function (results) {
               return callback(null, encode(results));
@@ -52,8 +63,6 @@ export default function init(io, restService) {
         case 'deleteOne':
         case 'findOne':
           try {
-            var restResource = restService.get(restName);
-
 
             return restResource[type].apply(restResource, [socket.user].concat(_toConsumableArray(args))).then(function (result) {
               return callback(null, encode(result));
@@ -67,44 +76,53 @@ export default function init(io, restService) {
           }
           break;
 
-        case 'query:fetch':
-        case 'query:subscribe':
-          if (type === 'query:fetch') {
-            type = 'fetch';
-          }
-          if (type === 'query:subscribe') {
-            type = 'subscribe';
-          }
-
+        case 'fetch':
+        case 'subscribe':
+        case 'fetchAndSubscribe':
           try {
-            var _restResource = restService.get(restName);
-            var key = args[0];
+            var _ret = function () {
+              var _args3 = args;
 
-            var query = _restResource.query.apply(_restResource, [socket.user].concat(_toConsumableArray(args)));
-            if (!query) {
-              throw new Error('rest: ' + restName + '.' + type + '.' + key + ' is not available');
-            }
+              var _args4 = _slicedToArray(_args3, 3);
 
-            if (type === 'fetch') {
-              return query[type](function (result) {
-                return callback(null, encode(result));
-              }).catch(function (err) {
-                logger.error(type, { err: err });
-                callback(err.message || err);
-              });
-            } else {
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-            }
+              var key = _args4[0];
+              var eventName = _args4[1];
+              var otherArgs = _args4[2];
+
+
+              var query = restResource.query(socket.user, key);
+              if (!query) {
+                throw new Error('rest: ' + restName + '.' + type + '.' + key + ' is not available');
+              }
+
+              if (type === 'fetch') {
+                return {
+                  v: query[type].apply(query, [function (result) {
+                    return callback(null, encode(result));
+                  }].concat(_toConsumableArray(otherArgs))).catch(function (err) {
+                    logger.error(type, { err: err });
+                    callback(err.message || err);
+                  })
+                };
+              } else {
+                var watcher = query[type](function (err, result) {
+                  if (err) {
+                    logger.error(type, { err: err });
+                  }
+                  socket.emit(eventName, err, encode(result));
+                });
+                watcher.then(function () {
+                  return callback();
+                }, function (err) {
+                  logger.error(type, { err: err });
+                  callback(err.message || err);
+                });
+
+                openWatchers.add(watcher);
+              }
+            }();
+
+            if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
           } catch (err) {
             logger.error(type, { err: err });
             callback(err.message || err);

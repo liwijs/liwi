@@ -21,6 +21,12 @@ const logger = new _nightingaleLogger2.default('liwi.rest-websocket');
 
 function init(io, restService) {
   io.on('connection', socket => {
+    let openWatchers = new Set();
+
+    socket.on('disconnect', () => {
+      openWatchers.forEach(watcher => watcher.stop());
+    });
+
     socket.on('rest', (_ref, args, callback) => {
       let type = _ref.type;
       let restName = _ref.restName;
@@ -30,8 +36,9 @@ function init(io, restService) {
 
         callback = args;
         args = (0, _msgpack.decode)(buffer);
-        console.log(args);
       }
+
+      const restResource = restService.get(restName);
 
       logger.info('rest', { type, restName, args });
       switch (type) {
@@ -43,7 +50,7 @@ function init(io, restService) {
 
             const options = _args2[0];
 
-            return restService.createCursor(restName, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, (0, _msgpack.encode)(results))).catch(err => {
+            return restService.createCursor(restResource, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, (0, _msgpack.encode)(results))).catch(err => {
               logger.error(type, err);
               callback(err.message);
             });
@@ -59,8 +66,6 @@ function init(io, restService) {
         case 'deleteOne':
         case 'findOne':
           try {
-            const restResource = restService.get(restName);
-
 
             return restResource[type](socket.user, ...args).then(result => callback(null, (0, _msgpack.encode)(result))).catch(err => {
               logger.error(type, { err });
@@ -72,41 +77,42 @@ function init(io, restService) {
           }
           break;
 
-        case 'query:fetch':
-        case 'query:subscribe':
-          if (type === 'query:fetch') {
-            type = 'fetch';
-          }
-          if (type === 'query:subscribe') {
-            type = 'subscribe';
-          }
-
+        case 'fetch':
+        case 'subscribe':
+        case 'fetchAndSubscribe':
           try {
-            const restResource = restService.get(restName);
-            const key = args[0];
+            var _args3 = args;
 
-            const query = restResource.query(socket.user, ...args);
+            var _args4 = _slicedToArray(_args3, 3);
+
+            const key = _args4[0];
+            const eventName = _args4[1];
+            const otherArgs = _args4[2];
+
+
+            const query = restResource.query(socket.user, key);
             if (!query) {
               throw new Error(`rest: ${ restName }.${ type }.${ key } is not available`);
             }
 
             if (type === 'fetch') {
-              return query[type](result => callback(null, (0, _msgpack.encode)(result))).catch(err => {
+              return query[type](result => callback(null, (0, _msgpack.encode)(result)), ...otherArgs).catch(err => {
                 logger.error(type, { err });
                 callback(err.message || err);
               });
             } else {
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
+              const watcher = query[type]((err, result) => {
+                if (err) {
+                  logger.error(type, { err });
+                }
+                socket.emit(eventName, err, (0, _msgpack.encode)(result));
+              });
+              watcher.then(() => callback(), err => {
+                logger.error(type, { err });
+                callback(err.message || err);
+              });
+
+              openWatchers.add(watcher);
             }
           } catch (err) {
             logger.error(type, { err });

@@ -8,6 +8,12 @@ var logger = new Logger('liwi.rest-websocket');
 
 export default function init(io, restService) {
   io.on('connection', socket => {
+    var openWatchers = new Set();
+
+    socket.on('disconnect', () => {
+      openWatchers.forEach(watcher => watcher.stop());
+    });
+
     socket.on('rest', (_ref, args, callback) => {
       var type = _ref.type;
       var restName = _ref.restName;
@@ -17,8 +23,9 @@ export default function init(io, restService) {
 
         callback = args;
         args = decode(buffer);
-        console.log(args);
       }
+
+      var restResource = restService.get(restName);
 
       logger.info('rest', { type, restName, args });
       switch (type) {
@@ -30,7 +37,7 @@ export default function init(io, restService) {
 
             var options = _args2[0];
 
-            return restService.createCursor(restName, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, encode(results))).catch(err => {
+            return restService.createCursor(restResource, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, encode(results))).catch(err => {
               logger.error(type, err);
               callback(err.message);
             });
@@ -46,8 +53,6 @@ export default function init(io, restService) {
         case 'deleteOne':
         case 'findOne':
           try {
-            var restResource = restService.get(restName);
-
 
             return restResource[type](socket.user, ...args).then(result => callback(null, encode(result))).catch(err => {
               logger.error(type, { err });
@@ -59,42 +64,49 @@ export default function init(io, restService) {
           }
           break;
 
-        case 'query:fetch':
-        case 'query:subscribe':
-          if (type === 'query:fetch') {
-            type = 'fetch';
-          }
-          if (type === 'query:subscribe') {
-            type = 'subscribe';
-          }
-
+        case 'fetch':
+        case 'subscribe':
+        case 'fetchAndSubscribe':
           try {
-            var _restResource = restService.get(restName);
-            var key = args[0];
+            var _ret = function () {
+              var _args3 = args;
 
-            var query = _restResource.query(socket.user, ...args);
-            if (!query) {
-              throw new Error(`rest: ${ restName }.${ type }.${ key } is not available`);
-            }
+              var _args4 = _slicedToArray(_args3, 3);
 
-            if (type === 'fetch') {
-              return query[type](result => callback(null, encode(result))).catch(err => {
-                logger.error(type, { err });
-                callback(err.message || err);
-              });
-            } else {
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-            }
+              var key = _args4[0];
+              var eventName = _args4[1];
+              var otherArgs = _args4[2];
+
+
+              var query = restResource.query(socket.user, key);
+              if (!query) {
+                throw new Error(`rest: ${ restName }.${ type }.${ key } is not available`);
+              }
+
+              if (type === 'fetch') {
+                return {
+                  v: query[type](result => callback(null, encode(result)), ...otherArgs).catch(err => {
+                    logger.error(type, { err });
+                    callback(err.message || err);
+                  })
+                };
+              } else {
+                var watcher = query[type]((err, result) => {
+                  if (err) {
+                    logger.error(type, { err });
+                  }
+                  socket.emit(eventName, err, encode(result));
+                });
+                watcher.then(() => callback(), err => {
+                  logger.error(type, { err });
+                  callback(err.message || err);
+                });
+
+                openWatchers.add(watcher);
+              }
+            }();
+
+            if (typeof _ret === "object") return _ret.v;
           } catch (err) {
             logger.error(type, { err });
             callback(err.message || err);

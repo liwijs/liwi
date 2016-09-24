@@ -8,9 +8,19 @@ var _tcombForked = require('tcomb-forked');
 
 var _tcombForked2 = _interopRequireDefault(_tcombForked);
 
+var _nightingaleLogger = require('nightingale-logger');
+
+var _nightingaleLogger2 = _interopRequireDefault(_nightingaleLogger);
+
 var _AbstractQuery = require('../store/AbstractQuery');
 
 var _AbstractQuery2 = _interopRequireDefault(_AbstractQuery);
+
+var _WebsocketStore = require('./WebsocketStore');
+
+var _WebsocketStore2 = _interopRequireDefault(_WebsocketStore);
+
+var _msgpack = require('../msgpack');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19,8 +29,12 @@ const SubscribeReturnType = _tcombForked2.default.interface({
   stop: _tcombForked2.default.Function
 }, 'SubscribeReturnType');
 
+const logger = new _nightingaleLogger2.default('liwi.websocket-client.query');
+
 class Query extends _AbstractQuery2.default {
   constructor(store, key) {
+    _assert(store, _WebsocketStore2.default, 'store');
+
     _assert(key, _tcombForked2.default.String, 'key');
 
     super(store);
@@ -31,31 +45,48 @@ class Query extends _AbstractQuery2.default {
     _assert(callback, _tcombForked2.default.maybe(_tcombForked2.default.Function), 'callback');
 
     return _assert(function () {
-      return this.store.emit('query:fetch', this.key).then(callback);
+      return this.store.emit('fetch', this.key).then(callback);
     }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
-  subscribe(callback) {
+  _subscribe(callback) {
+    let _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+    let args = _assert(arguments[2], _tcombForked2.default.list(_tcombForked2.default.Any), 'args');
+
     _assert(callback, _tcombForked2.default.Function, 'callback');
 
+    _assert(args, _tcombForked2.default.list(_tcombForked2.default.Any), 'args');
+
     return _assert(function () {
-      throw new Error('Will be implemented next minor');
-      // let subscribeKey;
-      let promise = this.store.emit('query:subscribe', this.key).then(eventName => {
-        // subscribeKey = eventName;
-        // this.connection.on(eventName, callback);
+      const eventName = `subscribe:${ this.store.restName }.${ this.key }`;
+      this.store.connection.on(eventName, (err, result) => {
+        callback(err, (0, _msgpack.decode)(result));
+      });
+
+      let _stopEmitSubscribe;
+      let promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(stopEmitSubscribe => {
+        _stopEmitSubscribe = stopEmitSubscribe;
+        logger.info('subscribed');
+      }).catch(err => {
+        this.store.connection.off(eventName, callback);
+        throw err;
       });
 
       const stop = () => {
         if (!promise) return;
+        _stopEmitSubscribe();
         promise.then(() => {
           promise = null;
-          // this.store.emit('query:subscribe:stop', subscribeKey);
+          this.store.connection.off(eventName, callback);
         });
       };
-      const cancel = stop;
 
-      return { cancel, stop };
+      return {
+        cancel: stop,
+        stop,
+        then: cb => Promise.resolve(promise).then(cb)
+      };
     }.apply(this, arguments), SubscribeReturnType, 'return value');
   }
 }

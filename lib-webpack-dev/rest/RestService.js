@@ -36,17 +36,15 @@ var RestService = function () {
   }, {
     key: 'createCursor',
     value: function () {
-      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(restName, connectedUser, _ref2) {
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(restResource, connectedUser, _ref2) {
         var criteria = _ref2.criteria;
         var sort = _ref2.sort;
         var limit = _ref2.limit;
-        var restResource, cursor;
+        var cursor;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _assert(restName, _t.String, 'restName');
-
                 _assert(connectedUser, _t.maybe(_t.Object), 'connectedUser');
 
                 _assert({
@@ -59,21 +57,19 @@ var RestService = function () {
                   limit: _t.maybe(_t.Number)
                 }), '{ criteria, sort, limit }');
 
-                restResource = this.get(restName);
-
                 criteria = restResource.criteria(connectedUser, criteria || {});
                 sort = restResource.sort(connectedUser, sort);
-                _context.next = 8;
+                _context.next = 6;
                 return restResource.store.cursor(criteria, sort);
 
-              case 8:
+              case 6:
                 cursor = _context.sent;
 
                 limit = restResource.limit(limit);
                 if (limit) cursor.limit(connectedUser, limit);
                 return _context.abrupt('return', new RestCursor(restResource, connectedUser, cursor));
 
-              case 12:
+              case 10:
               case 'end':
                 return _context.stop();
             }

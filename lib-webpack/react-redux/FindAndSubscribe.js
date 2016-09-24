@@ -21,29 +21,26 @@ var FindAndSubscribeComponent = function (_Component) {
   _createClass(FindAndSubscribeComponent, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this2 = this;
-
+      // console.log('FindAndSubscribe: did mount');
       var _props = this.props;
       var query = _props.query;
       var action = _props.action;
       var dispatch = _props.dispatch;
 
-      this._find = query.fetch(function (result) {
-        if (!_this2._find) return;
-        dispatch(action(result));
-        delete _this2._find;
-      });
-      this._subscribe = query.subscribe(function (result) {
-        return dispatch(action(result, true));
+      this._subscribe = query.fetchAndSubscribe(function (err, result) {
+        if (err) {
+          // eslint-disable-next-line no-undef, no-alert
+          alert('Unexpected error: ' + err);
+          return;
+        }
+
+        dispatch(action(result, true));
       });
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      if (this._find) {
-        // this._find.cancel();
-        delete this._find;
-      }
+      // console.log('FindAndSubscribe: will unmount');
       if (this._subscribe) {
         this._subscribe.stop();
         delete this._subscribe;
@@ -52,7 +49,6 @@ var FindAndSubscribeComponent = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      throw new Error('Will be implemented next minor');
       return this.props.children;
     }
   }]);

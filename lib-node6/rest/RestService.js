@@ -27,14 +27,11 @@ class RestService {
     return restResource;
   }
 
-  createCursor(restName, connectedUser, _ref) {
-    var _this = this;
-
+  createCursor(restResource, connectedUser, _ref) {
     let criteria = _ref.criteria;
     let sort = _ref.sort;
     let limit = _ref.limit;
     return _asyncToGenerator(function* () {
-      const restResource = _this.get(restName);
       criteria = restResource.criteria(connectedUser, criteria || {});
       sort = restResource.sort(connectedUser, sort);
       const cursor = yield restResource.store.cursor(criteria, sort);

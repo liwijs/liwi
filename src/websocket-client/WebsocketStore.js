@@ -9,7 +9,7 @@ type WebsocketConnection = {
 }
 
 export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketConnection> {
-  keyPath = '_id';
+  keyPath = 'id';
 
   constructor(websocket: WebsocketConnection, restName: string) {
     super(websocket);
@@ -34,7 +34,15 @@ export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketCo
       type,
       restName: this.restName,
       buffer: args && encode(args),
-    }).then(result => decode(result));
+    }).then(result => result && decode(result));
+  }
+
+  emitSubscribe(type, ...args) {
+    const emit = () => this.emit(type, ...args);
+    return emit().then(result => {
+      this.connection.on('reconnect', emit);
+      return () => this.connection.off('reconnect', emit);
+    });
   }
 
   insertOne(object: ModelType): Promise<ModelType> {
@@ -74,7 +82,7 @@ export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketCo
   }
 
   findByKey(key: any) {
-    return this.findOne({ _id: key });
+    return this.findOne({ id: key });
   }
 
   findOne(criteria: Object, sort: ?Object): Promise<Object> {

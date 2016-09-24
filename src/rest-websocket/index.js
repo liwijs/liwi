@@ -11,6 +11,12 @@ type ObjectBufferType = {
 
 export default function init(io, restService) {
   io.on('connection', (socket) => {
+    let openWatchers = new Set();
+
+    socket.on('disconnect', () => {
+      openWatchers.forEach(watcher => watcher.stop());
+    });
+
     socket.on('rest', (
       { type, restName, buffer }: { type: string, restName: string, buffer: ?ObjectBufferType },
       args: ?Array<any>|Function,
@@ -23,18 +29,19 @@ export default function init(io, restService) {
 
         callback = args;
         args = decode(buffer);
-        console.log(args);
       }
 
       if (!PRODUCTION && !callback) {
         throw new Error('`callback` missing.');
       }
 
+      const restResource = restService.get(restName);
+
       logger.info('rest', { type, restName, args });
       switch (type) {
         case 'cursor toArray': {
           const [options] = args;
-          return restService.createCursor(restName, socket.user, options)
+          return restService.createCursor(restResource, socket.user, options)
             .then(cursor => cursor.toArray())
             .then(results => callback(null, encode(results)))
             .catch((err) => {
@@ -54,7 +61,6 @@ export default function init(io, restService) {
         case 'deleteOne':
         case 'findOne':
           try {
-            const restResource = restService.get(restName);
             if (!PRODUCTION && !restResource[type]) {
               throw new Error(`rest: ${restName}.${type} is not available`);
             }
@@ -71,42 +77,36 @@ export default function init(io, restService) {
           }
           break;
 
-        case 'query:fetch':
-        case 'query:subscribe':
-          if (type === 'query:fetch') {
-            type = 'fetch';
-          }
-          if (type === 'query:subscribe') {
-            type = 'subscribe';
-          }
-
+        case 'fetch':
+        case 'subscribe':
+        case 'fetchAndSubscribe':
           try {
-            const restResource = restService.get(restName);
-            const key = args[0];
+            const [key, eventName, otherArgs] = args;
 
-            const query = restResource.query(socket.user, ...args);
+            const query = restResource.query(socket.user, key);
             if (!query) {
               throw new Error(`rest: ${restName}.${type}.${key} is not available`);
             }
 
             if (type === 'fetch') {
-              return query[type](result => callback(null, encode(result)))
+              return query[type](result => callback(null, encode(result)), ...otherArgs)
                 .catch((err) => {
                   logger.error(type, { err });
                   callback(err.message || err);
                 });
             } else {
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
-              callback(null, 'coucou');
+              const watcher = query[type]((err, result) => {
+                if (err) {
+                  logger.error(type, { err });
+                }
+                socket.emit(eventName, err, encode(result));
+              });
+              watcher.then(() => callback(), err => {
+                logger.error(type, { err });
+                callback(err.message || err);
+              });
+
+              openWatchers.add(watcher);
             }
           } catch (err) {
             logger.error(type, { err });

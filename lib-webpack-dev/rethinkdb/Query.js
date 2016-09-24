@@ -33,30 +33,6 @@ var Query = function (_AbstractQuery) {
       return this.queryCallback(this.store.query()).run().then(callback);
     }
   }, {
-    key: 'fetchAndSubscribe',
-    value: function fetchAndSubscribe(callback) {
-      _assert(callback, _t.Function, 'callback');
-
-      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
-      }
-
-      return this.subscribe(callback, true, args);
-    }
-  }, {
-    key: 'subscribe',
-    value: function subscribe(callback) {
-      _assert(callback, _t.Function, 'callback');
-
-      throw new Error('Will be implemented next minor');
-
-      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-        args[_key2 - 1] = arguments[_key2];
-      }
-
-      return this.subscribe(callback, false, args);
-    }
-  }, {
     key: '_subscribe',
     value: function _subscribe(callback) {
       var _this2 = this;
@@ -69,41 +45,34 @@ var Query = function (_AbstractQuery) {
 
       _assert(args, _t.list(_t.Any), 'args');
 
-      throw new Error('Will be implemented next minor');
-      if (args.length === 0 && (!this._subscribers || this._subscribers.length === 0)) {
-        if (!this._subscribers) this._subscribers = new Set();
-        this._subscribers.add(callback);
-      }
-
       var _feed = undefined;
-      var promise = this.queryCallback(this.store.query()).changes({ includeInitial: _includeInitial }).then(function (feed) {
+      var promise = this.queryCallback(this.store.query()).changes({
+        includeInitial: _includeInitial,
+        includeStates: true,
+        includeTypes: true,
+        includeOffsets: true
+      }).then(function (feed) {
         if (args.length === 0) {
           _feed = feed;
-          _this2._feed = feed;
           delete _this2._promise;
         }
+
         feed.each(callback);
       });
 
       if (args.length === 0) this._promise = promise;
 
       var stop = function stop() {
-        if (args.length === 0) {
-          _this2._subscribers.remove(callback);
-          _this2._checkFeedClose();
-        } else {
-          _this2.closeFeed(_feed, promise);
-        }
+        _this2.closeFeed(_feed, promise);
       };
 
-      return { stop: stop, cancel: stop };
-    }
-  }, {
-    key: '_checkFeedClose',
-    value: function _checkFeedClose() {
-      if (!this._subscribers || this._subscribers.length === 0) {
-        this.closeFeed(this._feed, this._promise);
-      }
+      return {
+        stop: stop,
+        cancel: stop,
+        then: function then(cb, errCb) {
+          return promise.then(cb, errCb);
+        }
+      };
     }
   }, {
     key: 'closeFeed',
