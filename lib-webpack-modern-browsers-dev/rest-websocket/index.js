@@ -105,7 +105,8 @@ export default function init(io, restService) {
 
               var key = _args4[0];
               var eventName = _args4[1];
-              var otherArgs = _args4[2];
+              var _args4$ = _args4[2];
+              var otherArgs = _args4$ === undefined ? [] : _args4$;
 
 
               var query = restResource.query(socket.user, key);

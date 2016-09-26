@@ -7,8 +7,8 @@ export default class RestCursor {
 
   toArray() {
     return this._cursor.toArray()
-            .then(results => results && results.map(
-                result => this._restResource.transform(result, this._connectedUser),
-            ));
+      .then(results => results && results.map(
+          result => this._restResource.transform(result, this._connectedUser),
+      ));
   }
 }

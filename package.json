@@ -33,6 +33,7 @@
     "rethinkdbdash": "^2.3.23"
   },
   "devDependencies": {
+    "alp-react-redux": "^5.0.1",
     "babel-cli": "^6.14.0",
     "babel-eslint": "^6.1.2",
     "babel-preset-es2015": "^6.14.0",

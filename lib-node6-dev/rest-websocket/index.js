@@ -126,7 +126,8 @@ function init(io, restService) {
 
             const key = _args4[0];
             const eventName = _args4[1];
-            const otherArgs = _args4[2];
+            var _args4$ = _args4[2];
+            const otherArgs = _args4$ === undefined ? [] : _args4$;
 
 
             const query = restResource.query(socket.user, key);

@@ -81,7 +81,7 @@ export default function init(io, restService) {
         case 'subscribe':
         case 'fetchAndSubscribe':
           try {
-            const [key, eventName, otherArgs] = args;
+            const [key, eventName, otherArgs = []] = args;
 
             const query = restResource.query(socket.user, key);
             if (!query) {

@@ -60,8 +60,14 @@ var RethinkConnection = function (_AbstractConnection) {
 
       this._connection.getPoolMaster().on('healthy', function (healthy) {
         if (healthy === true) {
+          _this2.getConnection = function () {
+            return Promise.resolve(_this2._connection);
+          };
           logger.info('healthy');
         } else {
+          _this2.getConnection = function () {
+            return Promise.reject(new Error('Connection not healthy'));
+          };
           logger.warn('not healthy');
         }
       });
@@ -85,6 +91,7 @@ var RethinkConnection = function (_AbstractConnection) {
       };
       if (this._connection) {
         return this._connection.getPoolMaster().drain().then(function () {
+          logger.info('connection closed');
           _this3._connection = null;
         });
       } else if (this._connecting) {

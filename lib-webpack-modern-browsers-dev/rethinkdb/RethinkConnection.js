@@ -43,8 +43,10 @@ export default class RethinkConnection extends AbstractConnection {
 
     this._connection.getPoolMaster().on('healthy', healthy => {
       if (healthy === true) {
+        this.getConnection = () => Promise.resolve(this._connection);
         logger.info('healthy');
       } else {
+        this.getConnection = () => Promise.reject(new Error('Connection not healthy'));
         logger.warn('not healthy');
       }
     });
@@ -62,6 +64,7 @@ export default class RethinkConnection extends AbstractConnection {
     this.getConnection = () => Promise.reject(new Error('Connection closed'));
     if (this._connection) {
       return this._connection.getPoolMaster().drain().then(() => {
+        logger.info('connection closed');
         this._connection = null;
       });
     } else if (this._connecting) {
