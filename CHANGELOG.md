@@ -1,3 +1,7 @@
+### v0.7.4
+
+- [`57b8515`](https://github.com/liwijs/liwi/commit/57b8515818f9337e4d832a406d04f18d1cee09b2) rest websocket fix when otherArgs is empty, add more log and throw error when rethinkdb connection is not healthy (Christophe Hurpeau)
+
 ### v0.7.3
 
 - [`74d1fc9`](https://github.com/liwijs/liwi/commit/74d1fc94aa503f5d714ab08e47be8f5f0b9f04b7) fix: rethink connection logger name (Christophe Hurpeau)
