@@ -1,3 +1,7 @@
+### v0.8.0
+
+- [`23164b8`](https://github.com/liwijs/liwi/commit/23164b8a9aa0945dd1c86851b976c63a390876e0) rethinkdb: findAll and findOne requires query (Christophe Hurpeau)
+
 ### v0.7.4
 
 - [`57b8515`](https://github.com/liwijs/liwi/commit/57b8515818f9337e4d832a406d04f18d1cee09b2) rest websocket fix when otherArgs is empty, add more log and throw error when rethinkdb connection is not healthy (Christophe Hurpeau)
