@@ -158,14 +158,9 @@ export default class RethinkStore extends AbstractStore {
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }
 
-  findAll(criteria, sort) {
-    _assert(criteria, _t.maybe(_t.Object), 'criteria');
-
-    _assert(sort, _t.maybe(_t.Object), 'sort');
-
+  findAll() {
     return _assert(function () {
-      var query = this._query(criteria, sort);
-      return query.run();
+      throw new Error('Not supported, please use query().run()');
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -175,13 +170,8 @@ export default class RethinkStore extends AbstractStore {
     return this.table().get(key).run();
   }
 
-  findOne(criteria, sort) {
-    _assert(criteria, _t.Object, 'criteria');
-
-    _assert(sort, _t.maybe(_t.Object), 'sort');
-
+  findOne(query) {
     return _assert(function () {
-      var query = this._query(criteria, sort);
       return query.run({ cursor: true }).then(cursor => cursor.next().catch(err => null));
     }.apply(this, arguments), _t.Promise, 'return value');
   }

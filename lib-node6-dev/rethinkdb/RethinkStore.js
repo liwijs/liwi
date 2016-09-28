@@ -178,14 +178,9 @@ class RethinkStore extends _AbstractStore2.default {
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }
 
-  findAll(criteria, sort) {
-    _assert(criteria, _tcombForked2.default.maybe(_tcombForked2.default.Object), 'criteria');
-
-    _assert(sort, _tcombForked2.default.maybe(_tcombForked2.default.Object), 'sort');
-
+  findAll() {
     return _assert(function () {
-      const query = this._query(criteria, sort);
-      return query.run();
+      throw new Error('Not supported, please use query().run()');
     }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
@@ -195,13 +190,8 @@ class RethinkStore extends _AbstractStore2.default {
     return this.table().get(key).run();
   }
 
-  findOne(criteria, sort) {
-    _assert(criteria, _tcombForked2.default.Object, 'criteria');
-
-    _assert(sort, _tcombForked2.default.maybe(_tcombForked2.default.Object), 'sort');
-
+  findOne(query) {
     return _assert(function () {
-      const query = this._query(criteria, sort);
       return query.run({ cursor: true }).then(cursor => cursor.next().catch(err => null));
     }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }

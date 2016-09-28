@@ -109,17 +109,15 @@ export default class RethinkStore<ModelType> extends AbstractStore<RethinkConnec
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }
 
-  findAll(criteria: ?Object, sort: ?Object): Promise {
-    const query = this._query(criteria, sort);
-    return query.run();
+  findAll(): Promise {
+    throw new Error('Not supported, please use query().run()');
   }
 
   findByKey(key: any) {
     return this.table().get(key).run();
   }
 
-  findOne(criteria: Object, sort: ?Object): Promise<Object> {
-    const query = this._query(criteria, sort);
+  findOne(query): Promise<?Object> {
     return query.run({ cursor: true }).then(cursor => cursor.next().catch(err => null));
   }
 }

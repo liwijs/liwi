@@ -107,17 +107,15 @@ export default class RethinkStore extends AbstractStore {
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }
 
-  findAll(criteria, sort) {
-    var query = this._query(criteria, sort);
-    return query.run();
+  findAll() {
+    throw new Error('Not supported, please use query().run()');
   }
 
   findByKey(key) {
     return this.table().get(key).run();
   }
 
-  findOne(criteria, sort) {
-    var query = this._query(criteria, sort);
+  findOne(query) {
     return query.run({ cursor: true }).then(cursor => cursor.next().catch(err => null));
   }
 }

@@ -151,9 +151,8 @@ var RethinkStore = function (_AbstractStore) {
     }
   }, {
     key: 'findAll',
-    value: function findAll(criteria, sort) {
-      var query = this._query(criteria, sort);
-      return query.run();
+    value: function findAll() {
+      throw new Error('Not supported, please use query().run()');
     }
   }, {
     key: 'findByKey',
@@ -162,8 +161,7 @@ var RethinkStore = function (_AbstractStore) {
     }
   }, {
     key: 'findOne',
-    value: function findOne(criteria, sort) {
-      var query = this._query(criteria, sort);
+    value: function findOne(query) {
       return query.run({ cursor: true }).then(function (cursor) {
         return cursor.next().catch(function (err) {
           return null;
