@@ -29,7 +29,7 @@ class Query extends _AbstractQuery2.default {
   }
 
   _subscribe(callback) {
-    let _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+    let _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
     let args = arguments[2];
 

@@ -2,7 +2,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 import _t from 'tcomb-forked';
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35,54 +35,49 @@ var RestService = function () {
     }
   }, {
     key: 'createCursor',
-    value: function () {
-      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(restResource, connectedUser, _ref2) {
-        var criteria = _ref2.criteria;
-        var sort = _ref2.sort;
-        var limit = _ref2.limit;
+    value: function createCursor(restResource, connectedUser, _ref) {
+      var criteria = _ref.criteria,
+          sort = _ref.sort,
+          limit = _ref.limit;
+
+      _assert(connectedUser, _t.maybe(_t.Object), 'connectedUser');
+
+      _assert({
+        criteria: criteria,
+        sort: sort,
+        limit: limit
+      }, _t.interface({
+        criteria: _t.maybe(_t.Object),
+        sort: _t.maybe(_t.Object),
+        limit: _t.maybe(_t.Number)
+      }), '{ criteria, sort, limit }');
+
+      return _assert(_asyncToGenerator(regeneratorRuntime.mark(function _callee() {
         var cursor;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _assert(connectedUser, _t.maybe(_t.Object), 'connectedUser');
-
-                _assert({
-                  criteria: criteria,
-                  sort: sort,
-                  limit: limit
-                }, _t.interface({
-                  criteria: _t.maybe(_t.Object),
-                  sort: _t.maybe(_t.Object),
-                  limit: _t.maybe(_t.Number)
-                }), '{ criteria, sort, limit }');
-
                 criteria = restResource.criteria(connectedUser, criteria || {});
                 sort = restResource.sort(connectedUser, sort);
-                _context.next = 6;
+                _context.next = 4;
                 return restResource.store.cursor(criteria, sort);
 
-              case 6:
+              case 4:
                 cursor = _context.sent;
 
                 limit = restResource.limit(limit);
                 if (limit) cursor.limit(connectedUser, limit);
                 return _context.abrupt('return', new RestCursor(restResource, connectedUser, cursor));
 
-              case 10:
+              case 8:
               case 'end':
                 return _context.stop();
             }
           }
         }, _callee, this);
-      }));
-
-      function createCursor(_x, _x2, _x3) {
-        return _ref.apply(this, arguments);
-      }
-
-      return createCursor;
-    }()
+      })).apply(this, arguments), _t.Promise, 'return value');
+    }
   }]);
 
   return RestService;
@@ -101,11 +96,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

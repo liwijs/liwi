@@ -76,10 +76,10 @@ class MongoStore extends _AbstractStore2.default {
         object.created = new Date();
       }
 
-      return this.collection.then(collection => collection.insertOne(object)).then(_ref => {
-        let result = _ref.result;
-        let connection = _ref.connection;
-        let ops = _ref.ops;
+      return this.collection.then(collection => collection.insertOne(object)).then((_ref) => {
+        let result = _ref.result,
+            connection = _ref.connection,
+            ops = _ref.ops;
 
         if (!result.ok || result.n !== 1) {
           throw new Error('Fail to insert');
@@ -214,11 +214,7 @@ function _assert(x, type, name) {
 
       _tcombForked2.default.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _tcombForked2.default.fail(message());
   }
 

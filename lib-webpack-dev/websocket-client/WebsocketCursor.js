@@ -32,9 +32,11 @@ var WebsocketCursor = function (_AbstractCursor) {
     value: function limit(newLimit) {
       _assert(newLimit, _t.Number, 'newLimit');
 
-      if (this._idCursor) throw new Error('Cursor already created');
-      this._options.limit = newLimit;
-      return Promise.resolve(this);
+      return _assert(function () {
+        if (this._idCursor) throw new Error('Cursor already created');
+        this._options.limit = newLimit;
+        return Promise.resolve(this);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
 
     /* results */
@@ -53,19 +55,21 @@ var WebsocketCursor = function (_AbstractCursor) {
   }, {
     key: 'emit',
     value: function emit(type) {
-      var _this3 = this;
-
       for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         args[_key - 1] = arguments[_key];
       }
 
-      if (!this._idCursor) {
-        return this._create().then(function () {
-          return _this3.emit.apply(_this3, [type].concat(args));
-        });
-      }
+      return _assert(function () {
+        var _this3 = this;
 
-      return this.store.emit('cursor', { type: type, id: this._idCursor }, args);
+        if (!this._idCursor) {
+          return this._create().then(function () {
+            return _this3.emit.apply(_this3, [type].concat(args));
+          });
+        }
+
+        return this.store.emit('cursor', { type: type, id: this._idCursor }, args);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'advance',
@@ -78,23 +82,27 @@ var WebsocketCursor = function (_AbstractCursor) {
   }, {
     key: 'next',
     value: function next() {
-      var _this4 = this;
+      return _assert(function () {
+        var _this4 = this;
 
-      return this.emit('next').then(function (result) {
-        _this4._result = result;
-        _this4.key = result && result[_this4._store.keyPath];
-        return _this4.key;
-      });
+        return this.emit('next').then(function (result) {
+          _this4._result = result;
+          _this4.key = result && result[_this4._store.keyPath];
+          return _this4.key;
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'result',
     value: function result() {
-      return Promise.resolve(this._result);
+      return _assert(function () {
+        return Promise.resolve(this._result);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'count',
     value: function count() {
-      var applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+      var applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
       _assert(applyLimit, _t.Boolean, 'applyLimit');
 
@@ -103,22 +111,26 @@ var WebsocketCursor = function (_AbstractCursor) {
   }, {
     key: 'close',
     value: function close() {
-      if (!this._store) return Promise.resolve();
+      return _assert(function () {
+        if (!this._store) return Promise.resolve();
 
-      var closedPromise = this._idCursor ? this.emit('close') : Promise.resolve();
-      this._idCursor = this._options = null;
-      this._store = this._result = undefined;
-      return closedPromise;
+        var closedPromise = this._idCursor ? this.emit('close') : Promise.resolve();
+        this._idCursor = this._options = null;
+        this._store = this._result = undefined;
+        return closedPromise;
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'toArray',
     value: function toArray() {
-      var _this5 = this;
+      return _assert(function () {
+        var _this5 = this;
 
-      return this.store.emit('cursor toArray', this._options).then(function (result) {
-        _this5.close();
-        return result;
-      });
+        return this.store.emit('cursor toArray', this._options).then(function (result) {
+          _this5.close();
+          return result;
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }]);
 
@@ -138,11 +150,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

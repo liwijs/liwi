@@ -87,9 +87,9 @@ class RethinkStore extends _AbstractStore2.default {
         object.created = new Date();
       }
 
-      return this.table().insert(object).then(_ref => {
-        let inserted = _ref.inserted;
-        let generatedKeys = _ref.generated_keys;
+      return this.table().insert(object).then((_ref) => {
+        let inserted = _ref.inserted,
+            generatedKeys = _ref.generated_keys;
 
         if (inserted !== 1) throw new Error('Could not insert');
         object.id = generatedKeys[0];
@@ -209,11 +209,7 @@ function _assert(x, type, name) {
 
       _tcombForked2.default.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _tcombForked2.default.fail(message());
   }
 

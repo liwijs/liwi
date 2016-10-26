@@ -52,9 +52,9 @@ var MongoStore = function (_AbstractStore) {
       return this.collection.then(function (collection) {
         return collection.insertOne(object);
       }).then(function (_ref) {
-        var result = _ref.result;
-        var connection = _ref.connection;
-        var ops = _ref.ops;
+        var result = _ref.result,
+            connection = _ref.connection,
+            ops = _ref.ops;
 
         if (!result.ok || result.n !== 1) {
           throw new Error('Fail to insert');

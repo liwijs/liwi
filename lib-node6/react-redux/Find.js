@@ -16,9 +16,9 @@ class FindComponent extends _react.Component {
 
   componentDidMount() {
     var _props = this.props;
-    const query = _props.query;
-    const action = _props.action;
-    const dispatch = _props.dispatch;
+    const query = _props.query,
+          action = _props.action,
+          dispatch = _props.dispatch;
 
     this._find = query.fetch(result => {
       if (!this._find) return;

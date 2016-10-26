@@ -54,10 +54,10 @@ export default class MongoStore extends AbstractStore {
         object.created = new Date();
       }
 
-      return this.collection.then(collection => collection.insertOne(object)).then(_ref => {
-        var result = _ref.result;
-        var connection = _ref.connection;
-        var ops = _ref.ops;
+      return this.collection.then(collection => collection.insertOne(object)).then((_ref) => {
+        var result = _ref.result,
+            connection = _ref.connection,
+            ops = _ref.ops;
 
         if (!result.ok || result.n !== 1) {
           throw new Error('Fail to insert');
@@ -191,11 +191,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

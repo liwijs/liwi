@@ -54,11 +54,7 @@ function _assert(x, type, name) {
 
       _tcombForked2.default.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _tcombForked2.default.fail(message());
   }
 

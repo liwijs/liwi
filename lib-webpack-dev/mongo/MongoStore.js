@@ -47,33 +47,37 @@ var MongoStore = function (_AbstractStore) {
   _createClass(MongoStore, [{
     key: 'create',
     value: function create() {
-      return Promise.resolve();
+      return _assert(function () {
+        return Promise.resolve();
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'insertOne',
     value: function insertOne(object) {
       _assert(object, _t.Any, 'object');
 
-      if (!object._id) {
-        object._id = new ObjectID().toString();
-      }
-      if (!object.created) {
-        object.created = new Date();
-      }
-
-      return this.collection.then(function (collection) {
-        return collection.insertOne(object);
-      }).then(function (_ref) {
-        var result = _ref.result;
-        var connection = _ref.connection;
-        var ops = _ref.ops;
-
-        if (!result.ok || result.n !== 1) {
-          throw new Error('Fail to insert');
+      return _assert(function () {
+        if (!object._id) {
+          object._id = new ObjectID().toString();
         }
-      }).then(function () {
-        return object;
-      });
+        if (!object.created) {
+          object.created = new Date();
+        }
+
+        return this.collection.then(function (collection) {
+          return collection.insertOne(object);
+        }).then(function (_ref) {
+          var result = _ref.result,
+              connection = _ref.connection,
+              ops = _ref.ops;
+
+          if (!result.ok || result.n !== 1) {
+            throw new Error('Fail to insert');
+          }
+        }).then(function () {
+          return object;
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'updateOne',
@@ -85,41 +89,47 @@ var MongoStore = function (_AbstractStore) {
     value: function replaceOne(object) {
       _assert(object, _t.Any, 'object');
 
-      if (!object.updated) {
-        object.updated = new Date();
-      }
+      return _assert(function () {
+        if (!object.updated) {
+          object.updated = new Date();
+        }
 
-      return this.collection.then(function (collection) {
-        return collection.updateOne({ _id: object._id }, object);
-      }).then(function () {
-        return object;
-      });
+        return this.collection.then(function (collection) {
+          return collection.updateOne({ _id: object._id }, object);
+        }).then(function () {
+          return object;
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'upsertOne',
     value: function upsertOne(object) {
       _assert(object, _t.Any, 'object');
 
-      if (!object.updated) {
-        object.updated = new Date();
-      }
+      return _assert(function () {
+        if (!object.updated) {
+          object.updated = new Date();
+        }
 
-      return this.collection.then(function (collection) {
-        return collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true });
-      }).then(function () {
-        return object;
-      });
+        return this.collection.then(function (collection) {
+          return collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true });
+        }).then(function () {
+          return object;
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'replaceSeveral',
     value: function replaceSeveral(objects) {
-      var _this2 = this;
-
       _assert(objects, _t.list(_t.Any), 'objects');
 
-      return Promise.all(objects.map(function (object) {
-        return _this2.updateOne(object);
-      }));
+      return _assert(function () {
+        var _this2 = this;
+
+        return Promise.all(objects.map(function (object) {
+          return _this2.updateOne(object);
+        }));
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: '_partialUpdate',
@@ -143,64 +153,74 @@ var MongoStore = function (_AbstractStore) {
 
       _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-      partialUpdate = this._partialUpdate(partialUpdate);
-      return this.collection.then(function (collection) {
-        return collection.updateOne({ _id: key }, partialUpdate);
-      });
+      return _assert(function () {
+        partialUpdate = this._partialUpdate(partialUpdate);
+        return this.collection.then(function (collection) {
+          return collection.updateOne({ _id: key }, partialUpdate);
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'partialUpdateOne',
     value: function partialUpdateOne(object, partialUpdate) {
-      var _this3 = this;
-
       _assert(object, _t.Any, 'object');
 
       _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-      partialUpdate = this._partialUpdate(partialUpdate);
-      return this.partialUpdateByKey(object._id, partialUpdate).then(function (res) {
-        return _this3.findByKey(object._id);
-      });
+      return _assert(function () {
+        var _this3 = this;
+
+        partialUpdate = this._partialUpdate(partialUpdate);
+        return this.partialUpdateByKey(object._id, partialUpdate).then(function (res) {
+          return _this3.findByKey(object._id);
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'partialUpdateMany',
     value: function partialUpdateMany(criteria, partialUpdate) {
       _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-      partialUpdate = this._partialUpdate(partialUpdate);
-      return this.collection.then(function (collection) {
-        return collection.updateMany(criteria, partialUpdate);
-      }).then(function (res) {
-        return null;
-      }); // TODO return updated object
+      return _assert(function () {
+        partialUpdate = this._partialUpdate(partialUpdate);
+        return this.collection.then(function (collection) {
+          return collection.updateMany(criteria, partialUpdate);
+        }).then(function (res) {
+          return null;
+        }); // TODO return updated object
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'deleteByKey',
     value: function deleteByKey(key) {
       _assert(key, _t.Any, 'key');
 
-      return this.collection.then(function (collection) {
-        return collection.removeOne({ _id: key });
-      }).then(function () {
-        return null;
-      });
+      return _assert(function () {
+        return this.collection.then(function (collection) {
+          return collection.removeOne({ _id: key });
+        }).then(function () {
+          return null;
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'cursor',
     value: function cursor(criteria, sort) {
-      var _this4 = this;
-
       _assert(criteria, _t.maybe(_t.Object), 'criteria');
 
       _assert(sort, _t.maybe(_t.Object), 'sort');
 
-      return this.collection.then(function (collection) {
-        return collection.find(criteria);
-      }).then(sort && function (cursor) {
-        return cursor.sort(sort);
-      }).then(function (cursor) {
-        return new MongoCursor(_this4, cursor);
-      });
+      return _assert(function () {
+        var _this4 = this;
+
+        return this.collection.then(function (collection) {
+          return collection.find(criteria);
+        }).then(sort && function (cursor) {
+          return cursor.sort(sort);
+        }).then(function (cursor) {
+          return new MongoCursor(_this4, cursor);
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'findByKey',
@@ -216,22 +236,26 @@ var MongoStore = function (_AbstractStore) {
 
       _assert(sort, _t.maybe(_t.Object), 'sort');
 
-      return this.collection.then(function (collection) {
-        return collection.find(criteria);
-      }).then(sort && function (cursor) {
-        return cursor.sort(sort);
-      }).then(function (cursor) {
-        return cursor.limit(1).next();
-      });
+      return _assert(function () {
+        return this.collection.then(function (collection) {
+          return collection.find(criteria);
+        }).then(sort && function (cursor) {
+          return cursor.sort(sort);
+        }).then(function (cursor) {
+          return cursor.limit(1).next();
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'collection',
     get: function get() {
-      if (this.connection.connectionFailed) {
-        return Promise.reject(new Error('MongoDB connection failed'));
-      }
+      return _assert(function () {
+        if (this.connection.connectionFailed) {
+          return Promise.reject(new Error('MongoDB connection failed'));
+        }
 
-      return Promise.resolve(this._collection);
+        return Promise.resolve(this._collection);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }]);
 
@@ -251,11 +275,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

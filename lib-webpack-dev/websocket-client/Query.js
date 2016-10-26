@@ -41,14 +41,14 @@ var Query = function (_AbstractQuery) {
     value: function fetch(callback) {
       _assert(callback, _t.maybe(_t.Function), 'callback');
 
-      return this.store.emit('fetch', this.key).then(callback);
+      return _assert(function () {
+        return this.store.emit('fetch', this.key).then(callback);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: '_subscribe',
     value: function _subscribe(callback) {
-      var _this2 = this;
-
-      var _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+      var _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
       var args = arguments[2];
 
@@ -56,36 +56,40 @@ var Query = function (_AbstractQuery) {
 
       _assert(args, _t.list(_t.Any), 'args');
 
-      var eventName = 'subscribe:' + this.store.restName + '.' + this.key;
-      this.store.connection.on(eventName, function (err, result) {
-        callback(err, decode(result));
-      });
+      return _assert(function () {
+        var _this2 = this;
 
-      var _stopEmitSubscribe = undefined;
-      var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
-        _stopEmitSubscribe = stopEmitSubscribe;
-        logger.info('subscribed');
-      }).catch(function (err) {
-        _this2.store.connection.off(eventName, callback);
-        throw err;
-      });
-
-      var stop = function stop() {
-        if (!promise) return;
-        _stopEmitSubscribe();
-        promise.then(function () {
-          promise = null;
-          _this2.store.connection.off(eventName, callback);
+        var eventName = 'subscribe:' + this.store.restName + '.' + this.key;
+        this.store.connection.on(eventName, function (err, result) {
+          callback(err, decode(result));
         });
-      };
 
-      return {
-        cancel: stop,
-        stop: stop,
-        then: function then(cb) {
-          return Promise.resolve(promise).then(cb);
-        }
-      };
+        var _stopEmitSubscribe = void 0;
+        var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
+          _stopEmitSubscribe = stopEmitSubscribe;
+          logger.info('subscribed');
+        }).catch(function (err) {
+          _this2.store.connection.off(eventName, callback);
+          throw err;
+        });
+
+        var stop = function stop() {
+          if (!promise) return;
+          _stopEmitSubscribe();
+          promise.then(function () {
+            promise = null;
+            _this2.store.connection.off(eventName, callback);
+          });
+        };
+
+        return {
+          cancel: stop,
+          stop: stop,
+          then: function then(cb) {
+            return Promise.resolve(promise).then(cb);
+          }
+        };
+      }.apply(this, arguments), SubscribeReturnType, 'return value');
     }
   }]);
 
@@ -105,11 +109,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

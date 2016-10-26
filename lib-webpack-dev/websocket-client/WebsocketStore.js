@@ -91,21 +91,27 @@ var WebsocketStore = function (_AbstractStore) {
     value: function insertOne(object) {
       _assert(object, _t.Any, 'object');
 
-      return this.emit('insertOne', object);
+      return _assert(function () {
+        return this.emit('insertOne', object);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'updateOne',
     value: function updateOne(object) {
       _assert(object, _t.Any, 'object');
 
-      return this.emit('updateOne', object);
+      return _assert(function () {
+        return this.emit('updateOne', object);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'updateSeveral',
     value: function updateSeveral(objects) {
       _assert(objects, _t.list(_t.Any), 'objects');
 
-      return this.emit('updateSeveral', objects);
+      return _assert(function () {
+        return this.emit('updateSeveral', objects);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'partialUpdateByKey',
@@ -114,7 +120,9 @@ var WebsocketStore = function (_AbstractStore) {
 
       _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-      return this.emit('partialUpdateByKey', key, partialUpdate);
+      return _assert(function () {
+        return this.emit('partialUpdateByKey', key, partialUpdate);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'partialUpdateOne',
@@ -123,28 +131,36 @@ var WebsocketStore = function (_AbstractStore) {
 
       _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-      return this.emit('partialUpdateOne', object, partialUpdate);
+      return _assert(function () {
+        return this.emit('partialUpdateOne', object, partialUpdate);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'partialUpdateMany',
     value: function partialUpdateMany(criteria, partialUpdate) {
       _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-      return this.emit('partialUpdateMany', criteria, partialUpdate);
+      return _assert(function () {
+        return this.emit('partialUpdateMany', criteria, partialUpdate);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'deleteByKey',
     value: function deleteByKey(key) {
       _assert(key, _t.Any, 'key');
 
-      return this.emit('deleteByKey', key);
+      return _assert(function () {
+        return this.emit('deleteByKey', key);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'deleteOne',
     value: function deleteOne(object) {
       _assert(object, _t.Any, 'object');
 
-      return this.emit('deleteOne', object);
+      return _assert(function () {
+        return this.emit('deleteOne', object);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'cursor',
@@ -153,7 +169,9 @@ var WebsocketStore = function (_AbstractStore) {
 
       _assert(sort, _t.maybe(_t.Object), 'sort');
 
-      return Promise.resolve(new WebsocketCursor(this, { criteria: criteria, sort: sort }));
+      return _assert(function () {
+        return Promise.resolve(new WebsocketCursor(this, { criteria: criteria, sort: sort }));
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'findByKey',
@@ -169,7 +187,9 @@ var WebsocketStore = function (_AbstractStore) {
 
       _assert(sort, _t.maybe(_t.Object), 'sort');
 
-      return this.emit('findOne', criteria, sort);
+      return _assert(function () {
+        return this.emit('findOne', criteria, sort);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }]);
 
@@ -189,11 +209,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

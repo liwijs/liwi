@@ -1,4 +1,4 @@
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -39,8 +39,8 @@ export default function init(io, restService) {
     var nextIdCursor = 1;
 
     socket.on('rest', function (_ref, args, callback) {
-      var type = _ref.type;
-      var restName = _ref.restName;
+      var type = _ref.type,
+          restName = _ref.restName;
 
       logger.info('rest', { type: type, restName: restName, args: args });
       switch (type) {
@@ -53,9 +53,8 @@ export default function init(io, restService) {
 
               var id = nextIdCursor++;
 
-              var _args = _slicedToArray(args, 1);
-
-              var options = _args[0];
+              var _args = _slicedToArray(args, 1),
+                  options = _args[0];
 
               var cursor = restService.createCursor(restName, options);
               if (!cursor) return {
@@ -77,9 +76,8 @@ export default function init(io, restService) {
 
         case 'cursor toArray':
           {
-            var _args2 = _slicedToArray(args, 1);
-
-            var _options = _args2[0];
+            var _args2 = _slicedToArray(args, 1),
+                _options = _args2[0];
 
             return restService.createCursor(restName, _options).then(function (cursor) {
               return cursor.toArray();
@@ -92,13 +90,11 @@ export default function init(io, restService) {
 
         case 'cursor':
           {
-            var _args3 = _slicedToArray(args, 2);
-
-            var _args3$ = _args3[0];
-            var typeCursorAction = _args3$.type;
-            var idCursor = _args3$.id;
-            var cursorArgs = _args3[1];
-
+            var _args3 = _slicedToArray(args, 2),
+                _args3$ = _args3[0],
+                typeCursorAction = _args3$.type,
+                idCursor = _args3$.id,
+                cursorArgs = _args3[1];
 
             var _cursor = openCursors.get(idCursor);
             if (!_cursor) return callback('failed to find cursor "' + idCursor + '"');

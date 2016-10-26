@@ -17,9 +17,9 @@ class FindAndSubscribeComponent extends _react.Component {
   componentDidMount() {
     // console.log('FindAndSubscribe: did mount');
     var _props = this.props;
-    const query = _props.query;
-    const action = _props.action;
-    const dispatch = _props.dispatch;
+    const query = _props.query,
+          action = _props.action,
+          dispatch = _props.dispatch;
 
     this._subscribe = query.fetchAndSubscribe((err, result) => {
       if (err) {

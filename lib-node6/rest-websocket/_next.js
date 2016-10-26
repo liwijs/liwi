@@ -41,8 +41,8 @@ function init(io, restService) {
     let nextIdCursor = 1;
 
     socket.on('rest', (_ref, args, callback) => {
-      let type = _ref.type;
-      let restName = _ref.restName;
+      let type = _ref.type,
+          restName = _ref.restName;
 
       logger.info('rest', { type, restName, args });
       switch (type) {
@@ -78,12 +78,12 @@ function init(io, restService) {
 
         case 'cursor':
           {
-            var _args3 = _slicedToArray(args, 2);
+            var _args3 = _slicedToArray(args, 2),
+                _args3$ = _args3[0];
 
-            var _args3$ = _args3[0];
-            const typeCursorAction = _args3$.type;
-            const idCursor = _args3$.id;
-            const cursorArgs = _args3[1];
+            const typeCursorAction = _args3$.type,
+                  idCursor = _args3$.id,
+                  cursorArgs = _args3[1];
 
 
             const cursor = openCursors.get(idCursor);

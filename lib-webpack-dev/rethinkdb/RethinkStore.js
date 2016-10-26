@@ -77,26 +77,30 @@ var RethinkStore = function (_AbstractStore) {
   }, {
     key: 'create',
     value: function create() {
-      return this.r.tableCreate(this._tableName);
+      return _assert(function () {
+        return this.r.tableCreate(this._tableName);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'insertOne',
     value: function insertOne(object) {
       _assert(object, _t.Any, 'object');
 
-      if (!object.created) {
-        object.created = new Date();
-      }
+      return _assert(function () {
+        if (!object.created) {
+          object.created = new Date();
+        }
 
-      return this.table().insert(object).then(function (_ref) {
-        var inserted = _ref.inserted;
-        var generatedKeys = _ref.generated_keys;
+        return this.table().insert(object).then(function (_ref) {
+          var inserted = _ref.inserted,
+              generatedKeys = _ref.generated_keys;
 
-        if (inserted !== 1) throw new Error('Could not insert');
-        object.id = generatedKeys[0];
-      }).then(function () {
-        return object;
-      });
+          if (inserted !== 1) throw new Error('Could not insert');
+          object.id = generatedKeys[0];
+        }).then(function () {
+          return object;
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'updateOne',
@@ -108,37 +112,43 @@ var RethinkStore = function (_AbstractStore) {
     value: function replaceOne(object) {
       _assert(object, _t.Any, 'object');
 
-      if (!object.updated) {
-        object.updated = new Date();
-      }
+      return _assert(function () {
+        if (!object.updated) {
+          object.updated = new Date();
+        }
 
-      return this.table().get(object.id).replace(object).then(function () {
-        return object;
-      });
+        return this.table().get(object.id).replace(object).then(function () {
+          return object;
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'upsertOne',
     value: function upsertOne(object) {
       _assert(object, _t.Any, 'object');
 
-      if (!object.updated) {
-        object.updated = new Date();
-      }
+      return _assert(function () {
+        if (!object.updated) {
+          object.updated = new Date();
+        }
 
-      return this.table().insert(object, { conflict: 'replace' }).run().then(function () {
-        return object;
-      });
+        return this.table().insert(object, { conflict: 'replace' }).run().then(function () {
+          return object;
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'replaceSeveral',
     value: function replaceSeveral(objects) {
-      var _this3 = this;
-
       _assert(objects, _t.list(_t.Any), 'objects');
 
-      return Promise.all(objects.map(function (object) {
-        return _this3.replaceOne(object);
-      }));
+      return _assert(function () {
+        var _this3 = this;
+
+        return Promise.all(objects.map(function (object) {
+          return _this3.replaceOne(object);
+        }));
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'partialUpdateByKey',
@@ -147,7 +157,9 @@ var RethinkStore = function (_AbstractStore) {
 
       _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-      return this.table().get(key).update(partialUpdate).run();
+      return _assert(function () {
+        return this.table().get(key).update(partialUpdate).run();
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'partialUpdateOne',
@@ -156,23 +168,29 @@ var RethinkStore = function (_AbstractStore) {
 
       _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-      return this.table().get(object.id).update(partialUpdate, { returnChanges: true }).then(function (res) {
-        return res.changes.new_val;
-      });
+      return _assert(function () {
+        return this.table().get(object.id).update(partialUpdate, { returnChanges: true }).then(function (res) {
+          return res.changes.new_val;
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'partialUpdateMany',
     value: function partialUpdateMany(criteria, partialUpdate) {
       _assert(partialUpdate, _t.Object, 'partialUpdate');
 
-      return this.table().filter(criteria).update(partialUpdate).run();
+      return _assert(function () {
+        return this.table().filter(criteria).update(partialUpdate).run();
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'deleteByKey',
     value: function deleteByKey(key) {
       _assert(key, _t.Any, 'key');
 
-      return this.table().get(key).delete().run();
+      return _assert(function () {
+        return this.table().get(key).delete().run();
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'cursor',
@@ -187,7 +205,9 @@ var RethinkStore = function (_AbstractStore) {
   }, {
     key: 'findAll',
     value: function findAll() {
-      throw new Error('Not supported, please use query().run()');
+      return _assert(function () {
+        throw new Error('Not supported, please use query().run()');
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'findByKey',
@@ -199,11 +219,13 @@ var RethinkStore = function (_AbstractStore) {
   }, {
     key: 'findOne',
     value: function findOne(query) {
-      return query.run({ cursor: true }).then(function (cursor) {
-        return cursor.next().catch(function (err) {
-          return null;
+      return _assert(function () {
+        return query.run({ cursor: true }).then(function (cursor) {
+          return cursor.next().catch(function (err) {
+            return null;
+          });
         });
-      });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }]);
 
@@ -223,11 +245,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

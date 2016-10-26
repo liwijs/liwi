@@ -29,14 +29,14 @@ var Query = function (_AbstractQuery) {
     value: function fetch(callback) {
       _assert(callback, _t.maybe(_t.Function), 'callback');
 
-      return this.queryCallback(this.store.query()).run().then(callback);
+      return _assert(function () {
+        return this.queryCallback(this.store.query()).run().then(callback);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: '_subscribe',
     value: function _subscribe(callback) {
-      var _this2 = this;
-
-      var _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+      var _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
       var args = arguments[2];
 
@@ -44,35 +44,39 @@ var Query = function (_AbstractQuery) {
 
       _assert(args, _t.list(_t.Any), 'args');
 
-      var _feed = undefined;
-      var promise = this.queryCallback(this.store.query()).changes({
-        includeInitial: _includeInitial,
-        includeStates: true,
-        includeTypes: true,
-        includeOffsets: true
-      }).then(function (feed) {
-        if (args.length === 0) {
-          _feed = feed;
-          delete _this2._promise;
-        }
+      return _assert(function () {
+        var _this2 = this;
 
-        feed.each(callback);
-        return feed;
-      });
+        var _feed = void 0;
+        var promise = this.queryCallback(this.store.query()).changes({
+          includeInitial: _includeInitial,
+          includeStates: true,
+          includeTypes: true,
+          includeOffsets: true
+        }).then(function (feed) {
+          if (args.length === 0) {
+            _feed = feed;
+            delete _this2._promise;
+          }
 
-      if (args.length === 0) this._promise = promise;
+          feed.each(callback);
+          return feed;
+        });
 
-      var stop = function stop() {
-        _this2.closeFeed(_feed, promise);
-      };
+        if (args.length === 0) this._promise = promise;
 
-      return {
-        stop: stop,
-        cancel: stop,
-        then: function then(cb, errCb) {
-          return promise.then(cb, errCb);
-        }
-      };
+        var stop = function stop() {
+          _this2.closeFeed(_feed, promise);
+        };
+
+        return {
+          stop: stop,
+          cancel: stop,
+          then: function then(cb, errCb) {
+            return promise.then(cb, errCb);
+          }
+        };
+      }.apply(this, arguments), SubscribeReturnType, 'return value');
     }
   }, {
     key: 'closeFeed',
@@ -103,11 +107,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

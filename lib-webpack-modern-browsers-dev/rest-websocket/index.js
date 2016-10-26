@@ -21,9 +21,9 @@ export default function init(io, restService) {
     });
 
     socket.on('rest', (_ref, args, callback) => {
-      var type = _ref.type;
-      var restName = _ref.restName;
-      var buffer = _ref.buffer;
+      var type = _ref.type,
+          restName = _ref.restName,
+          buffer = _ref.buffer;
 
       _assert({
         type,
@@ -58,11 +58,9 @@ export default function init(io, restService) {
       switch (type) {
         case 'cursor toArray':
           {
-            var _args = args;
-
-            var _args2 = _slicedToArray(_args, 1);
-
-            var options = _args2[0];
+            var _args = args,
+                _args2 = _slicedToArray(_args, 1),
+                options = _args2[0];
 
             return restService.createCursor(restResource, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, encode(results))).catch(err => {
               logger.error(type, err);
@@ -99,15 +97,12 @@ export default function init(io, restService) {
         case 'fetchAndSubscribe':
           try {
             var _ret = function () {
-              var _args3 = args;
-
-              var _args4 = _slicedToArray(_args3, 3);
-
-              var key = _args4[0];
-              var eventName = _args4[1];
-              var _args4$ = _args4[2];
-              var otherArgs = _args4$ === undefined ? [] : _args4$;
-
+              var _args3 = args,
+                  _args4 = _slicedToArray(_args3, 3),
+                  key = _args4[0],
+                  eventName = _args4[1],
+                  _args4$ = _args4[2],
+                  otherArgs = _args4$ === undefined ? [] : _args4$;
 
               var query = restResource.query(socket.user, key);
               if (!query) {
@@ -168,11 +163,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

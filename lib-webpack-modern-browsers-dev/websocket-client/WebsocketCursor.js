@@ -71,7 +71,7 @@ export default class WebsocketCursor extends AbstractCursor {
   }
 
   count() {
-    var applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+    var applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
     _assert(applyLimit, _t.Boolean, 'applyLimit');
 
@@ -110,11 +110,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

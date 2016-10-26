@@ -25,7 +25,7 @@ export default class MongoCursor extends AbstractCursor {
   }
 
   count() {
-    var applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+    var applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
     return this._cursor.count(applyLimit);
   }

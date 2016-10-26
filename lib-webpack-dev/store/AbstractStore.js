@@ -26,14 +26,18 @@ var AbstractStore = function () {
 
       _assert(sort, _t.maybe(_t.Object), 'sort');
 
-      return this.cursor(criteria, sort).then(function (cursor) {
-        return cursor.toArray();
-      });
+      return _assert(function () {
+        return this.cursor(criteria, sort).then(function (cursor) {
+          return cursor.toArray();
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'connection',
     get: function get() {
-      return this._connection;
+      return _assert(function () {
+        return this._connection;
+      }.apply(this, arguments), _t.Any, 'return value');
     }
   }]);
 
@@ -53,11 +57,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

@@ -23,10 +23,10 @@ var FindComponent = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      var _props = this.props;
-      var query = _props.query;
-      var action = _props.action;
-      var dispatch = _props.dispatch;
+      var _props = this.props,
+          query = _props.query,
+          action = _props.action,
+          dispatch = _props.dispatch;
 
       this._find = query.fetch(function (result) {
         if (!_this2._find) return;

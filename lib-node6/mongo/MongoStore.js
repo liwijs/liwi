@@ -49,10 +49,10 @@ class MongoStore extends _AbstractStore2.default {
       object.created = new Date();
     }
 
-    return this.collection.then(collection => collection.insertOne(object)).then(_ref => {
-      let result = _ref.result;
-      let connection = _ref.connection;
-      let ops = _ref.ops;
+    return this.collection.then(collection => collection.insertOne(object)).then((_ref) => {
+      let result = _ref.result,
+          connection = _ref.connection,
+          ops = _ref.ops;
 
       if (!result.ok || result.n !== 1) {
         throw new Error('Fail to insert');

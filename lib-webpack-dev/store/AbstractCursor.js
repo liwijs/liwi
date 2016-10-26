@@ -2,7 +2,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 import _t from 'tcomb-forked';
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -23,28 +23,34 @@ var AbstractCursor = function () {
   }, {
     key: 'next',
     value: function next() {
-      throw new Error('next() missing implementation');
+      return _assert(function () {
+        throw new Error('next() missing implementation');
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'nextResult',
     value: function nextResult() {
-      var _this = this;
+      return _assert(function () {
+        var _this = this;
 
-      return this.next().then(function () {
-        return _this.result();
-      });
+        return this.next().then(function () {
+          return _this.result();
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'limit',
     value: function limit(newLimit) {
       _assert(newLimit, _t.Number, 'newLimit');
 
-      throw new Error('limit() missing implementation');
+      return _assert(function () {
+        throw new Error('limit() missing implementation');
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'count',
     value: function count() {
-      var applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+      var applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
       _assert(applyLimit, _t.Boolean, 'applyLimit');
 
@@ -53,70 +59,74 @@ var AbstractCursor = function () {
   }, {
     key: 'result',
     value: function result() {
-      return this.store.findByKey(this.key);
+      return _assert(function () {
+        return this.store.findByKey(this.key);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'delete',
     value: function _delete() {
-      return this.store.deleteByKey(this.key);
+      return _assert(function () {
+        return this.store.deleteByKey(this.key);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'forEachKeys',
-    value: function () {
-      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(callback) {
+    value: function forEachKeys(callback) {
+      _assert(callback, _t.Function, 'callback');
+
+      return _assert(_asyncToGenerator(regeneratorRuntime.mark(function _callee() {
         var key;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _assert(callback, _t.Function, 'callback');
+                if (false) {
+                  _context.next = 10;
+                  break;
+                }
 
-              case 1:
-                _context.next = 4;
+                _context.next = 3;
                 return this.next();
 
-              case 4:
+              case 3:
                 key = _context.sent;
 
                 if (key) {
-                  _context.next = 7;
+                  _context.next = 6;
                   break;
                 }
 
                 return _context.abrupt('return');
 
-              case 7:
-                _context.next = 9;
+              case 6:
+                _context.next = 8;
                 return callback(key);
 
-              case 9:
-                _context.next = 1;
+              case 8:
+                _context.next = 0;
                 break;
 
-              case 11:
+              case 10:
               case 'end':
                 return _context.stop();
             }
           }
         }, _callee, this);
-      }));
-
-      function forEachKeys(_x2) {
-        return _ref.apply(this, arguments);
-      }
-
-      return forEachKeys;
-    }()
+      })).apply(this, arguments), _t.Promise, 'return value');
+    }
   }, {
     key: 'forEach',
     value: function forEach(callback) {
-      var _this2 = this;
+      return _assert(function () {
+        var _this2 = this;
 
-      return this.forEachKeys(function () {
-        return _this2.result().then(function (result) {
-          return callback(result);
+        return this.forEachKeys(function () {
+          return _this2.result().then(function (result) {
+            return callback(result);
+          });
         });
-      });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'keysIterator',
@@ -125,6 +135,11 @@ var AbstractCursor = function () {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
+              if (false) {
+                _context2.next = 5;
+                break;
+              }
+
               _context2.next = 3;
               return this.next();
 
@@ -150,6 +165,7 @@ var AbstractCursor = function () {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
+              // eslint-disable-next-line no-restricted-syntax
               _iteratorNormalCompletion = true;
               _didIteratorError = false;
               _iteratorError = undefined;
@@ -234,7 +250,9 @@ var AbstractCursor = function () {
   }, {
     key: 'store',
     get: function get() {
-      return this._store;
+      return _assert(function () {
+        return this._store;
+      }.apply(this, arguments), _t.Any, 'return value');
     }
   }]);
 
@@ -254,11 +272,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

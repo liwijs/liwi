@@ -10,6 +10,7 @@ var _tcombForked2 = _interopRequireDefault(_tcombForked);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// eslint-disable-next-line no-unused-vars
 class AbstractQuery {
 
   constructor(store, queryCallback) {
@@ -37,7 +38,7 @@ class AbstractQuery {
     return this._subscribe(callback, false, args);
   }
 }
-exports.default = AbstractQuery; // eslint-disable-next-line no-unused-vars
+exports.default = AbstractQuery;
 
 function _assert(x, type, name) {
   function message() {
@@ -50,11 +51,7 @@ function _assert(x, type, name) {
 
       _tcombForked2.default.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _tcombForked2.default.fail(message());
   }
 

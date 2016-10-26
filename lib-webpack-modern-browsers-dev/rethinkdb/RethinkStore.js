@@ -67,9 +67,9 @@ export default class RethinkStore extends AbstractStore {
         object.created = new Date();
       }
 
-      return this.table().insert(object).then(_ref => {
-        var inserted = _ref.inserted;
-        var generatedKeys = _ref.generated_keys;
+      return this.table().insert(object).then((_ref) => {
+        var inserted = _ref.inserted,
+            generatedKeys = _ref.generated_keys;
 
         if (inserted !== 1) throw new Error('Could not insert');
         object.id = generatedKeys[0];
@@ -188,11 +188,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

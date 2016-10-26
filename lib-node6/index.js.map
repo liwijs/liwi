@@ -1,1 +1,1 @@
-{"version":3,"sources":["../src/index.js"],"names":["default"],"mappings":";;;;;;;;;;;oDAASA,O;;;;;;EACgB","file":"index.js","sourcesContent":["export { default as AbstractManager } from './models/AbstractManager';\nexport * from './types'; // #if !PRODUCTION\n"]}
+{"version":3,"sources":["../src/index.js"],"names":[],"mappings":";;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA","file":"index.js","sourcesContent":["export * from './types'; // #if !PRODUCTION\n"]}

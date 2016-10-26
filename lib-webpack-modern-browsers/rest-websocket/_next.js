@@ -29,8 +29,8 @@ export default function init(io, restService) {
     var nextIdCursor = 1;
 
     socket.on('rest', (_ref, args, callback) => {
-      var type = _ref.type;
-      var restName = _ref.restName;
+      var type = _ref.type,
+          restName = _ref.restName;
 
       logger.info('rest', { type, restName, args });
       switch (type) {
@@ -43,9 +43,8 @@ export default function init(io, restService) {
 
               var id = nextIdCursor++;
 
-              var _args = _slicedToArray(args, 1);
-
-              var options = _args[0];
+              var _args = _slicedToArray(args, 1),
+                  options = _args[0];
 
               var cursor = restService.createCursor(restName, options);
               if (!cursor) return {
@@ -67,22 +66,19 @@ export default function init(io, restService) {
 
         case 'cursor toArray':
           {
-            var _args2 = _slicedToArray(args, 1);
-
-            var _options = _args2[0];
+            var _args2 = _slicedToArray(args, 1),
+                _options = _args2[0];
 
             return restService.createCursor(restName, _options).then(cursor => cursor.toArray()).then(results => callback(null, results)).catch(err => callback(err.message));
           }
 
         case 'cursor':
           {
-            var _args3 = _slicedToArray(args, 2);
-
-            var _args3$ = _args3[0];
-            var typeCursorAction = _args3$.type;
-            var idCursor = _args3$.id;
-            var cursorArgs = _args3[1];
-
+            var _args3 = _slicedToArray(args, 2),
+                _args3$ = _args3[0],
+                typeCursorAction = _args3$.type,
+                idCursor = _args3$.id,
+                cursorArgs = _args3[1];
 
             var _cursor = openCursors.get(idCursor);
             if (!_cursor) return callback(`failed to find cursor "${ idCursor }"`);

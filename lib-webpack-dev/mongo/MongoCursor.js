@@ -33,31 +33,37 @@ var MongoCursor = function (_AbstractCursor) {
     value: function advance(count) {
       _assert(count, _t.Number, 'count');
 
-      this._cursor.skip(count);
+      return _assert(function () {
+        this._cursor.skip(count);
+      }.apply(this, arguments), _t.Nil, 'return value');
     }
   }, {
     key: 'next',
     value: function next() {
-      var _this2 = this;
+      return _assert(function () {
+        var _this2 = this;
 
-      return this._cursor.next().then(function (value) {
-        _this2._result = value;
-        _this2.key = value && value._id;
-        return _this2.key;
-      });
+        return this._cursor.next().then(function (value) {
+          _this2._result = value;
+          _this2.key = value && value._id;
+          return _this2.key;
+        });
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'limit',
     value: function limit(newLimit) {
       _assert(newLimit, _t.Number, 'newLimit');
 
-      this._cursor.limit(newLimit);
-      return Promise.resolve(this);
+      return _assert(function () {
+        this._cursor.limit(newLimit);
+        return Promise.resolve(this);
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'count',
     value: function count() {
-      var applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+      var applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
       _assert(applyLimit, _t.Boolean, 'applyLimit');
 
@@ -81,7 +87,9 @@ var MongoCursor = function (_AbstractCursor) {
   }, {
     key: 'toArray',
     value: function toArray() {
-      return this._cursor.toArray();
+      return _assert(function () {
+        return this._cursor.toArray();
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }]);
 
@@ -101,11 +109,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

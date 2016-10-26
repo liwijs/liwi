@@ -16,7 +16,7 @@ export default class Query extends AbstractQuery {
   }
 
   _subscribe(callback) {
-    var _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+    var _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
     var args = arguments[2];
 
@@ -25,7 +25,7 @@ export default class Query extends AbstractQuery {
     _assert(args, _t.list(_t.Any), 'args');
 
     return _assert(function () {
-      var _feed = undefined;
+      var _feed = void 0;
       var promise = this.queryCallback(this.store.query()).changes({
         includeInitial: _includeInitial,
         includeStates: true,
@@ -75,11 +75,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

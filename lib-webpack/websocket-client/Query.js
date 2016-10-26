@@ -35,7 +35,7 @@ var Query = function (_AbstractQuery) {
     value: function _subscribe(callback) {
       var _this2 = this;
 
-      var _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+      var _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
       var args = arguments[2];
 
@@ -44,7 +44,7 @@ var Query = function (_AbstractQuery) {
         callback(err, decode(result));
       });
 
-      var _stopEmitSubscribe = undefined;
+      var _stopEmitSubscribe = void 0;
       var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
         _stopEmitSubscribe = stopEmitSubscribe;
         logger.info('subscribed');

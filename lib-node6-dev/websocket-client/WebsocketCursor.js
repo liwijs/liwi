@@ -87,7 +87,7 @@ class WebsocketCursor extends _AbstractCursor2.default {
   }
 
   count() {
-    let applyLimit = _assert(arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0], _tcombForked2.default.Boolean, 'applyLimit');
+    let applyLimit = _assert(arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false, _tcombForked2.default.Boolean, 'applyLimit');
 
     _assert(applyLimit, _tcombForked2.default.Boolean, 'applyLimit');
 
@@ -127,11 +127,7 @@ function _assert(x, type, name) {
 
       _tcombForked2.default.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _tcombForked2.default.fail(message());
   }
 

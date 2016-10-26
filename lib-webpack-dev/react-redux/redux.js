@@ -36,11 +36,11 @@ export function subscribeReducer(state, _ref) {
     change: ChangeType
   }), '{ change }');
 
-  var type = change.type;
-  var oldOffset = change.old_offset;
-  var newOffset = change.new_offset;
-  var oldVal = change.old_val;
-  var newVal = change.new_val;
+  var type = change.type,
+      oldOffset = change.old_offset,
+      newOffset = change.new_offset,
+      oldVal = change.old_val,
+      newVal = change.new_val;
 
 
   var copy = function copy() {
@@ -161,11 +161,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

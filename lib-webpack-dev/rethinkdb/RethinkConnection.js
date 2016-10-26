@@ -79,7 +79,9 @@ var RethinkConnection = function (_AbstractConnection) {
   }, {
     key: 'getConnection',
     value: function getConnection() {
-      throw new Error('call connect()');
+      return _assert(function () {
+        throw new Error('call connect()');
+      }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
     key: 'close',
@@ -118,11 +120,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

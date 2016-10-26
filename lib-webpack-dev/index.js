@@ -1,3 +1,2 @@
-export { default as AbstractManager } from './models/AbstractManager';
-export * from './types'; //defines: #if !PRODUCTION = !false
+export * from './types'; // #if !PRODUCTION
 //# sourceMappingURL=index.js.map

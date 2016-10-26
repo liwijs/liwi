@@ -27,11 +27,11 @@ var Query = function (_AbstractQuery) {
     value: function _subscribe(callback) {
       var _this2 = this;
 
-      var _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+      var _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
       var args = arguments[2];
 
-      var _feed = undefined;
+      var _feed = void 0;
       var promise = this.queryCallback(this.store.query()).changes({
         includeInitial: _includeInitial,
         includeStates: true,

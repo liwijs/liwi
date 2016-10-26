@@ -76,8 +76,8 @@ var RethinkStore = function (_AbstractStore) {
       }
 
       return this.table().insert(object).then(function (_ref) {
-        var inserted = _ref.inserted;
-        var generatedKeys = _ref.generated_keys;
+        var inserted = _ref.inserted,
+            generatedKeys = _ref.generated_keys;
 
         if (inserted !== 1) throw new Error('Could not insert');
         object.id = generatedKeys[0];

@@ -4,10 +4,10 @@ import AbstractQuery from '../store/AbstractQuery';
 export default class FindComponent extends Component {
 
   componentDidMount() {
-    var _props = this.props;
-    var query = _props.query;
-    var action = _props.action;
-    var dispatch = _props.dispatch;
+    var _props = this.props,
+        query = _props.query,
+        action = _props.action,
+        dispatch = _props.dispatch;
 
     this._find = query.fetch(result => {
       if (!this._find) return;

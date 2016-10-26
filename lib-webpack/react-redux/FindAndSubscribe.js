@@ -22,10 +22,10 @@ var FindAndSubscribeComponent = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       // console.log('FindAndSubscribe: did mount');
-      var _props = this.props;
-      var query = _props.query;
-      var action = _props.action;
-      var dispatch = _props.dispatch;
+      var _props = this.props,
+          query = _props.query,
+          action = _props.action,
+          dispatch = _props.dispatch;
 
       this._subscribe = query.fetchAndSubscribe(function (err, result) {
         if (err) {

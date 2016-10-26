@@ -65,7 +65,7 @@ class WebsocketCursor extends _AbstractCursor2.default {
   }
 
   count() {
-    let applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+    let applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
     return this.emit('count', applyLimit);
   }

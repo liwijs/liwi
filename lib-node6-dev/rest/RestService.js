@@ -14,7 +14,7 @@ var _RestCursor2 = _interopRequireDefault(_RestCursor);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 class RestService {
   constructor(restResources) {
@@ -44,9 +44,9 @@ class RestService {
       limit: _tcombForked2.default.maybe(_tcombForked2.default.Number)
     }), '{ criteria, sort, limit }');
 
-    let criteria = _assert2.criteria;
-    let sort = _assert2.sort;
-    let limit = _assert2.limit;
+    let criteria = _assert2.criteria,
+        sort = _assert2.sort,
+        limit = _assert2.limit;
 
     _assert(connectedUser, _tcombForked2.default.maybe(_tcombForked2.default.Object), 'connectedUser');
 
@@ -83,11 +83,7 @@ function _assert(x, type, name) {
 
       _tcombForked2.default.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _tcombForked2.default.fail(message());
   }
 

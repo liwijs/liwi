@@ -16,7 +16,7 @@ export default class Query extends AbstractQuery {
   }
 
   _subscribe(callback) {
-    var _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+    var _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
     var args = arguments[2];
 
@@ -25,7 +25,7 @@ export default class Query extends AbstractQuery {
       callback(err, decode(result));
     });
 
-    var _stopEmitSubscribe = undefined;
+    var _stopEmitSubscribe = void 0;
     var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(stopEmitSubscribe => {
       _stopEmitSubscribe = stopEmitSubscribe;
       logger.info('subscribed');

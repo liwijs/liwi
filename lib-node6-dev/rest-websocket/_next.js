@@ -50,8 +50,8 @@ function init(io, restService) {
         restName: _tcombForked2.default.String
       }), '{ type, restName }');
 
-      let type = _assert2.type;
-      let restName = _assert2.restName;
+      let type = _assert2.type,
+          restName = _assert2.restName;
 
       _assert({
         type,
@@ -99,12 +99,12 @@ function init(io, restService) {
 
         case 'cursor':
           {
-            var _args3 = _slicedToArray(args, 2);
+            var _args3 = _slicedToArray(args, 2),
+                _args3$ = _args3[0];
 
-            var _args3$ = _args3[0];
-            const typeCursorAction = _args3$.type;
-            const idCursor = _args3$.id;
-            const cursorArgs = _args3[1];
+            const typeCursorAction = _args3$.type,
+                  idCursor = _args3$.id,
+                  cursorArgs = _args3[1];
 
 
             const cursor = openCursors.get(idCursor);
@@ -164,11 +164,7 @@ function _assert(x, type, name) {
 
       _tcombForked2.default.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _tcombForked2.default.fail(message());
   }
 

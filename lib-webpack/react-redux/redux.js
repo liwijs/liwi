@@ -11,11 +11,11 @@ export function createSubscribeAction(actionName) {
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 export function subscribeReducer(state, _ref) {
   var change = _ref.change;
-  var type = change.type;
-  var oldOffset = change.old_offset;
-  var newOffset = change.new_offset;
-  var oldVal = change.old_val;
-  var newVal = change.new_val;
+  var type = change.type,
+      oldOffset = change.old_offset,
+      newOffset = change.new_offset,
+      oldVal = change.old_val,
+      newVal = change.new_val;
 
 
   var copy = function copy() {

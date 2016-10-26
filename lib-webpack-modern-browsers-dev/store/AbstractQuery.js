@@ -1,5 +1,4 @@
-import _t from 'tcomb-forked';
-
+import _t from 'tcomb-forked'; // eslint-disable-next-line no-unused-vars
 
 export default class AbstractQuery {
 
@@ -27,7 +26,7 @@ export default class AbstractQuery {
 
     return this._subscribe(callback, false, args);
   }
-} // eslint-disable-next-line no-unused-vars
+}
 
 function _assert(x, type, name) {
   function message() {
@@ -40,11 +39,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 

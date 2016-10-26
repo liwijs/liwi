@@ -56,11 +56,11 @@ function subscribeReducer(state, _ref) {
     change: ChangeType
   }), '{ change }');
 
-  const type = change.type;
-  const oldOffset = change.old_offset;
-  const newOffset = change.new_offset;
-  const oldVal = change.old_val;
-  const newVal = change.new_val;
+  const type = change.type,
+        oldOffset = change.old_offset,
+        newOffset = change.new_offset,
+        oldVal = change.old_val,
+        newVal = change.new_val;
 
 
   const copy = () => state = state.slice();
@@ -173,11 +173,7 @@ function _assert(x, type, name) {
 
       _tcombForked2.default.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _tcombForked2.default.fail(message());
   }
 

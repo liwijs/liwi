@@ -57,6 +57,7 @@ export default class AbstractCursor<Store, ModelType> {
   }
 
   * [Symbol.iterator]() {
+    // eslint-disable-next-line no-restricted-syntax
     for (let keyPromise of this.keysIterator()) {
       yield keyPromise.then(key => key && this.result());
     }

@@ -29,7 +29,7 @@ class Query extends _AbstractQuery2.default {
   }
 
   _subscribe(callback) {
-    let _includeInitial = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+    let _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
     let args = _assert(arguments[2], _tcombForked2.default.list(_tcombForked2.default.Any), 'args');
 
@@ -89,11 +89,7 @@ function _assert(x, type, name) {
 
       _tcombForked2.default.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _tcombForked2.default.fail(message());
   }
 

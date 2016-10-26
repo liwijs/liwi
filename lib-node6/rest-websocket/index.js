@@ -28,9 +28,9 @@ function init(io, restService) {
     });
 
     socket.on('rest', (_ref, args, callback) => {
-      let type = _ref.type;
-      let restName = _ref.restName;
-      let buffer = _ref.buffer;
+      let type = _ref.type,
+          restName = _ref.restName,
+          buffer = _ref.buffer;
 
       if (buffer) {
 
@@ -44,9 +44,8 @@ function init(io, restService) {
       switch (type) {
         case 'cursor toArray':
           {
-            var _args = args;
-
-            var _args2 = _slicedToArray(_args, 1);
+            var _args = args,
+                _args2 = _slicedToArray(_args, 1);
 
             const options = _args2[0];
 
@@ -81,12 +80,11 @@ function init(io, restService) {
         case 'subscribe':
         case 'fetchAndSubscribe':
           try {
-            var _args3 = args;
+            var _args3 = args,
+                _args4 = _slicedToArray(_args3, 3);
 
-            var _args4 = _slicedToArray(_args3, 3);
-
-            const key = _args4[0];
-            const eventName = _args4[1];
+            const key = _args4[0],
+                  eventName = _args4[1];
             var _args4$ = _args4[2];
             const otherArgs = _args4$ === undefined ? [] : _args4$;
 

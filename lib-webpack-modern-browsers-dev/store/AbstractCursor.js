@@ -1,6 +1,6 @@
 import _t from 'tcomb-forked';
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 export default class AbstractCursor {
 
@@ -41,7 +41,7 @@ export default class AbstractCursor {
   }
 
   count() {
-    var applyLimit = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+    var applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
     _assert(applyLimit, _t.Boolean, 'applyLimit');
 
@@ -86,6 +86,7 @@ export default class AbstractCursor {
   }
 
   *[Symbol.iterator]() {
+    // eslint-disable-next-line no-restricted-syntax
     for (var keyPromise of this.keysIterator()) {
       yield keyPromise.then(key => key && this.result());
     }
@@ -119,11 +120,7 @@ function _assert(x, type, name) {
 
       _t.fail(message());
     }
-
-    return type(x);
-  }
-
-  if (!(x instanceof type)) {
+  } else if (!(x instanceof type)) {
     _t.fail(message());
   }
 
