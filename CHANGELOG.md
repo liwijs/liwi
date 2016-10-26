@@ -1,3 +1,7 @@
+### v0.9.0
+
+- [`e9d8ad8`](https://github.com/liwijs/liwi/commit/e9d8ad811e59c01e6ec96a304bf92e1044d0ff2e) refactor: remove abstractmanager, update dependencies (Christophe Hurpeau)
+
 ### v0.8.0
 
 - [`23164b8`](https://github.com/liwijs/liwi/commit/23164b8a9aa0945dd1c86851b976c63a390876e0) rethinkdb: findAll and findOne requires query (Christophe Hurpeau)
