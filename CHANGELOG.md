@@ -1,3 +1,7 @@
+### v0.9.1
+
+- [`9306a53`](https://github.com/liwijs/liwi/commit/9306a5391873bcad7911ed9a5c67a2600fe4aea8) fix: logger key (Christophe Hurpeau)
+
 ### v0.9.0
 
 - [`e9d8ad8`](https://github.com/liwijs/liwi/commit/e9d8ad811e59c01e6ec96a304bf92e1044d0ff2e) refactor: remove abstractmanager, update dependencies (Christophe Hurpeau)
