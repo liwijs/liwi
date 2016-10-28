@@ -11,7 +11,7 @@ import AbstractQuery from '../store/AbstractQuery';
 
 import { decode } from '../msgpack';
 
-var logger = new Logger('liwi.websocket-client.query');
+var logger = new Logger('liwi:websocket-client:query');
 
 var Query = function (_AbstractQuery) {
   _inherits(Query, _AbstractQuery);

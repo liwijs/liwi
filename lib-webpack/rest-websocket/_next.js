@@ -7,7 +7,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 import Logger from 'nightingale-logger';
 
 var MAX_OPENED_CURSORS = 5;
-var logger = new Logger('liwi.rest-websocket');
+var logger = new Logger('liwi:rest-websocket');
 
 export default function init(io, restService) {
   io.on('connection', function (socket) {

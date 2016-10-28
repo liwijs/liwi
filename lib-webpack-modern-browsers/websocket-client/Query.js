@@ -3,7 +3,7 @@ import AbstractQuery from '../store/AbstractQuery';
 
 import { decode } from '../msgpack';
 
-var logger = new Logger('liwi.websocket-client.query');
+var logger = new Logger('liwi:websocket-client:query');
 
 export default class Query extends AbstractQuery {
   constructor(store, key) {

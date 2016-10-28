@@ -13,7 +13,7 @@ import { MongoClient } from 'mongodb';
 
 import AbstractConnection from '../store/AbstractConnection';
 
-var logger = new Logger('liwi.mongo.MongoConnection');
+var logger = new Logger('liwi:mongo:MongoConnection');
 
 var MongoConnection = function (_AbstractConnection) {
   _inherits(MongoConnection, _AbstractConnection);

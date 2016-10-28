@@ -19,7 +19,7 @@ var _nightingaleLogger2 = _interopRequireDefault(_nightingaleLogger);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const MAX_OPENED_CURSORS = 5;
-const logger = new _nightingaleLogger2.default('liwi.rest-websocket');
+const logger = new _nightingaleLogger2.default('liwi:rest-websocket');
 
 function init(io, restService) {
   io.on('connection', socket => {

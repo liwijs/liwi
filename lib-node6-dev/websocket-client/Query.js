@@ -29,7 +29,7 @@ const SubscribeReturnType = _tcombForked2.default.interface({
   stop: _tcombForked2.default.Function
 }, 'SubscribeReturnType');
 
-const logger = new _nightingaleLogger2.default('liwi.websocket-client.query');
+const logger = new _nightingaleLogger2.default('liwi:websocket-client:query');
 
 class Query extends _AbstractQuery2.default {
   constructor(store, key) {

@@ -4,7 +4,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 import Logger from 'nightingale-logger';
 import { encode, decode } from '../msgpack';
 
-var logger = new Logger('liwi.rest-websocket');
+var logger = new Logger('liwi:rest-websocket');
 
 export default function init(io, restService) {
   io.on('connection', socket => {

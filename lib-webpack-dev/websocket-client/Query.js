@@ -18,7 +18,7 @@ var SubscribeReturnType = _t.interface({
   stop: _t.Function
 }, 'SubscribeReturnType');
 
-var logger = new Logger('liwi.websocket-client.query');
+var logger = new Logger('liwi:websocket-client:query');
 
 var Query = function (_AbstractQuery) {
   _inherits(Query, _AbstractQuery);

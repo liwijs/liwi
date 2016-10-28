@@ -3,7 +3,7 @@ import { MongoClient } from 'mongodb';
 import Db from 'mongodb/lib/db';
 import AbstractConnection from '../store/AbstractConnection';
 
-const logger = new Logger('liwi.mongo.MongoConnection');
+const logger = new Logger('liwi:mongo:MongoConnection');
 
 export default class MongoConnection extends AbstractConnection {
   _connection: Db|null;

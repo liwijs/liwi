@@ -2,7 +2,7 @@
 import Logger from 'nightingale-logger';
 import { encode, decode } from '../msgpack';
 
-const logger = new Logger('liwi.rest-websocket');
+const logger = new Logger('liwi:rest-websocket');
 
 type ObjectBufferType = {
   type: 'Buffer',

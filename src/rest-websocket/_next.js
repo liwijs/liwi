@@ -1,7 +1,7 @@
 import Logger from 'nightingale-logger';
 
 const MAX_OPENED_CURSORS = 5;
-const logger = new Logger('liwi.rest-websocket');
+const logger = new Logger('liwi:rest-websocket');
 
 export default function init(io, restService) {
   io.on('connection', (socket) => {

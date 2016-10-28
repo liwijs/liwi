@@ -10,7 +10,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 import Logger from 'nightingale-logger';
 import { encode, decode } from '../msgpack';
 
-var logger = new Logger('liwi.rest-websocket');
+var logger = new Logger('liwi:rest-websocket');
 
 var ObjectBufferType = _t.interface({
   type: _t.enums.of(['Buffer']),

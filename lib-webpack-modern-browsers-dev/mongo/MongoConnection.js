@@ -4,7 +4,7 @@ import { MongoClient } from 'mongodb';
 
 import AbstractConnection from '../store/AbstractConnection';
 
-var logger = new Logger('liwi.mongo.MongoConnection');
+var logger = new Logger('liwi:mongo:MongoConnection');
 
 export default class MongoConnection extends AbstractConnection {
 

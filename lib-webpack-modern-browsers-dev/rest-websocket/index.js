@@ -5,7 +5,7 @@ import _t from 'tcomb-forked';
 import Logger from 'nightingale-logger';
 import { encode, decode } from '../msgpack';
 
-var logger = new Logger('liwi.rest-websocket');
+var logger = new Logger('liwi:rest-websocket');
 
 var ObjectBufferType = _t.interface({
   type: _t.enums.of(['Buffer']),

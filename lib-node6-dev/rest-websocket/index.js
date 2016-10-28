@@ -21,7 +21,7 @@ var _msgpack = require('../msgpack');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = new _nightingaleLogger2.default('liwi.rest-websocket');
+const logger = new _nightingaleLogger2.default('liwi:rest-websocket');
 
 const ObjectBufferType = _tcombForked2.default.interface({
   type: _tcombForked2.default.enums.of(['Buffer']),

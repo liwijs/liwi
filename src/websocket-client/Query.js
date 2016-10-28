@@ -8,7 +8,7 @@ type SubscribeReturnType = {
   stop: Function,
 };
 
-const logger = new Logger('liwi.websocket-client.query');
+const logger = new Logger('liwi:websocket-client:query');
 
 export default class Query extends AbstractQuery<WebsocketStore> {
   constructor(store: WebsocketStore, key: string) {

@@ -1,8 +1,8 @@
-import Logger from 'nightingale-logger';
+import Logger from 'nightingale-logger/src';
 import rethinkDB from 'rethinkdbdash';
 import AbstractConnection from '../store/AbstractConnection';
 
-const logger = new Logger('liwi.mongo.RethinkConnection');
+const logger = new Logger('liwi:mongo:RethinkConnection');
 
 export default class RethinkConnection extends AbstractConnection {
   _connection: Object|null;

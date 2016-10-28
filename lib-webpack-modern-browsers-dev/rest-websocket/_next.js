@@ -4,7 +4,7 @@ import _t from 'tcomb-forked';
 import Logger from 'nightingale-logger';
 
 var MAX_OPENED_CURSORS = 5;
-var logger = new Logger('liwi.rest-websocket');
+var logger = new Logger('liwi:rest-websocket');
 
 export default function init(io, restService) {
   io.on('connection', socket => {
