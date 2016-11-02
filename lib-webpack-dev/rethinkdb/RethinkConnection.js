@@ -14,7 +14,7 @@ import Logger from 'nightingale-logger';
 import rethinkDB from 'rethinkdbdash';
 import AbstractConnection from '../store/AbstractConnection';
 
-var logger = new Logger('liwi:mongo:RethinkConnection');
+var logger = new Logger('liwi:rethinkdb:RethinkConnection');
 
 var RethinkConnection = function (_AbstractConnection) {
   _inherits(RethinkConnection, _AbstractConnection);
