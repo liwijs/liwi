@@ -1,3 +1,7 @@
+### v0.9.2
+
+- [`5d41e1f`](https://github.com/liwijs/liwi/commit/5d41e1f4f27bd28ad56439a847a304835b147d1e) fix: rethinkdb logger key (Christophe Hurpeau)
+
 ### v0.9.1
 
 - [`9306a53`](https://github.com/liwijs/liwi/commit/9306a5391873bcad7911ed9a5c67a2600fe4aea8) fix: logger key (Christophe Hurpeau)
