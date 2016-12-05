@@ -24,7 +24,9 @@ export default class AbstractStore {
     _assert(sort, _t.maybe(_t.Object), 'sort');
 
     return _assert(function () {
-      return this.cursor(criteria, sort).then(cursor => cursor.toArray());
+      return this.cursor(criteria, sort).then(function (cursor) {
+        return cursor.toArray();
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 }

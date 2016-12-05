@@ -3,10 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* global PRODUCTION */
-
-
 exports.default = init;
 
 var _nightingaleLogger = require('nightingale-logger');
@@ -17,6 +13,7 @@ var _msgpack = require('../msgpack');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/* global PRODUCTION */
 const logger = new _nightingaleLogger2.default('liwi:rest-websocket');
 
 function init(io, restService) {
@@ -27,11 +24,7 @@ function init(io, restService) {
       openWatchers.forEach(watcher => watcher.stop());
     });
 
-    socket.on('rest', (_ref, args, callback) => {
-      let type = _ref.type,
-          restName = _ref.restName,
-          buffer = _ref.buffer;
-
+    socket.on('rest', ({ type, restName, buffer }, args, callback) => {
       if (buffer) {
 
         callback = args;
@@ -44,11 +37,7 @@ function init(io, restService) {
       switch (type) {
         case 'cursor toArray':
           {
-            var _args = args,
-                _args2 = _slicedToArray(_args, 1);
-
-            const options = _args2[0];
-
+            const [options] = args;
             return restService.createCursor(restResource, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, (0, _msgpack.encode)(results))).catch(err => {
               logger.error(type, err);
               callback(err.message);
@@ -80,14 +69,7 @@ function init(io, restService) {
         case 'subscribe':
         case 'fetchAndSubscribe':
           try {
-            var _args3 = args,
-                _args4 = _slicedToArray(_args3, 3);
-
-            const key = _args4[0],
-                  eventName = _args4[1];
-            var _args4$ = _args4[2];
-            const otherArgs = _args4$ === undefined ? [] : _args4$;
-
+            const [key, eventName, otherArgs = []] = args;
 
             const query = restResource.query(socket.user, key);
             if (!query) {

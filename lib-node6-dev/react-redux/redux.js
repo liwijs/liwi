@@ -41,13 +41,7 @@ const ChangeType = _tcombForked2.default.interface({
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 
 
-function subscribeReducer(state, _ref) {
-  var _assert2 = _assert(_ref, _tcombForked2.default.interface({
-    change: ChangeType
-  }), '{ change }');
-
-  let change = _assert2.change;
-
+function subscribeReducer(state, { change }) {
   _assert(state, _tcombForked2.default.list(_tcombForked2.default.Object), 'state');
 
   _assert({
@@ -56,12 +50,13 @@ function subscribeReducer(state, _ref) {
     change: ChangeType
   }), '{ change }');
 
-  const type = change.type,
-        oldOffset = change.old_offset,
-        newOffset = change.new_offset,
-        oldVal = change.old_val,
-        newVal = change.new_val;
-
+  const {
+    type,
+    old_offset: oldOffset,
+    new_offset: newOffset,
+    old_val: oldVal,
+    new_val: newVal
+  } = change;
 
   const copy = () => state = state.slice();
 

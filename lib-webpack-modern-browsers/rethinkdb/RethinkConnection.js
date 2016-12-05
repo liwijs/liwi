@@ -29,6 +29,8 @@ export default class RethinkConnection extends AbstractConnection {
   }
 
   connect(options) {
+    var _this = this;
+
     logger.info('connecting', options);
 
     this._connection = rethinkDB(_extends({}, options, {
@@ -36,17 +38,23 @@ export default class RethinkConnection extends AbstractConnection {
       max: 100
     }));
 
-    this._connection.getPoolMaster().on('healthy', healthy => {
+    this._connection.getPoolMaster().on('healthy', function (healthy) {
       if (healthy === true) {
-        this.getConnection = () => Promise.resolve(this._connection);
+        _this.getConnection = function () {
+          return Promise.resolve(_this._connection);
+        };
         logger.info('healthy');
       } else {
-        this.getConnection = () => Promise.reject(new Error('Connection not healthy'));
+        _this.getConnection = function () {
+          return Promise.reject(new Error('Connection not healthy'));
+        };
         logger.warn('not healthy');
       }
     });
 
-    this.getConnection = () => Promise.resolve(this._connection);
+    this.getConnection = function () {
+      return Promise.resolve(_this._connection);
+    };
   }
 
   getConnection() {
@@ -54,14 +62,20 @@ export default class RethinkConnection extends AbstractConnection {
   }
 
   close() {
-    this.getConnection = () => Promise.reject(new Error('Connection closed'));
+    var _this2 = this;
+
+    this.getConnection = function () {
+      return Promise.reject(new Error('Connection closed'));
+    };
     if (this._connection) {
-      return this._connection.getPoolMaster().drain().then(() => {
+      return this._connection.getPoolMaster().drain().then(function () {
         logger.info('connection closed');
-        this._connection = null;
+        _this2._connection = null;
       });
     } else if (this._connecting) {
-      return this.getConnection().then(() => this.close());
+      return this.getConnection().then(function () {
+        return _this2.close();
+      });
     }
   }
 }

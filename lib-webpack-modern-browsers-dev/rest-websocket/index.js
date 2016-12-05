@@ -1,5 +1,3 @@
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 import _t from 'tcomb-forked';
 /* global PRODUCTION */
 import Logger from 'nightingale-logger';
@@ -13,18 +11,16 @@ var ObjectBufferType = _t.interface({
 }, 'ObjectBufferType');
 
 export default function init(io, restService) {
-  io.on('connection', socket => {
+  io.on('connection', function (socket) {
     var openWatchers = new Set();
 
-    socket.on('disconnect', () => {
-      openWatchers.forEach(watcher => watcher.stop());
+    socket.on('disconnect', function () {
+      openWatchers.forEach(function (watcher) {
+        return watcher.stop();
+      });
     });
 
-    socket.on('rest', (_ref, args, callback) => {
-      var type = _ref.type,
-          restName = _ref.restName,
-          buffer = _ref.buffer;
-
+    socket.on('rest', function ({ type, restName, buffer }, args, callback) {
       _assert({
         type,
         restName,
@@ -58,11 +54,12 @@ export default function init(io, restService) {
       switch (type) {
         case 'cursor toArray':
           {
-            var _args = args,
-                _args2 = _slicedToArray(_args, 1),
-                options = _args2[0];
-
-            return restService.createCursor(restResource, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, encode(results))).catch(err => {
+            var [options] = args;
+            return restService.createCursor(restResource, socket.user, options).then(function (cursor) {
+              return cursor.toArray();
+            }).then(function (results) {
+              return callback(null, encode(results));
+            }).catch(function (err) {
               logger.error(type, err);
               callback(err.message);
             });
@@ -82,7 +79,9 @@ export default function init(io, restService) {
               throw new Error(`rest: ${ restName }.${ type } is not available`);
             }
 
-            return restResource[type](socket.user, ...args).then(result => callback(null, encode(result))).catch(err => {
+            return restResource[type](socket.user, ...args).then(function (result) {
+              return callback(null, encode(result));
+            }).catch(function (err) {
               logger.error(type, { err });
               callback(err.message || err);
             });
@@ -97,12 +96,7 @@ export default function init(io, restService) {
         case 'fetchAndSubscribe':
           try {
             var _ret = function () {
-              var _args3 = args,
-                  _args4 = _slicedToArray(_args3, 3),
-                  key = _args4[0],
-                  eventName = _args4[1],
-                  _args4$ = _args4[2],
-                  otherArgs = _args4$ === undefined ? [] : _args4$;
+              var [key, eventName, otherArgs = []] = args;
 
               var query = restResource.query(socket.user, key);
               if (!query) {
@@ -111,19 +105,23 @@ export default function init(io, restService) {
 
               if (type === 'fetch') {
                 return {
-                  v: query[type](result => callback(null, encode(result)), ...otherArgs).catch(err => {
+                  v: query[type](function (result) {
+                    return callback(null, encode(result));
+                  }, ...otherArgs).catch(function (err) {
                     logger.error(type, { err });
                     callback(err.message || err);
                   })
                 };
               } else {
-                var watcher = query[type]((err, result) => {
+                var watcher = query[type](function (err, result) {
                   if (err) {
                     logger.error(type, { err });
                   }
                   socket.emit(eventName, err, encode(result));
                 });
-                watcher.then(() => callback(), err => {
+                watcher.then(function () {
+                  return callback();
+                }, function (err) {
                   logger.error(type, { err });
                   callback(err.message || err);
                 });

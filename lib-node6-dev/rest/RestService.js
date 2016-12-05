@@ -37,17 +37,7 @@ class RestService {
     return restResource;
   }
 
-  createCursor(restResource, connectedUser, _ref) {
-    var _assert2 = _assert(_ref, _tcombForked2.default.interface({
-      criteria: _tcombForked2.default.maybe(_tcombForked2.default.Object),
-      sort: _tcombForked2.default.maybe(_tcombForked2.default.Object),
-      limit: _tcombForked2.default.maybe(_tcombForked2.default.Number)
-    }), '{ criteria, sort, limit }');
-
-    let criteria = _assert2.criteria,
-        sort = _assert2.sort,
-        limit = _assert2.limit;
-
+  createCursor(restResource, connectedUser, { criteria, sort, limit }) {
     _assert(connectedUser, _tcombForked2.default.maybe(_tcombForked2.default.Object), 'connectedUser');
 
     _assert({

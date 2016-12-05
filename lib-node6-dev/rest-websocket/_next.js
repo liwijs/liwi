@@ -3,9 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 exports.default = init;
 
 var _tcombForked = require('tcomb-forked');
@@ -44,15 +41,7 @@ function init(io, restService) {
 
     let nextIdCursor = 1;
 
-    socket.on('rest', (_ref, args, callback) => {
-      var _assert2 = _assert(_ref, _tcombForked2.default.interface({
-        type: _tcombForked2.default.String,
-        restName: _tcombForked2.default.String
-      }), '{ type, restName }');
-
-      let type = _assert2.type,
-          restName = _assert2.restName;
-
+    socket.on('rest', ({ type, restName }, args, callback) => {
       _assert({
         type,
         restName
@@ -72,11 +61,7 @@ function init(io, restService) {
             if (openCursors.size > MAX_OPENED_CURSORS) return callback('too many cursors');
 
             const id = nextIdCursor++;
-
-            var _args = _slicedToArray(args, 1);
-
-            const options = _args[0];
-
+            const [options] = args;
             const cursor = restService.createCursor(restName, options);
             if (!cursor) return callback('failed to create cursor');
 
@@ -90,22 +75,13 @@ function init(io, restService) {
 
         case 'cursor toArray':
           {
-            var _args2 = _slicedToArray(args, 1);
-
-            const options = _args2[0];
-
+            const [options] = args;
             return restService.createCursor(restName, options).then(cursor => cursor.toArray()).then(results => callback(null, results)).catch(err => callback(err.message));
           }
 
         case 'cursor':
           {
-            var _args3 = _slicedToArray(args, 2),
-                _args3$ = _args3[0];
-
-            const typeCursorAction = _args3$.type,
-                  idCursor = _args3$.id,
-                  cursorArgs = _args3[1];
-
+            const [{ type: typeCursorAction, id: idCursor }, cursorArgs] = args;
 
             const cursor = openCursors.get(idCursor);
             if (!cursor) return callback(`failed to find cursor "${ idCursor }"`);

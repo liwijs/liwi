@@ -15,38 +15,38 @@ export default class Query extends AbstractQuery {
     return this.store.emit('fetch', this.key).then(callback);
   }
 
-  _subscribe(callback) {
-    var _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-    var args = arguments[2];
+  _subscribe(callback, _includeInitial = false, args) {
+    var _this = this;
 
     var eventName = `subscribe:${ this.store.restName }.${ this.key }`;
-    this.store.connection.on(eventName, (err, result) => {
+    this.store.connection.on(eventName, function (err, result) {
       callback(err, decode(result));
     });
 
     var _stopEmitSubscribe = void 0;
-    var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(stopEmitSubscribe => {
+    var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
       _stopEmitSubscribe = stopEmitSubscribe;
       logger.info('subscribed');
-    }).catch(err => {
-      this.store.connection.off(eventName, callback);
+    }).catch(function (err) {
+      _this.store.connection.off(eventName, callback);
       throw err;
     });
 
-    var stop = () => {
+    var stop = function stop() {
       if (!promise) return;
       _stopEmitSubscribe();
-      promise.then(() => {
+      promise.then(function () {
         promise = null;
-        this.store.connection.off(eventName, callback);
+        _this.store.connection.off(eventName, callback);
       });
     };
 
     return {
       cancel: stop,
       stop,
-      then: cb => Promise.resolve(promise).then(cb)
+      then: function then(cb) {
+        return Promise.resolve(promise).then(cb);
+      }
     };
   }
 }

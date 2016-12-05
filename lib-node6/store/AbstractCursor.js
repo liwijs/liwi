@@ -28,13 +28,11 @@ class AbstractCursor {
     return this.next().then(() => this.result());
   }
 
-  limit(newLimit) {
+  limit() {
     throw new Error('limit() missing implementation');
   }
 
-  count() {
-    let applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
+  count(applyLimit = false) {
     throw new Error('count() missing implementation');
   }
 

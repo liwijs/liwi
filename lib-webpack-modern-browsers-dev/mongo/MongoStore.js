@@ -9,22 +9,26 @@ import MongoCursor from './MongoCursor';
 export default class MongoStore extends AbstractStore {
 
   constructor(connection, collectionName) {
+    var _this;
+
     _assert(connection, MongoConnection, 'connection');
 
     _assert(collectionName, _t.String, 'collectionName');
 
-    super(connection);
+    _this = super(connection);
 
     this.keyPath = '_id';
     if (!collectionName) {
       throw new Error(`Invalid collectionName: "${ collectionName }"`);
     }
 
-    this._collection = connection.getConnection().then(db => {
+    this._collection = connection.getConnection().then(function (db) {
       _assert(db, Db, 'db');
 
-      return this._collection = db.collection(collectionName);
-    }).catch(err => this._collection = Promise.reject(err));
+      return _this._collection = db.collection(collectionName);
+    }).catch(function (err) {
+      return _this._collection = Promise.reject(err);
+    });
   }
 
   get collection() {
@@ -54,15 +58,15 @@ export default class MongoStore extends AbstractStore {
         object.created = new Date();
       }
 
-      return this.collection.then(collection => collection.insertOne(object)).then((_ref) => {
-        var result = _ref.result,
-            connection = _ref.connection,
-            ops = _ref.ops;
-
+      return this.collection.then(function (collection) {
+        return collection.insertOne(object);
+      }).then(function ({ result, connection, ops }) {
         if (!result.ok || result.n !== 1) {
           throw new Error('Fail to insert');
         }
-      }).then(() => object);
+      }).then(function () {
+        return object;
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -78,7 +82,11 @@ export default class MongoStore extends AbstractStore {
         object.updated = new Date();
       }
 
-      return this.collection.then(collection => collection.updateOne({ _id: object._id }, object)).then(() => object);
+      return this.collection.then(function (collection) {
+        return collection.updateOne({ _id: object._id }, object);
+      }).then(function () {
+        return object;
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -90,7 +98,11 @@ export default class MongoStore extends AbstractStore {
         object.updated = new Date();
       }
 
-      return this.collection.then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })).then(() => object);
+      return this.collection.then(function (collection) {
+        return collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true });
+      }).then(function () {
+        return object;
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -98,7 +110,11 @@ export default class MongoStore extends AbstractStore {
     _assert(objects, _t.list(_t.Any), 'objects');
 
     return _assert(function () {
-      return Promise.all(objects.map(object => this.updateOne(object)));
+      var _this2 = this;
+
+      return Promise.all(objects.map(function (object) {
+        return _this2.updateOne(object);
+      }));
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -107,7 +123,9 @@ export default class MongoStore extends AbstractStore {
 
     // https://docs.mongodb.com/manual/reference/operator/update/
     // if has a mongo operator
-    if (Object.keys(partialUpdate).some(key => key[0] === '$')) {
+    if (Object.keys(partialUpdate).some(function (key) {
+      return key[0] === '$';
+    })) {
       return partialUpdate;
     } else {
       return { $set: partialUpdate };
@@ -121,7 +139,9 @@ export default class MongoStore extends AbstractStore {
 
     return _assert(function () {
       partialUpdate = this._partialUpdate(partialUpdate);
-      return this.collection.then(collection => collection.updateOne({ _id: key }, partialUpdate));
+      return this.collection.then(function (collection) {
+        return collection.updateOne({ _id: key }, partialUpdate);
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -131,8 +151,12 @@ export default class MongoStore extends AbstractStore {
     _assert(partialUpdate, _t.Object, 'partialUpdate');
 
     return _assert(function () {
+      var _this3 = this;
+
       partialUpdate = this._partialUpdate(partialUpdate);
-      return this.partialUpdateByKey(object._id, partialUpdate).then(res => this.findByKey(object._id));
+      return this.partialUpdateByKey(object._id, partialUpdate).then(function () {
+        return _this3.findByKey(object._id);
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -141,7 +165,11 @@ export default class MongoStore extends AbstractStore {
 
     return _assert(function () {
       partialUpdate = this._partialUpdate(partialUpdate);
-      return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(res => null); // TODO return updated object
+      return this.collection.then(function (collection) {
+        return collection.updateMany(criteria, partialUpdate);
+      }).then(function () {
+        return null;
+      }); // TODO return updated object
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -149,7 +177,11 @@ export default class MongoStore extends AbstractStore {
     _assert(key, _t.Any, 'key');
 
     return _assert(function () {
-      return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => null);
+      return this.collection.then(function (collection) {
+        return collection.removeOne({ _id: key });
+      }).then(function () {
+        return null;
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -159,7 +191,15 @@ export default class MongoStore extends AbstractStore {
     _assert(sort, _t.maybe(_t.Object), 'sort');
 
     return _assert(function () {
-      return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => new MongoCursor(this, cursor));
+      var _this4 = this;
+
+      return this.collection.then(function (collection) {
+        return collection.find(criteria);
+      }).then(sort && function (cursor) {
+        return cursor.sort(sort);
+      }).then(function (cursor) {
+        return new MongoCursor(_this4, cursor);
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -175,7 +215,13 @@ export default class MongoStore extends AbstractStore {
     _assert(sort, _t.maybe(_t.Object), 'sort');
 
     return _assert(function () {
-      return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => cursor.limit(1).next());
+      return this.collection.then(function (collection) {
+        return collection.find(criteria);
+      }).then(sort && function (cursor) {
+        return cursor.sort(sort);
+      }).then(function (cursor) {
+        return cursor.limit(1).next();
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 }

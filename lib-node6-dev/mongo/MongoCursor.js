@@ -59,9 +59,7 @@ class MongoCursor extends _AbstractCursor2.default {
     }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
-  count() {
-    let applyLimit = _assert(arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false, _tcombForked2.default.Boolean, 'applyLimit');
-
+  count(applyLimit = false) {
     _assert(applyLimit, _tcombForked2.default.Boolean, 'applyLimit');
 
     return this._cursor.count(applyLimit);

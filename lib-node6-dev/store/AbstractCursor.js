@@ -42,17 +42,13 @@ class AbstractCursor {
     }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
-  limit(newLimit) {
-    _assert(newLimit, _tcombForked2.default.Number, 'newLimit');
-
+  limit() {
     return _assert(function () {
       throw new Error('limit() missing implementation');
     }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
-  count() {
-    let applyLimit = _assert(arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false, _tcombForked2.default.Boolean, 'applyLimit');
-
+  count(applyLimit = false) {
     _assert(applyLimit, _tcombForked2.default.Boolean, 'applyLimit');
 
     throw new Error('count() missing implementation');

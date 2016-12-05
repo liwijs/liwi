@@ -12,11 +12,11 @@ class RestResourceService {
     return limit;
   }
 
-  criteria(connectedUser, criteria) {
+  criteria() {
     return {};
   }
 
-  sort(connectedUser, sort) {
+  sort() {
     return null;
   }
 

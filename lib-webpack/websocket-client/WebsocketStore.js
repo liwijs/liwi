@@ -66,7 +66,7 @@ var WebsocketStore = function (_AbstractStore) {
       var emit = function emit() {
         return _this2.emit.apply(_this2, [type].concat(args));
       };
-      return emit().then(function (result) {
+      return emit().then(function () {
         _this2.connection.on('reconnect', emit);
         return function () {
           return _this2.connection.off('reconnect', emit);

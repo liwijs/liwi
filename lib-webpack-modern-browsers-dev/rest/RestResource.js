@@ -10,19 +10,11 @@ export default class RestResourceService {
     return limit;
   }
 
-  criteria(connectedUser, criteria) {
-    _assert(connectedUser, _t.maybe(_t.Object), "connectedUser");
-
-    _assert(criteria, _t.Object, "criteria");
-
+  criteria() {
     return {};
   }
 
-  sort(connectedUser, sort) {
-    _assert(connectedUser, _t.maybe(_t.Object), "connectedUser");
-
-    _assert(sort, _t.maybe(_t.Object), "sort");
-
+  sort() {
     return null;
   }
 

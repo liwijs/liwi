@@ -27,10 +27,7 @@ class RestService {
     return restResource;
   }
 
-  createCursor(restResource, connectedUser, _ref) {
-    let criteria = _ref.criteria,
-        sort = _ref.sort,
-        limit = _ref.limit;
+  createCursor(restResource, connectedUser, { criteria, sort, limit }) {
     return _asyncToGenerator(function* () {
       criteria = restResource.criteria(connectedUser, criteria || {});
       sort = restResource.sort(connectedUser, sort);

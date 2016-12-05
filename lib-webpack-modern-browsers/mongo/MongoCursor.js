@@ -12,10 +12,12 @@ export default class MongoCursor extends AbstractCursor {
   }
 
   next() {
-    return this._cursor.next().then(value => {
-      this._result = value;
-      this.key = value && value._id;
-      return this.key;
+    var _this = this;
+
+    return this._cursor.next().then(function (value) {
+      _this._result = value;
+      _this.key = value && value._id;
+      return _this.key;
     });
   }
 
@@ -24,9 +26,7 @@ export default class MongoCursor extends AbstractCursor {
     return Promise.resolve(this);
   }
 
-  count() {
-    var applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
+  count(applyLimit = false) {
     return this._cursor.count(applyLimit);
   }
 

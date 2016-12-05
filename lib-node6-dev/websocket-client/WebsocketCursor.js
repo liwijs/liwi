@@ -49,11 +49,7 @@ class WebsocketCursor extends _AbstractCursor2.default {
     });
   }
 
-  emit(type) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
+  emit(type, ...args) {
     return _assert(function () {
       if (!this._idCursor) {
         return this._create().then(() => this.emit(type, ...args));
@@ -86,9 +82,7 @@ class WebsocketCursor extends _AbstractCursor2.default {
     }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
-  count() {
-    let applyLimit = _assert(arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false, _tcombForked2.default.Boolean, 'applyLimit');
-
+  count(applyLimit = false) {
     _assert(applyLimit, _tcombForked2.default.Boolean, 'applyLimit');
 
     return this.emit('count', applyLimit);

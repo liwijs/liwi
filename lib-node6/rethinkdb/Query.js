@@ -15,11 +15,7 @@ class Query extends _AbstractQuery2.default {
     return this.queryCallback(this.store.query()).run().then(callback);
   }
 
-  _subscribe(callback) {
-    let _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-    let args = arguments[2];
-
+  _subscribe(callback, _includeInitial = false, args) {
     let _feed;
     let promise = this.queryCallback(this.store.query()).changes({
       includeInitial: _includeInitial,

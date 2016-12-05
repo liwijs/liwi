@@ -19,16 +19,18 @@ export default class AbstractCursor {
   }
 
   nextResult() {
-    return this.next().then(() => this.result());
+    var _this = this;
+
+    return this.next().then(function () {
+      return _this.result();
+    });
   }
 
-  limit(newLimit) {
+  limit() {
     throw new Error('limit() missing implementation');
   }
 
-  count() {
-    var applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
+  count(applyLimit = false) {
     throw new Error('count() missing implementation');
   }
 
@@ -41,11 +43,11 @@ export default class AbstractCursor {
   }
 
   forEachKeys(callback) {
-    var _this = this;
+    var _this2 = this;
 
     return _asyncToGenerator(function* () {
       while (true) {
-        var key = yield _this.next();
+        var key = yield _this2.next();
         if (!key) return;
 
         yield callback(key);
@@ -54,7 +56,13 @@ export default class AbstractCursor {
   }
 
   forEach(callback) {
-    return this.forEachKeys(() => this.result().then(result => callback(result)));
+    var _this3 = this;
+
+    return this.forEachKeys(function () {
+      return _this3.result().then(function (result) {
+        return callback(result);
+      });
+    });
   }
 
   *keysIterator() {
@@ -64,9 +72,13 @@ export default class AbstractCursor {
   }
 
   *[Symbol.iterator]() {
+    var _this4 = this;
+
     // eslint-disable-next-line no-restricted-syntax
     for (var keyPromise of this.keysIterator()) {
-      yield keyPromise.then(key => key && this.result());
+      yield keyPromise.then(function (key) {
+        return key && _this4.result();
+      });
     }
   }
 

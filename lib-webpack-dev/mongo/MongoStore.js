@@ -171,7 +171,7 @@ var MongoStore = function (_AbstractStore) {
         var _this3 = this;
 
         partialUpdate = this._partialUpdate(partialUpdate);
-        return this.partialUpdateByKey(object._id, partialUpdate).then(function (res) {
+        return this.partialUpdateByKey(object._id, partialUpdate).then(function () {
           return _this3.findByKey(object._id);
         });
       }.apply(this, arguments), _t.Promise, 'return value');
@@ -185,7 +185,7 @@ var MongoStore = function (_AbstractStore) {
         partialUpdate = this._partialUpdate(partialUpdate);
         return this.collection.then(function (collection) {
           return collection.updateMany(criteria, partialUpdate);
-        }).then(function (res) {
+        }).then(function () {
           return null;
         }); // TODO return updated object
       }.apply(this, arguments), _t.Promise, 'return value');

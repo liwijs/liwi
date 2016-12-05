@@ -66,12 +66,11 @@ class RethinkStore extends _AbstractStore2.default {
       object.created = new Date();
     }
 
-    return this.table().insert(object).then((_ref) => {
-      let inserted = _ref.inserted,
-          generatedKeys = _ref.generated_keys;
-
+    return this.table().insert(object).then(({ inserted, generated_keys: generatedKeys }) => {
       if (inserted !== 1) throw new Error('Could not insert');
-      object.id = generatedKeys[0];
+      if (object.id == null) {
+        object.id = generatedKeys[0];
+      }
     }).then(() => object);
   }
 
@@ -115,7 +114,7 @@ class RethinkStore extends _AbstractStore2.default {
     return this.table().get(key).delete().run();
   }
 
-  cursor(criteria, sort) {
+  cursor() {
     // : Promise<RethinkCursor<ModelType>> {
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }
@@ -129,7 +128,7 @@ class RethinkStore extends _AbstractStore2.default {
   }
 
   findOne(query) {
-    return query.run({ cursor: true }).then(cursor => cursor.next().catch(err => null));
+    return query.run({ cursor: true }).then(cursor => cursor.next().catch(() => null));
   }
 }
 exports.default = RethinkStore;

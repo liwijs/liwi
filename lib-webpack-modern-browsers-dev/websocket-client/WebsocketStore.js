@@ -32,31 +32,31 @@ export default class WebsocketStore extends AbstractStore {
     return new Query(this, key);
   }
 
-  emit(type) {
+  emit(type, ...args) {
     if (this.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
-    }
-
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
     }
 
     return this.connection.emit('rest', {
       type,
       restName: this.restName,
       buffer: args && encode(args)
-    }).then(result => result && decode(result));
+    }).then(function (result) {
+      return result && decode(result);
+    });
   }
 
-  emitSubscribe(type) {
-    for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-      args[_key2 - 1] = arguments[_key2];
-    }
+  emitSubscribe(type, ...args) {
+    var _this = this;
 
-    var emit = () => this.emit(type, ...args);
-    return emit().then(result => {
-      this.connection.on('reconnect', emit);
-      return () => this.connection.off('reconnect', emit);
+    var emit = function emit() {
+      return _this.emit(type, ...args);
+    };
+    return emit().then(function () {
+      _this.connection.on('reconnect', emit);
+      return function () {
+        return _this.connection.off('reconnect', emit);
+      };
     });
   }
 

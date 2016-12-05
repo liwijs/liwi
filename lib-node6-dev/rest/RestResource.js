@@ -21,19 +21,11 @@ class RestResourceService {
     return limit;
   }
 
-  criteria(connectedUser, criteria) {
-    _assert(connectedUser, _tcombForked2.default.maybe(_tcombForked2.default.Object), "connectedUser");
-
-    _assert(criteria, _tcombForked2.default.Object, "criteria");
-
+  criteria() {
     return {};
   }
 
-  sort(connectedUser, sort) {
-    _assert(connectedUser, _tcombForked2.default.maybe(_tcombForked2.default.Object), "connectedUser");
-
-    _assert(sort, _tcombForked2.default.maybe(_tcombForked2.default.Object), "sort");
-
+  sort() {
     return null;
   }
 

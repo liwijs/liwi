@@ -16,12 +16,12 @@ var RestResourceService = function () {
     }
   }, {
     key: "criteria",
-    value: function criteria(connectedUser, _criteria) {
+    value: function criteria() {
       return {};
     }
   }, {
     key: "sort",
-    value: function sort(connectedUser, _sort) {
+    value: function sort() {
       return null;
     }
   }, {

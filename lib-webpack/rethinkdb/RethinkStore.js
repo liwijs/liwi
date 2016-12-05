@@ -80,7 +80,9 @@ var RethinkStore = function (_AbstractStore) {
             generatedKeys = _ref.generated_keys;
 
         if (inserted !== 1) throw new Error('Could not insert');
-        object.id = generatedKeys[0];
+        if (object.id == null) {
+          object.id = generatedKeys[0];
+        }
       }).then(function () {
         return object;
       });
@@ -145,7 +147,7 @@ var RethinkStore = function (_AbstractStore) {
     }
   }, {
     key: 'cursor',
-    value: function cursor(criteria, sort) {
+    value: function cursor() {
       // : Promise<RethinkCursor<ModelType>> {
       throw new Error('Not Supported yet, please use query().run({ cursor: true })');
     }
@@ -163,7 +165,7 @@ var RethinkStore = function (_AbstractStore) {
     key: 'findOne',
     value: function findOne(query) {
       return query.run({ cursor: true }).then(function (cursor) {
-        return cursor.next().catch(function (err) {
+        return cursor.next().catch(function () {
           return null;
         });
       });

@@ -16,11 +16,7 @@ class FindAndSubscribeComponent extends _react.Component {
 
   componentDidMount() {
     // console.log('FindAndSubscribe: did mount');
-    var _props = this.props;
-    const query = _props.query,
-          action = _props.action,
-          dispatch = _props.dispatch;
-
+    const { query, action, dispatch } = this.props;
     this._subscribe = query.fetchAndSubscribe((err, result) => {
       if (err) {
         // eslint-disable-next-line no-undef, no-alert

@@ -40,9 +40,7 @@ var AbstractCursor = function () {
     }
   }, {
     key: 'limit',
-    value: function limit(newLimit) {
-      _assert(newLimit, _t.Number, 'newLimit');
-
+    value: function limit() {
       return _assert(function () {
         throw new Error('limit() missing implementation');
       }.apply(this, arguments), _t.Promise, 'return value');

@@ -30,6 +30,8 @@ export default class RethinkStore extends AbstractStore {
   }
 
   _query(criteria, sort) {
+    var _this = this;
+
     _assert(criteria, _t.maybe(_t.Object), 'criteria');
 
     _assert(sort, _t.maybe(_t.Object), 'sort');
@@ -41,9 +43,9 @@ export default class RethinkStore extends AbstractStore {
     }
 
     if (sort) {
-      Object.keys(sort).forEach(key => {
+      Object.keys(sort).forEach(function (key) {
         if (sort[key] === -1) {
-          query.orderBy(this.r.desc(key));
+          query.orderBy(_this.r.desc(key));
         } else {
           query.orderBy(key);
         }
@@ -67,13 +69,14 @@ export default class RethinkStore extends AbstractStore {
         object.created = new Date();
       }
 
-      return this.table().insert(object).then((_ref) => {
-        var inserted = _ref.inserted,
-            generatedKeys = _ref.generated_keys;
-
+      return this.table().insert(object).then(function ({ inserted, generated_keys: generatedKeys }) {
         if (inserted !== 1) throw new Error('Could not insert');
-        object.id = generatedKeys[0];
-      }).then(() => object);
+        if (object.id == null) {
+          object.id = generatedKeys[0];
+        }
+      }).then(function () {
+        return object;
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -89,7 +92,9 @@ export default class RethinkStore extends AbstractStore {
         object.updated = new Date();
       }
 
-      return this.table().get(object.id).replace(object).then(() => object);
+      return this.table().get(object.id).replace(object).then(function () {
+        return object;
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -101,7 +106,9 @@ export default class RethinkStore extends AbstractStore {
         object.updated = new Date();
       }
 
-      return this.table().insert(object, { conflict: 'replace' }).run().then(() => object);
+      return this.table().insert(object, { conflict: 'replace' }).run().then(function () {
+        return object;
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -109,7 +116,11 @@ export default class RethinkStore extends AbstractStore {
     _assert(objects, _t.list(_t.Any), 'objects');
 
     return _assert(function () {
-      return Promise.all(objects.map(object => this.replaceOne(object)));
+      var _this2 = this;
+
+      return Promise.all(objects.map(function (object) {
+        return _this2.replaceOne(object);
+      }));
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -129,7 +140,9 @@ export default class RethinkStore extends AbstractStore {
     _assert(partialUpdate, _t.Object, 'partialUpdate');
 
     return _assert(function () {
-      return this.table().get(object.id).update(partialUpdate, { returnChanges: true }).then(res => res.changes.new_val);
+      return this.table().get(object.id).update(partialUpdate, { returnChanges: true }).then(function (res) {
+        return res.changes.new_val;
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -149,11 +162,7 @@ export default class RethinkStore extends AbstractStore {
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
-  cursor(criteria, sort) {
-    _assert(criteria, _t.maybe(_t.Object), 'criteria');
-
-    _assert(sort, _t.maybe(_t.Object), 'sort');
-
+  cursor() {
     // : Promise<RethinkCursor<ModelType>> {
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }
@@ -172,7 +181,11 @@ export default class RethinkStore extends AbstractStore {
 
   findOne(query) {
     return _assert(function () {
-      return query.run({ cursor: true }).then(cursor => cursor.next().catch(err => null));
+      return query.run({ cursor: true }).then(function (cursor) {
+        return cursor.next().catch(function () {
+          return null;
+        });
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 }

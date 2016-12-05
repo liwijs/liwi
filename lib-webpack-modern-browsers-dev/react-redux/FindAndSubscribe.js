@@ -5,12 +5,8 @@ export default class FindAndSubscribeComponent extends Component {
 
   componentDidMount() {
     // console.log('FindAndSubscribe: did mount');
-    var _props = this.props,
-        query = _props.query,
-        action = _props.action,
-        dispatch = _props.dispatch;
-
-    this._subscribe = query.fetchAndSubscribe((err, result) => {
+    var { query, action, dispatch } = this.props;
+    this._subscribe = query.fetchAndSubscribe(function (err, result) {
       if (err) {
         // eslint-disable-next-line no-undef, no-alert
         alert(`Unexpected error: ${ err }`);

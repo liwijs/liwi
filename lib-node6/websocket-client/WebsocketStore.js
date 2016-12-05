@@ -37,13 +37,9 @@ class WebsocketStore extends _AbstractStore2.default {
     return new _Query2.default(this, key);
   }
 
-  emit(type) {
+  emit(type, ...args) {
     if (this.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
-    }
-
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
     }
 
     return this.connection.emit('rest', {
@@ -53,13 +49,9 @@ class WebsocketStore extends _AbstractStore2.default {
     }).then(result => result && (0, _msgpack.decode)(result));
   }
 
-  emitSubscribe(type) {
-    for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-      args[_key2 - 1] = arguments[_key2];
-    }
-
+  emitSubscribe(type, ...args) {
     const emit = () => this.emit(type, ...args);
-    return emit().then(result => {
+    return emit().then(() => {
       this.connection.on('reconnect', emit);
       return () => this.connection.off('reconnect', emit);
     });

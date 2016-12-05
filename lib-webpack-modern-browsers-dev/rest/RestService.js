@@ -25,11 +25,7 @@ export default class RestService {
     return restResource;
   }
 
-  createCursor(restResource, connectedUser, _ref) {
-    var criteria = _ref.criteria,
-        sort = _ref.sort,
-        limit = _ref.limit;
-
+  createCursor(restResource, connectedUser, { criteria, sort, limit }) {
     _assert(connectedUser, _t.maybe(_t.Object), 'connectedUser');
 
     _assert({

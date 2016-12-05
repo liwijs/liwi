@@ -9,13 +9,13 @@ var _redux = require('./redux');
 
 Object.defineProperty(exports, 'createSubscribeAction', {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _redux.createSubscribeAction;
   }
 });
 Object.defineProperty(exports, 'subscribeReducer', {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _redux.subscribeReducer;
   }
 });

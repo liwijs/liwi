@@ -15,26 +15,24 @@ export default class Query extends AbstractQuery {
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
-  _subscribe(callback) {
-    var _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-    var args = arguments[2];
-
+  _subscribe(callback, _includeInitial = false, args) {
     _assert(callback, _t.Function, 'callback');
 
     _assert(args, _t.list(_t.Any), 'args');
 
     return _assert(function () {
+      var _this = this;
+
       var _feed = void 0;
       var promise = this.queryCallback(this.store.query()).changes({
         includeInitial: _includeInitial,
         includeStates: true,
         includeTypes: true,
         includeOffsets: true
-      }).then(feed => {
+      }).then(function (feed) {
         if (args.length === 0) {
           _feed = feed;
-          delete this._promise;
+          delete _this._promise;
         }
 
         feed.each(callback);
@@ -43,14 +41,16 @@ export default class Query extends AbstractQuery {
 
       if (args.length === 0) this._promise = promise;
 
-      var stop = () => {
-        this.closeFeed(_feed, promise);
+      var stop = function stop() {
+        _this.closeFeed(_feed, promise);
       };
 
       return {
         stop,
         cancel: stop,
-        then: (cb, errCb) => promise.then(cb, errCb)
+        then: function then(cb, errCb) {
+          return promise.then(cb, errCb);
+        }
       };
     }.apply(this, arguments), SubscribeReturnType, 'return value');
   }
@@ -59,7 +59,9 @@ export default class Query extends AbstractQuery {
     if (feed) {
       feed.close();
     } else if (promise) {
-      promise.then(feed => feed.close());
+      promise.then(function (feed) {
+        return feed.close();
+      });
     }
   }
 }

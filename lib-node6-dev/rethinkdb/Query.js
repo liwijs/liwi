@@ -28,11 +28,7 @@ class Query extends _AbstractQuery2.default {
     }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
-  _subscribe(callback) {
-    let _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-    let args = _assert(arguments[2], _tcombForked2.default.list(_tcombForked2.default.Any), 'args');
-
+  _subscribe(callback, _includeInitial = false, args) {
     _assert(callback, _tcombForked2.default.Function, 'callback');
 
     _assert(args, _tcombForked2.default.list(_tcombForked2.default.Any), 'args');

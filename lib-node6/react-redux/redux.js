@@ -21,14 +21,14 @@ function createSubscribeAction(actionName) {
 
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
-function subscribeReducer(state, _ref) {
-  let change = _ref.change;
-  const type = change.type,
-        oldOffset = change.old_offset,
-        newOffset = change.new_offset,
-        oldVal = change.old_val,
-        newVal = change.new_val;
-
+function subscribeReducer(state, { change }) {
+  const {
+    type,
+    old_offset: oldOffset,
+    new_offset: newOffset,
+    old_val: oldVal,
+    new_val: newVal
+  } = change;
 
   const copy = () => state = state.slice();
 

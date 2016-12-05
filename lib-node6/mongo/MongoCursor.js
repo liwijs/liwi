@@ -33,9 +33,7 @@ class MongoCursor extends _AbstractCursor2.default {
     return Promise.resolve(this);
   }
 
-  count() {
-    let applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
+  count(applyLimit = false) {
     return this._cursor.count(applyLimit);
   }
 

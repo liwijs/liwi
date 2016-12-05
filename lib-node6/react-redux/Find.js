@@ -15,11 +15,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 class FindComponent extends _react.Component {
 
   componentDidMount() {
-    var _props = this.props;
-    const query = _props.query,
-          action = _props.action,
-          dispatch = _props.dispatch;
-
+    const { query, action, dispatch } = this.props;
     this._find = query.fetch(result => {
       if (!this._find) return;
       dispatch(action(result));

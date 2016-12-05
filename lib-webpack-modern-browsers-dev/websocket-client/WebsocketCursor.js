@@ -26,21 +26,23 @@ export default class WebsocketCursor extends AbstractCursor {
   /* results */
 
   _create() {
+    var _this = this;
+
     if (this._idCursor) throw new Error('Cursor already created');
-    return this.store.connection.emit('createCursor', this._options).then(idCursor => {
+    return this.store.connection.emit('createCursor', this._options).then(function (idCursor) {
       if (!idCursor) return;
-      this._idCursor = idCursor;
+      _this._idCursor = idCursor;
     });
   }
 
-  emit(type) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
+  emit(type, ...args) {
     return _assert(function () {
+      var _this2 = this;
+
       if (!this._idCursor) {
-        return this._create().then(() => this.emit(type, ...args));
+        return this._create().then(function () {
+          return _this2.emit(type, ...args);
+        });
       }
 
       return this.store.emit('cursor', { type, id: this._idCursor }, args);
@@ -56,10 +58,12 @@ export default class WebsocketCursor extends AbstractCursor {
 
   next() {
     return _assert(function () {
-      return this.emit('next').then(result => {
-        this._result = result;
-        this.key = result && result[this._store.keyPath];
-        return this.key;
+      var _this3 = this;
+
+      return this.emit('next').then(function (result) {
+        _this3._result = result;
+        _this3.key = result && result[_this3._store.keyPath];
+        return _this3.key;
       });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
@@ -70,9 +74,7 @@ export default class WebsocketCursor extends AbstractCursor {
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
-  count() {
-    var applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
+  count(applyLimit = false) {
     _assert(applyLimit, _t.Boolean, 'applyLimit');
 
     return this.emit('count', applyLimit);
@@ -91,8 +93,10 @@ export default class WebsocketCursor extends AbstractCursor {
 
   toArray() {
     return _assert(function () {
-      return this.store.emit('cursor toArray', this._options).then(result => {
-        this.close();
+      var _this4 = this;
+
+      return this.store.emit('cursor toArray', this._options).then(function (result) {
+        _this4.close();
         return result;
       });
     }.apply(this, arguments), _t.Promise, 'return value');

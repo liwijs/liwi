@@ -32,7 +32,7 @@ var AbstractCursor = function () {
     }
   }, {
     key: 'limit',
-    value: function limit(newLimit) {
+    value: function limit() {
       throw new Error('limit() missing implementation');
     }
   }, {

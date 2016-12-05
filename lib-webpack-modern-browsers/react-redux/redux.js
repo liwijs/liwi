@@ -3,20 +3,24 @@ import deepEqual from 'deep-equal';
 import { createAction as alpReactReduxCreateAction } from 'alp-react-redux';
 
 export function createSubscribeAction(actionName) {
-  return alpReactReduxCreateAction(actionName, change => ({ change }));
+  return alpReactReduxCreateAction(actionName, function (change) {
+    return { change };
+  });
 }
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
-export function subscribeReducer(state, _ref) {
-  var change = _ref.change;
-  var type = change.type,
-      oldOffset = change.old_offset,
-      newOffset = change.new_offset,
-      oldVal = change.old_val,
-      newVal = change.new_val;
+export function subscribeReducer(state, { change }) {
+  var {
+    type,
+    old_offset: oldOffset,
+    new_offset: newOffset,
+    old_val: oldVal,
+    new_val: newVal
+  } = change;
 
-
-  var copy = () => state = state.slice();
+  var copy = function copy() {
+    return state = state.slice();
+  };
 
   switch (type) {
     case 'remove':
@@ -27,7 +31,9 @@ export function subscribeReducer(state, _ref) {
         if (oldOffset != null) {
           state.splice(oldOffset, 1);
         } else {
-          var index = state.findIndex(x => deepEqual(x.id, oldVal.id));
+          var index = state.findIndex(function (x) {
+            return deepEqual(x.id, oldVal.id);
+          });
           if (index === -1) {
             // Programming error. This should not happen
             throw new Error(`change couldn't be applied: ${ JSON.stringify(change) }`);
@@ -46,7 +52,9 @@ export function subscribeReducer(state, _ref) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          var _index = state.findIndex(x => deepEqual(x.id, newVal.id));
+          var _index = state.findIndex(function (x) {
+            return deepEqual(x.id, newVal.id);
+          });
           if (_index === -1) {
             state.push(newVal);
           } else {
@@ -91,7 +99,9 @@ export function subscribeReducer(state, _ref) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          var _index2 = state.findIndex(x => deepEqual(x.id, oldVal.id));
+          var _index2 = state.findIndex(function (x) {
+            return deepEqual(x.id, oldVal.id);
+          });
           if (_index2 === -1) {
             // indicates a programming bug. The server gives us the
             // ordering, so if we don't find the id it means something is

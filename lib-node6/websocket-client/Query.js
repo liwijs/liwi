@@ -28,11 +28,7 @@ class Query extends _AbstractQuery2.default {
     return this.store.emit('fetch', this.key).then(callback);
   }
 
-  _subscribe(callback) {
-    let _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-    let args = arguments[2];
-
+  _subscribe(callback, _includeInitial = false, args) {
     const eventName = `subscribe:${ this.store.restName }.${ this.key }`;
     this.store.connection.on(eventName, (err, result) => {
       callback(err, (0, _msgpack.decode)(result));

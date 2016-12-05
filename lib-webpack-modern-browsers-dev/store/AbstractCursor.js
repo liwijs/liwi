@@ -28,21 +28,21 @@ export default class AbstractCursor {
 
   nextResult() {
     return _assert(function () {
-      return this.next().then(() => this.result());
+      var _this = this;
+
+      return this.next().then(function () {
+        return _this.result();
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
-  limit(newLimit) {
-    _assert(newLimit, _t.Number, 'newLimit');
-
+  limit() {
     return _assert(function () {
       throw new Error('limit() missing implementation');
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
-  count() {
-    var applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
+  count(applyLimit = false) {
     _assert(applyLimit, _t.Boolean, 'applyLimit');
 
     throw new Error('count() missing implementation');
@@ -75,7 +75,13 @@ export default class AbstractCursor {
 
   forEach(callback) {
     return _assert(function () {
-      return this.forEachKeys(() => this.result().then(result => callback(result)));
+      var _this2 = this;
+
+      return this.forEachKeys(function () {
+        return _this2.result().then(function (result) {
+          return callback(result);
+        });
+      });
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
@@ -86,9 +92,13 @@ export default class AbstractCursor {
   }
 
   *[Symbol.iterator]() {
+    var _this3 = this;
+
     // eslint-disable-next-line no-restricted-syntax
     for (var keyPromise of this.keysIterator()) {
-      yield keyPromise.then(key => key && this.result());
+      yield keyPromise.then(function (key) {
+        return key && _this3.result();
+      });
     }
   }
 

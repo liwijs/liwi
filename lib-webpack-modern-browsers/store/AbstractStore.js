@@ -14,7 +14,9 @@ export default class AbstractStore {
   }
 
   findAll(criteria, sort) {
-    return this.cursor(criteria, sort).then(cursor => cursor.toArray());
+    return this.cursor(criteria, sort).then(function (cursor) {
+      return cursor.toArray();
+    });
   }
 }
 //# sourceMappingURL=AbstractStore.js.map

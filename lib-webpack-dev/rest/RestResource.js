@@ -20,20 +20,12 @@ var RestResourceService = function () {
     }
   }, {
     key: "criteria",
-    value: function criteria(connectedUser, _criteria) {
-      _assert(connectedUser, _t.maybe(_t.Object), "connectedUser");
-
-      _assert(_criteria, _t.Object, "_criteria");
-
+    value: function criteria() {
       return {};
     }
   }, {
     key: "sort",
-    value: function sort(connectedUser, _sort) {
-      _assert(connectedUser, _t.maybe(_t.Object), "connectedUser");
-
-      _assert(_sort, _t.maybe(_t.Object), "_sort");
-
+    value: function sort() {
       return null;
     }
   }, {
