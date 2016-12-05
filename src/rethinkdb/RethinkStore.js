@@ -57,7 +57,9 @@ export default class RethinkStore<ModelType> extends AbstractStore<RethinkConnec
     return this.table().insert(object)
       .then(({ inserted, generated_keys: generatedKeys }) => {
         if (inserted !== 1) throw new Error('Could not insert');
-        object.id = generatedKeys[0];
+        if (object.id == null) {
+          object.id = generatedKeys[0];
+        }
       })
       .then(() => object);
   }

@@ -1,5 +1,5 @@
 /* global PRODUCTION */
-import Logger from 'nightingale-logger';
+import Logger from 'nightingale-logger/src';
 import { encode, decode } from '../msgpack';
 
 const logger = new Logger('liwi:rest-websocket');
