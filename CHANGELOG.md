@@ -1,3 +1,8 @@
+### v0.10.0
+
+- [`5805c1e`](https://github.com/liwijs/liwi/commit/5805c1ec4eb24db35d6ed839c3536d0165ce932a) fix: rethinkdb fix when id is not generated (Christophe Hurpeau)
+- [`c7cbd2d`](https://github.com/liwijs/liwi/commit/c7cbd2d9ec3a7dcc8156619b3951b6e2d80ae757) refactor: update dependencies (Christophe Hurpeau)
+
 ### v0.9.2
 
 - [`5d41e1f`](https://github.com/liwijs/liwi/commit/5d41e1f4f27bd28ad56439a847a304835b147d1e) fix: rethinkdb logger key (Christophe Hurpeau)
