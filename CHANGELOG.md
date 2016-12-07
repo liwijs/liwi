@@ -1,3 +1,8 @@
+### v0.12.1
+
+- [`189445e`](https://github.com/liwijs/liwi/commit/189445e0f03a925fb0db607cc5fe23fdf37315a2) fix: rest-websocket encode undefined (Christophe Hurpeau)
+
+
 ### v0.12.0
 
 - [`98cc25e`](https://github.com/liwijs/liwi/commit/98cc25e5e8eb0d8f1512725ec5cecd834d09379e) feat: add r in queryCallback in rethinkdb (Christophe Hurpeau)
