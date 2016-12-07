@@ -114,8 +114,9 @@ class RethinkStore extends _AbstractStore2.default {
     return this.table().get(key).delete().run();
   }
 
-  cursor() {
+  cursor(query, sort) {
     // : Promise<RethinkCursor<ModelType>> {
+    if (sort) throw new Error('sort is not supported');
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }
 

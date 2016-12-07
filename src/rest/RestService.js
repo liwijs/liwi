@@ -20,6 +20,7 @@ export default class RestService {
     connectedUser: ?Object,
     { criteria, sort, limit }: { criteria: ?Object, sort: ?Object, limit: ?number },
   ): Promise {
+    // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
     criteria = restResource.criteria(connectedUser, criteria || {});
     sort = restResource.sort(connectedUser, sort);
     const cursor = await restResource.store.cursor(criteria, sort);

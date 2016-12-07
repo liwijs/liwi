@@ -162,8 +162,11 @@ export default class RethinkStore extends AbstractStore {
     }.apply(this, arguments), _t.Promise, 'return value');
   }
 
-  cursor() {
+  cursor(query, sort) {
+    _assert(sort, _t.maybe(_t.Object), 'sort');
+
     // : Promise<RethinkCursor<ModelType>> {
+    if (sort) throw new Error('sort is not supported');
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }
 

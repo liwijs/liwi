@@ -98,7 +98,11 @@ export default function init(io, restService) {
             var _ret = function () {
               var [key, eventName, otherArgs = []] = args;
 
-              var query = restResource.query(socket.user, key);
+              if (!key.startsWith('query')) {
+                throw new Error('Invalid query key');
+              }
+
+              var query = restResource(socket.user, key);
               if (!query) {
                 throw new Error(`rest: ${ restName }.${ type }.${ key } is not available`);
               }

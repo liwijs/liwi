@@ -107,7 +107,8 @@ export default class RethinkStore<ModelType> extends AbstractStore<RethinkConnec
     return this.table().get(key).delete().run();
   }
 
-  cursor(criteria: ?Object, sort: ?Object) { // : Promise<RethinkCursor<ModelType>> {
+  cursor(query, sort: ?Object) { // : Promise<RethinkCursor<ModelType>> {
+    if (sort) throw new Error('sort is not supported');
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }
 

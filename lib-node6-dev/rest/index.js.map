@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../src/rest/index.js"],"names":["RestResource","RestService"],"mappings":";;;;;;;;;;;;;;;;;QAAOA,Y;QACAC,W","file":"index.js","sourcesContent":["export RestResource from './RestResource';\nexport RestService from './RestService';\n"]}
+{"version":3,"sources":["../../src/rest/index.js"],"names":["RestService"],"mappings":";;;;;;;;;;;;;QAAOA,W","file":"index.js","sourcesContent":["export RestService from './RestService';\n"]}

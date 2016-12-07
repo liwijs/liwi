@@ -37,6 +37,7 @@ var RestService = function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
                 criteria = restResource.criteria(connectedUser, criteria || {});
                 sort = restResource.sort(connectedUser, sort);
                 _context.next = 4;

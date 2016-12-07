@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../src/rest/index.js"],"names":["RestResource","RestService"],"mappings":"0BAAyB,gB;0BAAlBA,Y;yBACiB,e;yBAAjBC,W","file":"index.js","sourcesContent":["export RestResource from './RestResource';\nexport RestService from './RestService';\n"]}
+{"version":3,"sources":["../../src/rest/index.js"],"names":["RestService"],"mappings":"yBAAwB,e;yBAAjBA,W","file":"index.js","sourcesContent":["export RestService from './RestService';\n"]}

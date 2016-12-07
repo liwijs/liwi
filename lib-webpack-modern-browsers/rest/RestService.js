@@ -19,6 +19,7 @@ export default class RestService {
 
   createCursor(restResource, connectedUser, { criteria, sort, limit }) {
     return _asyncToGenerator(function* () {
+      // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
       criteria = restResource.criteria(connectedUser, criteria || {});
       sort = restResource.sort(connectedUser, sort);
       var cursor = yield restResource.store.cursor(criteria, sort);

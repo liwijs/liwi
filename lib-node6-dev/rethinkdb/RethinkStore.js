@@ -168,8 +168,11 @@ class RethinkStore extends _AbstractStore2.default {
     }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
-  cursor() {
+  cursor(query, sort) {
+    _assert(sort, _tcombForked2.default.maybe(_tcombForked2.default.Object), 'sort');
+
     // : Promise<RethinkCursor<ModelType>> {
+    if (sort) throw new Error('sort is not supported');
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }
 
