@@ -1,3 +1,7 @@
+### v0.12.0
+
+- [`98cc25e`](https://github.com/liwijs/liwi/commit/98cc25e5e8eb0d8f1512725ec5cecd834d09379e) feat: add r in queryCallback in rethinkdb (Christophe Hurpeau)
+
 ### v0.11.1
 
 - [`83bd958`](https://github.com/liwijs/liwi/commit/83bd958b00c3c24b420a580e799681ef49fd03f9) fix: previous commit (Christophe Hurpeau)
