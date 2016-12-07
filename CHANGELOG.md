@@ -1,3 +1,7 @@
+### v0.10.1
+
+- [`f49dc27`](https://github.com/liwijs/liwi/commit/f49dc2758498403c0a5be99a5606ce95bae709c4) fix: websocket emit msgpack arg undefined (Christophe Hurpeau)
+
 ### v0.10.0
 
 - [`5805c1e`](https://github.com/liwijs/liwi/commit/5805c1ec4eb24db35d6ed839c3536d0165ce932a) fix: rethinkdb fix when id is not generated (Christophe Hurpeau)
