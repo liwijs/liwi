@@ -33,7 +33,7 @@ export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketCo
     return this.connection.emit('rest', {
       type,
       restName: this.restName,
-      buffer: args && encode(args),
+      buffer: args && encode(args.map(arg => (arg === undefined ? null : arg))),
     }).then(result => result && decode(result));
   }
 
