@@ -1,3 +1,7 @@
+### v0.11.1
+
+- [`83bd958`](https://github.com/liwijs/liwi/commit/83bd958b00c3c24b420a580e799681ef49fd03f9) fix: previous commit (Christophe Hurpeau)
+
 ### v0.11.0
 
 - [`5ea4075`](https://github.com/liwijs/liwi/commit/5ea4075af4c5d5ebc8e8875fbf1ff5dcaf14aedf) refactor: breaking: remove restresource (Christophe Hurpeau)
