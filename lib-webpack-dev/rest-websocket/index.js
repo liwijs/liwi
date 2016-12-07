@@ -121,7 +121,7 @@ export default function init(io, restService) {
                 throw new Error('Invalid query key');
               }
 
-              var query = restResource(socket.user, key);
+              var query = restResource.queries[key]; // todo pass connected user
               if (!query) {
                 throw new Error('rest: ' + restName + '.' + type + '.' + key + ' is not available');
               }

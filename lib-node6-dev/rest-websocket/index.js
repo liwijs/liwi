@@ -108,7 +108,7 @@ function init(io, restService) {
               throw new Error('Invalid query key');
             }
 
-            const query = restResource(socket.user, key);
+            const query = restResource.queries[key]; // todo pass connected user
             if (!query) {
               throw new Error(`rest: ${ restName }.${ type }.${ key } is not available`);
             }
