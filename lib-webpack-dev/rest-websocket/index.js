@@ -129,7 +129,7 @@ export default function init(io, restService) {
               if (type === 'fetch') {
                 return {
                   v: query[type].apply(query, [function (result) {
-                    return callback(null, encode(result));
+                    return callback(null, result && encode(result));
                   }].concat(_toConsumableArray(otherArgs))).catch(function (err) {
                     logger.error(type, { err: err });
                     callback(err.message || err);

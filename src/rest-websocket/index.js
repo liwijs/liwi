@@ -93,7 +93,7 @@ export default function init(io, restService) {
             }
 
             if (type === 'fetch') {
-              return query[type](result => callback(null, encode(result)), ...otherArgs)
+              return query[type](result => callback(null, result && encode(result)), ...otherArgs)
                 .catch((err) => {
                   logger.error(type, { err });
                   callback(err.message || err);

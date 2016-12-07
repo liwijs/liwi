@@ -114,7 +114,7 @@ function init(io, restService) {
             }
 
             if (type === 'fetch') {
-              return query[type](result => callback(null, (0, _msgpack.encode)(result)), ...otherArgs).catch(err => {
+              return query[type](result => callback(null, result && (0, _msgpack.encode)(result)), ...otherArgs).catch(err => {
                 logger.error(type, { err });
                 callback(err.message || err);
               });
