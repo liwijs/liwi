@@ -12,12 +12,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class Query extends _AbstractQuery2.default {
   fetch(callback) {
-    return this.queryCallback(this.store.query()).run().then(callback);
+    return this.queryCallback(this.store.query(), this.store.r).run().then(callback);
   }
 
   _subscribe(callback, _includeInitial = false, args) {
     let _feed;
-    let promise = this.queryCallback(this.store.query()).changes({
+    let promise = this.queryCallback(this.store.query(), this.store.r).changes({
       includeInitial: _includeInitial,
       includeStates: true,
       includeTypes: true,

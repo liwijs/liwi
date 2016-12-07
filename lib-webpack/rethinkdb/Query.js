@@ -20,7 +20,7 @@ var Query = function (_AbstractQuery) {
   _createClass(Query, [{
     key: 'fetch',
     value: function fetch(callback) {
-      return this.queryCallback(this.store.query()).run().then(callback);
+      return this.queryCallback(this.store.query(), this.store.r).run().then(callback);
     }
   }, {
     key: '_subscribe',
@@ -32,7 +32,7 @@ var Query = function (_AbstractQuery) {
       var args = arguments[2];
 
       var _feed = void 0;
-      var promise = this.queryCallback(this.store.query()).changes({
+      var promise = this.queryCallback(this.store.query(), this.store.r).changes({
         includeInitial: _includeInitial,
         includeStates: true,
         includeTypes: true,

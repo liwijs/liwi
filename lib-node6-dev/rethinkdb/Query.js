@@ -24,7 +24,7 @@ class Query extends _AbstractQuery2.default {
     _assert(callback, _tcombForked2.default.maybe(_tcombForked2.default.Function), 'callback');
 
     return _assert(function () {
-      return this.queryCallback(this.store.query()).run().then(callback);
+      return this.queryCallback(this.store.query(), this.store.r).run().then(callback);
     }.apply(this, arguments), _tcombForked2.default.Promise, 'return value');
   }
 
@@ -35,7 +35,7 @@ class Query extends _AbstractQuery2.default {
 
     return _assert(function () {
       let _feed;
-      let promise = this.queryCallback(this.store.query()).changes({
+      let promise = this.queryCallback(this.store.query(), this.store.r).changes({
         includeInitial: _includeInitial,
         includeStates: true,
         includeTypes: true,

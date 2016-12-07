@@ -3,14 +3,14 @@ import AbstractQuery from '../store/AbstractQuery';
 
 export default class Query extends AbstractQuery {
   fetch(callback) {
-    return this.queryCallback(this.store.query()).run().then(callback);
+    return this.queryCallback(this.store.query(), this.store.r).run().then(callback);
   }
 
   _subscribe(callback, _includeInitial = false, args) {
     var _this = this;
 
     var _feed = void 0;
-    var promise = this.queryCallback(this.store.query()).changes({
+    var promise = this.queryCallback(this.store.query(), this.store.r).changes({
       includeInitial: _includeInitial,
       includeStates: true,
       includeTypes: true,

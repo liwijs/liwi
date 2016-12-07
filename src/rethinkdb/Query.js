@@ -8,13 +8,13 @@ type SubscribeReturnType = {
 
 export default class Query extends AbstractQuery<RethinkStore> {
   fetch(callback: ?Function): Promise {
-    return this.queryCallback(this.store.query()).run().then(callback);
+    return this.queryCallback(this.store.query(), this.store.r).run().then(callback);
   }
 
   _subscribe(callback: Function, _includeInitial = false, args: Array<any>): SubscribeReturnType {
     let _feed;
     let promise =
-      this.queryCallback(this.store.query()).changes({
+      this.queryCallback(this.store.query(), this.store.r).changes({
         includeInitial: _includeInitial,
         includeStates: true,
         includeTypes: true,

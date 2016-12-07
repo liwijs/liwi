@@ -30,7 +30,7 @@ var Query = function (_AbstractQuery) {
       _assert(callback, _t.maybe(_t.Function), 'callback');
 
       return _assert(function () {
-        return this.queryCallback(this.store.query()).run().then(callback);
+        return this.queryCallback(this.store.query(), this.store.r).run().then(callback);
       }.apply(this, arguments), _t.Promise, 'return value');
     }
   }, {
@@ -48,7 +48,7 @@ var Query = function (_AbstractQuery) {
         var _this2 = this;
 
         var _feed = void 0;
-        var promise = this.queryCallback(this.store.query()).changes({
+        var promise = this.queryCallback(this.store.query(), this.store.r).changes({
           includeInitial: _includeInitial,
           includeStates: true,
           includeTypes: true,
