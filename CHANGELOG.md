@@ -1,3 +1,12 @@
+<a name="0.12.2"></a>
+## [0.12.2](https://github.com/liwijs/liwi/compare/v0.12.1...v0.12.2) (2016-12-22)
+
+
+### Bug Fixes
+
+* websocket-client: add try/catch to prevent app exit on error ([b16cff9](https://github.com/liwijs/liwi/commit/b16cff9))
+
+
 ### v0.12.1
 
 - [`189445e`](https://github.com/liwijs/liwi/commit/189445e0f03a925fb0db607cc5fe23fdf37315a2) fix: rest-websocket encode undefined (Christophe Hurpeau)
