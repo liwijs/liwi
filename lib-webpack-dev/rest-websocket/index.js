@@ -46,128 +46,133 @@ export default function init(io, restService) {
 
       _assert(callback, _t.maybe(_t.Function), 'callback');
 
-      if (buffer) {
-        if (callback) {
-          throw new Error('Cannot have args and buffer.');
+      try {
+        if (buffer) {
+          if (callback) {
+            throw new Error('Cannot have args and buffer.');
+          }
+
+          callback = args;
+          args = decode(buffer);
         }
 
-        callback = args;
-        args = decode(buffer);
-      }
+        if (!callback) {
+          throw new Error('`callback` missing.');
+        }
 
-      if (!callback) {
-        throw new Error('`callback` missing.');
-      }
+        var restResource = restService.get(restName);
 
-      var restResource = restService.get(restName);
+        logger.info('rest', { type: type, restName: restName, args: args });
+        switch (type) {
+          case 'cursor toArray':
+            {
+              var _args = args,
+                  _args2 = _slicedToArray(_args, 1),
+                  options = _args2[0];
 
-      logger.info('rest', { type: type, restName: restName, args: args });
-      switch (type) {
-        case 'cursor toArray':
-          {
-            var _args = args,
-                _args2 = _slicedToArray(_args, 1),
-                options = _args2[0];
-
-            return restService.createCursor(restResource, socket.user, options).then(function (cursor) {
-              return cursor.toArray();
-            }).then(function (results) {
-              return callback(null, encode(results));
-            }).catch(function (err) {
-              logger.error(type, err);
-              callback(err.message);
-            });
-          }
-
-        case 'insertOne':
-        case 'updateOne':
-        case 'updateSeveral':
-        case 'partialUpdateByKey':
-        case 'partialUpdateOne':
-        case 'partialUpdateMany':
-        case 'deleteByKey':
-        case 'deleteOne':
-        case 'findOne':
-          try {
-            if (!restResource[type]) {
-              throw new Error('rest: ' + restName + '.' + type + ' is not available');
+              return restService.createCursor(restResource, socket.user, options).then(function (cursor) {
+                return cursor.toArray();
+              }).then(function (results) {
+                return callback(null, encode(results));
+              }).catch(function (err) {
+                logger.error(type, err);
+                callback(err.message);
+              });
             }
 
-            return restResource[type].apply(restResource, [socket.user].concat(_toConsumableArray(args))).then(function (result) {
-              return callback(null, encode(result));
-            }).catch(function (err) {
+          case 'insertOne':
+          case 'updateOne':
+          case 'updateSeveral':
+          case 'partialUpdateByKey':
+          case 'partialUpdateOne':
+          case 'partialUpdateMany':
+          case 'deleteByKey':
+          case 'deleteOne':
+          case 'findOne':
+            try {
+              if (!restResource[type]) {
+                throw new Error('rest: ' + restName + '.' + type + ' is not available');
+              }
+
+              return restResource[type].apply(restResource, [socket.user].concat(_toConsumableArray(args))).then(function (result) {
+                return callback(null, encode(result));
+              }).catch(function (err) {
+                logger.error(type, { err: err });
+                callback(err.message || err);
+              });
+            } catch (err) {
               logger.error(type, { err: err });
               callback(err.message || err);
-            });
-          } catch (err) {
-            logger.error(type, { err: err });
-            callback(err.message || err);
-          }
-          break;
+            }
+            break;
 
-        case 'fetch':
-        case 'subscribe':
-        case 'fetchAndSubscribe':
-          try {
-            var _ret = function () {
-              var _args3 = args,
-                  _args4 = _slicedToArray(_args3, 3),
-                  key = _args4[0],
-                  eventName = _args4[1],
-                  _args4$ = _args4[2],
-                  otherArgs = _args4$ === undefined ? [] : _args4$;
+          case 'fetch':
+          case 'subscribe':
+          case 'fetchAndSubscribe':
+            try {
+              var _ret = function () {
+                var _args3 = args,
+                    _args4 = _slicedToArray(_args3, 3),
+                    key = _args4[0],
+                    eventName = _args4[1],
+                    _args4$ = _args4[2],
+                    otherArgs = _args4$ === undefined ? [] : _args4$;
 
-              if (!key.startsWith('query')) {
-                throw new Error('Invalid query key');
-              }
+                if (!key.startsWith('query')) {
+                  throw new Error('Invalid query key');
+                }
 
-              var query = restResource.queries[key]; // todo pass connected user
-              if (!query) {
-                throw new Error('rest: ' + restName + '.' + type + '.' + key + ' is not available');
-              }
+                var query = restResource.queries[key]; // todo pass connected user
+                if (!query) {
+                  throw new Error('rest: ' + restName + '.' + type + '.' + key + ' is not available');
+                }
 
-              if (type === 'fetch') {
-                return {
-                  v: query[type].apply(query, [function (result) {
-                    return callback(null, result && encode(result));
-                  }].concat(_toConsumableArray(otherArgs))).catch(function (err) {
+                if (type === 'fetch') {
+                  return {
+                    v: query[type].apply(query, [function (result) {
+                      return callback(null, result && encode(result));
+                    }].concat(_toConsumableArray(otherArgs))).catch(function (err) {
+                      logger.error(type, { err: err });
+                      callback(err.message || err);
+                    })
+                  };
+                } else {
+                  var watcher = query[type](function (err, result) {
+                    if (err) {
+                      logger.error(type, { err: err });
+                    }
+                    socket.emit(eventName, err, encode(result));
+                  });
+                  watcher.then(function () {
+                    return callback();
+                  }, function (err) {
                     logger.error(type, { err: err });
                     callback(err.message || err);
-                  })
-                };
-              } else {
-                var watcher = query[type](function (err, result) {
-                  if (err) {
-                    logger.error(type, { err: err });
-                  }
-                  socket.emit(eventName, err, encode(result));
-                });
-                watcher.then(function () {
-                  return callback();
-                }, function (err) {
-                  logger.error(type, { err: err });
-                  callback(err.message || err);
-                });
+                  });
 
-                openWatchers.add(watcher);
-              }
-            }();
+                  openWatchers.add(watcher);
+                }
+              }();
 
-            if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
-          } catch (err) {
-            logger.error(type, { err: err });
-            callback(err.message || err);
-          }
-          break;
+              if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+            } catch (err) {
+              logger.error(type, { err: err });
+              callback(err.message || err);
+            }
+            break;
 
-        default:
-          try {
-            logger.warn('Unknown command', { type: type });
-            callback('rest: unknown command "' + type + '"');
-          } catch (err) {
-            logger.error(type, { err: err });
-            callback(err.message || err);
-          }
+          default:
+            try {
+              logger.warn('Unknown command', { type: type });
+              callback('rest: unknown command "' + type + '"');
+            } catch (err) {
+              logger.error(type, { err: err });
+              callback(err.message || err);
+            }
+        }
+      } catch (err) {
+        logger.warn('rest error', { err: err });
+        callback(err.message || err);
       }
     });
   });

@@ -77,9 +77,9 @@ export default function init(io, restService) {
         case 'cursor toArray':
           {
             var _args2 = _slicedToArray(args, 1),
-                _options = _args2[0];
+                options = _args2[0];
 
-            return restService.createCursor(restName, _options).then(function (cursor) {
+            return restService.createCursor(restName, options).then(function (cursor) {
               return cursor.toArray();
             }).then(function (results) {
               return callback(null, results);
@@ -96,8 +96,8 @@ export default function init(io, restService) {
                 idCursor = _args3$.id,
                 cursorArgs = _args3[1];
 
-            var _cursor = openCursors.get(idCursor);
-            if (!_cursor) return callback('failed to find cursor "' + idCursor + '"');
+            var cursor = openCursors.get(idCursor);
+            if (!cursor) return callback('failed to find cursor "' + idCursor + '"');
             switch (typeCursorAction) {
               case 'close':
                 closeCursor(idCursor);
@@ -106,7 +106,7 @@ export default function init(io, restService) {
               case 'advance':
               case 'next':
               case 'count':
-                return _cursor[type].apply(_cursor, _toConsumableArray(cursorArgs)).then(function (result) {
+                return cursor[type].apply(cursor, _toConsumableArray(cursorArgs)).then(function (result) {
                   return callback(null, result);
                 }).catch(function (err) {
                   return callback(err.message || err);

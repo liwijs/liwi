@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+
 export default class AbstractCursor<Store, ModelType> {
   key: any;
 

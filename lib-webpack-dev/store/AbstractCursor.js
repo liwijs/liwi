@@ -6,6 +6,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/* eslint-disable no-await-in-loop */
+
 var AbstractCursor = function () {
   function AbstractCursor(store) {
     _assert(store, _t.Any, 'store');

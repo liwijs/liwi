@@ -25,94 +25,99 @@ function init(io, restService) {
     });
 
     socket.on('rest', ({ type, restName, buffer }, args, callback) => {
-      if (buffer) {
+      try {
+        if (buffer) {
 
-        callback = args;
-        args = (0, _msgpack.decode)(buffer);
-      }
+          callback = args;
+          args = (0, _msgpack.decode)(buffer);
+        }
 
-      const restResource = restService.get(restName);
+        const restResource = restService.get(restName);
 
-      logger.info('rest', { type, restName, args });
-      switch (type) {
-        case 'cursor toArray':
-          {
-            const [options] = args;
-            return restService.createCursor(restResource, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, (0, _msgpack.encode)(results))).catch(err => {
-              logger.error(type, err);
-              callback(err.message);
-            });
-          }
+        logger.info('rest', { type, restName, args });
+        switch (type) {
+          case 'cursor toArray':
+            {
+              const [options] = args;
+              return restService.createCursor(restResource, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, (0, _msgpack.encode)(results))).catch(err => {
+                logger.error(type, err);
+                callback(err.message);
+              });
+            }
 
-        case 'insertOne':
-        case 'updateOne':
-        case 'updateSeveral':
-        case 'partialUpdateByKey':
-        case 'partialUpdateOne':
-        case 'partialUpdateMany':
-        case 'deleteByKey':
-        case 'deleteOne':
-        case 'findOne':
-          try {
+          case 'insertOne':
+          case 'updateOne':
+          case 'updateSeveral':
+          case 'partialUpdateByKey':
+          case 'partialUpdateOne':
+          case 'partialUpdateMany':
+          case 'deleteByKey':
+          case 'deleteOne':
+          case 'findOne':
+            try {
 
-            return restResource[type](socket.user, ...args).then(result => callback(null, (0, _msgpack.encode)(result))).catch(err => {
+              return restResource[type](socket.user, ...args).then(result => callback(null, (0, _msgpack.encode)(result))).catch(err => {
+                logger.error(type, { err });
+                callback(err.message || err);
+              });
+            } catch (err) {
               logger.error(type, { err });
               callback(err.message || err);
-            });
-          } catch (err) {
-            logger.error(type, { err });
-            callback(err.message || err);
-          }
-          break;
-
-        case 'fetch':
-        case 'subscribe':
-        case 'fetchAndSubscribe':
-          try {
-            const [key, eventName, otherArgs = []] = args;
-
-            if (!key.startsWith('query')) {
-              throw new Error('Invalid query key');
             }
+            break;
 
-            const query = restResource.queries[key]; // todo pass connected user
-            if (!query) {
-              throw new Error(`rest: ${ restName }.${ type }.${ key } is not available`);
-            }
+          case 'fetch':
+          case 'subscribe':
+          case 'fetchAndSubscribe':
+            try {
+              const [key, eventName, otherArgs = []] = args;
 
-            if (type === 'fetch') {
-              return query[type](result => callback(null, result && (0, _msgpack.encode)(result)), ...otherArgs).catch(err => {
-                logger.error(type, { err });
-                callback(err.message || err);
-              });
-            } else {
-              const watcher = query[type]((err, result) => {
-                if (err) {
+              if (!key.startsWith('query')) {
+                throw new Error('Invalid query key');
+              }
+
+              const query = restResource.queries[key]; // todo pass connected user
+              if (!query) {
+                throw new Error(`rest: ${ restName }.${ type }.${ key } is not available`);
+              }
+
+              if (type === 'fetch') {
+                return query[type](result => callback(null, result && (0, _msgpack.encode)(result)), ...otherArgs).catch(err => {
                   logger.error(type, { err });
-                }
-                socket.emit(eventName, err, (0, _msgpack.encode)(result));
-              });
-              watcher.then(() => callback(), err => {
-                logger.error(type, { err });
-                callback(err.message || err);
-              });
+                  callback(err.message || err);
+                });
+              } else {
+                const watcher = query[type]((err, result) => {
+                  if (err) {
+                    logger.error(type, { err });
+                  }
+                  socket.emit(eventName, err, (0, _msgpack.encode)(result));
+                });
+                watcher.then(() => callback(), err => {
+                  logger.error(type, { err });
+                  callback(err.message || err);
+                });
 
-              openWatchers.add(watcher);
+                openWatchers.add(watcher);
+              }
+            } catch (err) {
+              logger.error(type, { err });
+              callback(err.message || err);
             }
-          } catch (err) {
-            logger.error(type, { err });
-            callback(err.message || err);
-          }
-          break;
+            break;
 
-        default:
-          try {
-            logger.warn('Unknown command', { type });
-            callback(`rest: unknown command "${ type }"`);
-          } catch (err) {
-            logger.error(type, { err });
-            callback(err.message || err);
-          }
+          default:
+            try {
+              logger.warn('Unknown command', { type });
+              callback(`rest: unknown command "${ type }"`);
+            } catch (err) {
+              logger.error(type, { err });
+              callback(err.message || err);
+            }
+        }
+      } catch (err) {
+        logger.warn('rest error', { err });
+        callback(err.message || err);
       }
     });
   });
