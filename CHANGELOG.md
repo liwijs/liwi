@@ -1,3 +1,12 @@
+<a name="0.13.1"></a>
+## [0.13.1](https://github.com/liwijs/liwi/compare/v0.13.0...v0.13.1) (2016-12-22)
+
+
+### Bug Fixes
+
+* msgpack encode to string in browser ([d0f1e79](https://github.com/liwijs/liwi/commit/d0f1e79))
+
+
 <a name="0.13.0"></a>
 # [0.13.0](https://github.com/liwijs/liwi/compare/v0.12.2...v0.13.0) (2016-12-22)
 
