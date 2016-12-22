@@ -1,3 +1,12 @@
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/liwijs/liwi/compare/v0.12.2...v0.13.0) (2016-12-22)
+
+
+### Features
+
+* websocket-client: add debug log ([813eef6](https://github.com/liwijs/liwi/commit/813eef6))
+
+
 <a name="0.12.2"></a>
 ## [0.12.2](https://github.com/liwijs/liwi/compare/v0.12.1...v0.12.2) (2016-12-22)
 
