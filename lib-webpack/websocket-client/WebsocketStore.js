@@ -6,10 +6,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+import Logger from 'nightingale-logger';
 import AbstractStore from '../store/AbstractStore';
 import WebsocketCursor from './WebsocketCursor';
 import { encode, decode } from '../msgpack';
 import Query from './Query';
+
+var logger = new Logger('liwi:websocket-client');
 
 var WebsocketStore = function (_AbstractStore) {
   _inherits(WebsocketStore, _AbstractStore);
@@ -33,17 +36,19 @@ var WebsocketStore = function (_AbstractStore) {
   _createClass(WebsocketStore, [{
     key: 'createQuery',
     value: function createQuery(key) {
+      logger.debug('createQuery', { key: key });
       return new Query(this, key);
     }
   }, {
     key: 'emit',
     value: function emit(type) {
-      if (this.connection.isDisconnected()) {
-        throw new Error('Websocket is not connected');
-      }
-
       for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         args[_key - 1] = arguments[_key];
+      }
+
+      logger.debug('emit', { type: type, args: args });
+      if (this.connection.isDisconnected()) {
+        throw new Error('Websocket is not connected');
       }
 
       return this.connection.emit('rest', {

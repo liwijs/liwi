@@ -1,8 +1,11 @@
 import _t from 'tcomb-forked';
+import Logger from 'nightingale-logger';
 import AbstractStore from '../store/AbstractStore';
 import WebsocketCursor from './WebsocketCursor';
 import { encode, decode } from '../msgpack';
 import Query from './Query';
+
+var logger = new Logger('liwi:websocket-client');
 
 var WebsocketConnection = _t.interface({
   emit: _t.Function,
@@ -29,10 +32,12 @@ export default class WebsocketStore extends AbstractStore {
   createQuery(key) {
     _assert(key, _t.String, 'key');
 
+    logger.debug('createQuery', { key });
     return new Query(this, key);
   }
 
   emit(type, ...args) {
+    logger.debug('emit', { type, args });
     if (this.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
     }

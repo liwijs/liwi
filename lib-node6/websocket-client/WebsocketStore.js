@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _nightingaleLogger = require('nightingale-logger');
+
+var _nightingaleLogger2 = _interopRequireDefault(_nightingaleLogger);
+
 var _AbstractStore = require('../store/AbstractStore');
 
 var _AbstractStore2 = _interopRequireDefault(_AbstractStore);
@@ -20,6 +24,8 @@ var _Query2 = _interopRequireDefault(_Query);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const logger = new _nightingaleLogger2.default('liwi:websocket-client');
+
 class WebsocketStore extends _AbstractStore2.default {
 
   constructor(websocket, restName) {
@@ -34,10 +40,12 @@ class WebsocketStore extends _AbstractStore2.default {
   }
 
   createQuery(key) {
+    logger.debug('createQuery', { key });
     return new _Query2.default(this, key);
   }
 
   emit(type, ...args) {
+    logger.debug('emit', { type, args });
     if (this.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
     }

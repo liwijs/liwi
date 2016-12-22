@@ -8,6 +8,10 @@ var _tcombForked = require('tcomb-forked');
 
 var _tcombForked2 = _interopRequireDefault(_tcombForked);
 
+var _nightingaleLogger = require('nightingale-logger');
+
+var _nightingaleLogger2 = _interopRequireDefault(_nightingaleLogger);
+
 var _AbstractStore = require('../store/AbstractStore');
 
 var _AbstractStore2 = _interopRequireDefault(_AbstractStore);
@@ -23,6 +27,8 @@ var _Query = require('./Query');
 var _Query2 = _interopRequireDefault(_Query);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const logger = new _nightingaleLogger2.default('liwi:websocket-client');
 
 const WebsocketConnection = _tcombForked2.default.interface({
   emit: _tcombForked2.default.Function,
@@ -49,10 +55,12 @@ class WebsocketStore extends _AbstractStore2.default {
   createQuery(key) {
     _assert(key, _tcombForked2.default.String, 'key');
 
+    logger.debug('createQuery', { key });
     return new _Query2.default(this, key);
   }
 
   emit(type, ...args) {
+    logger.debug('emit', { type, args });
     if (this.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
     }

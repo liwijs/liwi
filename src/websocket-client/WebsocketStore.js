@@ -1,7 +1,10 @@
+import Logger from 'nightingale-logger/src';
 import AbstractStore from '../store/AbstractStore';
 import WebsocketCursor from './WebsocketCursor';
 import { encode, decode } from '../msgpack';
 import Query from './Query';
+
+const logger = new Logger('liwi:websocket-client');
 
 type WebsocketConnection = {
     emit: Function,
@@ -22,10 +25,12 @@ export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketCo
   }
 
   createQuery(key: string) {
+    logger.debug('createQuery', { key });
     return new Query(this, key);
   }
 
   emit(type, ...args) {
+    logger.debug('emit', { type, args });
     if (this.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
     }
