@@ -4,11 +4,6 @@ import { encode, decode } from '../msgpack';
 
 const logger = new Logger('liwi:rest-websocket');
 
-type ObjectBufferType = {
-  type: 'Buffer',
-  data: Array<number>,
-}
-
 export default function init(io, restService) {
   io.on('connection', (socket) => {
     let openWatchers = new Set();
@@ -18,7 +13,7 @@ export default function init(io, restService) {
     });
 
     socket.on('rest', (
-      { type, restName, buffer }: { type: string, restName: string, buffer: ?ObjectBufferType },
+      { type, restName, buffer }: { type: string, restName: string, buffer: ?string },
       args: ?Array<any>|Function,
       callback: ?Function,
     ) => {

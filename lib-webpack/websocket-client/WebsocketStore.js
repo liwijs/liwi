@@ -56,7 +56,7 @@ var WebsocketStore = function (_AbstractStore) {
         restName: this.restName,
         buffer: args && encode(args.map(function (arg) {
           return arg === undefined ? null : arg;
-        }))
+        })).toString()
       }).then(function (result) {
         return result && decode(result);
       });

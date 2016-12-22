@@ -53,7 +53,7 @@ class WebsocketStore extends _AbstractStore2.default {
     return this.connection.emit('rest', {
       type,
       restName: this.restName,
-      buffer: args && (0, _msgpack.encode)(args.map(arg => arg === undefined ? null : arg))
+      buffer: args && (0, _msgpack.encode)(args.map(arg => arg === undefined ? null : arg)).toString()
     }).then(result => result && (0, _msgpack.decode)(result));
   }
 

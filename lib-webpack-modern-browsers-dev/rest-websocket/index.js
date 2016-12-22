@@ -5,11 +5,6 @@ import { encode, decode } from '../msgpack';
 
 var logger = new Logger('liwi:rest-websocket');
 
-var ObjectBufferType = _t.interface({
-  type: _t.enums.of(['Buffer']),
-  data: _t.list(_t.Number)
-}, 'ObjectBufferType');
-
 export default function init(io, restService) {
   io.on('connection', function (socket) {
     var openWatchers = new Set();
@@ -28,7 +23,7 @@ export default function init(io, restService) {
       }, _t.interface({
         type: _t.String,
         restName: _t.String,
-        buffer: _t.maybe(ObjectBufferType)
+        buffer: _t.maybe(_t.String)
       }), '{ type, restName, buffer }');
 
       _assert(args, _t.union([_t.maybe(_t.list(_t.Any)), _t.Function]), 'args');

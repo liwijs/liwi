@@ -20,11 +20,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* global PRODUCTION */
 const logger = new _nightingaleLogger2.default('liwi:rest-websocket');
 
-const ObjectBufferType = _tcombForked2.default.interface({
-  type: _tcombForked2.default.enums.of(['Buffer']),
-  data: _tcombForked2.default.list(_tcombForked2.default.Number)
-}, 'ObjectBufferType');
-
 function init(io, restService) {
   io.on('connection', socket => {
     let openWatchers = new Set();
@@ -41,7 +36,7 @@ function init(io, restService) {
       }, _tcombForked2.default.interface({
         type: _tcombForked2.default.String,
         restName: _tcombForked2.default.String,
-        buffer: _tcombForked2.default.maybe(ObjectBufferType)
+        buffer: _tcombForked2.default.maybe(_tcombForked2.default.String)
       }), '{ type, restName, buffer }');
 
       _assert(args, _tcombForked2.default.union([_tcombForked2.default.maybe(_tcombForked2.default.list(_tcombForked2.default.Any)), _tcombForked2.default.Function]), 'args');
