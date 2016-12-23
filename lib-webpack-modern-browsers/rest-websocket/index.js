@@ -1,6 +1,6 @@
 /* global PRODUCTION */
 import Logger from 'nightingale-logger';
-import { encode, decode } from '../msgpack';
+import { encode, decode } from '../extended-json';
 
 var logger = new Logger('liwi:rest-websocket');
 
@@ -14,12 +14,24 @@ export default function init(io, restService) {
       });
     });
 
-    socket.on('rest', function ({ type, restName, buffer }, args, callback) {
+    socket.on('rest', function ({ type, restName, json }, args, callback) {
       try {
-        if (buffer) {
+        if (json) {
 
           callback = args;
-          args = decode(buffer);
+          args = decode(json);
+          if (!Array.isArray(args)) {
+            logger.debug('args', { args });
+
+            if (callback) {
+              throw new Error('Invalid args');
+            }
+          }
+        }
+
+        if (!callback) {
+          logger['error']('callback missing');
+          return;
         }
 
         var restResource = restService.get(restName);
@@ -92,7 +104,8 @@ export default function init(io, restService) {
                     if (err) {
                       logger.error(type, { err });
                     }
-                    socket.emit(eventName, err, encode(result));
+
+                    socket.emit(eventName, err, result && encode(result));
                   });
                   watcher.then(function () {
                     return callback();

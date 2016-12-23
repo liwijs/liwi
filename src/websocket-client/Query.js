@@ -1,7 +1,7 @@
 import Logger from 'nightingale-logger';
 import AbstractQuery from '../store/AbstractQuery';
 import WebsocketStore from './WebsocketStore';
-import { decode } from '../msgpack';
+import { decode } from '../extended-json';
 
 type SubscribeReturnType = {
   cancel: Function,
@@ -22,9 +22,12 @@ export default class Query extends AbstractQuery<WebsocketStore> {
 
   _subscribe(callback: Function, _includeInitial = false, args: Array<any>): SubscribeReturnType {
     const eventName = `subscribe:${this.store.restName}.${this.key}`;
-    this.store.connection.on(eventName, (err, result) => {
-      callback(err, decode(result));
-    });
+    const listener = (err, result) => {
+      const decodedResult = result && decode(result);
+      if (!PRODUCTION) logger.debug(eventName, { result, decodedResult });
+      callback(err, decodedResult);
+    };
+    this.store.connection.on(eventName, listener);
 
     let _stopEmitSubscribe;
     let promise = this.store.emitSubscribe(
@@ -36,7 +39,7 @@ export default class Query extends AbstractQuery<WebsocketStore> {
       _stopEmitSubscribe = stopEmitSubscribe;
       logger.info('subscribed');
     }).catch(err => {
-      this.store.connection.off(eventName, callback);
+      this.store.connection.off(eventName, listener);
       throw err;
     });
 
@@ -45,7 +48,7 @@ export default class Query extends AbstractQuery<WebsocketStore> {
       _stopEmitSubscribe();
       promise.then(() => {
         promise = null;
-        this.store.connection.off(eventName, callback);
+        this.store.connection.off(eventName, listener);
       });
     };
 

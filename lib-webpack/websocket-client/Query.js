@@ -9,7 +9,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import Logger from 'nightingale-logger';
 import AbstractQuery from '../store/AbstractQuery';
 
-import { decode } from '../msgpack';
+import { decode } from '../extended-json';
 
 var logger = new Logger('liwi:websocket-client:query');
 
@@ -40,16 +40,19 @@ var Query = function (_AbstractQuery) {
       var args = arguments[2];
 
       var eventName = 'subscribe:' + this.store.restName + '.' + this.key;
-      this.store.connection.on(eventName, function (err, result) {
-        callback(err, decode(result));
-      });
+      var listener = function listener(err, result) {
+        var decodedResult = result && decode(result);
+
+        callback(err, decodedResult);
+      };
+      this.store.connection.on(eventName, listener);
 
       var _stopEmitSubscribe = void 0;
       var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
         _stopEmitSubscribe = stopEmitSubscribe;
         logger.info('subscribed');
       }).catch(function (err) {
-        _this2.store.connection.off(eventName, callback);
+        _this2.store.connection.off(eventName, listener);
         throw err;
       });
 
@@ -58,7 +61,7 @@ var Query = function (_AbstractQuery) {
         _stopEmitSubscribe();
         promise.then(function () {
           promise = null;
-          _this2.store.connection.off(eventName, callback);
+          _this2.store.connection.off(eventName, listener);
         });
       };
 

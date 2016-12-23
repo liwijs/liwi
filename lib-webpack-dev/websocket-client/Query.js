@@ -11,7 +11,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import Logger from 'nightingale-logger';
 import AbstractQuery from '../store/AbstractQuery';
 import WebsocketStore from './WebsocketStore';
-import { decode } from '../msgpack';
+import { decode } from '../extended-json';
 
 var SubscribeReturnType = _t.interface({
   cancel: _t.Function,
@@ -60,16 +60,19 @@ var Query = function (_AbstractQuery) {
         var _this2 = this;
 
         var eventName = 'subscribe:' + this.store.restName + '.' + this.key;
-        this.store.connection.on(eventName, function (err, result) {
-          callback(err, decode(result));
-        });
+        var listener = function listener(err, result) {
+          var decodedResult = result && decode(result);
+          logger.debug(eventName, { result: result, decodedResult: decodedResult });
+          callback(err, decodedResult);
+        };
+        this.store.connection.on(eventName, listener);
 
         var _stopEmitSubscribe = void 0;
         var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
           _stopEmitSubscribe = stopEmitSubscribe;
           logger.info('subscribed');
         }).catch(function (err) {
-          _this2.store.connection.off(eventName, callback);
+          _this2.store.connection.off(eventName, listener);
           throw err;
         });
 
@@ -78,7 +81,7 @@ var Query = function (_AbstractQuery) {
           _stopEmitSubscribe();
           promise.then(function () {
             promise = null;
-            _this2.store.connection.off(eventName, callback);
+            _this2.store.connection.off(eventName, listener);
           });
         };
 

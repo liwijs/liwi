@@ -8,7 +8,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 /* global PRODUCTION */
 import Logger from 'nightingale-logger';
-import { encode, decode } from '../msgpack';
+import { encode, decode } from '../extended-json';
 
 var logger = new Logger('liwi:rest-websocket');
 
@@ -25,34 +25,42 @@ export default function init(io, restService) {
     socket.on('rest', function (_ref, args, callback) {
       var type = _ref.type,
           restName = _ref.restName,
-          buffer = _ref.buffer;
+          json = _ref.json;
 
       _assert({
         type: type,
         restName: restName,
-        buffer: buffer
+        json: json
       }, _t.interface({
         type: _t.String,
         restName: _t.String,
-        buffer: _t.maybe(_t.String)
-      }), '{ type, restName, buffer }');
+        json: _t.maybe(_t.String)
+      }), '{ type, restName, json }');
 
       _assert(args, _t.union([_t.maybe(_t.list(_t.Any)), _t.Function]), 'args');
 
       _assert(callback, _t.maybe(_t.Function), 'callback');
 
       try {
-        if (buffer) {
+        if (json) {
           if (callback) {
-            throw new Error('Cannot have args and buffer.');
+            throw new Error('Cannot have args and json.');
           }
 
           callback = args;
-          args = decode(buffer);
+          args = decode(json);
+          if (!Array.isArray(args)) {
+            logger.debug('args', { args: args });
+
+            if (callback) {
+              throw new Error('Invalid args');
+            }
+          }
         }
 
         if (!callback) {
-          throw new Error('`callback` missing.');
+          logger['warn']('callback missing');
+          return;
         }
 
         var restResource = restService.get(restName);
@@ -136,7 +144,8 @@ export default function init(io, restService) {
                     if (err) {
                       logger.error(type, { err: err });
                     }
-                    socket.emit(eventName, err, encode(result));
+
+                    socket.emit(eventName, err, result && encode(result));
                   });
                   watcher.then(function () {
                     return callback();

@@ -1,7 +1,7 @@
 import Logger from 'nightingale-logger';
 import AbstractQuery from '../store/AbstractQuery';
 
-import { decode } from '../msgpack';
+import { decode } from '../extended-json';
 
 var logger = new Logger('liwi:websocket-client:query');
 
@@ -19,16 +19,19 @@ export default class Query extends AbstractQuery {
     var _this = this;
 
     var eventName = `subscribe:${ this.store.restName }.${ this.key }`;
-    this.store.connection.on(eventName, function (err, result) {
-      callback(err, decode(result));
-    });
+    var listener = function listener(err, result) {
+      var decodedResult = result && decode(result);
+
+      callback(err, decodedResult);
+    };
+    this.store.connection.on(eventName, listener);
 
     var _stopEmitSubscribe = void 0;
     var promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
       _stopEmitSubscribe = stopEmitSubscribe;
       logger.info('subscribed');
     }).catch(function (err) {
-      _this.store.connection.off(eventName, callback);
+      _this.store.connection.off(eventName, listener);
       throw err;
     });
 
@@ -37,7 +40,7 @@ export default class Query extends AbstractQuery {
       _stopEmitSubscribe();
       promise.then(function () {
         promise = null;
-        _this.store.connection.off(eventName, callback);
+        _this.store.connection.off(eventName, listener);
       });
     };
 

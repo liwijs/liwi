@@ -1,7 +1,7 @@
 import _t from 'tcomb-forked';
 /* global PRODUCTION */
 import Logger from 'nightingale-logger';
-import { encode, decode } from '../msgpack';
+import { encode, decode } from '../extended-json';
 
 var logger = new Logger('liwi:rest-websocket');
 
@@ -15,33 +15,41 @@ export default function init(io, restService) {
       });
     });
 
-    socket.on('rest', function ({ type, restName, buffer }, args, callback) {
+    socket.on('rest', function ({ type, restName, json }, args, callback) {
       _assert({
         type,
         restName,
-        buffer
+        json
       }, _t.interface({
         type: _t.String,
         restName: _t.String,
-        buffer: _t.maybe(_t.String)
-      }), '{ type, restName, buffer }');
+        json: _t.maybe(_t.String)
+      }), '{ type, restName, json }');
 
       _assert(args, _t.union([_t.maybe(_t.list(_t.Any)), _t.Function]), 'args');
 
       _assert(callback, _t.maybe(_t.Function), 'callback');
 
       try {
-        if (buffer) {
+        if (json) {
           if (callback) {
-            throw new Error('Cannot have args and buffer.');
+            throw new Error('Cannot have args and json.');
           }
 
           callback = args;
-          args = decode(buffer);
+          args = decode(json);
+          if (!Array.isArray(args)) {
+            logger.debug('args', { args });
+
+            if (callback) {
+              throw new Error('Invalid args');
+            }
+          }
         }
 
         if (!callback) {
-          throw new Error('`callback` missing.');
+          logger['warn']('callback missing');
+          return;
         }
 
         var restResource = restService.get(restName);
@@ -117,7 +125,8 @@ export default function init(io, restService) {
                     if (err) {
                       logger.error(type, { err });
                     }
-                    socket.emit(eventName, err, encode(result));
+
+                    socket.emit(eventName, err, result && encode(result));
                   });
                   watcher.then(function () {
                     return callback();

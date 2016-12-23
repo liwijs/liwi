@@ -9,7 +9,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import Logger from 'nightingale-logger';
 import AbstractStore from '../store/AbstractStore';
 import WebsocketCursor from './WebsocketCursor';
-import { encode, decode } from '../msgpack';
+import { encode, decode } from '../extended-json';
 import Query from './Query';
 
 var logger = new Logger('liwi:websocket-client');
@@ -54,9 +54,7 @@ var WebsocketStore = function (_AbstractStore) {
       return this.connection.emit('rest', {
         type: type,
         restName: this.restName,
-        buffer: args && encode(args.map(function (arg) {
-          return arg === undefined ? null : arg;
-        })).toString()
+        json: encode(args)
       }).then(function (result) {
         return result && decode(result);
       });

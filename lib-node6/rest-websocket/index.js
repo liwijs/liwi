@@ -9,7 +9,7 @@ var _nightingaleLogger = require('nightingale-logger');
 
 var _nightingaleLogger2 = _interopRequireDefault(_nightingaleLogger);
 
-var _msgpack = require('../msgpack');
+var _extendedJson = require('../extended-json');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24,12 +24,24 @@ function init(io, restService) {
       openWatchers.forEach(watcher => watcher.stop());
     });
 
-    socket.on('rest', ({ type, restName, buffer }, args, callback) => {
+    socket.on('rest', ({ type, restName, json }, args, callback) => {
       try {
-        if (buffer) {
+        if (json) {
 
           callback = args;
-          args = (0, _msgpack.decode)(buffer);
+          args = (0, _extendedJson.decode)(json);
+          if (!Array.isArray(args)) {
+            logger.debug('args', { args });
+
+            if (callback) {
+              throw new Error('Invalid args');
+            }
+          }
+        }
+
+        if (!callback) {
+          logger['error']('callback missing');
+          return;
         }
 
         const restResource = restService.get(restName);
@@ -39,7 +51,7 @@ function init(io, restService) {
           case 'cursor toArray':
             {
               const [options] = args;
-              return restService.createCursor(restResource, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, (0, _msgpack.encode)(results))).catch(err => {
+              return restService.createCursor(restResource, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, (0, _extendedJson.encode)(results))).catch(err => {
                 logger.error(type, err);
                 callback(err.message);
               });
@@ -56,7 +68,7 @@ function init(io, restService) {
           case 'findOne':
             try {
 
-              return restResource[type](socket.user, ...args).then(result => callback(null, (0, _msgpack.encode)(result))).catch(err => {
+              return restResource[type](socket.user, ...args).then(result => callback(null, (0, _extendedJson.encode)(result))).catch(err => {
                 logger.error(type, { err });
                 callback(err.message || err);
               });
@@ -82,7 +94,7 @@ function init(io, restService) {
               }
 
               if (type === 'fetch') {
-                return query[type](result => callback(null, result && (0, _msgpack.encode)(result)), ...otherArgs).catch(err => {
+                return query[type](result => callback(null, result && (0, _extendedJson.encode)(result)), ...otherArgs).catch(err => {
                   logger.error(type, { err });
                   callback(err.message || err);
                 });
@@ -91,7 +103,8 @@ function init(io, restService) {
                   if (err) {
                     logger.error(type, { err });
                   }
-                  socket.emit(eventName, err, (0, _msgpack.encode)(result));
+
+                  socket.emit(eventName, err, result && (0, _extendedJson.encode)(result));
                 });
                 watcher.then(() => callback(), err => {
                   logger.error(type, { err });

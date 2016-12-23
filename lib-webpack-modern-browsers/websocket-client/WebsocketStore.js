@@ -1,7 +1,7 @@
 import Logger from 'nightingale-logger';
 import AbstractStore from '../store/AbstractStore';
 import WebsocketCursor from './WebsocketCursor';
-import { encode, decode } from '../msgpack';
+import { encode, decode } from '../extended-json';
 import Query from './Query';
 
 var logger = new Logger('liwi:websocket-client');
@@ -33,9 +33,7 @@ export default class WebsocketStore extends AbstractStore {
     return this.connection.emit('rest', {
       type,
       restName: this.restName,
-      buffer: args && encode(args.map(function (arg) {
-        return arg === undefined ? null : arg;
-      })).toString()
+      json: encode(args)
     }).then(function (result) {
       return result && decode(result);
     });

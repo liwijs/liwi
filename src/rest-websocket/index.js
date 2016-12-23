@@ -1,6 +1,6 @@
 /* global PRODUCTION */
 import Logger from 'nightingale-logger/src';
-import { encode, decode } from '../msgpack';
+import { encode, decode } from '../extended-json';
 
 const logger = new Logger('liwi:rest-websocket');
 
@@ -13,22 +13,30 @@ export default function init(io, restService) {
     });
 
     socket.on('rest', (
-      { type, restName, buffer }: { type: string, restName: string, buffer: ?string },
+      { type, restName, json }: { type: string, restName: string, json: ?string },
       args: ?Array<any>|Function,
       callback: ?Function,
     ) => {
       try {
-        if (buffer) {
+        if (json) {
           if (!PRODUCTION && callback) {
-            throw new Error('Cannot have args and buffer.');
+            throw new Error('Cannot have args and json.');
           }
 
           callback = args;
-          args = decode(buffer);
+          args = decode(json);
+          if (!Array.isArray(args)) {
+            logger.debug('args', { args });
+
+            if (callback) {
+              throw new Error('Invalid args');
+            }
+          }
         }
 
-        if (!PRODUCTION && !callback) {
-          throw new Error('`callback` missing.');
+        if (!callback) {
+          logger[!PRODUCTION ? 'warn' : 'error']('callback missing');
+          return;
         }
 
         const restResource = restService.get(restName);
@@ -45,7 +53,6 @@ export default function init(io, restService) {
                 callback(err.message);
               });
           }
-
 
           case 'insertOne':
           case 'updateOne':
@@ -99,7 +106,8 @@ export default function init(io, restService) {
                   if (err) {
                     logger.error(type, { err });
                   }
-                  socket.emit(eventName, err, encode(result));
+
+                  socket.emit(eventName, err, result && encode(result));
                 });
                 watcher.then(() => callback(), err => {
                   logger.error(type, { err });

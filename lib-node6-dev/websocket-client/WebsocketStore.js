@@ -20,7 +20,7 @@ var _WebsocketCursor = require('./WebsocketCursor');
 
 var _WebsocketCursor2 = _interopRequireDefault(_WebsocketCursor);
 
-var _msgpack = require('../msgpack');
+var _extendedJson = require('../extended-json');
 
 var _Query = require('./Query');
 
@@ -68,8 +68,8 @@ class WebsocketStore extends _AbstractStore2.default {
     return this.connection.emit('rest', {
       type,
       restName: this.restName,
-      buffer: args && (0, _msgpack.encode)(args.map(arg => arg === undefined ? null : arg)).toString()
-    }).then(result => result && (0, _msgpack.decode)(result));
+      json: (0, _extendedJson.encode)(args)
+    }).then(result => result && (0, _extendedJson.decode)(result));
   }
 
   emitSubscribe(type, ...args) {

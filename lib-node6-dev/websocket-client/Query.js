@@ -20,7 +20,7 @@ var _WebsocketStore = require('./WebsocketStore');
 
 var _WebsocketStore2 = _interopRequireDefault(_WebsocketStore);
 
-var _msgpack = require('../msgpack');
+var _extendedJson = require('../extended-json');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56,16 +56,19 @@ class Query extends _AbstractQuery2.default {
 
     return _assert(function () {
       const eventName = `subscribe:${ this.store.restName }.${ this.key }`;
-      this.store.connection.on(eventName, (err, result) => {
-        callback(err, (0, _msgpack.decode)(result));
-      });
+      const listener = (err, result) => {
+        const decodedResult = result && (0, _extendedJson.decode)(result);
+        logger.debug(eventName, { result, decodedResult });
+        callback(err, decodedResult);
+      };
+      this.store.connection.on(eventName, listener);
 
       let _stopEmitSubscribe;
       let promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(stopEmitSubscribe => {
         _stopEmitSubscribe = stopEmitSubscribe;
         logger.info('subscribed');
       }).catch(err => {
-        this.store.connection.off(eventName, callback);
+        this.store.connection.off(eventName, listener);
         throw err;
       });
 
@@ -74,7 +77,7 @@ class Query extends _AbstractQuery2.default {
         _stopEmitSubscribe();
         promise.then(() => {
           promise = null;
-          this.store.connection.off(eventName, callback);
+          this.store.connection.off(eventName, listener);
         });
       };
 
