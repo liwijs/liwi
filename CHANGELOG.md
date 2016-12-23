@@ -1,3 +1,12 @@
+<a name="0.13.2"></a>
+## [0.13.2](https://github.com/liwijs/liwi/compare/v0.13.1...v0.13.2) (2016-12-23)
+
+
+### Bug Fixes
+
+* replace msgpack by extended-json ([b5380ff](https://github.com/liwijs/liwi/commit/b5380ff))
+
+
 <a name="0.13.1"></a>
 ## [0.13.1](https://github.com/liwijs/liwi/compare/v0.13.0...v0.13.1) (2016-12-22)
 
