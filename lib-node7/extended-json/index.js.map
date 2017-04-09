@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/extended-json/index.js"],"names":["stringify","parse","encode","decode"],"mappings":";;;;;;;;;;;;;;;;;QAAOA,S;QACAC,K;QAEAC,M;QACAC,M","file":"index.js","sourcesContent":["export stringify from './stringify';\nexport parse from './parse';\n\nexport encode from './stringify';\nexport decode from './parse';\n"]}

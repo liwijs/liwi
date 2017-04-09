@@ -1,19 +1,20 @@
 import WebsocketStore from './WebsocketStore';
 import AbstractCursor from '../store/AbstractCursor';
+import type { ResultType } from '../types';
 
-export default class WebsocketCursor<ModelType> extends AbstractCursor<WebsocketStore<ModelType>> {
+export default class WebsocketCursor extends AbstractCursor<WebsocketStore> {
   _idCursor: ?number;
   _options: ?Object;
   _result: ?Object;
 
-  constructor(store:WebsocketStore, options) {
+  constructor(store: WebsocketStore, options) {
     super(store);
     this._options = options;
   }
 
   /* options */
 
-  limit(newLimit:number): Promise<this> {
+  limit(newLimit: number): Promise<this> {
     if (this._idCursor) throw new Error('Cursor already created');
     this._options.limit = newLimit;
     return Promise.resolve(this);
@@ -29,7 +30,7 @@ export default class WebsocketCursor<ModelType> extends AbstractCursor<Websocket
     });
   }
 
-  emit(type, ...args): Promise {
+  emit(type, ...args): Promise<any> {
     if (!this._idCursor) {
       return this._create().then(() => this.emit(type, ...args));
     }
@@ -37,7 +38,7 @@ export default class WebsocketCursor<ModelType> extends AbstractCursor<Websocket
     return this.store.emit('cursor', { type, id: this._idCursor }, args);
   }
 
-  advance(count:number) {
+  advance(count: number) {
     this.emit('advance', count);
     return this;
   }
@@ -50,24 +51,26 @@ export default class WebsocketCursor<ModelType> extends AbstractCursor<Websocket
     });
   }
 
-  result(): Promise<?ModelType> {
+  result(): Promise<?ResultType> {
     return Promise.resolve(this._result);
   }
 
-  count(applyLimit:boolean = false) {
+  count(applyLimit: boolean = false) {
     return this.emit('count', applyLimit);
   }
 
-  close(): Promise {
+  close(): Promise<void> {
     if (!this._store) return Promise.resolve();
 
     const closedPromise = this._idCursor ? this.emit('close') : Promise.resolve();
-    this._idCursor = this._options = null;
-    this._store = this._result = undefined;
+    this._idCursor = null;
+    this._options = null;
+    this._store = undefined;
+    this._result = undefined;
     return closedPromise;
   }
 
-  toArray(): Promise<Array> {
+  toArray(): Promise<Array<Array<ResultType>>> {
     return this.store.emit('cursor toArray', this._options).then((result) => {
       this.close();
       return result;

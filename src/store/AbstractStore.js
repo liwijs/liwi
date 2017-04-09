@@ -13,7 +13,7 @@ export default class AbstractStore<Connection> {
     return this._connection;
   }
 
-  findAll(criteria: ?Object, sort: ?Object): Promise {
+  findAll(criteria: ?Object, sort: ?Object): Promise<Array<any>> {
     return this.cursor(criteria, sort).then(cursor => cursor.toArray());
   }
 }

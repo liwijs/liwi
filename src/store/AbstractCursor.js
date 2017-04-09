@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
+import type { ResultType } from '../types';
 
-export default class AbstractCursor<Store, ModelType> {
+export default class AbstractCursor<Store> {
   key: any;
 
   constructor(store: Store) {
@@ -23,7 +24,7 @@ export default class AbstractCursor<Store, ModelType> {
     return this.next().then(() => this.result());
   }
 
-  limit(newLimit: number): Promise {
+  limit(newLimit: number): Promise<void> {
     throw new Error('limit() missing implementation');
   }
 
@@ -31,15 +32,15 @@ export default class AbstractCursor<Store, ModelType> {
     throw new Error('count() missing implementation');
   }
 
-  result(): Promise<ModelType> {
+  result(): Promise<ResultType> {
     return this.store.findByKey(this.key);
   }
 
-  delete(): Promise {
+  delete(): Promise<void> {
     return this.store.deleteByKey(this.key);
   }
 
-  async forEachKeys(callback: Function): Promise {
+  async forEachKeys(callback: Function): Promise<void> {
     while (true) {
       const key = await this.next();
       if (!key) return;
@@ -48,7 +49,7 @@ export default class AbstractCursor<Store, ModelType> {
     }
   }
 
-  forEach(callback): Promise {
+  forEach(callback): Promise<void> {
     return this.forEachKeys(() => this.result().then(result => callback(result)));
   }
 

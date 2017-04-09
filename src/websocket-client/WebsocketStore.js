@@ -6,15 +6,15 @@ import Query from './Query';
 
 const logger = new Logger('liwi:websocket-client');
 
-type WebsocketConnection = {
+type WebsocketConnectionType = {
     emit: Function,
     isConnected: Function,
-}
+};
 
-export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketConnection> {
+export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketConnectionType> {
   keyPath = 'id';
 
-  constructor(websocket: WebsocketConnection, restName: string) {
+  constructor(websocket: WebsocketConnectionType, restName: string) {
     super(websocket);
 
     if (!restName) {
@@ -62,7 +62,7 @@ export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketCo
     return this.emit('updateSeveral', objects);
   }
 
-  partialUpdateByKey(key: any, partialUpdate: Object): Promise {
+  partialUpdateByKey(key: any, partialUpdate: Object): Promise<ModelType> {
     return this.emit('partialUpdateByKey', key, partialUpdate);
   }
 
@@ -70,15 +70,15 @@ export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketCo
     return this.emit('partialUpdateOne', object, partialUpdate);
   }
 
-  partialUpdateMany(criteria, partialUpdate: Object): Promise {
+  partialUpdateMany(criteria, partialUpdate: Object): Promise<void> {
     return this.emit('partialUpdateMany', criteria, partialUpdate);
   }
 
-  deleteByKey(key: any): Promise {
+  deleteByKey(key: any): Promise<void> {
     return this.emit('deleteByKey', key);
   }
 
-  deleteOne(object: ModelType): Promise {
+  deleteOne(object: ModelType): Promise<void> {
     return this.emit('deleteOne', object);
   }
 

@@ -2,8 +2,9 @@ import RethinkConnection from './RethinkConnection';
 import AbstractStore from '../store/AbstractStore';
 import Query from './Query';
 // import RethinkCursor from './RethinkCursor';
+import type { InsertType, UpdateType, ResultType } from '../types';
 
-export default class RethinkStore<ModelType> extends AbstractStore<RethinkConnection> {
+export default class RethinkStore extends AbstractStore<RethinkConnection> {
   tableName: string;
   keyPath = 'id';
 
@@ -45,14 +46,12 @@ export default class RethinkStore<ModelType> extends AbstractStore<RethinkConnec
     return query;
   }
 
-  create(): Promise {
-    return this.r.tableCreate(this._tableName);
+  create(): Promise<void> {
+    return this.r.tableCreate(this._tableName).then(() => null);
   }
 
-  insertOne(object: ModelType): Promise<ModelType> {
-    if (!object.created) {
-      object.created = new Date();
-    }
+  insertOne(object: InsertType): Promise<ResultType> {
+    if (!object.created) object.created = new Date();
 
     return this.table().insert(object)
       .then(({ inserted, generated_keys: generatedKeys }) => {
@@ -68,42 +67,39 @@ export default class RethinkStore<ModelType> extends AbstractStore<RethinkConnec
     return this.replaceOne(object);
   }
 
-  replaceOne(object: ModelType): Promise<ModelType> {
-    if (!object.updated) {
-      object.updated = new Date();
-    }
+  replaceOne(object: InsertType): Promise<ResultType> {
+    if (!object.created) object.created = new Date();
+    if (!object.updated) object.updated = new Date();
 
     return this.table().get(object.id).replace(object)
       .then(() => object);
   }
 
-  upsertOne(object: ModelType): Promise<ModelType> {
-    if (!object.updated) {
-      object.updated = new Date();
-    }
+  upsertOne(object: UpdateType): Promise<ResultType> {
+    if (!object.updated) object.updated = new Date();
 
     return this.table().insert(object, { conflict: 'replace' }).run()
       .then(() => object);
   }
 
-  replaceSeveral(objects: Array<ModelType>): Promise<Array<ModelType>> {
+  replaceSeveral(objects: Array<InsertType>): Promise<Array<ResultType>> {
     return Promise.all(objects.map(object => this.replaceOne(object)));
   }
 
-  partialUpdateByKey(key: any, partialUpdate: Object): Promise {
+  partialUpdateByKey(key: any, partialUpdate: Object): Promise<void> {
     return this.table().get(key).update(partialUpdate).run();
   }
 
-  partialUpdateOne(object: ModelType, partialUpdate: Object): Promise<ModelType> {
+  partialUpdateOne(object: ResultType, partialUpdate: UpdateType): Promise<ResultType> {
     return this.table().get(object.id).update(partialUpdate, { returnChanges: true })
       .then(res => res.changes.new_val);
   }
 
-  partialUpdateMany(criteria, partialUpdate: Object): Promise {
+  partialUpdateMany(criteria, partialUpdate: Object): Promise<void> {
     return this.table().filter(criteria).update(partialUpdate).run();
   }
 
-  deleteByKey(key: any): Promise {
+  deleteByKey(key: any): Promise<void> {
     return this.table().get(key).delete().run();
   }
 
@@ -112,15 +108,15 @@ export default class RethinkStore<ModelType> extends AbstractStore<RethinkConnec
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }
 
-  findAll(): Promise {
+  findAll(): Promise<void> {
     throw new Error('Not supported, please use query().run()');
   }
 
-  findByKey(key: any) {
+  findByKey(key: any): Promise<?ResultType> {
     return this.table().get(key).run();
   }
 
-  findOne(query): Promise<?Object> {
+  findOne(query): Promise<?ResultType> {
     return query.run({ cursor: true }).then(cursor => cursor.next().catch(err => null));
   }
 }

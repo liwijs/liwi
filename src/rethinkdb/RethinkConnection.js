@@ -5,11 +5,11 @@ import AbstractConnection from '../store/AbstractConnection';
 const logger = new Logger('liwi:rethinkdb:RethinkConnection');
 
 export default class RethinkConnection extends AbstractConnection {
-  _connection: Object|null;
-  _connecting: boolean|null;
+  _connection: any;
+  _connecting: boolean | null;
   connectionFailed: boolean;
 
-  constructor(config: Map) {
+  constructor(config: Map<string, string | number>) {
     super();
 
     if (!config.has('host')) {
@@ -51,7 +51,7 @@ export default class RethinkConnection extends AbstractConnection {
     this.getConnection = () => Promise.resolve(this._connection);
   }
 
-  getConnection(): Promise {
+  getConnection(): Promise<void> {
     throw new Error('call connect()');
   }
 

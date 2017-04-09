@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/rethinkdb/index.js"],"names":["RethinkStore","RethinkConnection"],"mappings":";;;;;;;;;;;;;;;;;QAAOA,Y;QACAC,iB","file":"index.js","sourcesContent":["export RethinkStore from './RethinkStore';\nexport RethinkConnection from './RethinkConnection';\n"]}

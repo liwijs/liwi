@@ -14,7 +14,7 @@ export default function init(io, restService) {
 
     socket.on('rest', (
       { type, restName, json }: { type: string, restName: string, json: ?string },
-      args: ?Array<any>|Function,
+      args: ?Array<any> | Function,
       callback: ?Function,
     ) => {
       try {

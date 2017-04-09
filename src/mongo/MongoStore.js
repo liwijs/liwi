@@ -4,9 +4,10 @@ import Db from 'mongodb/lib/db';
 import MongoConnection from './MongoConnection';
 import AbstractStore from '../store/AbstractStore';
 import MongoCursor from './MongoCursor';
+import type { InsertType, UpdateType, ResultType } from '../types';
 
-export default class MongoStore<ModelType> extends AbstractStore<MongoConnection> {
-  _collection: Collection|Promise<Collection>;
+export default class MongoStore extends AbstractStore<MongoConnection> {
+  _collection: Collection | Promise<Collection>;
   keyPath = '_id';
 
   constructor(connection: MongoConnection, collectionName: string) {
@@ -33,7 +34,7 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
     return Promise.resolve();
   }
 
-  insertOne(object: ModelType): Promise<ModelType> {
+  insertOne(object: InsertType): Promise<ResultType> {
     if (!object._id) {
       object._id = (new ObjectID()).toString();
     }
@@ -55,7 +56,7 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
     return this.replaceOne(object);
   }
 
-  replaceOne(object: ModelType): Promise<ModelType> {
+  replaceOne(object: InsertType): Promise<ResultType> {
     if (!object.updated) {
       object.updated = new Date();
     }
@@ -65,7 +66,7 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
       .then(() => object);
   }
 
-  upsertOne(object: ModelType): Promise<ModelType> {
+  upsertOne(object: InsertType): Promise<ResultType> {
     if (!object.updated) {
       object.updated = new Date();
     }
@@ -77,7 +78,7 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
       .then(() => object);
   }
 
-  replaceSeveral(objects: Array<ModelType>): Promise<Array<ModelType>> {
+  replaceSeveral(objects: Array<InsertType>): Promise<Array<ResultType>> {
     return Promise.all(objects.map(object => this.updateOne(object)));
   }
 
@@ -91,44 +92,44 @@ export default class MongoStore<ModelType> extends AbstractStore<MongoConnection
     }
   }
 
-  partialUpdateByKey(key: any, partialUpdate: Object): Promise {
+  partialUpdateByKey(key: any, partialUpdate: UpdateType): Promise<ResultType> {
     partialUpdate = this._partialUpdate(partialUpdate);
     return this.collection
       .then(collection => collection.updateOne({ _id: key }, partialUpdate));
   }
 
-  partialUpdateOne(object: ModelType, partialUpdate: Object): Promise<ModelType> {
+  partialUpdateOne(object: ResultType, partialUpdate: UpdateType): Promise<ResultType> {
     partialUpdate = this._partialUpdate(partialUpdate);
     return this.partialUpdateByKey(object._id, partialUpdate)
       .then(res => this.findByKey(object._id));
   }
 
-  partialUpdateMany(criteria, partialUpdate: Object): Promise {
+  partialUpdateMany(criteria, partialUpdate: UpdateType): Promise<void> {
     partialUpdate = this._partialUpdate(partialUpdate);
     return this.collection
       .then(collection => collection.updateMany(criteria, partialUpdate))
       .then(res => null); // TODO return updated object
   }
 
-  deleteByKey(key: any): Promise {
+  deleteByKey(key: any): Promise<void> {
     return this.collection
       .then(collection => collection.removeOne({ _id: key }))
       .then(() => null);
   }
 
 
-  cursor(criteria: ?Object, sort: ?Object): Promise<MongoCursor<ModelType>> {
+  cursor(criteria: ?Object, sort: ?Object): Promise<MongoCursor<ResultType>> {
     return this.collection
       .then(collection => collection.find(criteria))
       .then(sort && (cursor => cursor.sort(sort)))
       .then(cursor => new MongoCursor(this, cursor));
   }
 
-  findByKey(key: any) {
+  findByKey(key: any): Promise<?ResultType> {
     return this.findOne({ _id: key });
   }
 
-  findOne(criteria: Object, sort: ?Object): Promise<Object> {
+  findOne(criteria: Object, sort: ?Object): Promise<?ResultType> {
     return this.collection
       .then(collection => collection.find(criteria))
       .then(sort && (cursor => cursor.sort(sort)))

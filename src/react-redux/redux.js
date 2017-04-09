@@ -13,7 +13,7 @@ type ChangeType = {
   new_offset: ?number,
   old_val: ?Object,
   new_val: ?Object,
-}
+};
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 export function subscribeReducer(state: Array<Object>, { change }: { change: ChangeType }) {

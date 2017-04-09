@@ -1,11 +1,23 @@
 {
   "envs": [
     "node6",
-    "webpack-modern-browsers",
-    "webpack"
+    "node7",
+    "module-modern-browsers",
+    "module",
+    "module-node7"
   ],
   "react": false,
   "testing": true,
   "documentation": false,
-  "doclets": false
+  "doclets": false,
+  "entries": [
+    "extended-json",
+    "index",
+    "mongo",
+    "react-redux",
+    "rest",
+    "rest-websocket",
+    "rethinkdb"
+  ],
+  "flow": true
 }

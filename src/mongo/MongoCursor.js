@@ -1,18 +1,19 @@
 import Cursor from 'mongodb/lib/cursor';
 import MongoStore from './MongoStore';
 import AbstractCursor from '../store/AbstractCursor';
+import type { ResultType } from '../types';
 
-export default class MongoCursor<ModelType> extends AbstractCursor<MongoStore, ModelType> {
-  constructor(store:MongoStore, cursor:Cursor) {
+export default class MongoCursor extends AbstractCursor<MongoStore> {
+  constructor(store: MongoStore, cursor: Cursor) {
     super(store);
     this._cursor = cursor;
   }
 
-  advance(count:number):void {
+  advance(count: number): void {
     this._cursor.skip(count);
   }
 
-  next():Promise<any> {
+  next(): Promise<any> {
     return this._cursor.next()
       .then((value) => {
         this._result = value;
@@ -21,12 +22,12 @@ export default class MongoCursor<ModelType> extends AbstractCursor<MongoStore, M
       });
   }
 
-  limit(newLimit:number):Promise {
+  limit(newLimit: number): Promise {
     this._cursor.limit(newLimit);
     return Promise.resolve(this);
   }
 
-  count(applyLimit:boolean = false) {
+  count(applyLimit: boolean = false) {
     return this._cursor.count(applyLimit);
   }
 
@@ -37,13 +38,15 @@ export default class MongoCursor<ModelType> extends AbstractCursor<MongoStore, M
   close() {
     if (this._cursor) {
       this._cursor.close();
-      this._cursor = this._store = this._result = undefined;
+      this._cursor = undefined;
+      this._store = undefined;
+      this._result = undefined;
     }
 
     return Promise.resolve();
   }
 
-  toArray():Promise<Array<ModelType>> {
+  toArray(): Promise<Array<ResultType>> {
     return this._cursor.toArray();
   }
 }

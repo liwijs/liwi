@@ -1,7 +1,7 @@
 import RestCursor from './RestCursor';
 
 export default class RestService {
-  constructor(restResources: Map) {
+  constructor(restResources: Map<string, any>) {
     this.restResources = restResources;
   }
 

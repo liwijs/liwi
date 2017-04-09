@@ -16,7 +16,7 @@ export default class Query extends AbstractQuery<WebsocketStore> {
     this.key = key;
   }
 
-  fetch(callback: ?Function): Promise {
+  fetch(callback: ?Function): Promise<any> {
     return this.store.emit('fetch', this.key).then(callback);
   }
 

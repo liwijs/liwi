@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../src/store/AbstractConnection.js"],"names":["AbstractConnection"],"mappings":";;IAAqBA,kB;;;;eAAAA,kB","file":"AbstractConnection.js","sourcesContent":["export default class AbstractConnection {\n\n}\n"]}

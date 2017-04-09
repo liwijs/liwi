@@ -6,11 +6,11 @@ import AbstractConnection from '../store/AbstractConnection';
 const logger = new Logger('liwi:mongo:MongoConnection');
 
 export default class MongoConnection extends AbstractConnection {
-  _connection: Db|null;
-  _connecting: Promise|null;
+  _connection: Db | null;
+  _connecting: Promise<void> | null;
   connectionFailed: boolean;
 
-  constructor(config: Map) {
+  constructor(config: Map<string, string | number>) {
     super();
 
     if (!config.has('host')) {

@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../src/store/AbstractConnection.js"],"names":["AbstractConnection"],"mappings":";;;;;AAAe,MAAMA,kBAAN,CAAyB;kBAAnBA,kB","file":"AbstractConnection.js","sourcesContent":["export default class AbstractConnection {\n\n}\n"]}
+{"version":3,"sources":["../../src/store/AbstractConnection.js"],"names":["AbstractConnection"],"mappings":";;;;;IAAqBA,kB,GAAN,MAAyB,E;kBAAnBA,kB","file":"AbstractConnection.js","sourcesContent":["export default class AbstractConnection {\n\n}\n"]}

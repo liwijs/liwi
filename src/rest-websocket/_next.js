@@ -21,7 +21,9 @@ export default function init(io, restService) {
       timeouts.forEach(timeout => clearTimeout(timeout));
       activeListeners.forEach(listener => listener.close());
 
-      openCursors = timeouts = activeListeners = null;
+      openCursors = null;
+      timeouts = null;
+      activeListeners = null;
     });
 
     let nextIdCursor = 1;
