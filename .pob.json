@@ -17,7 +17,8 @@
     "react-redux",
     "rest",
     "rest-websocket",
-    "rethinkdb"
+    "rethinkdb",
+    "websocket-client"
   ],
   "flow": true
 }
