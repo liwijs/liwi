@@ -109,7 +109,7 @@ export default function init(io, restService) {
 
                   socket.emit(eventName, err, result && encode(result));
                 });
-                watcher.then(() => callback(), err => {
+                watcher.then(() => callback(), (err) => {
                   logger.error(type, { err });
                   callback(err.message || err);
                 });

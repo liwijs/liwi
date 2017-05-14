@@ -44,7 +44,7 @@ export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketCo
 
   emitSubscribe(type, ...args) {
     const emit = () => this.emit(type, ...args);
-    return emit().then(result => {
+    return emit().then((result) => {
       this.connection.on('reconnect', emit);
       return () => this.connection.off('reconnect', emit);
     });

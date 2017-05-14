@@ -35,10 +35,10 @@ export default class Query extends AbstractQuery<WebsocketStore> {
       this.key,
       eventName,
       args,
-    ).then(stopEmitSubscribe => {
+    ).then((stopEmitSubscribe) => {
       _stopEmitSubscribe = stopEmitSubscribe;
       logger.info('subscribed');
-    }).catch(err => {
+    }).catch((err) => {
       this.store.connection.off(eventName, listener);
       throw err;
     });

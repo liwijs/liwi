@@ -20,7 +20,7 @@ export default class Query extends AbstractQuery<RethinkStore> {
         includeTypes: true,
         includeOffsets: true,
       })
-      .then(feed => {
+      .then((feed) => {
         if (args.length === 0) {
           _feed = feed;
           delete this._promise;
