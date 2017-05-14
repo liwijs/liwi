@@ -1,3 +1,16 @@
+<a name="0.15.1"></a>
+## [0.15.1](https://github.com/liwijs/liwi/compare/v0.15.0...v0.15.1) (2017-05-14)
+
+
+### Bug Fixes
+
+* aliases ([34a7d0c](https://github.com/liwijs/liwi/commit/34a7d0c))
+
+### Features
+
+* add findValue ([6125c58](https://github.com/liwijs/liwi/commit/6125c58))
+
+
 <a name="0.15.0"></a>
 # [0.15.0](https://github.com/liwijs/liwi/compare/v0.14.0...v0.15.0) (2017-05-14)
 
