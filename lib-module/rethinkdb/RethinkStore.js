@@ -168,6 +168,15 @@ var RethinkStore = function (_AbstractStore) {
         });
       });
     }
+  }, {
+    key: 'findValue',
+    value: function findValue(field, query) {
+      return query.getField(field).run({ cursor: true }).then(function (cursor) {
+        return cursor.next().catch(function () {
+          return null;
+        });
+      });
+    }
   }]);
 
   return RethinkStore;

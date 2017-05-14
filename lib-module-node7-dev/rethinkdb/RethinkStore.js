@@ -250,6 +250,16 @@ let RethinkStore = (_dec = t.decorate(t.string()), (_class = class extends Abstr
 
     return query.run({ cursor: true }).then(cursor => cursor.next().catch(() => null)).then(_arg11 => _returnType12.assert(_arg11));
   }
+
+  findValue(field, query) {
+    let _fieldType = t.string();
+
+    const _returnType13 = t.return(t.any());
+
+    t.param('field', _fieldType).assert(field);
+
+    return query.getField(field).run({ cursor: true }).then(cursor => cursor.next().catch(() => null)).then(_arg12 => _returnType13.assert(_arg12));
+  }
 }, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'tableName', [_dec], {
   enumerable: true,
   initializer: null

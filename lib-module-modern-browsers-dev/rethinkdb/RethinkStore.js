@@ -298,6 +298,22 @@ let RethinkStore = (_dec = t.decorate(t.string()), (_class = class extends Abstr
       return _returnType12.assert(_arg11);
     });
   }
+
+  findValue(field, query) {
+    let _fieldType = t.string();
+
+    const _returnType13 = t.return(t.any());
+
+    t.param('field', _fieldType).assert(field);
+
+    return query.getField(field).run({ cursor: true }).then(function (cursor) {
+      return cursor.next().catch(function () {
+        return null;
+      });
+    }).then(function (_arg12) {
+      return _returnType13.assert(_arg12);
+    });
+  }
 }, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'tableName', [_dec], {
   enumerable: true,
   initializer: null

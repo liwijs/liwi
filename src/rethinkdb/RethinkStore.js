@@ -119,4 +119,11 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
   findOne(query): Promise<?ResultType> {
     return query.run({ cursor: true }).then(cursor => cursor.next().catch(err => null));
   }
+
+  findValue(field: string, query): Promise<any> {
+    return query
+      .getField(field)
+      .run({ cursor: true })
+      .then(cursor => cursor.next().catch(err => null));
+  }
 }

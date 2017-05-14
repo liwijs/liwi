@@ -132,6 +132,14 @@ let RethinkStore = class extends AbstractStore {
       });
     });
   }
+
+  findValue(field, query) {
+    return query.getField(field).run({ cursor: true }).then(function (cursor) {
+      return cursor.next().catch(function () {
+        return null;
+      });
+    });
+  }
 };
 export { RethinkStore as default };
 //# sourceMappingURL=RethinkStore.js.map

@@ -282,6 +282,16 @@ let RethinkStore = (_dec = _flowRuntime2.default.decorate(_flowRuntime2.default.
 
     return query.run({ cursor: true }).then(cursor => cursor.next().catch(() => null)).then(_arg11 => _returnType12.assert(_arg11));
   }
+
+  findValue(field, query) {
+    let _fieldType = _flowRuntime2.default.string();
+
+    const _returnType13 = _flowRuntime2.default.return(_flowRuntime2.default.any());
+
+    _flowRuntime2.default.param('field', _fieldType).assert(field);
+
+    return query.getField(field).run({ cursor: true }).then(cursor => cursor.next().catch(() => null)).then(_arg12 => _returnType13.assert(_arg12));
+  }
 }, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'tableName', [_dec], {
   enumerable: true,
   initializer: null

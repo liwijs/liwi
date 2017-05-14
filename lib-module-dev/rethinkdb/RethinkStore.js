@@ -333,6 +333,23 @@ var RethinkStore = (_dec = t.decorate(t.string()), (_class = function (_Abstract
         return _returnType12.assert(_arg11);
       });
     }
+  }, {
+    key: 'findValue',
+    value: function findValue(field, query) {
+      var _fieldType = t.string();
+
+      var _returnType13 = t.return(t.any());
+
+      t.param('field', _fieldType).assert(field);
+
+      return query.getField(field).run({ cursor: true }).then(function (cursor) {
+        return cursor.next().catch(function () {
+          return null;
+        });
+      }).then(function (_arg12) {
+        return _returnType13.assert(_arg12);
+      });
+    }
   }]);
 
   return RethinkStore;

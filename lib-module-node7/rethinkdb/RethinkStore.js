@@ -112,6 +112,10 @@ let RethinkStore = class extends AbstractStore {
   findOne(query) {
     return query.run({ cursor: true }).then(cursor => cursor.next().catch(() => null));
   }
+
+  findValue(field, query) {
+    return query.getField(field).run({ cursor: true }).then(cursor => cursor.next().catch(() => null));
+  }
 };
 export { RethinkStore as default };
 //# sourceMappingURL=RethinkStore.js.map
