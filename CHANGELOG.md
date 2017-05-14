@@ -1,3 +1,7 @@
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/liwijs/liwi/compare/v0.14.0...v0.15.0) (2017-05-14)
+
+
 <a name="0.14.0"></a>
 # [0.14.0](https://github.com/liwijs/liwi/compare/v0.13.2...v0.14.0) (2017-04-09)
 
