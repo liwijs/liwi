@@ -65,7 +65,7 @@ const _AbstractQueryTypeParametersSymbol = Symbol('AbstractQueryTypeParameters')
 
 let AbstractQuery = (_dec = _flowRuntime2.default.decorate(function () {
   return _flowRuntime2.default.flowInto(this[_AbstractQueryTypeParametersSymbol].Store);
-}), _dec2 = _flowRuntime2.default.decorate(_flowRuntime2.default.function()), (_class = (_temp = _class2 = class {
+}), _dec2 = _flowRuntime2.default.decorate(_flowRuntime2.default.nullable(_flowRuntime2.default.function())), (_class = (_temp = _class2 = class {
 
   constructor(store, queryCallback) {
     _initDefineProp(this, 'store', _descriptor, this);

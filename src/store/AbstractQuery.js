@@ -3,7 +3,7 @@ import AbstractStore from './AbstractStore';
 
 export default class AbstractQuery<Store: AbstractStore> {
   store: Store;
-  queryCallback: Function;
+  queryCallback: ?Function;
 
   constructor(store, queryCallback) {
     this.store = store;

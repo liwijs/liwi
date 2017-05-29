@@ -56,7 +56,7 @@ var _AbstractQueryTypeParametersSymbol = Symbol('AbstractQueryTypeParameters');
 
 var AbstractQuery = (_dec = t.decorate(function () {
   return t.flowInto(this[_AbstractQueryTypeParametersSymbol].Store);
-}), _dec2 = t.decorate(t.function()), (_class = (_temp = _class2 = function () {
+}), _dec2 = t.decorate(t.nullable(t.function())), (_class = (_temp = _class2 = function () {
   function AbstractQuery(store, queryCallback) {
     _classCallCheck(this, AbstractQuery);
 
