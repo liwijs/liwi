@@ -9,20 +9,20 @@ var _class, _temp;
 
 var _react = require('react');
 
-var _AbstractQuery = require('../store/AbstractQuery');
+var _propTypes = require('prop-types');
 
-var _AbstractQuery2 = _interopRequireDefault(_AbstractQuery);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 let FindAndSubscribeComponent = (_temp = _class = class extends _react.Component {
 
   componentDidMount() {
-    // console.log('FindAndSubscribe: did mount');
-    const { query, action, dispatch } = this.props;
+    const { query, action } = this.props;
+    const dispatch = this.props.dispatch || this.context.store.dispatch;
     this._subscribe = query.fetchAndSubscribe((err, result) => {
       if (err) {
-        // eslint-disable-next-line no-undef, no-alert
+        // eslint-disable-next-line no-alert
         alert(`Unexpected error: ${err}`);
         return;
       }
@@ -32,7 +32,6 @@ let FindAndSubscribeComponent = (_temp = _class = class extends _react.Component
   }
 
   componentWillUnmount() {
-    // console.log('FindAndSubscribe: will unmount');
     if (this._subscribe) {
       this._subscribe.stop();
       delete this._subscribe;
@@ -42,11 +41,8 @@ let FindAndSubscribeComponent = (_temp = _class = class extends _react.Component
   render() {
     return this.props.children;
   }
-}, _class.propTypes = {
-  dispatch: _react.PropTypes.func.isRequired,
-  action: _react.PropTypes.func.isRequired,
-  query: _react.PropTypes.instanceOf(_AbstractQuery2.default).isRequired,
-  children: _react.PropTypes.node
+}, _class.contextTypes = {
+  store: _propTypes2.default.any
 }, _temp);
 exports.default = FindAndSubscribeComponent;
 //# sourceMappingURL=FindAndSubscribe.js.map

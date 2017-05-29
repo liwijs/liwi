@@ -1,17 +1,28 @@
-import { PropTypes, Component } from 'react';
+import { Component } from 'react';
+import PropTypes from 'prop-types';
+import type { ReactNodeType, ReduxDispatchType } from 'alp-react-redux/types';
 import AbstractQuery from '../store/AbstractQuery';
 
+type ActionType = (result: any) => any;
+
+type PropsType = {
+  dispatch: ?ReduxDispatchType,
+  action: ActionType,
+  query: AbstractQuery,
+  children: ReactNodeType,
+};
+
 export default class FindComponent extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    action: PropTypes.func.isRequired,
-    query: PropTypes.instanceOf(AbstractQuery).isRequired,
-    children: PropTypes.node,
+  props: PropsType;
+
+  static contextTypes = {
+    store: PropTypes.any,
   };
 
   componentDidMount() {
-    const { query, action, dispatch } = this.props;
-    this._find = query.fetch((result) => {
+    const { query, action } = this.props;
+    const dispatch = this.props.dispatch || this.context.store.dispatch;
+    this._find = query.fetch((result: any) => {
       if (!this._find) return;
       dispatch(action(result));
       delete this._find;
@@ -25,7 +36,7 @@ export default class FindComponent extends Component {
     }
   }
 
-  render() {
+  render(): ReactNodeType {
     return this.props.children;
   }
 }

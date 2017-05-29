@@ -1,20 +1,30 @@
-import { PropTypes, Component } from 'react';
-import AbstractQuery from '../store/AbstractQuery';
+import { Component } from 'react';
+import PropTypes from 'prop-types';
+import type { ReactNodeType, ReduxDispatchType } from 'alp-react-redux/types';
+import type AbstractQuery from '../store/AbstractQuery';
+
+type ActionType = (result: any) => any;
+
+type PropsType = {
+  dispatch: ?ReduxDispatchType,
+  action: ActionType,
+  query: AbstractQuery,
+  children: ReactNodeType,
+};
 
 export default class FindAndSubscribeComponent extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    action: PropTypes.func.isRequired,
-    query: PropTypes.instanceOf(AbstractQuery).isRequired,
-    children: PropTypes.node,
+  props: PropsType;
+
+  static contextTypes = {
+    store: PropTypes.any,
   };
 
   componentDidMount() {
-    // console.log('FindAndSubscribe: did mount');
-    const { query, action, dispatch } = this.props;
+    const { query, action } = this.props;
+    const dispatch = this.props.dispatch || this.context.store.dispatch;
     this._subscribe = query.fetchAndSubscribe((err, result) => {
       if (err) {
-        // eslint-disable-next-line no-undef, no-alert
+        // eslint-disable-next-line no-alert
         alert(`Unexpected error: ${err}`);
         return;
       }
@@ -24,14 +34,13 @@ export default class FindAndSubscribeComponent extends Component {
   }
 
   componentWillUnmount() {
-    // console.log('FindAndSubscribe: will unmount');
     if (this._subscribe) {
       this._subscribe.stop();
       delete this._subscribe;
     }
   }
 
-  render() {
+  render(): ReactNodeType {
     return this.props.children;
   }
 }

@@ -1,14 +1,14 @@
 var _class, _temp;
 
-import { PropTypes, Component } from 'react';
-import AbstractQuery from '../store/AbstractQuery';
-
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 let FindComponent = (_temp = _class = class extends Component {
 
   componentDidMount() {
     var _this = this;
 
-    const { query, action, dispatch } = this.props;
+    const { query, action } = this.props;
+    const dispatch = this.props.dispatch || this.context.store.dispatch;
     this._find = query.fetch(function (result) {
       if (!_this._find) return;
       dispatch(action(result));
@@ -26,11 +26,8 @@ let FindComponent = (_temp = _class = class extends Component {
   render() {
     return this.props.children;
   }
-}, _class.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  action: PropTypes.func.isRequired,
-  query: PropTypes.instanceOf(AbstractQuery).isRequired,
-  children: PropTypes.node
+}, _class.contextTypes = {
+  store: PropTypes.any
 }, _temp);
 export { FindComponent as default };
 //# sourceMappingURL=Find.js.map

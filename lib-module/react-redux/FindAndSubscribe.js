@@ -8,9 +8,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import { PropTypes, Component } from 'react';
-import AbstractQuery from '../store/AbstractQuery';
-
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 var FindAndSubscribeComponent = (_temp = _class = function (_Component) {
   _inherits(FindAndSubscribeComponent, _Component);
 
@@ -23,15 +22,14 @@ var FindAndSubscribeComponent = (_temp = _class = function (_Component) {
   _createClass(FindAndSubscribeComponent, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      // console.log('FindAndSubscribe: did mount');
       var _props = this.props,
           query = _props.query,
-          action = _props.action,
-          dispatch = _props.dispatch;
+          action = _props.action;
 
+      var dispatch = this.props.dispatch || this.context.store.dispatch;
       this._subscribe = query.fetchAndSubscribe(function (err, result) {
         if (err) {
-          // eslint-disable-next-line no-undef, no-alert
+          // eslint-disable-next-line no-alert
           alert('Unexpected error: ' + err);
           return;
         }
@@ -42,7 +40,6 @@ var FindAndSubscribeComponent = (_temp = _class = function (_Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      // console.log('FindAndSubscribe: will unmount');
       if (this._subscribe) {
         this._subscribe.stop();
         delete this._subscribe;
@@ -56,11 +53,8 @@ var FindAndSubscribeComponent = (_temp = _class = function (_Component) {
   }]);
 
   return FindAndSubscribeComponent;
-}(Component), _class.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  action: PropTypes.func.isRequired,
-  query: PropTypes.instanceOf(AbstractQuery).isRequired,
-  children: PropTypes.node
+}(Component), _class.contextTypes = {
+  store: PropTypes.any
 }, _temp);
 export { FindAndSubscribeComponent as default };
 //# sourceMappingURL=FindAndSubscribe.js.map
