@@ -1,3 +1,16 @@
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/liwijs/liwi/compare/v0.15.1...v0.16.0) (2017-05-30)
+
+
+### Bug Fixes
+
+* AbstractQuery flow ([e0bd2b1](https://github.com/liwijs/liwi/commit/e0bd2b1))
+
+### Features
+
+* **react-redux:** allow store to come from context ([c840056](https://github.com/liwijs/liwi/commit/c840056))
+
+
 <a name="0.15.1"></a>
 ## [0.15.1](https://github.com/liwijs/liwi/compare/v0.15.0...v0.15.1) (2017-05-14)
 
