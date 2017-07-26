@@ -1,30 +1,30 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-import type { ReactNodeType, ReduxDispatchType } from 'alp-react-redux/types';
+import React, { Component } from 'react';
+import type { ReactNodeType, ReactComponentType } from 'alp-react-redux/src/types';
 import AbstractQuery from '../store/AbstractQuery';
 
-type ActionType = (result: any) => any;
-
 type PropsType = {
-  dispatch: ?ReduxDispatchType,
-  action: ActionType,
+  name: string,
   query: AbstractQuery,
-  children: ReactNodeType,
+  component: ReactComponentType,
+  loadingComponent: ?ReactComponentType,
 };
 
 export default class FindComponent extends Component {
   props: PropsType;
 
-  static contextTypes = {
-    store: PropTypes.any,
+  state = {
+    fetched: false,
+    result: undefined,
   };
 
   componentDidMount() {
-    const { query, action } = this.props;
-    const dispatch = this.props.dispatch || this.context.store.dispatch;
+    const { query } = this.props;
     this._find = query.fetch((result: any) => {
       if (!this._find) return;
-      dispatch(action(result));
+      this.setState({
+        fetched: true,
+        result,
+      });
       delete this._find;
     });
   }
@@ -37,6 +37,10 @@ export default class FindComponent extends Component {
   }
 
   render(): ReactNodeType {
-    return this.props.children;
+    if (!this.state.fetched) {
+      return this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null;
+    }
+
+    return React.createElement(this.props.component, { [this.props.name]: this.state.result });
   }
 }

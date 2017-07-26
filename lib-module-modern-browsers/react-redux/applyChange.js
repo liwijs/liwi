@@ -1,27 +1,7 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.createSubscribeAction = createSubscribeAction;
-exports.subscribeReducer = subscribeReducer;
-
-var _deepEqual = require('deep-equal');
-
-var _deepEqual2 = _interopRequireDefault(_deepEqual);
-
-var _alpReactRedux = require('alp-react-redux');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function createSubscribeAction(actionName) {
-  return (0, _alpReactRedux.createAction)(actionName, change => ({ change }));
-}
-// eslint-disable-next-line
-
+import deepEqual from 'deep-equal';
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
-function subscribeReducer(state, { change }) {
+export default (function (state, change) {
   const {
     type,
     old_offset: oldOffset,
@@ -30,7 +10,9 @@ function subscribeReducer(state, { change }) {
     new_val: newVal
   } = change;
 
-  const copy = () => state = state.slice();
+  const copy = function copy() {
+    return state = state.slice();
+  };
 
   switch (type) {
     case 'remove':
@@ -41,7 +23,9 @@ function subscribeReducer(state, { change }) {
         if (oldOffset != null) {
           state.splice(oldOffset, 1);
         } else {
-          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, oldVal.id));
+          const index = state.findIndex(function (x) {
+            return deepEqual(x.id, oldVal.id);
+          });
           if (index === -1) {
             // Programming error. This should not happen
             throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);
@@ -60,7 +44,9 @@ function subscribeReducer(state, { change }) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, newVal.id));
+          const index = state.findIndex(function (x) {
+            return deepEqual(x.id, newVal.id);
+          });
           if (index === -1) {
             state.push(newVal);
           } else {
@@ -105,7 +91,9 @@ function subscribeReducer(state, { change }) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, oldVal.id));
+          const index = state.findIndex(function (x) {
+            return deepEqual(x.id, oldVal.id);
+          });
           if (index === -1) {
             // indicates a programming bug. The server gives us the
             // ordering, so if we don't find the id it means something is
@@ -127,5 +115,5 @@ function subscribeReducer(state, { change }) {
       throw new Error(`unrecognized 'type' field from server ${JSON.stringify(change)}`);
   }
   return state;
-}
-//# sourceMappingURL=redux.js.map
+});
+//# sourceMappingURL=applyChange.js.map

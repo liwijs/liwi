@@ -1,17 +1,24 @@
-var _class, _temp;
+import React, { Component } from 'react';
+let FindComponent = class extends Component {
+  constructor(...args) {
+    var _temp;
 
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-let FindComponent = (_temp = _class = class extends Component {
+    return _temp = super(...args), this.state = {
+      fetched: false,
+      result: undefined
+    }, _temp;
+  }
 
   componentDidMount() {
     var _this = this;
 
-    const { query, action } = this.props;
-    const dispatch = this.props.dispatch || this.context.store.dispatch;
+    const { query } = this.props;
     this._find = query.fetch(function (result) {
       if (!_this._find) return;
-      dispatch(action(result));
+      _this.setState({
+        fetched: true,
+        result
+      });
       delete _this._find;
     });
   }
@@ -24,10 +31,12 @@ let FindComponent = (_temp = _class = class extends Component {
   }
 
   render() {
-    return this.props.children;
+    if (!this.state.fetched) {
+      return this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null;
+    }
+
+    return React.createElement(this.props.component, { [this.props.name]: this.state.result });
   }
-}, _class.contextTypes = {
-  store: PropTypes.any
-}, _temp);
+};
 export { FindComponent as default };
 //# sourceMappingURL=Find.js.map

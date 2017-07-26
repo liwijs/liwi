@@ -1,30 +1,32 @@
-import deepEqual from 'deep-equal';
-// eslint-disable-next-line
-import { createAction as alpReactReduxCreateAction } from 'alp-react-redux';
+'use strict';
 
-import t from 'flow-runtime';
-export function createSubscribeAction(actionName) {
-  let _actionNameType = t.string();
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-  t.param('actionName', _actionNameType).assert(actionName);
+var _deepEqual = require('deep-equal');
 
-  return alpReactReduxCreateAction(actionName, function (change) {
-    let _changeType = t.object();
+var _deepEqual2 = _interopRequireDefault(_deepEqual);
 
-    t.param('change', _changeType).assert(change);
-    return { change };
-  });
-}
+var _flowRuntime = require('flow-runtime');
 
-const ChangeType = t.type('ChangeType', t.object(t.property('type', t.nullable(t.string())), t.property('state', t.nullable(t.string())), t.property('old_offset', t.nullable(t.number())), t.property('new_offset', t.nullable(t.number())), t.property('old_val', t.nullable(t.object())), t.property('new_val', t.nullable(t.object()))));
+var _flowRuntime2 = _interopRequireDefault(_flowRuntime);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const ObjectArrayType = _flowRuntime2.default.type('ObjectArrayType', _flowRuntime2.default.array(_flowRuntime2.default.object()));
+
+const ChangeType = _flowRuntime2.default.type('ChangeType', _flowRuntime2.default.object(_flowRuntime2.default.property('type', _flowRuntime2.default.string()), _flowRuntime2.default.property('state', _flowRuntime2.default.nullable(_flowRuntime2.default.string())), _flowRuntime2.default.property('old_offset', _flowRuntime2.default.nullable(_flowRuntime2.default.number())), _flowRuntime2.default.property('new_offset', _flowRuntime2.default.nullable(_flowRuntime2.default.number())), _flowRuntime2.default.property('old_val', _flowRuntime2.default.nullable(_flowRuntime2.default.object())), _flowRuntime2.default.property('new_val', _flowRuntime2.default.nullable(_flowRuntime2.default.object()))));
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 
-export function subscribeReducer(state, _arg) {
-  let _stateType = t.array(t.object());
 
-  t.param('state', _stateType).assert(state);
-  let { change } = t.object(t.property('change', ChangeType)).assert(_arg);
+exports.default = function applyChange(state, change) {
+  let _stateType = ObjectArrayType;
+
+  _flowRuntime2.default.param('state', _stateType).assert(state);
+
+  _flowRuntime2.default.param('change', ChangeType).assert(change);
 
   const {
     type,
@@ -34,9 +36,7 @@ export function subscribeReducer(state, _arg) {
     new_val: newVal
   } = change;
 
-  const copy = function copy() {
-    return state = _stateType.assert(state.slice());
-  };
+  const copy = () => state = _stateType.assert(state.slice());
 
   switch (type) {
     case 'remove':
@@ -47,9 +47,7 @@ export function subscribeReducer(state, _arg) {
         if (oldOffset != null) {
           state.splice(oldOffset, 1);
         } else {
-          const index = state.findIndex(function (x) {
-            return deepEqual(x.id, oldVal.id);
-          });
+          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, oldVal.id));
           if (index === -1) {
             // Programming error. This should not happen
             throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);
@@ -68,9 +66,7 @@ export function subscribeReducer(state, _arg) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          const index = state.findIndex(function (x) {
-            return deepEqual(x.id, newVal.id);
-          });
+          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, newVal.id));
           if (index === -1) {
             state.push(newVal);
           } else {
@@ -115,9 +111,7 @@ export function subscribeReducer(state, _arg) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          const index = state.findIndex(function (x) {
-            return deepEqual(x.id, oldVal.id);
-          });
+          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, oldVal.id));
           if (index === -1) {
             // indicates a programming bug. The server gives us the
             // ordering, so if we don't find the id it means something is
@@ -139,5 +133,5 @@ export function subscribeReducer(state, _arg) {
       throw new Error(`unrecognized 'type' field from server ${JSON.stringify(change)}`);
   }
   return state;
-}
-//# sourceMappingURL=redux.js.map
+};
+//# sourceMappingURL=applyChange.js.map

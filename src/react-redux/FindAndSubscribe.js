@@ -1,35 +1,39 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-import type { ReactNodeType, ReduxDispatchType } from 'alp-react-redux/types';
+import React, { Component } from 'react';
+import type { ReactNodeType, ReactComponentType } from 'alp-react-redux/types';
 import type AbstractQuery from '../store/AbstractQuery';
-
-type ActionType = (result: any) => any;
+import applyChange from './applyChange';
 
 type PropsType = {
-  dispatch: ?ReduxDispatchType,
-  action: ActionType,
+  name: string,
   query: AbstractQuery,
-  children: ReactNodeType,
+  component: ReactComponentType,
+  loadingComponent: ?ReactComponentType,
 };
 
 export default class FindAndSubscribeComponent extends Component {
   props: PropsType;
 
-  static contextTypes = {
-    store: PropTypes.any,
+  state = {
+    fetched: false,
+    result: [],
   };
 
   componentDidMount() {
-    const { query, action } = this.props;
-    const dispatch = this.props.dispatch || this.context.store.dispatch;
-    this._subscribe = query.fetchAndSubscribe((err, result) => {
+    const { query } = this.props;
+    this._subscribe = query.fetchAndSubscribe((err, change) => {
       if (err) {
         // eslint-disable-next-line no-alert
         alert(`Unexpected error: ${err}`);
         return;
       }
 
-      dispatch(action(result, true));
+      const newResult = applyChange(this.state.result, change);
+
+      if (!this.state.fetched) {
+        this.setState({ fetched: true, result: newResult });
+      } else if (newResult !== this.state.result) {
+        this.setState({ result: newResult });
+      }
     });
   }
 
@@ -41,6 +45,10 @@ export default class FindAndSubscribeComponent extends Component {
   }
 
   render(): ReactNodeType {
-    return this.props.children;
+    if (!this.state.fetched) {
+      return this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null;
+    }
+
+    return React.createElement(this.props.component, { [this.props.name]: this.state.result });
   }
 }

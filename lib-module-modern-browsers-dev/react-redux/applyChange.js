@@ -1,41 +1,25 @@
 import deepEqual from 'deep-equal';
-// eslint-disable-next-line
-import { createAction as alpReactReduxCreateAction } from 'alp-react-redux';
 
 import t from 'flow-runtime';
-export function createSubscribeAction(actionName) {
-  var _actionNameType = t.string();
-
-  t.param('actionName', _actionNameType).assert(actionName);
-
-  return alpReactReduxCreateAction(actionName, function (change) {
-    var _changeType = t.object();
-
-    t.param('change', _changeType).assert(change);
-    return { change: change };
-  });
-}
-
-var ChangeType = t.type('ChangeType', t.object(t.property('type', t.nullable(t.string())), t.property('state', t.nullable(t.string())), t.property('old_offset', t.nullable(t.number())), t.property('new_offset', t.nullable(t.number())), t.property('old_val', t.nullable(t.object())), t.property('new_val', t.nullable(t.object()))));
+const ObjectArrayType = t.type('ObjectArrayType', t.array(t.object()));
+const ChangeType = t.type('ChangeType', t.object(t.property('type', t.string()), t.property('state', t.nullable(t.string())), t.property('old_offset', t.nullable(t.number())), t.property('new_offset', t.nullable(t.number())), t.property('old_val', t.nullable(t.object())), t.property('new_val', t.nullable(t.object()))));
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 
-export function subscribeReducer(state, _arg) {
-  var _stateType = t.array(t.object());
-
+export default (function applyChange(state, change) {
+  let _stateType = ObjectArrayType;
   t.param('state', _stateType).assert(state);
+  t.param('change', ChangeType).assert(change);
 
-  var _t$object$assert = t.object(t.property('change', ChangeType)).assert(_arg),
-      change = _t$object$assert.change;
+  const {
+    type,
+    old_offset: oldOffset,
+    new_offset: newOffset,
+    old_val: oldVal,
+    new_val: newVal
+  } = change;
 
-  var type = change.type,
-      oldOffset = change.old_offset,
-      newOffset = change.new_offset,
-      oldVal = change.old_val,
-      newVal = change.new_val;
-
-
-  var copy = function copy() {
+  const copy = function copy() {
     return state = _stateType.assert(state.slice());
   };
 
@@ -48,12 +32,12 @@ export function subscribeReducer(state, _arg) {
         if (oldOffset != null) {
           state.splice(oldOffset, 1);
         } else {
-          var index = state.findIndex(function (x) {
+          const index = state.findIndex(function (x) {
             return deepEqual(x.id, oldVal.id);
           });
           if (index === -1) {
             // Programming error. This should not happen
-            throw new Error('change couldn\'t be applied: ' + JSON.stringify(change));
+            throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);
           }
           state.splice(index, 1);
         }
@@ -69,13 +53,13 @@ export function subscribeReducer(state, _arg) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          var _index = state.findIndex(function (x) {
+          const index = state.findIndex(function (x) {
             return deepEqual(x.id, newVal.id);
           });
-          if (_index === -1) {
+          if (index === -1) {
             state.push(newVal);
           } else {
-            state[_index] = newVal;
+            state[index] = newVal;
           }
         }
         break;
@@ -116,16 +100,16 @@ export function subscribeReducer(state, _arg) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          var _index2 = state.findIndex(function (x) {
+          const index = state.findIndex(function (x) {
             return deepEqual(x.id, oldVal.id);
           });
-          if (_index2 === -1) {
+          if (index === -1) {
             // indicates a programming bug. The server gives us the
             // ordering, so if we don't find the id it means something is
             // buggy.
-            throw new Error('change couldn\'t be applied: ' + JSON.stringify(change));
+            throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);
           } else {
-            state[_index2] = newVal;
+            state[index] = newVal;
           }
         }
         break;
@@ -137,8 +121,8 @@ export function subscribeReducer(state, _arg) {
         break;
       }
     default:
-      throw new Error('unrecognized \'type\' field from server ' + JSON.stringify(change));
+      throw new Error(`unrecognized 'type' field from server ${JSON.stringify(change)}`);
   }
   return state;
-}
-//# sourceMappingURL=redux.js.map
+});
+//# sourceMappingURL=applyChange.js.map

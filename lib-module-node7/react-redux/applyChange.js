@@ -1,50 +1,7 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.createSubscribeAction = createSubscribeAction;
-exports.subscribeReducer = subscribeReducer;
-
-var _deepEqual = require('deep-equal');
-
-var _deepEqual2 = _interopRequireDefault(_deepEqual);
-
-var _alpReactRedux = require('alp-react-redux');
-
-var _flowRuntime = require('flow-runtime');
-
-var _flowRuntime2 = _interopRequireDefault(_flowRuntime);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// eslint-disable-next-line
-function createSubscribeAction(actionName) {
-  let _actionNameType = _flowRuntime2.default.string();
-
-  _flowRuntime2.default.param('actionName', _actionNameType).assert(actionName);
-
-  return (0, _alpReactRedux.createAction)(actionName, change => {
-    let _changeType = _flowRuntime2.default.object();
-
-    _flowRuntime2.default.param('change', _changeType).assert(change);
-
-    return { change };
-  });
-}
-
-const ChangeType = _flowRuntime2.default.type('ChangeType', _flowRuntime2.default.object(_flowRuntime2.default.property('type', _flowRuntime2.default.nullable(_flowRuntime2.default.string())), _flowRuntime2.default.property('state', _flowRuntime2.default.nullable(_flowRuntime2.default.string())), _flowRuntime2.default.property('old_offset', _flowRuntime2.default.nullable(_flowRuntime2.default.number())), _flowRuntime2.default.property('new_offset', _flowRuntime2.default.nullable(_flowRuntime2.default.number())), _flowRuntime2.default.property('old_val', _flowRuntime2.default.nullable(_flowRuntime2.default.object())), _flowRuntime2.default.property('new_val', _flowRuntime2.default.nullable(_flowRuntime2.default.object()))));
+import deepEqual from 'deep-equal';
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
-
-
-function subscribeReducer(state, _arg) {
-  let _stateType = _flowRuntime2.default.array(_flowRuntime2.default.object());
-
-  _flowRuntime2.default.param('state', _stateType).assert(state);
-
-  let { change } = _flowRuntime2.default.object(_flowRuntime2.default.property('change', ChangeType)).assert(_arg);
-
+export default ((state, change) => {
   const {
     type,
     old_offset: oldOffset,
@@ -53,7 +10,7 @@ function subscribeReducer(state, _arg) {
     new_val: newVal
   } = change;
 
-  const copy = () => state = _stateType.assert(state.slice());
+  const copy = () => state = state.slice();
 
   switch (type) {
     case 'remove':
@@ -64,7 +21,7 @@ function subscribeReducer(state, _arg) {
         if (oldOffset != null) {
           state.splice(oldOffset, 1);
         } else {
-          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, oldVal.id));
+          const index = state.findIndex(x => deepEqual(x.id, oldVal.id));
           if (index === -1) {
             // Programming error. This should not happen
             throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);
@@ -83,7 +40,7 @@ function subscribeReducer(state, _arg) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, newVal.id));
+          const index = state.findIndex(x => deepEqual(x.id, newVal.id));
           if (index === -1) {
             state.push(newVal);
           } else {
@@ -128,7 +85,7 @@ function subscribeReducer(state, _arg) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, oldVal.id));
+          const index = state.findIndex(x => deepEqual(x.id, oldVal.id));
           if (index === -1) {
             // indicates a programming bug. The server gives us the
             // ordering, so if we don't find the id it means something is
@@ -150,5 +107,5 @@ function subscribeReducer(state, _arg) {
       throw new Error(`unrecognized 'type' field from server ${JSON.stringify(change)}`);
   }
   return state;
-}
-//# sourceMappingURL=redux.js.map
+});
+//# sourceMappingURL=applyChange.js.map

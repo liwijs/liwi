@@ -1,13 +1,17 @@
-import deepEqual from 'deep-equal';
-// eslint-disable-next-line
-import { createAction as alpReactReduxCreateAction } from 'alp-react-redux';
+'use strict';
 
-export function createSubscribeAction(actionName) {
-  return alpReactReduxCreateAction(actionName, change => ({ change }));
-}
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _deepEqual = require('deep-equal');
+
+var _deepEqual2 = _interopRequireDefault(_deepEqual);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
-export function subscribeReducer(state, { change }) {
+exports.default = (state, change) => {
   const {
     type,
     old_offset: oldOffset,
@@ -27,7 +31,7 @@ export function subscribeReducer(state, { change }) {
         if (oldOffset != null) {
           state.splice(oldOffset, 1);
         } else {
-          const index = state.findIndex(x => deepEqual(x.id, oldVal.id));
+          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, oldVal.id));
           if (index === -1) {
             // Programming error. This should not happen
             throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);
@@ -46,7 +50,7 @@ export function subscribeReducer(state, { change }) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          const index = state.findIndex(x => deepEqual(x.id, newVal.id));
+          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, newVal.id));
           if (index === -1) {
             state.push(newVal);
           } else {
@@ -91,7 +95,7 @@ export function subscribeReducer(state, { change }) {
         } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
-          const index = state.findIndex(x => deepEqual(x.id, oldVal.id));
+          const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, oldVal.id));
           if (index === -1) {
             // indicates a programming bug. The server gives us the
             // ordering, so if we don't find the id it means something is
@@ -113,5 +117,5 @@ export function subscribeReducer(state, { change }) {
       throw new Error(`unrecognized 'type' field from server ${JSON.stringify(change)}`);
   }
   return state;
-}
-//# sourceMappingURL=redux.js.map
+};
+//# sourceMappingURL=applyChange.js.map

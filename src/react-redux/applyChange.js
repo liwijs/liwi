@@ -1,13 +1,9 @@
 import deepEqual from 'deep-equal';
-// eslint-disable-next-line
-import { createAction as alpReactReduxCreateAction } from 'alp-react-redux';
 
-export function createSubscribeAction(actionName: string) {
-  return alpReactReduxCreateAction(actionName, (change: Object) => ({ change }));
-}
+type ObjectArrayType = Array<Object>;
 
 type ChangeType = {
-  type: ?string,
+  type: string,
   state: ?string,
   old_offset: ?number,
   new_offset: ?number,
@@ -16,7 +12,7 @@ type ChangeType = {
 };
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
-export function subscribeReducer(state: Array<Object>, { change }: { change: ChangeType }) {
+export default (state: ObjectArrayType, change: ChangeType) => {
   const {
     type,
     old_offset: oldOffset,
@@ -118,4 +114,4 @@ export function subscribeReducer(state: Array<Object>, { change }: { change: Cha
         `unrecognized 'type' field from server ${JSON.stringify(change)}`);
   }
   return state;
-}
+};

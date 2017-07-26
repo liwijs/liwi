@@ -5,24 +5,30 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _class, _temp;
-
 var _react = require('react');
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
+var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-let FindComponent = (_temp = _class = class extends _react.Component {
+let FindComponent = class extends _react.Component {
+  constructor(...args) {
+    var _temp;
+
+    return _temp = super(...args), this.state = {
+      fetched: false,
+      result: undefined
+    }, _temp;
+  }
 
   componentDidMount() {
-    const { query, action } = this.props;
-    const dispatch = this.props.dispatch || this.context.store.dispatch;
+    const { query } = this.props;
     this._find = query.fetch(result => {
       if (!this._find) return;
-      dispatch(action(result));
+      this.setState({
+        fetched: true,
+        result
+      });
       delete this._find;
     });
   }
@@ -35,10 +41,12 @@ let FindComponent = (_temp = _class = class extends _react.Component {
   }
 
   render() {
-    return this.props.children;
+    if (!this.state.fetched) {
+      return this.props.loadingComponent ? _react2.default.createElement(this.props.loadingComponent) : null;
+    }
+
+    return _react2.default.createElement(this.props.component, { [this.props.name]: this.state.result });
   }
-}, _class.contextTypes = {
-  store: _propTypes2.default.any
-}, _temp);
+};
 exports.default = FindComponent;
 //# sourceMappingURL=Find.js.map

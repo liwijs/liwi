@@ -5,29 +5,42 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _class, _temp;
-
 var _react = require('react');
 
-var _propTypes = require('prop-types');
+var _react2 = _interopRequireDefault(_react);
 
-var _propTypes2 = _interopRequireDefault(_propTypes);
+var _applyChange = require('./applyChange');
+
+var _applyChange2 = _interopRequireDefault(_applyChange);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-let FindAndSubscribeComponent = (_temp = _class = class extends _react.Component {
+let FindAndSubscribeComponent = class extends _react.Component {
+  constructor(...args) {
+    var _temp;
+
+    return _temp = super(...args), this.state = {
+      fetched: false,
+      result: []
+    }, _temp;
+  }
 
   componentDidMount() {
-    const { query, action } = this.props;
-    const dispatch = this.props.dispatch || this.context.store.dispatch;
-    this._subscribe = query.fetchAndSubscribe((err, result) => {
+    const { query } = this.props;
+    this._subscribe = query.fetchAndSubscribe((err, change) => {
       if (err) {
         // eslint-disable-next-line no-alert
         alert(`Unexpected error: ${err}`);
         return;
       }
 
-      dispatch(action(result, true));
+      const newResult = (0, _applyChange2.default)(this.state.result, change);
+
+      if (!this.state.fetched) {
+        this.setState({ fetched: true, result: newResult });
+      } else if (newResult !== this.state.result) {
+        this.setState({ result: newResult });
+      }
     });
   }
 
@@ -39,10 +52,12 @@ let FindAndSubscribeComponent = (_temp = _class = class extends _react.Component
   }
 
   render() {
-    return this.props.children;
+    if (!this.state.fetched) {
+      return this.props.loadingComponent ? _react2.default.createElement(this.props.loadingComponent) : null;
+    }
+
+    return _react2.default.createElement(this.props.component, { [this.props.name]: this.state.result });
   }
-}, _class.contextTypes = {
-  store: _propTypes2.default.any
-}, _temp);
+};
 exports.default = FindAndSubscribeComponent;
 //# sourceMappingURL=FindAndSubscribe.js.map

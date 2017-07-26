@@ -1,20 +1,35 @@
-var _class, _temp;
+import React, { Component } from 'react';
 
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-let FindAndSubscribeComponent = (_temp = _class = class extends Component {
+import applyChange from './applyChange';
+
+let FindAndSubscribeComponent = class extends Component {
+  constructor(...args) {
+    var _temp;
+
+    return _temp = super(...args), this.state = {
+      fetched: false,
+      result: []
+    }, _temp;
+  }
 
   componentDidMount() {
-    const { query, action } = this.props;
-    const dispatch = this.props.dispatch || this.context.store.dispatch;
-    this._subscribe = query.fetchAndSubscribe(function (err, result) {
+    var _this = this;
+
+    const { query } = this.props;
+    this._subscribe = query.fetchAndSubscribe(function (err, change) {
       if (err) {
         // eslint-disable-next-line no-alert
         alert(`Unexpected error: ${err}`);
         return;
       }
 
-      dispatch(action(result, true));
+      const newResult = applyChange(_this.state.result, change);
+
+      if (!_this.state.fetched) {
+        _this.setState({ fetched: true, result: newResult });
+      } else if (newResult !== _this.state.result) {
+        _this.setState({ result: newResult });
+      }
     });
   }
 
@@ -26,10 +41,12 @@ let FindAndSubscribeComponent = (_temp = _class = class extends Component {
   }
 
   render() {
-    return this.props.children;
+    if (!this.state.fetched) {
+      return this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null;
+    }
+
+    return React.createElement(this.props.component, { [this.props.name]: this.state.result });
   }
-}, _class.contextTypes = {
-  store: PropTypes.any
-}, _temp);
+};
 export { FindAndSubscribeComponent as default };
 //# sourceMappingURL=FindAndSubscribe.js.map

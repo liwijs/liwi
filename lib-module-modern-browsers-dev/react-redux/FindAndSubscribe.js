@@ -43,10 +43,10 @@ function _initializerWarningHelper() {
   throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-import { ReactNodeType as _ReactNodeType, ReduxDispatchType as _ReduxDispatchType } from 'alp-react-redux/types';
+import React, { Component } from 'react';
+import { ReactNodeType as _ReactNodeType, ReactComponentType as _ReactComponentType } from 'alp-react-redux/types';
 import _AbstractQuery from '../store/AbstractQuery';
+import applyChange from './applyChange';
 
 import t from 'flow-runtime';
 const AbstractQuery = t.tdz(function () {
@@ -55,29 +55,38 @@ const AbstractQuery = t.tdz(function () {
 const ReactNodeType = t.tdz(function () {
   return _ReactNodeType;
 });
-const ReduxDispatchType = t.tdz(function () {
-  return _ReduxDispatchType;
+const ReactComponentType = t.tdz(function () {
+  return _ReactComponentType;
 });
-const ActionType = t.type('ActionType', t.function(t.param('result', t.any()), t.return(t.any())));
-const PropsType = t.type('PropsType', t.object(t.property('dispatch', t.nullable(t.ref(ReduxDispatchType))), t.property('action', ActionType), t.property('query', t.ref(AbstractQuery)), t.property('children', t.ref(ReactNodeType))));
+const PropsType = t.type('PropsType', t.object(t.property('name', t.string()), t.property('query', t.ref(AbstractQuery)), t.property('component', t.ref(ReactComponentType)), t.property('loadingComponent', t.nullable(t.ref(ReactComponentType)))));
 let FindAndSubscribeComponent = (_dec = t.decorate(PropsType), (_class = (_temp2 = _class2 = class extends Component {
   constructor(...args) {
     var _temp;
 
-    return _temp = super(...args), _initDefineProp(this, 'props', _descriptor, this), _temp;
+    return _temp = super(...args), _initDefineProp(this, 'props', _descriptor, this), this.state = {
+      fetched: false,
+      result: []
+    }, _temp;
   }
 
   componentDidMount() {
-    const { query, action } = this.props;
-    const dispatch = this.props.dispatch || this.context.store.dispatch;
-    this._subscribe = query.fetchAndSubscribe(function (err, result) {
+    var _this = this;
+
+    const { query } = this.props;
+    this._subscribe = query.fetchAndSubscribe(function (err, change) {
       if (err) {
         // eslint-disable-next-line no-alert
         alert(`Unexpected error: ${err}`);
         return;
       }
 
-      dispatch(action(result, true));
+      const newResult = applyChange(_this.state.result, change);
+
+      if (!_this.state.fetched) {
+        _this.setState({ fetched: true, result: newResult });
+      } else if (newResult !== _this.state.result) {
+        _this.setState({ result: newResult });
+      }
     });
   }
 
@@ -91,11 +100,13 @@ let FindAndSubscribeComponent = (_dec = t.decorate(PropsType), (_class = (_temp2
   render() {
     const _returnType = t.return(t.ref(ReactNodeType));
 
-    return _returnType.assert(this.props.children);
+    if (!this.state.fetched) {
+      return _returnType.assert(this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null);
+    }
+
+    return _returnType.assert(React.createElement(this.props.component, { [this.props.name]: this.state.result }));
   }
-}, _class2.propTypes = t.propTypes(PropsType), _class2.contextTypes = {
-  store: PropTypes.any
-}, _temp2), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'props', [_dec], {
+}, _class2.propTypes = t.propTypes(PropsType), _temp2), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'props', [_dec], {
   enumerable: true,
   initializer: null
 })), _class));

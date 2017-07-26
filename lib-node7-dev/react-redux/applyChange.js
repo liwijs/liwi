@@ -3,25 +3,31 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createSubscribeAction = createSubscribeAction;
-exports.subscribeReducer = subscribeReducer;
 
 var _deepEqual = require('deep-equal');
 
 var _deepEqual2 = _interopRequireDefault(_deepEqual);
 
-var _alpReactRedux = require('alp-react-redux');
+var _flowRuntime = require('flow-runtime');
+
+var _flowRuntime2 = _interopRequireDefault(_flowRuntime);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function createSubscribeAction(actionName) {
-  return (0, _alpReactRedux.createAction)(actionName, change => ({ change }));
-}
-// eslint-disable-next-line
+const ObjectArrayType = _flowRuntime2.default.type('ObjectArrayType', _flowRuntime2.default.array(_flowRuntime2.default.object()));
 
+const ChangeType = _flowRuntime2.default.type('ChangeType', _flowRuntime2.default.object(_flowRuntime2.default.property('type', _flowRuntime2.default.string()), _flowRuntime2.default.property('state', _flowRuntime2.default.nullable(_flowRuntime2.default.string())), _flowRuntime2.default.property('old_offset', _flowRuntime2.default.nullable(_flowRuntime2.default.number())), _flowRuntime2.default.property('new_offset', _flowRuntime2.default.nullable(_flowRuntime2.default.number())), _flowRuntime2.default.property('old_val', _flowRuntime2.default.nullable(_flowRuntime2.default.object())), _flowRuntime2.default.property('new_val', _flowRuntime2.default.nullable(_flowRuntime2.default.object()))));
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
-function subscribeReducer(state, { change }) {
+
+
+exports.default = function applyChange(state, change) {
+  let _stateType = ObjectArrayType;
+
+  _flowRuntime2.default.param('state', _stateType).assert(state);
+
+  _flowRuntime2.default.param('change', ChangeType).assert(change);
+
   const {
     type,
     old_offset: oldOffset,
@@ -30,7 +36,7 @@ function subscribeReducer(state, { change }) {
     new_val: newVal
   } = change;
 
-  const copy = () => state = state.slice();
+  const copy = () => state = _stateType.assert(state.slice());
 
   switch (type) {
     case 'remove':
@@ -127,5 +133,5 @@ function subscribeReducer(state, { change }) {
       throw new Error(`unrecognized 'type' field from server ${JSON.stringify(change)}`);
   }
   return state;
-}
-//# sourceMappingURL=redux.js.map
+};
+//# sourceMappingURL=applyChange.js.map
