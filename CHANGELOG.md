@@ -1,3 +1,12 @@
+<a name="0.17.1"></a>
+## [0.17.1](https://github.com/liwijs/liwi/compare/v0.17.0...v0.17.1) (2017-07-26)
+
+
+### Bug Fixes
+
+* module aliases ([1597256](https://github.com/liwijs/liwi/commit/1597256))
+
+
 <a name="0.17.0"></a>
 # [0.17.0](https://github.com/liwijs/liwi/compare/v0.16.0...v0.17.0) (2017-07-26)
 
