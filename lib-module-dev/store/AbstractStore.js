@@ -12,8 +12,8 @@ var _AbstractStoreTypeParametersSymbol = Symbol('AbstractStoreTypeParameters');
 
 var AbstractStore = (_temp = _class = function () {
   /**
-   * @param {AbstractConnection} connection
-   */
+     * @param {AbstractConnection} connection
+     */
   function AbstractStore(connection) {
     _classCallCheck(this, AbstractStore);
 

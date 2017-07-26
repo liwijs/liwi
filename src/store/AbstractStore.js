@@ -1,7 +1,7 @@
 import assert from 'assert';
 
 export default class AbstractStore<Connection> {
-    /**
+  /**
      * @param {AbstractConnection} connection
      */
   constructor(connection: Connection) {

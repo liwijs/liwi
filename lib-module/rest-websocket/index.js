@@ -73,6 +73,7 @@ export default function init(io, restService) {
           case 'findOne':
             try {
 
+              // eslint-disable-next-line prettier/prettier
               return restResource[type].apply(restResource, [socket.user].concat(_toConsumableArray(args))).then(function (result) {
                 return callback(null, encode(result));
               }).catch(function (err) {
@@ -106,6 +107,7 @@ export default function init(io, restService) {
               }
 
               if (type === 'fetch') {
+                // eslint-disable-next-line prettier/prettier
                 return query[type].apply(query, [function (result) {
                   return callback(null, result && encode(result));
                 }].concat(_toConsumableArray(otherArgs))).catch(function (err) {

@@ -109,19 +109,19 @@ let AbstractCursor = (_temp = _class = class {
 
   // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
   /*
-  async *keysAsyncIterator() {
-      while (true) {
-           const key = await this.next();
-           if (!key) return;
-            yield key;
-      }
-   }
-    async *[Symbol.asyncIterator] {
-      for await (let key of this.keysAsyncIterator()) {
-          yield await this.result();
-      }
-   }
-   */
+    async *keysAsyncIterator() {
+        while (true) {
+             const key = await this.next();
+             if (!key) return;
+              yield key;
+        }
+     }
+      async *[Symbol.asyncIterator] {
+        for await (let key of this.keysAsyncIterator()) {
+            yield await this.result();
+        }
+     }
+     */
 }, _class[t.TypeParametersSymbol] = _AbstractCursorTypeParametersSymbol, _temp);
 export { AbstractCursor as default };
 //# sourceMappingURL=AbstractCursor.js.map

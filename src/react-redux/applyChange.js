@@ -21,7 +21,7 @@ export default (state: ObjectArrayType, change: ChangeType) => {
     new_val: newVal,
   } = change;
 
-  const copy = () => state = state.slice();
+  const copy = () => (state = state.slice());
 
   switch (type) {
     case 'remove':
@@ -110,8 +110,7 @@ export default (state: ObjectArrayType, change: ChangeType) => {
       break;
     }
     default:
-      throw new Error(
-        `unrecognized 'type' field from server ${JSON.stringify(change)}`);
+      throw new Error(`unrecognized 'type' field from server ${JSON.stringify(change)}`);
   }
   return state;
 };

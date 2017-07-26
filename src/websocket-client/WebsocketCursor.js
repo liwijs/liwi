@@ -24,7 +24,7 @@ export default class WebsocketCursor extends AbstractCursor<WebsocketStore> {
 
   _create() {
     if (this._idCursor) throw new Error('Cursor already created');
-    return this.store.connection.emit('createCursor', this._options).then((idCursor) => {
+    return this.store.connection.emit('createCursor', this._options).then(idCursor => {
       if (!idCursor) return;
       this._idCursor = idCursor;
     });
@@ -44,7 +44,7 @@ export default class WebsocketCursor extends AbstractCursor<WebsocketStore> {
   }
 
   next(): Promise<?any> {
-    return this.emit('next').then((result) => {
+    return this.emit('next').then(result => {
       this._result = result;
       this.key = result && result[this._store.keyPath];
       return this.key;
@@ -71,7 +71,7 @@ export default class WebsocketCursor extends AbstractCursor<WebsocketStore> {
   }
 
   toArray(): Promise<Array<Array<ResultType>>> {
-    return this.store.emit('cursor toArray', this._options).then((result) => {
+    return this.store.emit('cursor toArray', this._options).then(result => {
       this.close();
       return result;
     });

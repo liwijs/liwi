@@ -13,14 +13,14 @@ export default class Query extends AbstractQuery<RethinkStore> {
 
   _subscribe(callback: Function, _includeInitial = false, args: Array<any>): SubscribeReturnType {
     let _feed;
-    let promise =
-      this.queryCallback(this.store.query(), this.store.r).changes({
+    let promise = this.queryCallback(this.store.query(), this.store.r)
+      .changes({
         includeInitial: _includeInitial,
         includeStates: true,
         includeTypes: true,
         includeOffsets: true,
       })
-      .then((feed) => {
+      .then(feed => {
         if (args.length === 0) {
           _feed = feed;
           delete this._promise;

@@ -86,6 +86,7 @@ function init(io, restService) {
                 throw new Error(`rest: ${restName}.${type} is not available`);
               }
 
+              // eslint-disable-next-line prettier/prettier
               return restResource[type](socket.user, ...args).then(result => callback(null, (0, _extendedJson.encode)(result))).catch(err => {
                 logger.error(type, { err });
                 callback(err.message || err);
@@ -112,6 +113,7 @@ function init(io, restService) {
               }
 
               if (type === 'fetch') {
+                // eslint-disable-next-line prettier/prettier
                 return query[type](result => callback(null, result && (0, _extendedJson.encode)(result)), ...otherArgs).catch(err => {
                   logger.error(type, { err });
                   callback(err.message || err);

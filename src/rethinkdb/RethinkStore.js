@@ -34,7 +34,7 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
     }
 
     if (sort) {
-      Object.keys(sort).forEach((key) => {
+      Object.keys(sort).forEach(key => {
         if (sort[key] === -1) {
           query.orderBy(this.r.desc(key));
         } else {
@@ -53,7 +53,8 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
   insertOne(object: InsertType): Promise<ResultType> {
     if (!object.created) object.created = new Date();
 
-    return this.table().insert(object)
+    return this.table()
+      .insert(object)
       .then(({ inserted, generated_keys: generatedKeys }) => {
         if (inserted !== 1) throw new Error('Could not insert');
         if (object.id == null) {
@@ -71,15 +72,13 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
     if (!object.created) object.created = new Date();
     if (!object.updated) object.updated = new Date();
 
-    return this.table().get(object.id).replace(object)
-      .then(() => object);
+    return this.table().get(object.id).replace(object).then(() => object);
   }
 
   upsertOne(object: UpdateType): Promise<ResultType> {
     if (!object.updated) object.updated = new Date();
 
-    return this.table().insert(object, { conflict: 'replace' }).run()
-      .then(() => object);
+    return this.table().insert(object, { conflict: 'replace' }).run().then(() => object);
   }
 
   replaceSeveral(objects: Array<InsertType>): Promise<Array<ResultType>> {
@@ -91,7 +90,9 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
   }
 
   partialUpdateOne(object: ResultType, partialUpdate: UpdateType): Promise<ResultType> {
-    return this.table().get(object.id).update(partialUpdate, { returnChanges: true })
+    return this.table()
+      .get(object.id)
+      .update(partialUpdate, { returnChanges: true })
       .then(res => res.changes.new_val);
   }
 
@@ -103,7 +104,8 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
     return this.table().get(key).delete().run();
   }
 
-  cursor(query, sort: ?Object) { // : Promise<RethinkCursor<ModelType>> {
+  cursor(query, sort: ?Object) {
+    // : Promise<RethinkCursor<ModelType>> {
     if (sort) throw new Error('sort is not supported');
     throw new Error('Not Supported yet, please use query().run({ cursor: true })');
   }

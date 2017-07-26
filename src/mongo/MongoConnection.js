@@ -24,8 +24,8 @@ export default class MongoConnection extends AbstractConnection {
     }
 
     const connectionString =
-      `mongodb://${config.has('user') ? `${config.get('user')}:${config.get('password')}@` : ''}`
-       + `${config.get('host')}:${config.get('port')}/${config.get('database')}`;
+      `mongodb://${config.has('user') ? `${config.get('user')}:${config.get('password')}@` : ''}` +
+      `${config.get('host')}:${config.get('port')}/${config.get('database')}`;
 
     this.connect(connectionString);
   }
@@ -34,7 +34,7 @@ export default class MongoConnection extends AbstractConnection {
     logger.info('connecting', { connectionString });
 
     const connectPromise = MongoClient.connect(connectionString)
-      .then((connection) => {
+      .then(connection => {
         logger.info('connected', { connectionString });
         connection.on('close', () => {
           logger.warn('close', { connectionString });
@@ -51,7 +51,7 @@ export default class MongoConnection extends AbstractConnection {
           this.connectionFailed = false;
           this.getConnection = () => Promise.resolve(this._connection);
         });
-        connection.on('error', (err) => {
+        connection.on('error', err => {
           logger.warn('error', { connectionString, err });
         });
 
@@ -60,10 +60,10 @@ export default class MongoConnection extends AbstractConnection {
         this.getConnection = () => Promise.resolve(this._connection);
         return connection;
       })
-      .catch((err) => {
+      .catch(err => {
         logger.info('not connected', { connectionString });
         console.error(err.message || err);
-          // throw err;
+        // throw err;
         process.nextTick(() => {
           process.exit(1);
         });

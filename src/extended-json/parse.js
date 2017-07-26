@@ -22,8 +22,8 @@ const internalReviver = (key, value) => {
           +matchDate[3],
           +matchDate[4],
           +matchDate[5],
-          +matchDate[6]
-        )
+          +matchDate[6],
+        ),
       );
     }
   }
@@ -36,7 +36,7 @@ const internalReviver = (key, value) => {
  * @param  {function} [reviver] If a function, prescribes how the value originally produced by parsing is transformed, before being returned
  * @return {*}
  */
-export default function (text, reviver) {
+export default function(text, reviver) {
   return JSON.parse(
     text,
     reviver == null ? internalReviver : (key, value) => reviver(key, internalReviver(value)),

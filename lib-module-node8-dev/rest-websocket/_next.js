@@ -77,16 +77,17 @@ export default function init(io, restService) {
               case 'advance':
               case 'next':
               case 'count':
+                // eslint-disable-next-line prettier/prettier
                 return cursor[type](...cursorArgs).then(result => callback(null, result)).catch(err => callback(err.message || err));
               /* cursor.next().then((key) => {
-                  if (!key) return callback(null);
-                  return cursor.result();
-              }).then(result => {
-                      response(null, restService.transform(data));
-                  });
-              }, () => {
-                  response(null);
-              }); */
+                                if (!key) return callback(null);
+                                return cursor.result();
+                            }).then(result => {
+                                    response(null, restService.transform(data));
+                                });
+                            }, () => {
+                                response(null);
+                            }); */
 
               default:
                 callback(`Unknown command: "${type}"`);
@@ -104,6 +105,7 @@ export default function init(io, restService) {
         case 'deleteByKey':
         case 'deleteOne':
         case 'findOne':
+          // eslint-disable-next-line prettier/prettier
           return restService[type](restName, ...args).then(result => callback(null, result)).catch(err => callback(err.message || err));
 
         default:

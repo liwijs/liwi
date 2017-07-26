@@ -38,7 +38,7 @@ export default class RethinkConnection extends AbstractConnection {
       max: 100,
     });
 
-    this._connection.getPoolMaster().on('healthy', (healthy) => {
+    this._connection.getPoolMaster().on('healthy', healthy => {
       if (healthy === true) {
         this.getConnection = () => Promise.resolve(this._connection);
         logger.info('healthy');

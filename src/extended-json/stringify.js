@@ -14,11 +14,11 @@
  * @param {string|number} [space]
  * @return {string}
  */
-export default function (text, replacer, space) {
+export default function(text, replacer, space) {
   return JSON.stringify(
     text,
     // replacer == null ? internalReplacer : (key, value) => replacer(key, internalReplacer(value)),
     replacer,
-    space
+    space,
   );
 }

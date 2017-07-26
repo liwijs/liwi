@@ -250,6 +250,7 @@ var RethinkStore = function (_AbstractStore) {
       var _sortType2 = t.nullable(t.object());
 
       t.param('sort', _sortType2).assert(sort);
+
       // : Promise<RethinkCursor<ModelType>> {
       if (sort) throw new Error('sort is not supported');
       throw new Error('Not Supported yet, please use query().run({ cursor: true })');

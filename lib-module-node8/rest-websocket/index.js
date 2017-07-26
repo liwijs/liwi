@@ -56,6 +56,7 @@ export default function init(io, restService) {
           case 'findOne':
             try {
 
+              // eslint-disable-next-line prettier/prettier
               return restResource[type](socket.user, ...args).then(result => callback(null, encode(result))).catch(err => {
                 logger.error(type, { err });
                 callback(err.message || err);
@@ -82,6 +83,7 @@ export default function init(io, restService) {
               }
 
               if (type === 'fetch') {
+                // eslint-disable-next-line prettier/prettier
                 return query[type](result => callback(null, result && encode(result)), ...otherArgs).catch(err => {
                   logger.error(type, { err });
                   callback(err.message || err);

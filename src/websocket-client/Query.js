@@ -30,18 +30,16 @@ export default class Query extends AbstractQuery<WebsocketStore> {
     this.store.connection.on(eventName, listener);
 
     let _stopEmitSubscribe;
-    let promise = this.store.emitSubscribe(
-      _includeInitial ? 'fetchAndSubscribe' : 'subscribe',
-      this.key,
-      eventName,
-      args,
-    ).then((stopEmitSubscribe) => {
-      _stopEmitSubscribe = stopEmitSubscribe;
-      logger.info('subscribed');
-    }).catch((err) => {
-      this.store.connection.off(eventName, listener);
-      throw err;
-    });
+    let promise = this.store
+      .emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args)
+      .then(stopEmitSubscribe => {
+        _stopEmitSubscribe = stopEmitSubscribe;
+        logger.info('subscribed');
+      })
+      .catch(err => {
+        this.store.connection.off(eventName, listener);
+        throw err;
+      });
 
     const stop = () => {
       if (!promise) return;

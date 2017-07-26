@@ -8,8 +8,8 @@ const _AbstractStoreTypeParametersSymbol = Symbol('AbstractStoreTypeParameters')
 
 let AbstractStore = (_temp = _class = class {
   /**
-   * @param {AbstractConnection} connection
-   */
+     * @param {AbstractConnection} connection
+     */
   constructor(connection) {
     this[_AbstractStoreTypeParametersSymbol] = {
       Connection: t.typeParameter('Connection')

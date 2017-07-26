@@ -14,12 +14,11 @@ export default class MongoCursor extends AbstractCursor<MongoStore> {
   }
 
   next(): Promise<any> {
-    return this._cursor.next()
-      .then((value) => {
-        this._result = value;
-        this.key = value && value._id;
-        return this.key;
-      });
+    return this._cursor.next().then(value => {
+      this._result = value;
+      this.key = value && value._id;
+      return this.key;
+    });
   }
 
   limit(newLimit: number): Promise {

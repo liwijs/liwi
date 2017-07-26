@@ -17,9 +17,10 @@ export default class MongoStore extends AbstractStore<MongoConnection> {
       throw new Error(`Invalid collectionName: "${collectionName}"`);
     }
 
-    this._collection = connection.getConnection()
-      .then((db: Db) => this._collection = db.collection(collectionName))
-      .catch(err => this._collection = Promise.reject(err));
+    this._collection = connection
+      .getConnection()
+      .then((db: Db) => (this._collection = db.collection(collectionName)))
+      .catch(err => (this._collection = Promise.reject(err)));
   }
 
   get collection(): Promise<Collection> {
@@ -36,7 +37,7 @@ export default class MongoStore extends AbstractStore<MongoConnection> {
 
   insertOne(object: InsertType): Promise<ResultType> {
     if (!object._id) {
-      object._id = (new ObjectID()).toString();
+      object._id = new ObjectID().toString();
     }
     if (!object.created) {
       object.created = new Date();
@@ -72,9 +73,9 @@ export default class MongoStore extends AbstractStore<MongoConnection> {
     }
 
     return this.collection
-      .then(collection => (
-        collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })
-      ))
+      .then(collection =>
+        collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true }),
+      )
       .then(() => object);
   }
 
@@ -94,14 +95,14 @@ export default class MongoStore extends AbstractStore<MongoConnection> {
 
   partialUpdateByKey(key: any, partialUpdate: UpdateType): Promise<ResultType> {
     partialUpdate = this._partialUpdate(partialUpdate);
-    return this.collection
-      .then(collection => collection.updateOne({ _id: key }, partialUpdate));
+    return this.collection.then(collection => collection.updateOne({ _id: key }, partialUpdate));
   }
 
   partialUpdateOne(object: ResultType, partialUpdate: UpdateType): Promise<ResultType> {
     partialUpdate = this._partialUpdate(partialUpdate);
-    return this.partialUpdateByKey(object._id, partialUpdate)
-      .then(res => this.findByKey(object._id));
+    return this.partialUpdateByKey(object._id, partialUpdate).then(res =>
+      this.findByKey(object._id),
+    );
   }
 
   partialUpdateMany(criteria, partialUpdate: UpdateType): Promise<void> {
@@ -112,11 +113,8 @@ export default class MongoStore extends AbstractStore<MongoConnection> {
   }
 
   deleteByKey(key: any): Promise<void> {
-    return this.collection
-      .then(collection => collection.removeOne({ _id: key }))
-      .then(() => null);
+    return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => null);
   }
-
 
   cursor(criteria: ?Object, sort: ?Object): Promise<MongoCursor<ResultType>> {
     return this.collection

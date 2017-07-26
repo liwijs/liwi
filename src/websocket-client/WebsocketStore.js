@@ -7,8 +7,8 @@ import Query from './Query';
 const logger = new Logger('liwi:websocket-client');
 
 type WebsocketConnectionType = {
-    emit: Function,
-    isConnected: Function,
+  emit: Function,
+  isConnected: Function,
 };
 
 export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketConnectionType> {
@@ -35,16 +35,18 @@ export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketCo
       throw new Error('Websocket is not connected');
     }
 
-    return this.connection.emit('rest', {
-      type,
-      restName: this.restName,
-      json: encode(args),
-    }).then(result => result && decode(result));
+    return this.connection
+      .emit('rest', {
+        type,
+        restName: this.restName,
+        json: encode(args),
+      })
+      .then(result => result && decode(result));
   }
 
   emitSubscribe(type, ...args) {
     const emit = () => this.emit(type, ...args);
-    return emit().then((result) => {
+    return emit().then(result => {
       this.connection.on('reconnect', emit);
       return () => this.connection.off('reconnect', emit);
     });

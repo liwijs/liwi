@@ -53,21 +53,21 @@ export default class AbstractCursor<Store> {
     return this.forEachKeys(() => this.result().then(result => callback(result)));
   }
 
-  * keysIterator() {
+  *keysIterator() {
     while (true) {
       yield this.next();
     }
   }
 
-  * [Symbol.iterator]() {
+  *[Symbol.iterator]() {
     // eslint-disable-next-line no-restricted-syntax
     for (let keyPromise of this.keysIterator()) {
       yield keyPromise.then(key => key && this.result());
     }
   }
 
-    // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
-    /*
+  // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
+  /*
     async *keysAsyncIterator() {
         while (true) {
              const key = await this.next();
