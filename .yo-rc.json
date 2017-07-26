@@ -1,0 +1,30 @@
+{
+  "pob": {
+    "pob-config": {
+      "envs": [
+        "node6",
+        "node8",
+        "module-modern-browsers",
+        "module",
+        "module-node8"
+      ],
+      "testing": {
+        "circleci": true,
+        "travisci": true,
+        "codecov": true
+      },
+      "documentation": false,
+      "doclets": false,
+      "entries": [
+        "extended-json",
+        "index",
+        "mongo",
+        "react-redux",
+        "rest",
+        "rest-websocket",
+        "rethinkdb",
+        "websocket-client"
+      ]
+    }
+  }
+}

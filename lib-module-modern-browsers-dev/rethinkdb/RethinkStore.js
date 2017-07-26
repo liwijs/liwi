@@ -1,48 +1,3 @@
-var _dec, _desc, _value, _class, _descriptor;
-
-function _initDefineProp(target, property, descriptor, context) {
-  if (!descriptor) return;
-  Object.defineProperty(target, property, {
-    enumerable: descriptor.enumerable,
-    configurable: descriptor.configurable,
-    writable: descriptor.writable,
-    value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
-  });
-}
-
-function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
-  var desc = {};
-  Object['keys'](descriptor).forEach(function (key) {
-    desc[key] = descriptor[key];
-  });
-  desc.enumerable = !!desc.enumerable;
-  desc.configurable = !!desc.configurable;
-
-  if ('value' in desc || desc.initializer) {
-    desc.writable = true;
-  }
-
-  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
-    return decorator(target, property, desc) || desc;
-  }, desc);
-
-  if (context && desc.initializer !== void 0) {
-    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
-    desc.initializer = undefined;
-  }
-
-  if (desc.initializer === void 0) {
-    Object['defineProperty'](target, property, desc);
-    desc = null;
-  }
-
-  return desc;
-}
-
-function _initializerWarningHelper() {
-  throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
-}
-
 import RethinkConnection from './RethinkConnection';
 import AbstractStore from '../store/AbstractStore';
 import Query from './Query';
@@ -59,7 +14,7 @@ const UpdateType = t.tdz(function () {
 const ResultType = t.tdz(function () {
   return _ResultType;
 });
-let RethinkStore = (_dec = t.decorate(t.string()), (_class = class extends AbstractStore {
+let RethinkStore = class extends AbstractStore {
 
   constructor(connection, tableName) {
     let _connectionType = t.ref(RethinkConnection);
@@ -70,9 +25,6 @@ let RethinkStore = (_dec = t.decorate(t.string()), (_class = class extends Abstr
     t.param('tableName', _tableNameType).assert(tableName);
 
     super(connection);
-
-    _initDefineProp(this, 'tableName', _descriptor, this);
-
     this.keyPath = 'id';
     t.bindTypeParameters(this, t.ref(RethinkConnection));
     this._tableName = tableName;
@@ -314,9 +266,6 @@ let RethinkStore = (_dec = t.decorate(t.string()), (_class = class extends Abstr
       return _returnType13.assert(_arg12);
     });
   }
-}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'tableName', [_dec], {
-  enumerable: true,
-  initializer: null
-})), _class));
+};
 export { RethinkStore as default };
 //# sourceMappingURL=RethinkStore.js.map

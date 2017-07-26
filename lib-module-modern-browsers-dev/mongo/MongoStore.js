@@ -1,48 +1,3 @@
-var _dec, _desc, _value, _class, _descriptor;
-
-function _initDefineProp(target, property, descriptor, context) {
-  if (!descriptor) return;
-  Object.defineProperty(target, property, {
-    enumerable: descriptor.enumerable,
-    configurable: descriptor.configurable,
-    writable: descriptor.writable,
-    value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
-  });
-}
-
-function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
-  var desc = {};
-  Object['keys'](descriptor).forEach(function (key) {
-    desc[key] = descriptor[key];
-  });
-  desc.enumerable = !!desc.enumerable;
-  desc.configurable = !!desc.configurable;
-
-  if ('value' in desc || desc.initializer) {
-    desc.writable = true;
-  }
-
-  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
-    return decorator(target, property, desc) || desc;
-  }, desc);
-
-  if (context && desc.initializer !== void 0) {
-    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
-    desc.initializer = undefined;
-  }
-
-  if (desc.initializer === void 0) {
-    Object['defineProperty'](target, property, desc);
-    desc = null;
-  }
-
-  return desc;
-}
-
-function _initializerWarningHelper() {
-  throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
-}
-
 import { ObjectID } from 'mongodb';
 import Collection from 'mongodb/lib/collection';
 import Db from 'mongodb/lib/db';
@@ -61,9 +16,7 @@ const UpdateType = t.tdz(function () {
 const ResultType = t.tdz(function () {
   return _ResultType;
 });
-let MongoStore = (_dec = t.decorate(function () {
-  return t.union(t.ref(Collection), t.ref('Promise', t.ref(Collection)));
-}), (_class = class extends AbstractStore {
+let MongoStore = class extends AbstractStore {
 
   constructor(connection, collectionName) {
     var _this;
@@ -76,8 +29,6 @@ let MongoStore = (_dec = t.decorate(function () {
     t.param('collectionName', _collectionNameType).assert(collectionName);
 
     _this = super(connection);
-
-    _initDefineProp(this, '_collection', _descriptor, this);
 
     this.keyPath = '_id';
     t.bindTypeParameters(this, t.ref(MongoConnection));
@@ -344,9 +295,6 @@ let MongoStore = (_dec = t.decorate(function () {
       return _returnType13.assert(_arg13);
     });
   }
-}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, '_collection', [_dec], {
-  enumerable: true,
-  initializer: null
-})), _class));
+};
 export { MongoStore as default };
 //# sourceMappingURL=MongoStore.js.map

@@ -1,55 +1,10 @@
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dec, _dec2, _dec3, _desc, _value, _class, _descriptor, _descriptor2, _descriptor3;
-
-function _initDefineProp(target, property, descriptor, context) {
-  if (!descriptor) return;
-  Object.defineProperty(target, property, {
-    enumerable: descriptor.enumerable,
-    configurable: descriptor.configurable,
-    writable: descriptor.writable,
-    value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
-  });
-}
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
-  var desc = {};
-  Object['keys'](descriptor).forEach(function (key) {
-    desc[key] = descriptor[key];
-  });
-  desc.enumerable = !!desc.enumerable;
-  desc.configurable = !!desc.configurable;
-
-  if ('value' in desc || desc.initializer) {
-    desc.writable = true;
-  }
-
-  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
-    return decorator(target, property, desc) || desc;
-  }, desc);
-
-  if (context && desc.initializer !== void 0) {
-    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
-    desc.initializer = undefined;
-  }
-
-  if (desc.initializer === void 0) {
-    Object['defineProperty'](target, property, desc);
-    desc = null;
-  }
-
-  return desc;
-}
-
-function _initializerWarningHelper() {
-  throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
-}
 
 import Logger from 'nightingale-logger';
 import { MongoClient } from 'mongodb';
@@ -59,9 +14,7 @@ import AbstractConnection from '../store/AbstractConnection';
 import t from 'flow-runtime';
 var logger = new Logger('liwi:mongo:MongoConnection');
 
-var MongoConnection = (_dec = t.decorate(function () {
-  return t.union(t.ref(Db), t.null());
-}), _dec2 = t.decorate(t.union(t.ref('Promise', t.void()), t.null())), _dec3 = t.decorate(t.boolean()), (_class = function (_AbstractConnection) {
+var MongoConnection = function (_AbstractConnection) {
   _inherits(MongoConnection, _AbstractConnection);
 
   function MongoConnection(config) {
@@ -72,12 +25,6 @@ var MongoConnection = (_dec = t.decorate(function () {
     t.param('config', _configType).assert(config);
 
     var _this = _possibleConstructorReturn(this, (MongoConnection.__proto__ || Object.getPrototypeOf(MongoConnection)).call(this));
-
-    _initDefineProp(_this, '_connection', _descriptor, _this);
-
-    _initDefineProp(_this, '_connecting', _descriptor2, _this);
-
-    _initDefineProp(_this, 'connectionFailed', _descriptor3, _this);
 
     if (!config.has('host')) {
       config.set('host', 'localhost');
@@ -179,15 +126,7 @@ var MongoConnection = (_dec = t.decorate(function () {
   }]);
 
   return MongoConnection;
-}(AbstractConnection), (_descriptor = _applyDecoratedDescriptor(_class.prototype, '_connection', [_dec], {
-  enumerable: true,
-  initializer: null
-}), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, '_connecting', [_dec2], {
-  enumerable: true,
-  initializer: null
-}), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'connectionFailed', [_dec3], {
-  enumerable: true,
-  initializer: null
-})), _class));
+}(AbstractConnection);
+
 export { MongoConnection as default };
 //# sourceMappingURL=MongoConnection.js.map
