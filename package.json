@@ -18,58 +18,58 @@
   "module:modern-browsers": "./lib-module-modern-browsers/index.js",
   "module:modern-browsers-dev": "./lib-module-modern-browsers-dev/index.js",
   "module:aliases-node": {
-    "./extended-json.js": "./lib-module-node8/extended-json.js",
-    "./mongo.js": "./lib-module-node8/mongo.js",
-    "./react-redux.js": "./lib-module-node8/react-redux.js",
-    "./rest.js": "./lib-module-node8/rest.js",
-    "./rest-websocket.js": "./lib-module-node8/rest-websocket.js",
-    "./rethinkdb.js": "./lib-module-node8/rethinkdb.js",
-    "./websocket-client.js": "./lib-module-node8/websocket-client.js"
+    "./extended-json.js": "./lib-module-node8/extended-json/index.js",
+    "./mongo.js": "./lib-module-node8/mongo/index.js",
+    "./react-redux.js": "./lib-module-node8/react-redux/index.js",
+    "./rest.js": "./lib-module-node8/rest/index.js",
+    "./rest-websocket.js": "./lib-module-node8/rest-websocket/index.js",
+    "./rethinkdb.js": "./lib-module-node8/rethinkdb/index.js",
+    "./websocket-client.js": "./lib-module-node8/websocket-client/index.js"
   },
   "module:aliases-node-dev": {
-    "./extended-json.js": "./lib-module-node8-dev/extended-json.js",
-    "./mongo.js": "./lib-module-node8-dev/mongo.js",
-    "./react-redux.js": "./lib-module-node8-dev/react-redux.js",
-    "./rest.js": "./lib-module-node8-dev/rest.js",
-    "./rest-websocket.js": "./lib-module-node8-dev/rest-websocket.js",
-    "./rethinkdb.js": "./lib-module-node8-dev/rethinkdb.js",
-    "./websocket-client.js": "./lib-module-node8-dev/websocket-client.js"
+    "./extended-json.js": "./lib-module-node8-dev/extended-json/index.js",
+    "./mongo.js": "./lib-module-node8-dev/mongo/index.js",
+    "./react-redux.js": "./lib-module-node8-dev/react-redux/index.js",
+    "./rest.js": "./lib-module-node8-dev/rest/index.js",
+    "./rest-websocket.js": "./lib-module-node8-dev/rest-websocket/index.js",
+    "./rethinkdb.js": "./lib-module-node8-dev/rethinkdb/index.js",
+    "./websocket-client.js": "./lib-module-node8-dev/websocket-client/index.js"
   },
   "module:aliases-browser": {
-    "./extended-json.js": "./lib-module/extended-json.js",
-    "./mongo.js": "./lib-module/mongo.js",
-    "./react-redux.js": "./lib-module/react-redux.js",
-    "./rest.js": "./lib-module/rest.js",
-    "./rest-websocket.js": "./lib-module/rest-websocket.js",
-    "./rethinkdb.js": "./lib-module/rethinkdb.js",
-    "./websocket-client.js": "./lib-module/websocket-client.js"
+    "./extended-json.js": "./lib-module/extended-json/index.js",
+    "./mongo.js": "./lib-module/mongo/index.js",
+    "./react-redux.js": "./lib-module/react-redux/index.js",
+    "./rest.js": "./lib-module/rest/index.js",
+    "./rest-websocket.js": "./lib-module/rest-websocket/index.js",
+    "./rethinkdb.js": "./lib-module/rethinkdb/index.js",
+    "./websocket-client.js": "./lib-module/websocket-client/index.js"
   },
   "module:aliases-browser-dev": {
-    "./extended-json.js": "./lib-module-dev/extended-json.js",
-    "./mongo.js": "./lib-module-dev/mongo.js",
-    "./react-redux.js": "./lib-module-dev/react-redux.js",
-    "./rest.js": "./lib-module-dev/rest.js",
-    "./rest-websocket.js": "./lib-module-dev/rest-websocket.js",
-    "./rethinkdb.js": "./lib-module-dev/rethinkdb.js",
-    "./websocket-client.js": "./lib-module-dev/websocket-client.js"
+    "./extended-json.js": "./lib-module-dev/extended-json/index.js",
+    "./mongo.js": "./lib-module-dev/mongo/index.js",
+    "./react-redux.js": "./lib-module-dev/react-redux/index.js",
+    "./rest.js": "./lib-module-dev/rest/index.js",
+    "./rest-websocket.js": "./lib-module-dev/rest-websocket/index.js",
+    "./rethinkdb.js": "./lib-module-dev/rethinkdb/index.js",
+    "./websocket-client.js": "./lib-module-dev/websocket-client/index.js"
   },
   "module:aliases-modern-browsers": {
-    "./extended-json.js": "./lib-module-modern-browsers/extended-json.js",
-    "./mongo.js": "./lib-module-modern-browsers/mongo.js",
-    "./react-redux.js": "./lib-module-modern-browsers/react-redux.js",
-    "./rest.js": "./lib-module-modern-browsers/rest.js",
-    "./rest-websocket.js": "./lib-module-modern-browsers/rest-websocket.js",
-    "./rethinkdb.js": "./lib-module-modern-browsers/rethinkdb.js",
-    "./websocket-client.js": "./lib-module-modern-browsers/websocket-client.js"
+    "./extended-json.js": "./lib-module-modern-browsers/extended-json/index.js",
+    "./mongo.js": "./lib-module-modern-browsers/mongo/index.js",
+    "./react-redux.js": "./lib-module-modern-browsers/react-redux/index.js",
+    "./rest.js": "./lib-module-modern-browsers/rest/index.js",
+    "./rest-websocket.js": "./lib-module-modern-browsers/rest-websocket/index.js",
+    "./rethinkdb.js": "./lib-module-modern-browsers/rethinkdb/index.js",
+    "./websocket-client.js": "./lib-module-modern-browsers/websocket-client/index.js"
   },
   "module:aliases-modern-browsers-dev": {
-    "./extended-json.js": "./lib-module-modern-browsers-dev/extended-json.js",
-    "./mongo.js": "./lib-module-modern-browsers-dev/mongo.js",
-    "./react-redux.js": "./lib-module-modern-browsers-dev/react-redux.js",
-    "./rest.js": "./lib-module-modern-browsers-dev/rest.js",
-    "./rest-websocket.js": "./lib-module-modern-browsers-dev/rest-websocket.js",
-    "./rethinkdb.js": "./lib-module-modern-browsers-dev/rethinkdb.js",
-    "./websocket-client.js": "./lib-module-modern-browsers-dev/websocket-client.js"
+    "./extended-json.js": "./lib-module-modern-browsers-dev/extended-json/index.js",
+    "./mongo.js": "./lib-module-modern-browsers-dev/mongo/index.js",
+    "./react-redux.js": "./lib-module-modern-browsers-dev/react-redux/index.js",
+    "./rest.js": "./lib-module-modern-browsers-dev/rest/index.js",
+    "./rest-websocket.js": "./lib-module-modern-browsers-dev/rest-websocket/index.js",
+    "./rethinkdb.js": "./lib-module-modern-browsers-dev/rethinkdb/index.js",
+    "./websocket-client.js": "./lib-module-modern-browsers-dev/websocket-client/index.js"
   },
   "scripts": {
     "build": "pob-build",
