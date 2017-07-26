@@ -1,3 +1,12 @@
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/liwijs/liwi/compare/v0.16.0...v0.17.0) (2017-07-26)
+
+
+### Features
+
+* SubscribeComponent fetched state ([0861928](https://github.com/liwijs/liwi/commit/0861928))
+
+
 <a name="0.16.0"></a>
 # [0.16.0](https://github.com/liwijs/liwi/compare/v0.15.1...v0.16.0) (2017-05-30)
 
