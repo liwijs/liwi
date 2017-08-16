@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _class, _temp2;
 
@@ -48,37 +48,22 @@ let FindAndSubscribeComponent = (_temp2 = _class = class extends _react.Componen
   componentDidMount() {
     const { query } = this.props;
     this._subscribe = query.fetchAndSubscribe((err, change) => {
-      if (err) {
-        // eslint-disable-next-line no-alert
-        alert(`Unexpected error: ${err}`);
-        return;
-      }
+      if (err) return void alert(`Unexpected error: ${err}`);
 
       const newResult = (0, _applyChange2.default)(this.state.result, change);
 
-      if (!this.state.fetched) {
-        this.setState({ fetched: true, result: newResult });
-      } else if (newResult !== this.state.result) {
-        this.setState({ result: newResult });
-      }
+      this.state.fetched ? newResult !== this.state.result && this.setState({ result: newResult }) : this.setState({ fetched: true, result: newResult });
     });
   }
 
   componentWillUnmount() {
-    if (this._subscribe) {
-      this._subscribe.stop();
-      delete this._subscribe;
-    }
+    this._subscribe && (this._subscribe.stop(), delete this._subscribe);
   }
 
   render() {
     const _returnType = _flowRuntime2.default.return(_flowRuntime2.default.ref(ReactNodeType));
 
-    if (!this.state.fetched) {
-      return _returnType.assert(this.props.loadingComponent ? _react2.default.createElement(this.props.loadingComponent) : null);
-    }
-
-    return _returnType.assert(_react2.default.createElement(this.props.component, { [this.props.name]: this.state.result }));
+    return this.state.fetched ? _returnType.assert(_react2.default.createElement(this.props.component, { [this.props.name]: this.state.result })) : _returnType.assert(this.props.loadingComponent ? _react2.default.createElement(this.props.loadingComponent) : null);
   }
 }, _class.propTypes = _flowRuntime2.default.propTypes(PropsType), _temp2);
 exports.default = FindAndSubscribeComponent;

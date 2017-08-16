@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _cursor = require('mongodb/lib/cursor');
 
@@ -33,15 +33,7 @@ let MongoCursor = class extends _AbstractCursor2.default {
 
     let _cursorType = _flowRuntime2.default.ref(_cursor2.default);
 
-    _flowRuntime2.default.param('store', _storeType).assert(store);
-
-    _flowRuntime2.default.param('cursor', _cursorType).assert(cursor);
-
-    super(store);
-
-    _flowRuntime2.default.bindTypeParameters(this, _flowRuntime2.default.ref(_MongoStore2.default));
-
-    this._cursor = cursor;
+    _flowRuntime2.default.param('store', _storeType).assert(store), _flowRuntime2.default.param('cursor', _cursorType).assert(cursor), super(store), _flowRuntime2.default.bindTypeParameters(this, _flowRuntime2.default.ref(_MongoStore2.default)), this._cursor = cursor;
   }
 
   advance(count) {
@@ -49,19 +41,13 @@ let MongoCursor = class extends _AbstractCursor2.default {
 
     _flowRuntime2.default.return(_flowRuntime2.default.void());
 
-    _flowRuntime2.default.param('count', _countType).assert(count);
-
-    this._cursor.skip(count);
+    _flowRuntime2.default.param('count', _countType).assert(count), this._cursor.skip(count);
   }
 
   next() {
     const _returnType2 = _flowRuntime2.default.return(_flowRuntime2.default.any());
 
-    return this._cursor.next().then(value => {
-      this._result = value;
-      this.key = value && value._id;
-      return this.key;
-    }).then(_arg => _returnType2.assert(_arg));
+    return this._cursor.next().then(value => (this._result = value, this.key = value && value._id, this.key)).then(_arg => _returnType2.assert(_arg));
   }
 
   limit(newLimit) {
@@ -69,18 +55,13 @@ let MongoCursor = class extends _AbstractCursor2.default {
 
     const _returnType3 = _flowRuntime2.default.return(_flowRuntime2.default.ref('Promise'));
 
-    _flowRuntime2.default.param('newLimit', _newLimitType).assert(newLimit);
-
-    this._cursor.limit(newLimit);
-    return _returnType3.assert(Promise.resolve(this));
+    return _flowRuntime2.default.param('newLimit', _newLimitType).assert(newLimit), this._cursor.limit(newLimit), _returnType3.assert(Promise.resolve(this));
   }
 
   count(applyLimit = false) {
     let _applyLimitType = _flowRuntime2.default.boolean();
 
-    _flowRuntime2.default.param('applyLimit', _applyLimitType).assert(applyLimit);
-
-    return this._cursor.count(applyLimit);
+    return _flowRuntime2.default.param('applyLimit', _applyLimitType).assert(applyLimit), this._cursor.count(applyLimit);
   }
 
   result() {
@@ -88,14 +69,8 @@ let MongoCursor = class extends _AbstractCursor2.default {
   }
 
   close() {
-    if (this._cursor) {
-      this._cursor.close();
-      this._cursor = undefined;
-      this._store = undefined;
-      this._result = undefined;
-    }
 
-    return Promise.resolve();
+    return this._cursor && (this._cursor.close(), this._cursor = void 0, this._store = void 0, this._result = void 0), Promise.resolve();
   }
 
   toArray() {

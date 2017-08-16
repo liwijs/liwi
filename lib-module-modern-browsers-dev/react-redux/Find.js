@@ -18,7 +18,7 @@ let FindComponent = (_temp2 = _class = class extends Component {
 
     return _temp = super(...args), this.state = {
       fetched: false,
-      result: undefined
+      result: void 0
     }, _temp;
   }
 
@@ -30,31 +30,21 @@ let FindComponent = (_temp2 = _class = class extends Component {
       let _resultType = t.any();
 
       t.param('result', _resultType).assert(result);
-
-      if (!_this._find) return;
-      _this.setState({
+      _this._find && (_this.setState({
         fetched: true,
         result
-      });
-      delete _this._find;
+      }), delete _this._find);
     });
   }
 
   componentWillUnmount() {
-    if (this._find) {
-      // this._find.cancel();
-      delete this._find;
-    }
+    this._find && delete this._find;
   }
 
   render() {
     const _returnType = t.return(t.ref(ReactNodeType));
 
-    if (!this.state.fetched) {
-      return _returnType.assert(this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null);
-    }
-
-    return _returnType.assert(React.createElement(this.props.component, { [this.props.name]: this.state.result }));
+    return this.state.fetched ? _returnType.assert(React.createElement(this.props.component, { [this.props.name]: this.state.result })) : _returnType.assert(this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null);
   }
 }, _class.propTypes = t.propTypes(PropsType), _temp2);
 export { FindComponent as default };

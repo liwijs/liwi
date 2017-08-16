@@ -1,4 +1,3 @@
-/* global PRODUCTION */
 import Logger from 'nightingale-logger/src';
 import { encode, decode } from '../extended-json';
 

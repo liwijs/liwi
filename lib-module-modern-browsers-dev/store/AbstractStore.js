@@ -17,10 +17,7 @@ let AbstractStore = (_temp = _class = class {
 
     let _connectionType = t.flowInto(this[_AbstractStoreTypeParametersSymbol].Connection);
 
-    t.param('connection', _connectionType).assert(connection);
-
-    assert(connection);
-    this._connection = connection;
+    t.param('connection', _connectionType).assert(connection), assert(connection), this._connection = connection;
   }
 
   get connection() {
@@ -36,10 +33,7 @@ let AbstractStore = (_temp = _class = class {
 
     const _returnType2 = t.return(t.array(t.any()));
 
-    t.param('criteria', _criteriaType).assert(criteria);
-    t.param('sort', _sortType).assert(sort);
-
-    return this.cursor(criteria, sort).then(function (cursor) {
+    return t.param('criteria', _criteriaType).assert(criteria), t.param('sort', _sortType).assert(sort), this.cursor(criteria, sort).then(function (cursor) {
       return cursor.toArray();
     }).then(function (_arg) {
       return _returnType2.assert(_arg);

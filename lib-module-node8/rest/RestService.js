@@ -16,13 +16,11 @@ let RestService = class {
   }
 
   async createCursor(restResource, connectedUser, { criteria, sort, limit }) {
-    // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
-    criteria = restResource.criteria(connectedUser, criteria || {});
-    sort = restResource.sort(connectedUser, sort);
+    criteria = restResource.criteria(connectedUser, criteria || {}), sort = restResource.sort(connectedUser, sort);
+
     const cursor = await restResource.store.cursor(criteria, sort);
-    limit = restResource.limit(limit);
-    if (limit) cursor.limit(connectedUser, limit);
-    return new RestCursor(restResource, connectedUser, cursor);
+
+    return limit = restResource.limit(limit), limit && cursor.limit(connectedUser, limit), new RestCursor(restResource, connectedUser, cursor);
   }
 };
 export { RestService as default };

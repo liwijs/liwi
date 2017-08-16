@@ -17,58 +17,40 @@ var _flowRuntime2 = _interopRequireDefault(_flowRuntime);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = new _nightingaleLogger2.default('liwi:rest-websocket'); /* global PRODUCTION */
+const logger = new _nightingaleLogger2.default('liwi:rest-websocket');
+
 function init(io, restService) {
   io.on('connection', socket => {
     let openWatchers = new Set();
 
     socket.on('disconnect', () => {
       openWatchers.forEach(watcher => watcher.stop());
-    });
-
-    socket.on('rest', (_arg, args, callback) => {
+    }), socket.on('rest', (_arg, args, callback) => {
       let _argsType = _flowRuntime2.default.union(_flowRuntime2.default.nullable(_flowRuntime2.default.array(_flowRuntime2.default.any())), _flowRuntime2.default.function());
 
       let _callbackType = _flowRuntime2.default.nullable(_flowRuntime2.default.function());
 
-      _flowRuntime2.default.param('args', _argsType).assert(args);
-
-      _flowRuntime2.default.param('callback', _callbackType).assert(callback);
+      _flowRuntime2.default.param('args', _argsType).assert(args), _flowRuntime2.default.param('callback', _callbackType).assert(callback);
 
       let { type, restName, json } = _flowRuntime2.default.object(_flowRuntime2.default.property('type', _flowRuntime2.default.string()), _flowRuntime2.default.property('restName', _flowRuntime2.default.string()), _flowRuntime2.default.property('json', _flowRuntime2.default.nullable(_flowRuntime2.default.string()))).assert(_arg);
 
       try {
         if (json) {
-          if (callback) {
-            throw new Error('Cannot have args and json.');
-          }
+          if (callback) throw new Error('Cannot have args and json.');
 
-          callback = _callbackType.assert(args);
-          args = _argsType.assert((0, _extendedJson.decode)(json));
-          if (!Array.isArray(args)) {
-            logger.debug('args', { args });
-
-            if (callback) {
-              throw new Error('Invalid args');
-            }
-          }
+          if (callback = _callbackType.assert(args), args = _argsType.assert((0, _extendedJson.decode)(json)), !Array.isArray(args) && (logger.debug('args', { args }), callback)) throw new Error('Invalid args');
         }
 
-        if (!callback) {
-          logger['warn']('callback missing');
-          return;
-        }
+        if (!callback) return void logger['warn']('callback missing');
 
         const restResource = restService.get(restName);
 
-        logger.info('rest', { type, restName, args });
-        switch (type) {
+        switch (logger.info('rest', { type, restName, args }), type) {
           case 'cursor toArray':
             {
               const [options] = args;
               return restService.createCursor(restResource, socket.user, options).then(cursor => cursor.toArray()).then(results => callback(null, (0, _extendedJson.encode)(results))).catch(err => {
-                logger.error(type, err);
-                callback(err.message);
+                logger.error(type, err), callback(err.message);
               });
             }
 
@@ -82,18 +64,14 @@ function init(io, restService) {
           case 'deleteOne':
           case 'findOne':
             try {
-              if (!restResource[type]) {
-                throw new Error(`rest: ${restName}.${type} is not available`);
-              }
+              if (!restResource[type]) throw new Error(`rest: ${restName}.${type} is not available`);
 
               // eslint-disable-next-line prettier/prettier
               return restResource[type](socket.user, ...args).then(result => callback(null, (0, _extendedJson.encode)(result))).catch(err => {
-                logger.error(type, { err });
-                callback(err.message || err);
+                logger.error(type, { err }), callback(err.message || err);
               });
             } catch (err) {
-              logger.error(type, { err });
-              callback(err.message || err);
+              logger.error(type, { err }), callback(err.message || err);
             }
             break;
 
@@ -103,54 +81,37 @@ function init(io, restService) {
             try {
               const [key, eventName, otherArgs = []] = args;
 
-              if (!key.startsWith('query')) {
-                throw new Error('Invalid query key');
-              }
+              if (!key.startsWith('query')) throw new Error('Invalid query key');
 
               const query = restResource.queries[key]; // todo pass connected user
-              if (!query) {
-                throw new Error(`rest: ${restName}.${type}.${key} is not available`);
-              }
+              if (!query) throw new Error(`rest: ${restName}.${type}.${key} is not available`);
 
-              if (type === 'fetch') {
+              if (type === 'fetch')
                 // eslint-disable-next-line prettier/prettier
                 return query[type](result => callback(null, result && (0, _extendedJson.encode)(result)), ...otherArgs).catch(err => {
-                  logger.error(type, { err });
-                  callback(err.message || err);
-                });
-              } else {
+                  logger.error(type, { err }), callback(err.message || err);
+                });else {
                 const watcher = query[type]((err, result) => {
-                  if (err) {
-                    logger.error(type, { err });
-                  }
-
-                  socket.emit(eventName, err, result && (0, _extendedJson.encode)(result));
+                  err && logger.error(type, { err }), socket.emit(eventName, err, result && (0, _extendedJson.encode)(result));
                 });
                 watcher.then(() => callback(), err => {
-                  logger.error(type, { err });
-                  callback(err.message || err);
-                });
-
-                openWatchers.add(watcher);
+                  logger.error(type, { err }), callback(err.message || err);
+                }), openWatchers.add(watcher);
               }
             } catch (err) {
-              logger.error(type, { err });
-              callback(err.message || err);
+              logger.error(type, { err }), callback(err.message || err);
             }
             break;
 
           default:
             try {
-              logger.warn('Unknown command', { type });
-              callback(`rest: unknown command "${type}"`);
+              logger.warn('Unknown command', { type }), callback(`rest: unknown command "${type}"`);
             } catch (err) {
-              logger.error(type, { err });
-              callback(err.message || err);
+              logger.error(type, { err }), callback(err.message || err);
             }
         }
       } catch (err) {
-        logger.warn('rest error', { err });
-        callback(err.message || err);
+        logger.warn('rest error', { err }), callback(err.message || err);
       }
     });
   });

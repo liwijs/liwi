@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _assert = require('assert');
 
@@ -16,8 +16,7 @@ let AbstractStore = class {
      * @param {AbstractConnection} connection
      */
   constructor(connection) {
-    (0, _assert2.default)(connection);
-    this._connection = connection;
+    (0, _assert2.default)(connection), this._connection = connection;
   }
 
   get connection() {

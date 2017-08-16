@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _class, _temp; /* eslint-disable no-await-in-loop */
 
@@ -29,9 +29,7 @@ let AbstractCursor = (_temp = _class = class {
 
     let _storeType = _flowRuntime2.default.flowInto(this[_AbstractCursorTypeParametersSymbol].Store);
 
-    _flowRuntime2.default.param('store', _storeType).assert(store);
-
-    this._store = store;
+    _flowRuntime2.default.param('store', _storeType).assert(store), this._store = store;
   }
 
   get store() {
@@ -61,17 +59,13 @@ let AbstractCursor = (_temp = _class = class {
 
     _flowRuntime2.default.return(_flowRuntime2.default.void());
 
-    _flowRuntime2.default.param('newLimit', _newLimitType).assert(newLimit);
-
-    throw new Error('limit() missing implementation');
+    throw _flowRuntime2.default.param('newLimit', _newLimitType).assert(newLimit), new Error('limit() missing implementation');
   }
 
   count(applyLimit = false) {
     let _applyLimitType = _flowRuntime2.default.boolean();
 
-    _flowRuntime2.default.param('applyLimit', _applyLimitType).assert(applyLimit);
-
-    throw new Error('count() missing implementation');
+    throw _flowRuntime2.default.param('applyLimit', _applyLimitType).assert(applyLimit), new Error('count() missing implementation');
   }
 
   result() {
@@ -91,9 +85,7 @@ let AbstractCursor = (_temp = _class = class {
 
     const _returnType = _flowRuntime2.default.return(_flowRuntime2.default.union(_flowRuntime2.default.void(), _flowRuntime2.default.ref('Promise', _flowRuntime2.default.void())));
 
-    _flowRuntime2.default.param('callback', _callbackType).assert(callback);
-
-    while (true) {
+    for (_flowRuntime2.default.param('callback', _callbackType).assert(callback);;) {
       const key = await this.next();
       if (!key) return _returnType.assert();
 
@@ -108,16 +100,12 @@ let AbstractCursor = (_temp = _class = class {
   }
 
   *keysIterator() {
-    while (true) {
-      yield this.next();
-    }
+    for (;;) yield this.next();
   }
 
   *[Symbol.iterator]() {
     // eslint-disable-next-line no-restricted-syntax
-    for (let keyPromise of this.keysIterator()) {
-      yield keyPromise.then(key => key && this.result());
-    }
+    for (let keyPromise of this.keysIterator()) yield keyPromise.then(key => key && this.result());
   }
 
   // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356

@@ -21,27 +21,18 @@ function init(io, restService) {
     let activeListeners = new Map();
 
     const closeCursor = id => {
-      clearTimeout(timeouts[id]);
-      timeouts.delete(id);
-      openCursors[id].close();
-      openCursors.delete(id);
+      clearTimeout(timeouts[id]), timeouts.delete(id), openCursors[id].close(), openCursors.delete(id);
     };
 
     socket.on('disconnect', () => {
-      openCursors.forEach(cursor => cursor.close());
-      timeouts.forEach(timeout => clearTimeout(timeout));
-      activeListeners.forEach(listener => listener.close());
-
-      openCursors = null;
-      timeouts = null;
-      activeListeners = null;
+      openCursors.forEach(cursor => cursor.close()), timeouts.forEach(timeout => clearTimeout(timeout)), activeListeners.forEach(listener => listener.close()), openCursors = null, timeouts = null, activeListeners = null;
     });
+
 
     let nextIdCursor = 1;
 
     socket.on('rest', ({ type, restName }, args, callback) => {
-      logger.info('rest', { type, restName, args });
-      switch (type) {
+      switch (logger.info('rest', { type, restName, args }), type) {
         case 'createCursor':
           {
             if (openCursors.size > MAX_OPENED_CURSORS) return callback('too many cursors');
@@ -49,14 +40,9 @@ function init(io, restService) {
             const id = nextIdCursor++;
             const [options] = args;
             const cursor = restService.createCursor(restName, options);
-            if (!cursor) return callback('failed to create cursor');
-
-            timeouts.set(id, setTimeout(() => {
-              logger.warn('socket closed by timeout', { id, restName });
-              closeCursor(id);
-            }));
-
-            return callback(null, id);
+            return cursor ? (timeouts.set(id, setTimeout(() => {
+              logger.warn('socket closed by timeout', { id, restName }), closeCursor(id);
+            })), callback(null, id)) : callback('failed to create cursor');
           }
 
         case 'cursor toArray':
@@ -73,8 +59,7 @@ function init(io, restService) {
             if (!cursor) return callback(`failed to find cursor "${idCursor}"`);
             switch (typeCursorAction) {
               case 'close':
-                closeCursor(idCursor);
-                return callback();
+                return closeCursor(idCursor), callback();
 
               case 'advance':
               case 'next':
@@ -93,6 +78,7 @@ function init(io, restService) {
 
               default:
                 callback(`Unknown command: "${type}"`);
+
             }
 
             break;
@@ -112,6 +98,7 @@ function init(io, restService) {
 
         default:
           callback(`Unknown command: "${type}"`);
+
       }
     });
   });

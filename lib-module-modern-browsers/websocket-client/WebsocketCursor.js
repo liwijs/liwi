@@ -3,16 +3,15 @@ import AbstractCursor from '../store/AbstractCursor';
 let WebsocketCursor = class extends AbstractCursor {
 
   constructor(store, options) {
-    super(store);
-    this._options = options;
+    super(store), this._options = options;
   }
 
   /* options */
 
   limit(newLimit) {
     if (this._idCursor) throw new Error('Cursor already created');
-    this._options.limit = newLimit;
-    return Promise.resolve(this);
+
+    return this._options.limit = newLimit, Promise.resolve(this);
   }
 
   /* results */
@@ -22,35 +21,27 @@ let WebsocketCursor = class extends AbstractCursor {
 
     if (this._idCursor) throw new Error('Cursor already created');
     return this.store.connection.emit('createCursor', this._options).then(function (idCursor) {
-      if (!idCursor) return;
-      _this._idCursor = idCursor;
+      idCursor && (_this._idCursor = idCursor);
     });
   }
 
   emit(type, ...args) {
     var _this2 = this;
 
-    if (!this._idCursor) {
-      return this._create().then(function () {
-        return _this2.emit(type, ...args);
-      });
-    }
-
-    return this.store.emit('cursor', { type, id: this._idCursor }, args);
+    return this._idCursor ? this.store.emit('cursor', { type, id: this._idCursor }, args) : this._create().then(function () {
+      return _this2.emit(type, ...args);
+    });
   }
 
   advance(count) {
-    this.emit('advance', count);
-    return this;
+    return this.emit('advance', count), this;
   }
 
   next() {
     var _this3 = this;
 
     return this.emit('next').then(function (result) {
-      _this3._result = result;
-      _this3.key = result && result[_this3._store.keyPath];
-      return _this3.key;
+      return _this3._result = result, _this3.key = result && result[_this3._store.keyPath], _this3.key;
     });
   }
 
@@ -66,19 +57,15 @@ let WebsocketCursor = class extends AbstractCursor {
     if (!this._store) return Promise.resolve();
 
     const closedPromise = this._idCursor ? this.emit('close') : Promise.resolve();
-    this._idCursor = null;
-    this._options = null;
-    this._store = undefined;
-    this._result = undefined;
-    return closedPromise;
+
+    return this._idCursor = null, this._options = null, this._store = void 0, this._result = void 0, closedPromise;
   }
 
   toArray() {
     var _this4 = this;
 
     return this.store.emit('cursor toArray', this._options).then(function (result) {
-      _this4.close();
-      return result;
+      return _this4.close(), result;
     });
   }
 };

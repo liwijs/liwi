@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.FindAndSubscribe = exports.Find = undefined;
+exports.FindAndSubscribe = exports.Find = void 0;
 
 var _Find2 = require('./Find');
 

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _react = require('react');
 
@@ -17,35 +17,26 @@ let FindComponent = class extends _react.Component {
 
     return _temp = super(...args), this.state = {
       fetched: false,
-      result: undefined
+      result: void 0
     }, _temp;
   }
 
   componentDidMount() {
     const { query } = this.props;
     this._find = query.fetch(result => {
-      if (!this._find) return;
-      this.setState({
+      this._find && (this.setState({
         fetched: true,
         result
-      });
-      delete this._find;
+      }), delete this._find);
     });
   }
 
   componentWillUnmount() {
-    if (this._find) {
-      // this._find.cancel();
-      delete this._find;
-    }
+    this._find && delete this._find;
   }
 
   render() {
-    if (!this.state.fetched) {
-      return this.props.loadingComponent ? _react2.default.createElement(this.props.loadingComponent) : null;
-    }
-
-    return _react2.default.createElement(this.props.component, { [this.props.name]: this.state.result });
+    return this.state.fetched ? _react2.default.createElement(this.props.component, { [this.props.name]: this.state.result }) : this.props.loadingComponent ? _react2.default.createElement(this.props.loadingComponent) : null;
   }
 };
 exports.default = FindComponent;

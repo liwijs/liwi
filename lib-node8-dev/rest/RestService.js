@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _RestCursor = require('./RestCursor');
 
@@ -19,17 +19,13 @@ let RestService = class {
   constructor(restResources) {
     let _restResourcesType = _flowRuntime2.default.ref('Map', _flowRuntime2.default.string(), _flowRuntime2.default.any());
 
-    _flowRuntime2.default.param('restResources', _restResourcesType).assert(restResources);
-
-    this.restResources = restResources;
+    _flowRuntime2.default.param('restResources', _restResourcesType).assert(restResources), this.restResources = restResources;
   }
 
   addRestResource(key, restResource) {
     let _keyType = _flowRuntime2.default.string();
 
-    _flowRuntime2.default.param('key', _keyType).assert(key);
-
-    this.restResources.set(key, restResource);
+    _flowRuntime2.default.param('key', _keyType).assert(key), this.restResources.set(key, restResource);
   }
 
   get(key) {
@@ -51,13 +47,11 @@ let RestService = class {
 
     let { criteria, sort, limit } = _flowRuntime2.default.object(_flowRuntime2.default.property('criteria', _flowRuntime2.default.nullable(_flowRuntime2.default.object())), _flowRuntime2.default.property('sort', _flowRuntime2.default.nullable(_flowRuntime2.default.object())), _flowRuntime2.default.property('limit', _flowRuntime2.default.nullable(_flowRuntime2.default.number()))).assert(_arg);
 
-    // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
-    criteria = restResource.criteria(connectedUser, criteria || {});
-    sort = restResource.sort(connectedUser, sort);
+    criteria = restResource.criteria(connectedUser, criteria || {}), sort = restResource.sort(connectedUser, sort);
+
     const cursor = await restResource.store.cursor(criteria, sort);
-    limit = restResource.limit(limit);
-    if (limit) cursor.limit(connectedUser, limit);
-    return _returnType.assert(new _RestCursor2.default(restResource, connectedUser, cursor));
+
+    return limit = restResource.limit(limit), limit && cursor.limit(connectedUser, limit), _returnType.assert(new _RestCursor2.default(restResource, connectedUser, cursor));
   }
 };
 exports.default = RestService;

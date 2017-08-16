@@ -23,10 +23,7 @@ const ChangeType = _flowRuntime2.default.type('ChangeType', _flowRuntime2.defaul
 
 exports.default = function applyChange(state, change) {
   let _stateType = ObjectArrayType;
-
-  _flowRuntime2.default.param('state', _stateType).assert(state);
-
-  _flowRuntime2.default.param('change', ChangeType).assert(change);
+  _flowRuntime2.default.param('state', _stateType).assert(state), _flowRuntime2.default.param('change', ChangeType).assert(change);
 
   const {
     type,
@@ -42,16 +39,12 @@ exports.default = function applyChange(state, change) {
     case 'remove':
     case 'uninitial':
       {
-        copy();
         // Remove old values from the array
-        if (oldOffset != null) {
-          state.splice(oldOffset, 1);
-        } else {
+        if (copy(), oldOffset != null) state.splice(oldOffset, 1);else {
           const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, oldVal.id));
-          if (index === -1) {
+          if (index === -1)
             // Programming error. This should not happen
             throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);
-          }
           state.splice(index, 1);
         }
         break;
@@ -59,76 +52,48 @@ exports.default = function applyChange(state, change) {
 
     case 'initial':
       {
-        copy();
 
-        if (newOffset != null) {
-          state[newOffset] = newVal;
-        } else {
+        if (copy(), newOffset != null) state[newOffset] = newVal;else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
           const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, newVal.id));
-          if (index === -1) {
-            state.push(newVal);
-          } else {
-            state[index] = newVal;
-          }
+          index === -1 ? state.push(newVal) : state[index] = newVal;
         }
         break;
       }
 
     case 'add':
       {
-        copy();
-        // Add new values to the array
-        if (newOffset != null) {
-          // If we have an offset, put it in the correct location
-          state.splice(newOffset, 0, newVal);
-        } else {
-          // otherwise for unordered results, push it on the end
-          state.push(newVal);
-        }
+        copy(), newOffset == null ? state.push(newVal) : state.splice(newOffset, 0, newVal);
+
         break;
       }
 
     case 'change':
       {
-        copy();
 
-        if (oldOffset === newOffset) {
-          state[newOffset] = newVal;
-          return state;
-        }
+        if (copy(), oldOffset === newOffset) return state[newOffset] = newVal, state;
 
         // Modify in place if a change is happening
-        if (oldOffset != null) {
-          // Remove the old document from the results
-          state.splice(oldOffset, 1);
-        }
 
-        if (newOffset != null) {
-          // Splice in the new val if we have an offset
-          state.splice(newOffset, 0, newVal);
-        } else {
+
+        if (oldOffset != null && state.splice(oldOffset, 1), newOffset != null) state.splice(newOffset, 0, newVal);else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
           const index = state.findIndex(x => (0, _deepEqual2.default)(x.id, oldVal.id));
-          if (index === -1) {
+          if (index === -1)
             // indicates a programming bug. The server gives us the
             // ordering, so if we don't find the id it means something is
             // buggy.
-            throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);
-          } else {
-            state[index] = newVal;
-          }
+            throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);else state[index] = newVal;
         }
         break;
       }
     case 'state':
-      {
-        // This gets hit if we have not emitted yet, and should
-        // result in an empty array being output.
-        break;
-      }
+      // This gets hit if we have not emitted yet, and should
+      // result in an empty array being output.
+      break;
+
     default:
       throw new Error(`unrecognized 'type' field from server ${JSON.stringify(change)}`);
   }

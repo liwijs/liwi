@@ -1,10 +1,10 @@
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false, descriptor.configurable = true, "value" in descriptor && (descriptor.writable = true), Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function"); }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _possibleConstructorReturn(self, call) { if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }), superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass); }
 
 import { ObjectID } from 'mongodb';
 import Collection from 'mongodb/lib/collection';
@@ -26,8 +26,6 @@ var ResultType = t.tdz(function () {
 });
 
 var MongoStore = function (_AbstractStore) {
-  _inherits(MongoStore, _AbstractStore);
-
   function MongoStore(connection, collectionName) {
     _classCallCheck(this, MongoStore);
 
@@ -35,31 +33,28 @@ var MongoStore = function (_AbstractStore) {
 
     var _collectionNameType = t.string();
 
-    t.param('connection', _connectionType).assert(connection);
-    t.param('collectionName', _collectionNameType).assert(collectionName);
+    t.param('connection', _connectionType).assert(connection), t.param('collectionName', _collectionNameType).assert(collectionName);
 
     var _this = _possibleConstructorReturn(this, (MongoStore.__proto__ || Object.getPrototypeOf(MongoStore)).call(this, connection));
 
-    _this.keyPath = '_id';
-    t.bindTypeParameters(_this, t.ref(MongoConnection));
+    if (_this.keyPath = '_id', t.bindTypeParameters(_this, t.ref(MongoConnection)), !collectionName) throw new Error('Invalid collectionName: "' + collectionName + '"');
 
-
-    if (!collectionName) {
-      throw new Error('Invalid collectionName: "' + collectionName + '"');
-    }
-
-    _this._collection = connection.getConnection().then(function (db) {
+    return _this._collection = connection.getConnection().then(function (db) {
       var _dbType = t.ref(Db);
 
-      t.param('db', _dbType).assert(db);
-      return _this._collection = db.collection(collectionName);
+      return t.param('db', _dbType).assert(db), _this._collection = db.collection(collectionName);
     }).catch(function (err) {
       return _this._collection = Promise.reject(err);
-    });
-    return _this;
+    }), _this._collection = connection.getConnection().then(function (db) {
+      var _dbType = t.ref(Db);
+
+      return t.param('db', _dbType).assert(db), _this._collection = db.collection(collectionName);
+    }).catch(function (err) {
+      return _this._collection = Promise.reject(err);
+    }), _this;
   }
 
-  _createClass(MongoStore, [{
+  return _inherits(MongoStore, _AbstractStore), _createClass(MongoStore, [{
     key: 'create',
     value: function create() {
       var _returnType2 = t.return(t.ref('Promise'));
@@ -73,25 +68,14 @@ var MongoStore = function (_AbstractStore) {
 
       var _returnType3 = t.return(t.ref(ResultType));
 
-      t.param('object', _objectType).assert(object);
-
-      if (!object._id) {
-        object._id = new ObjectID().toString();
-      }
-      if (!object.created) {
-        object.created = new Date();
-      }
-
-      return this.collection.then(function (collection) {
+      return t.param('object', _objectType).assert(object), object._id || (object._id = new ObjectID().toString()), object.created || (object.created = new Date()), this.collection.then(function (collection) {
         return collection.insertOne(object);
       }).then(function (_ref) {
         var result = _ref.result,
             connection = _ref.connection,
             ops = _ref.ops;
 
-        if (!result.ok || result.n !== 1) {
-          throw new Error('Fail to insert');
-        }
+        if (!result.ok || result.n !== 1) throw new Error('Fail to insert');
       }).then(function () {
         return object;
       }).then(function (_arg3) {
@@ -110,13 +94,7 @@ var MongoStore = function (_AbstractStore) {
 
       var _returnType4 = t.return(t.ref(ResultType));
 
-      t.param('object', _objectType2).assert(object);
-
-      if (!object.updated) {
-        object.updated = new Date();
-      }
-
-      return this.collection.then(function (collection) {
+      return t.param('object', _objectType2).assert(object), object.updated || (object.updated = new Date()), this.collection.then(function (collection) {
         return collection.updateOne({ _id: object._id }, object);
       }).then(function () {
         return object;
@@ -131,13 +109,7 @@ var MongoStore = function (_AbstractStore) {
 
       var _returnType5 = t.return(t.ref(ResultType));
 
-      t.param('object', _objectType3).assert(object);
-
-      if (!object.updated) {
-        object.updated = new Date();
-      }
-
-      return this.collection.then(function (collection) {
+      return t.param('object', _objectType3).assert(object), object.updated || (object.updated = new Date()), this.collection.then(function (collection) {
         return collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true });
       }).then(function () {
         return object;
@@ -154,9 +126,7 @@ var MongoStore = function (_AbstractStore) {
 
       var _returnType6 = t.return(t.array(t.ref(ResultType)));
 
-      t.param('objects', _objectsType).assert(objects);
-
-      return Promise.all(objects.map(function (object) {
+      return t.param('objects', _objectsType).assert(objects), Promise.all(objects.map(function (object) {
         return _this2.updateOne(object);
       })).then(function (_arg6) {
         return _returnType6.assert(_arg6);
@@ -167,17 +137,11 @@ var MongoStore = function (_AbstractStore) {
     value: function _partialUpdate(partialUpdate) {
       var _partialUpdateType = t.object();
 
-      t.param('partialUpdate', _partialUpdateType).assert(partialUpdate);
-
       // https://docs.mongodb.com/manual/reference/operator/update/
       // if has a mongo operator
-      if (Object.keys(partialUpdate).some(function (key) {
+      return t.param('partialUpdate', _partialUpdateType).assert(partialUpdate), Object.keys(partialUpdate).some(function (key) {
         return key[0] === '$';
-      })) {
-        return partialUpdate;
-      } else {
-        return { $set: partialUpdate };
-      }
+      }) ? partialUpdate : { $set: partialUpdate };
     }
   }, {
     key: 'partialUpdateByKey',
@@ -188,11 +152,7 @@ var MongoStore = function (_AbstractStore) {
 
       var _returnType7 = t.return(t.ref(ResultType));
 
-      t.param('key', _keyType).assert(key);
-      t.param('partialUpdate', _partialUpdateType2).assert(partialUpdate);
-
-      partialUpdate = _partialUpdateType2.assert(this._partialUpdate(partialUpdate));
-      return this.collection.then(function (collection) {
+      return t.param('key', _keyType).assert(key), t.param('partialUpdate', _partialUpdateType2).assert(partialUpdate), partialUpdate = _partialUpdateType2.assert(this._partialUpdate(partialUpdate)), this.collection.then(function (collection) {
         return collection.updateOne({ _id: key }, partialUpdate);
       }).then(function (_arg7) {
         return _returnType7.assert(_arg7);
@@ -209,11 +169,7 @@ var MongoStore = function (_AbstractStore) {
 
       var _returnType8 = t.return(t.ref(ResultType));
 
-      t.param('object', _objectType4).assert(object);
-      t.param('partialUpdate', _partialUpdateType3).assert(partialUpdate);
-
-      partialUpdate = _partialUpdateType3.assert(this._partialUpdate(partialUpdate));
-      return this.partialUpdateByKey(object._id, partialUpdate).then(function () {
+      return t.param('object', _objectType4).assert(object), t.param('partialUpdate', _partialUpdateType3).assert(partialUpdate), partialUpdate = _partialUpdateType3.assert(this._partialUpdate(partialUpdate)), this.partialUpdateByKey(object._id, partialUpdate).then(function () {
         return _this3.findByKey(object._id);
       }).then(function (_arg8) {
         return _returnType8.assert(_arg8);
@@ -226,10 +182,7 @@ var MongoStore = function (_AbstractStore) {
 
       var _returnType9 = t.return(t.void());
 
-      t.param('partialUpdate', _partialUpdateType4).assert(partialUpdate);
-
-      partialUpdate = _partialUpdateType4.assert(this._partialUpdate(partialUpdate));
-      return this.collection.then(function (collection) {
+      return t.param('partialUpdate', _partialUpdateType4).assert(partialUpdate), partialUpdate = _partialUpdateType4.assert(this._partialUpdate(partialUpdate)), this.collection.then(function (collection) {
         return collection.updateMany(criteria, partialUpdate);
       }).then(function () {
         return null;
@@ -244,9 +197,7 @@ var MongoStore = function (_AbstractStore) {
 
       var _returnType10 = t.return(t.void());
 
-      t.param('key', _keyType2).assert(key);
-
-      return this.collection.then(function (collection) {
+      return t.param('key', _keyType2).assert(key), this.collection.then(function (collection) {
         return collection.removeOne({ _id: key });
       }).then(function () {
         return null;
@@ -265,10 +216,7 @@ var MongoStore = function (_AbstractStore) {
 
       var _returnType11 = t.return(t.ref(MongoCursor, t.ref(ResultType)));
 
-      t.param('criteria', _criteriaType).assert(criteria);
-      t.param('sort', _sortType).assert(sort);
-
-      return this.collection.then(function (collection) {
+      return t.param('criteria', _criteriaType).assert(criteria), t.param('sort', _sortType).assert(sort), this.collection.then(function (collection) {
         return collection.find(criteria);
       }).then(sort && function (cursor) {
         return cursor.sort(sort);
@@ -285,9 +233,7 @@ var MongoStore = function (_AbstractStore) {
 
       var _returnType12 = t.return(t.nullable(t.ref(ResultType)));
 
-      t.param('key', _keyType3).assert(key);
-
-      return this.findOne({ _id: key }).then(function (_arg12) {
+      return t.param('key', _keyType3).assert(key), this.findOne({ _id: key }).then(function (_arg12) {
         return _returnType12.assert(_arg12);
       });
     }
@@ -300,10 +246,7 @@ var MongoStore = function (_AbstractStore) {
 
       var _returnType13 = t.return(t.nullable(t.ref(ResultType)));
 
-      t.param('criteria', _criteriaType2).assert(criteria);
-      t.param('sort', _sortType2).assert(sort);
-
-      return this.collection.then(function (collection) {
+      return t.param('criteria', _criteriaType2).assert(criteria), t.param('sort', _sortType2).assert(sort), this.collection.then(function (collection) {
         return collection.find(criteria);
       }).then(sort && function (cursor) {
         return cursor.sort(sort);
@@ -318,19 +261,13 @@ var MongoStore = function (_AbstractStore) {
     get: function get() {
       var _returnType = t.return(t.ref(Collection));
 
-      if (this.connection.connectionFailed) {
-        return Promise.reject(new Error('MongoDB connection failed')).then(function (_arg) {
-          return _returnType.assert(_arg);
-        });
-      }
-
-      return Promise.resolve(this._collection).then(function (_arg2) {
+      return this.connection.connectionFailed ? Promise.reject(new Error('MongoDB connection failed')).then(function (_arg) {
+        return _returnType.assert(_arg);
+      }) : Promise.resolve(this._collection).then(function (_arg2) {
         return _returnType.assert(_arg2);
       });
     }
-  }]);
-
-  return MongoStore;
+  }]), MongoStore;
 }(AbstractStore);
 
 export { MongoStore as default };

@@ -13,21 +13,14 @@ let MongoCursor = class extends AbstractCursor {
 
     let _cursorType = t.ref(Cursor);
 
-    t.param('store', _storeType).assert(store);
-    t.param('cursor', _cursorType).assert(cursor);
-
-    super(store);
-    t.bindTypeParameters(this, t.ref(MongoStore));
-    this._cursor = cursor;
+    t.param('store', _storeType).assert(store), t.param('cursor', _cursorType).assert(cursor), super(store), t.bindTypeParameters(this, t.ref(MongoStore)), this._cursor = cursor;
   }
 
   advance(count) {
     let _countType = t.number();
 
     t.return(t.void());
-    t.param('count', _countType).assert(count);
-
-    this._cursor.skip(count);
+    t.param('count', _countType).assert(count), this._cursor.skip(count);
   }
 
   next() {
@@ -36,9 +29,7 @@ let MongoCursor = class extends AbstractCursor {
     const _returnType2 = t.return(t.any());
 
     return this._cursor.next().then(function (value) {
-      _this._result = value;
-      _this.key = value && value._id;
-      return _this.key;
+      return _this._result = value, _this.key = value && value._id, _this.key;
     }).then(function (_arg) {
       return _returnType2.assert(_arg);
     });
@@ -49,18 +40,13 @@ let MongoCursor = class extends AbstractCursor {
 
     const _returnType3 = t.return(t.ref('Promise'));
 
-    t.param('newLimit', _newLimitType).assert(newLimit);
-
-    this._cursor.limit(newLimit);
-    return _returnType3.assert(Promise.resolve(this));
+    return t.param('newLimit', _newLimitType).assert(newLimit), this._cursor.limit(newLimit), _returnType3.assert(Promise.resolve(this));
   }
 
   count(applyLimit = false) {
     let _applyLimitType = t.boolean();
 
-    t.param('applyLimit', _applyLimitType).assert(applyLimit);
-
-    return this._cursor.count(applyLimit);
+    return t.param('applyLimit', _applyLimitType).assert(applyLimit), this._cursor.count(applyLimit);
   }
 
   result() {
@@ -68,14 +54,8 @@ let MongoCursor = class extends AbstractCursor {
   }
 
   close() {
-    if (this._cursor) {
-      this._cursor.close();
-      this._cursor = undefined;
-      this._store = undefined;
-      this._result = undefined;
-    }
 
-    return Promise.resolve();
+    return this._cursor && (this._cursor.close(), this._cursor = void 0, this._store = void 0, this._result = void 0), Promise.resolve();
   }
 
   toArray() {

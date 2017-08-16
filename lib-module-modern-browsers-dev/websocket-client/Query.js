@@ -15,12 +15,7 @@ let Query = class extends AbstractQuery {
 
     let _keyType = t.string();
 
-    t.param('store', _storeType).assert(store);
-    t.param('key', _keyType).assert(key);
-
-    super(store);
-    t.bindTypeParameters(this, t.ref(WebsocketStore));
-    this.key = key;
+    t.param('store', _storeType).assert(store), t.param('key', _keyType).assert(key), super(store), t.bindTypeParameters(this, t.ref(WebsocketStore)), this.key = key;
   }
 
   fetch(callback) {
@@ -28,9 +23,7 @@ let Query = class extends AbstractQuery {
 
     const _returnType = t.return(t.any());
 
-    t.param('callback', _callbackType).assert(callback);
-
-    return this.store.emit('fetch', this.key).then(callback).then(function (_arg) {
+    return t.param('callback', _callbackType).assert(callback), this.store.emit('fetch', this.key).then(callback).then(function (_arg) {
       return _returnType.assert(_arg);
     });
   }
@@ -44,33 +37,27 @@ let Query = class extends AbstractQuery {
 
     const _returnType2 = t.return(SubscribeReturnType);
 
-    t.param('callback', _callbackType2).assert(callback);
-    t.param('args', _argsType).assert(args);
+    t.param('callback', _callbackType2).assert(callback), t.param('args', _argsType).assert(args);
 
     const eventName = `subscribe:${this.store.restName}.${this.key}`;
     const listener = function listener(err, result) {
       const decodedResult = result && decode(result);
-      logger.debug(eventName, { result, decodedResult });
-      callback(err, decodedResult);
+      logger.debug(eventName, { result, decodedResult }), callback(err, decodedResult);
     };
     this.store.connection.on(eventName, listener);
 
+
     let _stopEmitSubscribe;
     let promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
-      _stopEmitSubscribe = stopEmitSubscribe;
-      logger.info('subscribed');
+      _stopEmitSubscribe = stopEmitSubscribe, logger.info('subscribed');
     }).catch(function (err) {
-      _this.store.connection.off(eventName, listener);
-      throw err;
+      throw _this.store.connection.off(eventName, listener), err;
     });
 
     const stop = function stop() {
-      if (!promise) return;
-      _stopEmitSubscribe();
-      promise.then(function () {
-        promise = null;
-        _this.store.connection.off(eventName, listener);
-      });
+      promise && (_stopEmitSubscribe(), promise.then(function () {
+        promise = null, _this.store.connection.off(eventName, listener);
+      }));
     };
 
     return _returnType2.assert({

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _nightingaleLogger = require('nightingale-logger');
 
@@ -21,8 +21,7 @@ const logger = new _nightingaleLogger2.default('liwi:websocket-client:query');
 
 let Query = class extends _AbstractQuery2.default {
   constructor(store, key) {
-    super(store);
-    this.key = key;
+    super(store), this.key = key;
   }
 
   fetch(callback) {
@@ -33,27 +32,22 @@ let Query = class extends _AbstractQuery2.default {
     const eventName = `subscribe:${this.store.restName}.${this.key}`;
     const listener = (err, result) => {
       const decodedResult = result && (0, _extendedJson.decode)(result);
-
-      callback(err, decodedResult);
+      false, callback(err, decodedResult);
     };
     this.store.connection.on(eventName, listener);
 
+
     let _stopEmitSubscribe;
     let promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(stopEmitSubscribe => {
-      _stopEmitSubscribe = stopEmitSubscribe;
-      logger.info('subscribed');
+      _stopEmitSubscribe = stopEmitSubscribe, logger.info('subscribed');
     }).catch(err => {
-      this.store.connection.off(eventName, listener);
-      throw err;
+      throw this.store.connection.off(eventName, listener), err;
     });
 
     const stop = () => {
-      if (!promise) return;
-      _stopEmitSubscribe();
-      promise.then(() => {
-        promise = null;
-        this.store.connection.off(eventName, listener);
-      });
+      promise && (_stopEmitSubscribe(), promise.then(() => {
+        promise = null, this.store.connection.off(eventName, listener);
+      }));
     };
 
     return {

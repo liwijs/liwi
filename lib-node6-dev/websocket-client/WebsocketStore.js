@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _class, _temp;
 
@@ -46,20 +46,7 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
     let _restNameType = _flowRuntime2.default.string();
 
-    _flowRuntime2.default.param('websocket', WebsocketConnectionType).assert(websocket);
-
-    _flowRuntime2.default.param('restName', _restNameType).assert(restName);
-
-    super(websocket);
-
-    this.keyPath = 'id';
-    this[_WebsocketStoreTypeParametersSymbol] = _typeParameters;
-
-    _flowRuntime2.default.bindTypeParameters(this, WebsocketConnectionType);
-
-    if (!restName) {
-      throw new Error(`Invalid restName: "${restName}"`);
-    }
+    if (_flowRuntime2.default.param('websocket', WebsocketConnectionType).assert(websocket), _flowRuntime2.default.param('restName', _restNameType).assert(restName), super(websocket), this.keyPath = 'id', this[_WebsocketStoreTypeParametersSymbol] = _typeParameters, _flowRuntime2.default.bindTypeParameters(this, WebsocketConnectionType), !restName) throw new Error(`Invalid restName: "${restName}"`);
 
     this.restName = restName;
   }
@@ -67,17 +54,11 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
   createQuery(key) {
     let _keyType = _flowRuntime2.default.string();
 
-    _flowRuntime2.default.param('key', _keyType).assert(key);
-
-    logger.debug('createQuery', { key });
-    return new _Query2.default(this, key);
+    return _flowRuntime2.default.param('key', _keyType).assert(key), logger.debug('createQuery', { key }), new _Query2.default(this, key);
   }
 
   emit(type, ...args) {
-    logger.debug('emit', { type, args });
-    if (this.connection.isDisconnected()) {
-      throw new Error('Websocket is not connected');
-    }
+    if (logger.debug('emit', { type, args }), this.connection.isDisconnected()) throw new Error('Websocket is not connected');
 
     return this.connection.emit('rest', {
       type,
@@ -88,10 +69,7 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
   emitSubscribe(type, ...args) {
     const emit = () => this.emit(type, ...args);
-    return emit().then(() => {
-      this.connection.on('reconnect', emit);
-      return () => this.connection.off('reconnect', emit);
-    });
+    return emit().then(() => (this.connection.on('reconnect', emit), () => this.connection.off('reconnect', emit)));
   }
 
   insertOne(object) {
@@ -99,9 +77,7 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
     const _returnType = _flowRuntime2.default.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-    _flowRuntime2.default.param('object', _objectType).assert(object);
-
-    return this.emit('insertOne', object).then(_arg => _returnType.assert(_arg));
+    return _flowRuntime2.default.param('object', _objectType).assert(object), this.emit('insertOne', object).then(_arg => _returnType.assert(_arg));
   }
 
   updateOne(object) {
@@ -109,9 +85,7 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
     const _returnType2 = _flowRuntime2.default.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-    _flowRuntime2.default.param('object', _objectType2).assert(object);
-
-    return this.emit('updateOne', object).then(_arg2 => _returnType2.assert(_arg2));
+    return _flowRuntime2.default.param('object', _objectType2).assert(object), this.emit('updateOne', object).then(_arg2 => _returnType2.assert(_arg2));
   }
 
   updateSeveral(objects) {
@@ -119,9 +93,7 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
     const _returnType3 = _flowRuntime2.default.return(_flowRuntime2.default.array(this[_WebsocketStoreTypeParametersSymbol].ModelType));
 
-    _flowRuntime2.default.param('objects', _objectsType).assert(objects);
-
-    return this.emit('updateSeveral', objects).then(_arg3 => _returnType3.assert(_arg3));
+    return _flowRuntime2.default.param('objects', _objectsType).assert(objects), this.emit('updateSeveral', objects).then(_arg3 => _returnType3.assert(_arg3));
   }
 
   partialUpdateByKey(key, partialUpdate) {
@@ -131,11 +103,7 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
     const _returnType4 = _flowRuntime2.default.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-    _flowRuntime2.default.param('key', _keyType2).assert(key);
-
-    _flowRuntime2.default.param('partialUpdate', _partialUpdateType).assert(partialUpdate);
-
-    return this.emit('partialUpdateByKey', key, partialUpdate).then(_arg4 => _returnType4.assert(_arg4));
+    return _flowRuntime2.default.param('key', _keyType2).assert(key), _flowRuntime2.default.param('partialUpdate', _partialUpdateType).assert(partialUpdate), this.emit('partialUpdateByKey', key, partialUpdate).then(_arg4 => _returnType4.assert(_arg4));
   }
 
   partialUpdateOne(object, partialUpdate) {
@@ -145,11 +113,7 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
     const _returnType5 = _flowRuntime2.default.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-    _flowRuntime2.default.param('object', _objectType3).assert(object);
-
-    _flowRuntime2.default.param('partialUpdate', _partialUpdateType2).assert(partialUpdate);
-
-    return this.emit('partialUpdateOne', object, partialUpdate).then(_arg5 => _returnType5.assert(_arg5));
+    return _flowRuntime2.default.param('object', _objectType3).assert(object), _flowRuntime2.default.param('partialUpdate', _partialUpdateType2).assert(partialUpdate), this.emit('partialUpdateOne', object, partialUpdate).then(_arg5 => _returnType5.assert(_arg5));
   }
 
   partialUpdateMany(criteria, partialUpdate) {
@@ -157,9 +121,7 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
     const _returnType6 = _flowRuntime2.default.return(_flowRuntime2.default.void());
 
-    _flowRuntime2.default.param('partialUpdate', _partialUpdateType3).assert(partialUpdate);
-
-    return this.emit('partialUpdateMany', criteria, partialUpdate).then(_arg6 => _returnType6.assert(_arg6));
+    return _flowRuntime2.default.param('partialUpdate', _partialUpdateType3).assert(partialUpdate), this.emit('partialUpdateMany', criteria, partialUpdate).then(_arg6 => _returnType6.assert(_arg6));
   }
 
   deleteByKey(key) {
@@ -167,9 +129,7 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
     const _returnType7 = _flowRuntime2.default.return(_flowRuntime2.default.void());
 
-    _flowRuntime2.default.param('key', _keyType3).assert(key);
-
-    return this.emit('deleteByKey', key).then(_arg7 => _returnType7.assert(_arg7));
+    return _flowRuntime2.default.param('key', _keyType3).assert(key), this.emit('deleteByKey', key).then(_arg7 => _returnType7.assert(_arg7));
   }
 
   deleteOne(object) {
@@ -177,9 +137,7 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
     const _returnType8 = _flowRuntime2.default.return(_flowRuntime2.default.void());
 
-    _flowRuntime2.default.param('object', _objectType4).assert(object);
-
-    return this.emit('deleteOne', object).then(_arg8 => _returnType8.assert(_arg8));
+    return _flowRuntime2.default.param('object', _objectType4).assert(object), this.emit('deleteOne', object).then(_arg8 => _returnType8.assert(_arg8));
   }
 
   cursor(criteria, sort) {
@@ -189,19 +147,13 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
     const _returnType9 = _flowRuntime2.default.return(_flowRuntime2.default.ref(_WebsocketCursor2.default, this[_WebsocketStoreTypeParametersSymbol].ModelType));
 
-    _flowRuntime2.default.param('criteria', _criteriaType).assert(criteria);
-
-    _flowRuntime2.default.param('sort', _sortType).assert(sort);
-
-    return Promise.resolve(new _WebsocketCursor2.default(this, { criteria, sort })).then(_arg9 => _returnType9.assert(_arg9));
+    return _flowRuntime2.default.param('criteria', _criteriaType).assert(criteria), _flowRuntime2.default.param('sort', _sortType).assert(sort), Promise.resolve(new _WebsocketCursor2.default(this, { criteria, sort })).then(_arg9 => _returnType9.assert(_arg9));
   }
 
   findByKey(key) {
     let _keyType4 = _flowRuntime2.default.any();
 
-    _flowRuntime2.default.param('key', _keyType4).assert(key);
-
-    return this.findOne({ id: key });
+    return _flowRuntime2.default.param('key', _keyType4).assert(key), this.findOne({ id: key });
   }
 
   findOne(criteria, sort) {
@@ -211,11 +163,7 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
     const _returnType10 = _flowRuntime2.default.return(_flowRuntime2.default.object());
 
-    _flowRuntime2.default.param('criteria', _criteriaType2).assert(criteria);
-
-    _flowRuntime2.default.param('sort', _sortType2).assert(sort);
-
-    return this.emit('findOne', criteria, sort).then(_arg10 => _returnType10.assert(_arg10));
+    return _flowRuntime2.default.param('criteria', _criteriaType2).assert(criteria), _flowRuntime2.default.param('sort', _sortType2).assert(sort), this.emit('findOne', criteria, sort).then(_arg10 => _returnType10.assert(_arg10));
   }
 }, _class[_flowRuntime2.default.TypeParametersSymbol] = _WebsocketStoreTypeParametersSymbol, _temp);
 exports.default = WebsocketStore;

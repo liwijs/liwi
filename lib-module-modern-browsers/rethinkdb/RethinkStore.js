@@ -5,10 +5,7 @@ import Query from './Query';
 let RethinkStore = class extends AbstractStore {
 
   constructor(connection, tableName) {
-    super(connection);
-    this.keyPath = 'id';
-    this._tableName = tableName;
-    this.r = this.connection._connection;
+    super(connection), this.keyPath = 'id', this._tableName = tableName, this.r = this.connection._connection;
   }
 
   table() {
@@ -28,21 +25,9 @@ let RethinkStore = class extends AbstractStore {
 
     const query = this.table();
 
-    if (criteria) {
-      query.filter(criteria);
-    }
-
-    if (sort) {
-      Object.keys(sort).forEach(function (key) {
-        if (sort[key] === -1) {
-          query.orderBy(_this.r.desc(key));
-        } else {
-          query.orderBy(key);
-        }
-      });
-    }
-
-    return query;
+    return criteria && query.filter(criteria), sort && Object.keys(sort).forEach(function (key) {
+      sort[key] === -1 ? query.orderBy(_this.r.desc(key)) : query.orderBy(key);
+    }), query;
   }
 
   create() {
@@ -52,13 +37,10 @@ let RethinkStore = class extends AbstractStore {
   }
 
   insertOne(object) {
-    if (!object.created) object.created = new Date();
 
-    return this.table().insert(object).then(function ({ inserted, generated_keys: generatedKeys }) {
+    return object.created || (object.created = new Date()), this.table().insert(object).then(function ({ inserted, generated_keys: generatedKeys }) {
       if (inserted !== 1) throw new Error('Could not insert');
-      if (object.id == null) {
-        object.id = generatedKeys[0];
-      }
+      object.id == null && (object.id = generatedKeys[0]);
     }).then(function () {
       return object;
     });
@@ -69,18 +51,15 @@ let RethinkStore = class extends AbstractStore {
   }
 
   replaceOne(object) {
-    if (!object.created) object.created = new Date();
-    if (!object.updated) object.updated = new Date();
 
-    return this.table().get(object.id).replace(object).then(function () {
+    return object.created || (object.created = new Date()), object.updated || (object.updated = new Date()), this.table().get(object.id).replace(object).then(function () {
       return object;
     });
   }
 
   upsertOne(object) {
-    if (!object.updated) object.updated = new Date();
 
-    return this.table().insert(object, { conflict: 'replace' }).run().then(function () {
+    return object.updated || (object.updated = new Date()), this.table().insert(object, { conflict: 'replace' }).run().then(function () {
       return object;
     });
   }

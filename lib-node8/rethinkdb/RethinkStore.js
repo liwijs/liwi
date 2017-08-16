@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _AbstractStore = require('../store/AbstractStore');
 
@@ -19,10 +19,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 let RethinkStore = class extends _AbstractStore2.default {
 
   constructor(connection, tableName) {
-    super(connection);
-    this.keyPath = 'id';
-    this._tableName = tableName;
-    this.r = this.connection._connection;
+    super(connection), this.keyPath = 'id', this._tableName = tableName, this.r = this.connection._connection;
   }
 
   table() {
@@ -40,21 +37,9 @@ let RethinkStore = class extends _AbstractStore2.default {
   _query(criteria, sort) {
     const query = this.table();
 
-    if (criteria) {
-      query.filter(criteria);
-    }
-
-    if (sort) {
-      Object.keys(sort).forEach(key => {
-        if (sort[key] === -1) {
-          query.orderBy(this.r.desc(key));
-        } else {
-          query.orderBy(key);
-        }
-      });
-    }
-
-    return query;
+    return criteria && query.filter(criteria), sort && Object.keys(sort).forEach(key => {
+      sort[key] === -1 ? query.orderBy(this.r.desc(key)) : query.orderBy(key);
+    }), query;
   }
 
   create() {
@@ -62,13 +47,10 @@ let RethinkStore = class extends _AbstractStore2.default {
   }
 
   insertOne(object) {
-    if (!object.created) object.created = new Date();
 
-    return this.table().insert(object).then(({ inserted, generated_keys: generatedKeys }) => {
+    return object.created || (object.created = new Date()), this.table().insert(object).then(({ inserted, generated_keys: generatedKeys }) => {
       if (inserted !== 1) throw new Error('Could not insert');
-      if (object.id == null) {
-        object.id = generatedKeys[0];
-      }
+      object.id == null && (object.id = generatedKeys[0]);
     }).then(() => object);
   }
 
@@ -77,16 +59,13 @@ let RethinkStore = class extends _AbstractStore2.default {
   }
 
   replaceOne(object) {
-    if (!object.created) object.created = new Date();
-    if (!object.updated) object.updated = new Date();
 
-    return this.table().get(object.id).replace(object).then(() => object);
+    return object.created || (object.created = new Date()), object.updated || (object.updated = new Date()), this.table().get(object.id).replace(object).then(() => object);
   }
 
   upsertOne(object) {
-    if (!object.updated) object.updated = new Date();
 
-    return this.table().insert(object, { conflict: 'replace' }).run().then(() => object);
+    return object.updated || (object.updated = new Date()), this.table().insert(object, { conflict: 'replace' }).run().then(() => object);
   }
 
   replaceSeveral(objects) {

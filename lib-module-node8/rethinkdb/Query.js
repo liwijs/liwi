@@ -11,17 +11,10 @@ let Query = class extends AbstractQuery {
       includeStates: true,
       includeTypes: true,
       includeOffsets: true
-    }).then(feed => {
-      if (args.length === 0) {
-        _feed = feed;
-        delete this._promise;
-      }
+    }).then(feed => (args.length === 0 && (_feed = feed, delete this._promise), feed.each(callback), feed));
 
-      feed.each(callback);
-      return feed;
-    });
+    args.length === 0 && (this._promise = promise);
 
-    if (args.length === 0) this._promise = promise;
 
     const stop = () => {
       this.closeFeed(_feed, promise);
@@ -35,11 +28,7 @@ let Query = class extends AbstractQuery {
   }
 
   closeFeed(feed, promise) {
-    if (feed) {
-      feed.close();
-    } else if (promise) {
-      promise.then(feed => feed.close());
-    }
+    feed ? feed.close() : promise && promise.then(feed => feed.close());
   }
 };
 export { Query as default };

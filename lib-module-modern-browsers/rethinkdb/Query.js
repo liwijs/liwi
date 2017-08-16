@@ -14,16 +14,11 @@ let Query = class extends AbstractQuery {
       includeTypes: true,
       includeOffsets: true
     }).then(function (feed) {
-      if (args.length === 0) {
-        _feed = feed;
-        delete _this._promise;
-      }
-
-      feed.each(callback);
-      return feed;
+      return args.length === 0 && (_feed = feed, delete _this._promise), feed.each(callback), feed;
     });
 
-    if (args.length === 0) this._promise = promise;
+    args.length === 0 && (this._promise = promise);
+
 
     const stop = function stop() {
       _this.closeFeed(_feed, promise);
@@ -39,13 +34,9 @@ let Query = class extends AbstractQuery {
   }
 
   closeFeed(feed, promise) {
-    if (feed) {
-      feed.close();
-    } else if (promise) {
-      promise.then(function (feed) {
-        return feed.close();
-      });
-    }
+    feed ? feed.close() : promise && promise.then(function (feed) {
+      return feed.close();
+    });
   }
 };
 export { Query as default };

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.WebsocketCursor = exports.WebsocketStore = undefined;
+exports.WebsocketCursor = exports.WebsocketStore = void 0;
 
 var _WebsocketStore2 = require('./WebsocketStore');
 

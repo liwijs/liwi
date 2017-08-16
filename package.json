@@ -112,21 +112,21 @@
   },
   "dependencies": {
     "deep-equal": "^1.0.1",
-    "flow-runtime": "^0.10.0",
+    "flow-runtime": "0.10.0",
     "mongodb": "^2.2.30",
     "nightingale-logger": "^3.4.0",
     "rethinkdbdash": "^2.3.29"
   },
   "devDependencies": {
-    "alp-react-redux": "^10.1.1",
+    "alp-react-redux": "^12.1.0",
     "babel-eslint": "^7.2.3",
     "babel-preset-env": "^1.6.0",
-    "babel-preset-latest-node": "^0.3.1",
-    "babel-preset-modern-browsers": "^9.0.2",
+    "babel-preset-latest-node": "^0.4.0",
+    "babel-preset-modern-browsers": "^10.0.0",
     "babel-preset-pob-react": "^0.2.2",
     "eslint": "^4.3.0",
     "eslint-config-airbnb": "^15.1.0",
-    "eslint-config-pob": "^14.1.2",
+    "eslint-config-pob": "^15.0.0",
     "eslint-config-prettier": "^2.3.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-flowtype": "^2.35.0",
@@ -140,16 +140,16 @@
     "komet": "^0.1.4",
     "komet-karma": "^0.2.5",
     "lint-staged": "^4.0.2",
-    "pob-babel": "^17.6.0",
+    "pob-babel": "^18.1.0",
     "pob-release": "^3.1.0",
     "prettier": "^1.5.3",
     "prop-types": "^15.5.10",
-    "react": "^15.6.1",
+    "react": "^16.0.0-beta.5",
     "xunit-file": "1.0.0"
   },
   "peerDependencies": {
-    "alp-react-redux": "^10.1.0",
+    "alp-react-redux": "^12.1.0",
     "prop-types": "^15.5.10",
-    "react": "^15.5.4"
+    "react": "15.5.4 || ^16.0.0-beta.5"
   }
 }

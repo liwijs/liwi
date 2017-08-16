@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _RestCursor = require('./RestCursor');
 
@@ -27,13 +27,11 @@ let RestService = class {
   }
 
   async createCursor(restResource, connectedUser, { criteria, sort, limit }) {
-    // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
-    criteria = restResource.criteria(connectedUser, criteria || {});
-    sort = restResource.sort(connectedUser, sort);
+    criteria = restResource.criteria(connectedUser, criteria || {}), sort = restResource.sort(connectedUser, sort);
+
     const cursor = await restResource.store.cursor(criteria, sort);
-    limit = restResource.limit(limit);
-    if (limit) cursor.limit(connectedUser, limit);
-    return new _RestCursor2.default(restResource, connectedUser, cursor);
+
+    return limit = restResource.limit(limit), limit && cursor.limit(connectedUser, limit), new _RestCursor2.default(restResource, connectedUser, cursor);
   }
 };
 exports.default = RestService;

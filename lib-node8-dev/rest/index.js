@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RestService = undefined;
+exports.RestService = void 0;
 
 var _RestService2 = require('./RestService');
 

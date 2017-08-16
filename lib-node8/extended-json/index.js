@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.decode = exports.encode = exports.parse = exports.stringify = undefined;
+exports.decode = exports.encode = exports.parse = exports.stringify = void 0;
 
 var _stringify2 = require('./stringify');
 

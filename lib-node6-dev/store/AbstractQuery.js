@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _class, _temp; // eslint-disable-next-line no-unused-vars
 
@@ -25,26 +25,19 @@ let AbstractQuery = (_temp = _class = class {
   constructor(store, queryCallback) {
     this[_AbstractQueryTypeParametersSymbol] = {
       Store: _flowRuntime2.default.typeParameter('Store', _flowRuntime2.default.ref(_AbstractStore2.default))
-    };
-
-    this.store = store;
-    this.queryCallback = queryCallback;
+    }, this.store = store, this.queryCallback = queryCallback;
   }
 
   fetchAndSubscribe(callback, ...args) {
     let _callbackType = _flowRuntime2.default.function();
 
-    _flowRuntime2.default.param('callback', _callbackType).assert(callback);
-
-    return this._subscribe(callback, true, args);
+    return _flowRuntime2.default.param('callback', _callbackType).assert(callback), this._subscribe(callback, true, args);
   }
 
   subscribe(callback, ...args) {
     let _callbackType2 = _flowRuntime2.default.function();
 
-    _flowRuntime2.default.param('callback', _callbackType2).assert(callback);
-
-    return this._subscribe(callback, false, args);
+    return _flowRuntime2.default.param('callback', _callbackType2).assert(callback), this._subscribe(callback, false, args);
   }
 }, _class[_flowRuntime2.default.TypeParametersSymbol] = _AbstractQueryTypeParametersSymbol, _temp);
 exports.default = AbstractQuery;

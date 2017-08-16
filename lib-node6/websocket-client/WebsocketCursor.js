@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
 var _AbstractCursor = require('../store/AbstractCursor');
 
@@ -14,16 +14,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 let WebsocketCursor = class extends _AbstractCursor2.default {
 
   constructor(store, options) {
-    super(store);
-    this._options = options;
+    super(store), this._options = options;
   }
 
   /* options */
 
   limit(newLimit) {
     if (this._idCursor) throw new Error('Cursor already created');
-    this._options.limit = newLimit;
-    return Promise.resolve(this);
+
+    return this._options.limit = newLimit, Promise.resolve(this);
   }
 
   /* results */
@@ -31,30 +30,20 @@ let WebsocketCursor = class extends _AbstractCursor2.default {
   _create() {
     if (this._idCursor) throw new Error('Cursor already created');
     return this.store.connection.emit('createCursor', this._options).then(idCursor => {
-      if (!idCursor) return;
-      this._idCursor = idCursor;
+      idCursor && (this._idCursor = idCursor);
     });
   }
 
   emit(type, ...args) {
-    if (!this._idCursor) {
-      return this._create().then(() => this.emit(type, ...args));
-    }
-
-    return this.store.emit('cursor', { type, id: this._idCursor }, args);
+    return this._idCursor ? this.store.emit('cursor', { type, id: this._idCursor }, args) : this._create().then(() => this.emit(type, ...args));
   }
 
   advance(count) {
-    this.emit('advance', count);
-    return this;
+    return this.emit('advance', count), this;
   }
 
   next() {
-    return this.emit('next').then(result => {
-      this._result = result;
-      this.key = result && result[this._store.keyPath];
-      return this.key;
-    });
+    return this.emit('next').then(result => (this._result = result, this.key = result && result[this._store.keyPath], this.key));
   }
 
   result() {
@@ -69,18 +58,12 @@ let WebsocketCursor = class extends _AbstractCursor2.default {
     if (!this._store) return Promise.resolve();
 
     const closedPromise = this._idCursor ? this.emit('close') : Promise.resolve();
-    this._idCursor = null;
-    this._options = null;
-    this._store = undefined;
-    this._result = undefined;
-    return closedPromise;
+
+    return this._idCursor = null, this._options = null, this._store = void 0, this._result = void 0, closedPromise;
   }
 
   toArray() {
-    return this.store.emit('cursor toArray', this._options).then(result => {
-      this.close();
-      return result;
-    });
+    return this.store.emit('cursor toArray', this._options).then(result => (this.close(), result));
   }
 };
 exports.default = WebsocketCursor;

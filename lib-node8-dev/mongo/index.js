@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MongoConnection = exports.MongoStore = exports.default = undefined;
+exports.MongoConnection = exports.MongoStore = exports.default = void 0;
 
 var _MongoStore2 = require('./MongoStore');
 

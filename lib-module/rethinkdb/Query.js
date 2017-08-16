@@ -1,23 +1,19 @@
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false, descriptor.configurable = true, "value" in descriptor && (descriptor.writable = true), Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function"); }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _possibleConstructorReturn(self, call) { if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }), superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass); }
 
 import AbstractQuery from '../store/AbstractQuery';
 
 var Query = function (_AbstractQuery) {
-  _inherits(Query, _AbstractQuery);
-
   function Query() {
-    _classCallCheck(this, Query);
-
-    return _possibleConstructorReturn(this, (Query.__proto__ || Object.getPrototypeOf(Query)).apply(this, arguments));
+    return _classCallCheck(this, Query), _possibleConstructorReturn(this, (Query.__proto__ || Object.getPrototypeOf(Query)).apply(this, arguments));
   }
 
-  _createClass(Query, [{
+  return _inherits(Query, _AbstractQuery), _createClass(Query, [{
     key: 'fetch',
     value: function fetch(callback) {
       return this.queryCallback(this.store.query(), this.store.r).run().then(callback);
@@ -27,7 +23,7 @@ var Query = function (_AbstractQuery) {
     value: function _subscribe(callback) {
       var _this2 = this;
 
-      var _includeInitial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var _includeInitial = arguments.length > 1 && arguments[1] !== void 0 && arguments[1];
 
       var args = arguments[2];
 
@@ -38,16 +34,11 @@ var Query = function (_AbstractQuery) {
         includeTypes: true,
         includeOffsets: true
       }).then(function (feed) {
-        if (args.length === 0) {
-          _feed = feed;
-          delete _this2._promise;
-        }
-
-        feed.each(callback);
-        return feed;
+        return args.length === 0 && (_feed = feed, delete _this2._promise), feed.each(callback), feed;
       });
 
-      if (args.length === 0) this._promise = promise;
+      args.length === 0 && (this._promise = promise);
+
 
       var stop = function stop() {
         _this2.closeFeed(_feed, promise);
@@ -64,17 +55,11 @@ var Query = function (_AbstractQuery) {
   }, {
     key: 'closeFeed',
     value: function closeFeed(feed, promise) {
-      if (feed) {
-        feed.close();
-      } else if (promise) {
-        promise.then(function (feed) {
-          return feed.close();
-        });
-      }
+      feed ? feed.close() : promise && promise.then(function (feed) {
+        return feed.close();
+      });
     }
-  }]);
-
-  return Query;
+  }]), Query;
 }(AbstractQuery);
 
 export { Query as default };
