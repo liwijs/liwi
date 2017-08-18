@@ -77,7 +77,7 @@ let RethinkStore = class extends _AbstractStore2.default {
   }
 
   partialUpdateOne(object, partialUpdate) {
-    return this.table().get(object.id).update(partialUpdate, { returnChanges: true }).then(res => res.changes.new_val);
+    return this.table().get(object.id).update(partialUpdate, { returnChanges: true }).then(res => res.changes[0].new_val);
   }
 
   partialUpdateMany(criteria, partialUpdate) {

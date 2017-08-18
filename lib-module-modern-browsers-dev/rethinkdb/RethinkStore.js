@@ -139,7 +139,7 @@ let RethinkStore = class extends AbstractStore {
     const _returnType7 = t.return(t.ref(ResultType));
 
     return t.param('object', _objectType4).assert(object), t.param('partialUpdate', _partialUpdateType2).assert(partialUpdate), this.table().get(object.id).update(partialUpdate, { returnChanges: true }).then(function (res) {
-      return res.changes.new_val;
+      return res.changes[0].new_val;
     }).then(function (_arg7) {
       return _returnType7.assert(_arg7);
     });

@@ -130,7 +130,7 @@ let RethinkStore = class extends _AbstractStore2.default {
 
     const _returnType7 = _flowRuntime2.default.return(_flowRuntime2.default.ref(ResultType));
 
-    return _flowRuntime2.default.param('object', _objectType4).assert(object), _flowRuntime2.default.param('partialUpdate', _partialUpdateType2).assert(partialUpdate), this.table().get(object.id).update(partialUpdate, { returnChanges: true }).then(res => res.changes.new_val).then(_arg7 => _returnType7.assert(_arg7));
+    return _flowRuntime2.default.param('object', _objectType4).assert(object), _flowRuntime2.default.param('partialUpdate', _partialUpdateType2).assert(partialUpdate), this.table().get(object.id).update(partialUpdate, { returnChanges: true }).then(res => res.changes[0].new_val).then(_arg7 => _returnType7.assert(_arg7));
   }
 
   partialUpdateMany(criteria, partialUpdate) {

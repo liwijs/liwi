@@ -93,7 +93,7 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
     return this.table()
       .get(object.id)
       .update(partialUpdate, { returnChanges: true })
-      .then(res => res.changes.new_val);
+      .then(res => res.changes[0].new_val);
   }
 
   partialUpdateMany(criteria, partialUpdate: Object): Promise<void> {

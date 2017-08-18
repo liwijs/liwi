@@ -105,7 +105,7 @@ var RethinkStore = function (_AbstractStore) {
     key: 'partialUpdateOne',
     value: function partialUpdateOne(object, partialUpdate) {
       return this.table().get(object.id).update(partialUpdate, { returnChanges: true }).then(function (res) {
-        return res.changes.new_val;
+        return res.changes[0].new_val;
       });
     }
   }, {
