@@ -1,3 +1,12 @@
+<a name="0.18.2"></a>
+## [0.18.2](https://github.com/liwijs/liwi/compare/v0.18.1...v0.18.2) (2017-08-26)
+
+
+### Bug Fixes
+
+* update dependencies ([9b80144](https://github.com/liwijs/liwi/commit/9b80144))
+
+
 <a name="0.18.1"></a>
 ## [0.18.1](https://github.com/liwijs/liwi/compare/v0.18.0...v0.18.1) (2017-08-18)
 
