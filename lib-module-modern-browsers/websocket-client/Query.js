@@ -7,7 +7,8 @@ const logger = new Logger('liwi:websocket-client:query');
 
 let Query = class extends AbstractQuery {
   constructor(store, key) {
-    super(store), this.key = key;
+    super(store);
+    this.key = key;
   }
 
   fetch(callback) {
@@ -20,22 +21,27 @@ let Query = class extends AbstractQuery {
     const eventName = `subscribe:${this.store.restName}.${this.key}`;
     const listener = function listener(err, result) {
       const decodedResult = result && decode(result);
-      false, callback(err, decodedResult);
+
+      callback(err, decodedResult);
     };
     this.store.connection.on(eventName, listener);
 
-
     let _stopEmitSubscribe;
     let promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
-      _stopEmitSubscribe = stopEmitSubscribe, logger.info('subscribed');
+      _stopEmitSubscribe = stopEmitSubscribe;
+      logger.info('subscribed');
     }).catch(function (err) {
-      throw _this.store.connection.off(eventName, listener), err;
+      _this.store.connection.off(eventName, listener);
+      throw err;
     });
 
     const stop = function stop() {
-      promise && (_stopEmitSubscribe(), promise.then(function () {
-        promise = null, _this.store.connection.off(eventName, listener);
-      }));
+      if (!promise) return;
+      _stopEmitSubscribe();
+      promise.then(function () {
+        promise = null;
+        _this.store.connection.off(eventName, listener);
+      });
     };
 
     return {

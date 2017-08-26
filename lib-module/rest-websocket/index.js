@@ -1,6 +1,6 @@
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = void 0; try { for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done) && (_arr.push(_s.value), !(i && _arr.length === i)); _n = true); } catch (err) { _d = true, _e = err; } finally { try { !_n && _i["return"] && _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) return arr; if (Symbol.iterator in Object(arr)) return sliceIterator(arr, i); throw new TypeError("Invalid attempt to destructure non-iterable instance"); }; }();
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } return Array.from(arr); }
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 import Logger from 'nightingale-logger';
 import { encode, decode } from '../extended-json';
@@ -15,19 +15,36 @@ export default function init(io, restService) {
       openWatchers.forEach(function (watcher) {
         return watcher.stop();
       });
-    }), socket.on('rest', function (_ref, args, callback) {
+    });
+
+    socket.on('rest', function (_ref, args, callback) {
       var type = _ref.type,
           restName = _ref.restName,
           json = _ref.json;
 
       try {
-        if (json && (callback = args, args = decode(json), !Array.isArray(args) && (logger.debug('args', { args: args }), callback))) throw new Error('Invalid args');
+        if (json) {
 
-        if (!callback) return void logger['error']('callback missing');
+          callback = args;
+          args = decode(json);
+          if (!Array.isArray(args)) {
+            logger.debug('args', { args: args });
+
+            if (callback) {
+              throw new Error('Invalid args');
+            }
+          }
+        }
+
+        if (!callback) {
+          logger['error']('callback missing');
+          return;
+        }
 
         var restResource = restService.get(restName);
 
-        switch (logger.info('rest', { type: type, restName: restName, args: args }), type) {
+        logger.info('rest', { type: type, restName: restName, args: args });
+        switch (type) {
           case 'cursor toArray':
             {
               var _args = args,
@@ -39,7 +56,8 @@ export default function init(io, restService) {
               }).then(function (results) {
                 return callback(null, encode(results));
               }).catch(function (err) {
-                logger.error(type, err), callback(err.message);
+                logger.error(type, err);
+                callback(err.message);
               });
             }
 
@@ -58,10 +76,12 @@ export default function init(io, restService) {
               return restResource[type].apply(restResource, [socket.user].concat(_toConsumableArray(args))).then(function (result) {
                 return callback(null, encode(result));
               }).catch(function (err) {
-                logger.error(type, { err: err }), callback(err.message || err);
+                logger.error(type, { err: err });
+                callback(err.message || err);
               });
             } catch (err) {
-              logger.error(type, { err: err }), callback(err.message || err);
+              logger.error(type, { err: err });
+              callback(err.message || err);
             }
             break;
 
@@ -74,43 +94,60 @@ export default function init(io, restService) {
                   key = _args4[0],
                   eventName = _args4[1],
                   _args4$ = _args4[2],
-                  otherArgs = _args4$ === void 0 ? [] : _args4$;
+                  otherArgs = _args4$ === undefined ? [] : _args4$;
 
-              if (!key.startsWith('query')) throw new Error('Invalid query key');
+              if (!key.startsWith('query')) {
+                throw new Error('Invalid query key');
+              }
 
               var query = restResource.queries[key]; // todo pass connected user
-              if (!query) throw new Error('rest: ' + restName + '.' + type + '.' + key + ' is not available');
+              if (!query) {
+                throw new Error('rest: ' + restName + '.' + type + '.' + key + ' is not available');
+              }
 
-              if (type === 'fetch')
+              if (type === 'fetch') {
                 // eslint-disable-next-line prettier/prettier
                 return query[type].apply(query, [function (result) {
                   return callback(null, result && encode(result));
                 }].concat(_toConsumableArray(otherArgs))).catch(function (err) {
-                  logger.error(type, { err: err }), callback(err.message || err);
+                  logger.error(type, { err: err });
+                  callback(err.message || err);
+                });
+              } else {
+                var watcher = query[type](function (err, result) {
+                  if (err) {
+                    logger.error(type, { err: err });
+                  }
+
+                  socket.emit(eventName, err, result && encode(result));
+                });
+                watcher.then(function () {
+                  return callback();
+                }, function (err) {
+                  logger.error(type, { err: err });
+                  callback(err.message || err);
                 });
 
-              var watcher = query[type](function (err, result) {
-                err && logger.error(type, { err: err }), socket.emit(eventName, err, result && encode(result));
-              });
-              watcher.then(function () {
-                return callback();
-              }, function (err) {
-                logger.error(type, { err: err }), callback(err.message || err);
-              }), openWatchers.add(watcher);
+                openWatchers.add(watcher);
+              }
             } catch (err) {
-              logger.error(type, { err: err }), callback(err.message || err);
+              logger.error(type, { err: err });
+              callback(err.message || err);
             }
             break;
 
           default:
             try {
-              logger.warn('Unknown command', { type: type }), callback('rest: unknown command "' + type + '"');
+              logger.warn('Unknown command', { type: type });
+              callback('rest: unknown command "' + type + '"');
             } catch (err) {
-              logger.error(type, { err: err }), callback(err.message || err);
+              logger.error(type, { err: err });
+              callback(err.message || err);
             }
         }
       } catch (err) {
-        logger.warn('rest error', { err: err }), callback(err.message || err);
+        logger.warn('rest error', { err: err });
+        callback(err.message || err);
       }
     });
   });

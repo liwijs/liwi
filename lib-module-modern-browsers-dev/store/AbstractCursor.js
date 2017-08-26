@@ -19,7 +19,9 @@ let AbstractCursor = (_temp = _class = class {
 
     let _storeType = t.flowInto(this[_AbstractCursorTypeParametersSymbol].Store);
 
-    t.param('store', _storeType).assert(store), this._store = store;
+    t.param('store', _storeType).assert(store);
+
+    this._store = store;
   }
 
   get store() {
@@ -54,14 +56,17 @@ let AbstractCursor = (_temp = _class = class {
     let _newLimitType = t.number();
 
     t.return(t.void());
+    t.param('newLimit', _newLimitType).assert(newLimit);
 
-    throw t.param('newLimit', _newLimitType).assert(newLimit), new Error('limit() missing implementation');
+    throw new Error('limit() missing implementation');
   }
 
   count(applyLimit = false) {
     let _applyLimitType = t.boolean();
 
-    throw t.param('applyLimit', _applyLimitType).assert(applyLimit), new Error('count() missing implementation');
+    t.param('applyLimit', _applyLimitType).assert(applyLimit);
+
+    throw new Error('count() missing implementation');
   }
 
   result() {
@@ -85,7 +90,9 @@ let AbstractCursor = (_temp = _class = class {
 
     const _returnType = t.return(t.union(t.void(), t.ref('Promise', t.void())));
 
-    for (t.param('callback', _callbackType).assert(callback);;) {
+    t.param('callback', _callbackType).assert(callback);
+
+    while (true) {
       const key = await this.next();
       if (!key) return _returnType.assert();
 
@@ -108,16 +115,20 @@ let AbstractCursor = (_temp = _class = class {
   }
 
   *keysIterator() {
-    for (;;) yield this.next();
+    while (true) {
+      yield this.next();
+    }
   }
 
   *[Symbol.iterator]() {
     var _this3 = this;
 
     // eslint-disable-next-line no-restricted-syntax
-    for (let keyPromise of this.keysIterator()) yield keyPromise.then(function (key) {
-      return key && _this3.result();
-    });
+    for (let keyPromise of this.keysIterator()) {
+      yield keyPromise.then(function (key) {
+        return key && _this3.result();
+      });
+    }
   }
 
   // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356

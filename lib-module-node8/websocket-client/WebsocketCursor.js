@@ -3,15 +3,16 @@ import AbstractCursor from '../store/AbstractCursor';
 let WebsocketCursor = class extends AbstractCursor {
 
   constructor(store, options) {
-    super(store), this._options = options;
+    super(store);
+    this._options = options;
   }
 
   /* options */
 
   limit(newLimit) {
     if (this._idCursor) throw new Error('Cursor already created');
-
-    return this._options.limit = newLimit, Promise.resolve(this);
+    this._options.limit = newLimit;
+    return Promise.resolve(this);
   }
 
   /* results */
@@ -19,20 +20,30 @@ let WebsocketCursor = class extends AbstractCursor {
   _create() {
     if (this._idCursor) throw new Error('Cursor already created');
     return this.store.connection.emit('createCursor', this._options).then(idCursor => {
-      idCursor && (this._idCursor = idCursor);
+      if (!idCursor) return;
+      this._idCursor = idCursor;
     });
   }
 
   emit(type, ...args) {
-    return this._idCursor ? this.store.emit('cursor', { type, id: this._idCursor }, args) : this._create().then(() => this.emit(type, ...args));
+    if (!this._idCursor) {
+      return this._create().then(() => this.emit(type, ...args));
+    }
+
+    return this.store.emit('cursor', { type, id: this._idCursor }, args);
   }
 
   advance(count) {
-    return this.emit('advance', count), this;
+    this.emit('advance', count);
+    return this;
   }
 
   next() {
-    return this.emit('next').then(result => (this._result = result, this.key = result && result[this._store.keyPath], this.key));
+    return this.emit('next').then(result => {
+      this._result = result;
+      this.key = result && result[this._store.keyPath];
+      return this.key;
+    });
   }
 
   result() {
@@ -47,12 +58,18 @@ let WebsocketCursor = class extends AbstractCursor {
     if (!this._store) return Promise.resolve();
 
     const closedPromise = this._idCursor ? this.emit('close') : Promise.resolve();
-
-    return this._idCursor = null, this._options = null, this._store = void 0, this._result = void 0, closedPromise;
+    this._idCursor = null;
+    this._options = null;
+    this._store = undefined;
+    this._result = undefined;
+    return closedPromise;
   }
 
   toArray() {
-    return this.store.emit('cursor toArray', this._options).then(result => (this.close(), result));
+    return this.store.emit('cursor toArray', this._options).then(result => {
+      this.close();
+      return result;
+    });
   }
 };
 export { WebsocketCursor as default };

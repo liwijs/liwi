@@ -23,22 +23,37 @@ let FindAndSubscribeComponent = (_temp2 = _class = class extends Component {
   componentDidMount() {
     const { query } = this.props;
     this._subscribe = query.fetchAndSubscribe((err, change) => {
-      if (err) return void alert(`Unexpected error: ${err}`);
+      if (err) {
+        // eslint-disable-next-line no-alert
+        alert(`Unexpected error: ${err}`);
+        return;
+      }
 
       const newResult = applyChange(this.state.result, change);
 
-      this.state.fetched ? newResult !== this.state.result && this.setState({ result: newResult }) : this.setState({ fetched: true, result: newResult });
+      if (!this.state.fetched) {
+        this.setState({ fetched: true, result: newResult });
+      } else if (newResult !== this.state.result) {
+        this.setState({ result: newResult });
+      }
     });
   }
 
   componentWillUnmount() {
-    this._subscribe && (this._subscribe.stop(), delete this._subscribe);
+    if (this._subscribe) {
+      this._subscribe.stop();
+      delete this._subscribe;
+    }
   }
 
   render() {
     const _returnType = t.return(t.ref(ReactNodeType));
 
-    return this.state.fetched ? _returnType.assert(React.createElement(this.props.component, { [this.props.name]: this.state.result })) : _returnType.assert(this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null);
+    if (!this.state.fetched) {
+      return _returnType.assert(this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null);
+    }
+
+    return _returnType.assert(React.createElement(this.props.component, { [this.props.name]: this.state.result }));
   }
 }, _class.propTypes = t.propTypes(PropsType), _temp2);
 export { FindAndSubscribeComponent as default };

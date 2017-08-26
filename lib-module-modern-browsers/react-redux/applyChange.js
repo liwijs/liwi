@@ -18,14 +18,18 @@ export default (function (state, change) {
     case 'remove':
     case 'uninitial':
       {
+        copy();
         // Remove old values from the array
-        if (copy(), oldOffset != null) state.splice(oldOffset, 1);else {
+        if (oldOffset != null) {
+          state.splice(oldOffset, 1);
+        } else {
           const index = state.findIndex(function (x) {
             return deepEqual(x.id, oldVal.id);
           });
-          if (index === -1)
+          if (index === -1) {
             // Programming error. This should not happen
             throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);
+          }
           state.splice(index, 1);
         }
         break;
@@ -33,52 +37,80 @@ export default (function (state, change) {
 
     case 'initial':
       {
+        copy();
 
-        if (copy(), newOffset != null) state[newOffset] = newVal;else {
+        if (newOffset != null) {
+          state[newOffset] = newVal;
+        } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
           const index = state.findIndex(function (x) {
             return deepEqual(x.id, newVal.id);
           });
-          index === -1 ? state.push(newVal) : state[index] = newVal;
+          if (index === -1) {
+            state.push(newVal);
+          } else {
+            state[index] = newVal;
+          }
         }
         break;
       }
 
     case 'add':
       {
-        copy(), newOffset == null ? state.push(newVal) : state.splice(newOffset, 0, newVal);
-
+        copy();
+        // Add new values to the array
+        if (newOffset != null) {
+          // If we have an offset, put it in the correct location
+          state.splice(newOffset, 0, newVal);
+        } else {
+          // otherwise for unordered results, push it on the end
+          state.push(newVal);
+        }
         break;
       }
 
     case 'change':
       {
+        copy();
 
-        if (copy(), oldOffset === newOffset) return state[newOffset] = newVal, state;
+        if (oldOffset === newOffset) {
+          state[newOffset] = newVal;
+          return state;
+        }
 
         // Modify in place if a change is happening
+        if (oldOffset != null) {
+          // Remove the old document from the results
+          state.splice(oldOffset, 1);
+        }
 
-
-        if (oldOffset != null && state.splice(oldOffset, 1), newOffset != null) state.splice(newOffset, 0, newVal);else {
+        if (newOffset != null) {
+          // Splice in the new val if we have an offset
+          state.splice(newOffset, 0, newVal);
+        } else {
           // If we don't have an offset, find the old val and
           // replace it with the new val
           const index = state.findIndex(function (x) {
             return deepEqual(x.id, oldVal.id);
           });
-          if (index === -1)
+          if (index === -1) {
             // indicates a programming bug. The server gives us the
             // ordering, so if we don't find the id it means something is
             // buggy.
-            throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);else state[index] = newVal;
+            throw new Error(`change couldn't be applied: ${JSON.stringify(change)}`);
+          } else {
+            state[index] = newVal;
+          }
         }
         break;
       }
     case 'state':
-      // This gets hit if we have not emitted yet, and should
-      // result in an empty array being output.
-      break;
-
+      {
+        // This gets hit if we have not emitted yet, and should
+        // result in an empty array being output.
+        break;
+      }
     default:
       throw new Error(`unrecognized 'type' field from server ${JSON.stringify(change)}`);
   }

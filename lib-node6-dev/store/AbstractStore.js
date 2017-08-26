@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = undefined;
 
 var _class, _temp;
 
@@ -30,7 +30,10 @@ let AbstractStore = (_temp = _class = class {
 
     let _connectionType = _flowRuntime2.default.flowInto(this[_AbstractStoreTypeParametersSymbol].Connection);
 
-    _flowRuntime2.default.param('connection', _connectionType).assert(connection), (0, _assert2.default)(connection), this._connection = connection;
+    _flowRuntime2.default.param('connection', _connectionType).assert(connection);
+
+    (0, _assert2.default)(connection);
+    this._connection = connection;
   }
 
   get connection() {
@@ -46,7 +49,11 @@ let AbstractStore = (_temp = _class = class {
 
     const _returnType2 = _flowRuntime2.default.return(_flowRuntime2.default.array(_flowRuntime2.default.any()));
 
-    return _flowRuntime2.default.param('criteria', _criteriaType).assert(criteria), _flowRuntime2.default.param('sort', _sortType).assert(sort), this.cursor(criteria, sort).then(cursor => cursor.toArray()).then(_arg => _returnType2.assert(_arg));
+    _flowRuntime2.default.param('criteria', _criteriaType).assert(criteria);
+
+    _flowRuntime2.default.param('sort', _sortType).assert(sort);
+
+    return this.cursor(criteria, sort).then(cursor => cursor.toArray()).then(_arg => _returnType2.assert(_arg));
   }
 }, _class[_flowRuntime2.default.TypeParametersSymbol] = _AbstractStoreTypeParametersSymbol, _temp);
 exports.default = AbstractStore;

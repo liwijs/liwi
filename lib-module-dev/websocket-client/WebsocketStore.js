@@ -1,12 +1,12 @@
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false, descriptor.configurable = true, "value" in descriptor && (descriptor.writable = true), Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _class, _temp;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function"); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }), superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 import Logger from 'nightingale-logger';
 import AbstractStore from '../store/AbstractStore';
@@ -22,6 +22,8 @@ var WebsocketConnectionType = t.type('WebsocketConnectionType', t.object(t.prope
 var _WebsocketStoreTypeParametersSymbol = Symbol('WebsocketStoreTypeParameters');
 
 var WebsocketStore = (_temp = _class = function (_AbstractStore) {
+  _inherits(WebsocketStore, _AbstractStore);
+
   function WebsocketStore(websocket, restName) {
     _classCallCheck(this, WebsocketStore);
 
@@ -31,28 +33,45 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
 
     var _restNameType = t.string();
 
-    t.param('websocket', WebsocketConnectionType).assert(websocket), t.param('restName', _restNameType).assert(restName);
+    t.param('websocket', WebsocketConnectionType).assert(websocket);
+    t.param('restName', _restNameType).assert(restName);
 
     var _this = _possibleConstructorReturn(this, (WebsocketStore.__proto__ || Object.getPrototypeOf(WebsocketStore)).call(this, websocket));
 
-    if (_this.keyPath = 'id', _this[_WebsocketStoreTypeParametersSymbol] = _typeParameters, t.bindTypeParameters(_this, WebsocketConnectionType), !restName) throw new Error('Invalid restName: "' + restName + '"');
+    _this.keyPath = 'id';
+    _this[_WebsocketStoreTypeParametersSymbol] = _typeParameters;
+    t.bindTypeParameters(_this, WebsocketConnectionType);
 
-    return _this.restName = restName, _this.restName = restName, _this;
+
+    if (!restName) {
+      throw new Error('Invalid restName: "' + restName + '"');
+    }
+
+    _this.restName = restName;
+    return _this;
   }
 
-  return _inherits(WebsocketStore, _AbstractStore), _createClass(WebsocketStore, [{
+  _createClass(WebsocketStore, [{
     key: 'createQuery',
     value: function createQuery(key) {
       var _keyType = t.string();
 
-      return t.param('key', _keyType).assert(key), logger.debug('createQuery', { key: key }), new Query(this, key);
+      t.param('key', _keyType).assert(key);
+
+      logger.debug('createQuery', { key: key });
+      return new Query(this, key);
     }
   }, {
     key: 'emit',
     value: function emit(type) {
-      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) args[_key - 1] = arguments[_key];
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
 
-      if (logger.debug('emit', { type: type, args: args }), this.connection.isDisconnected()) throw new Error('Websocket is not connected');
+      logger.debug('emit', { type: type, args: args });
+      if (this.connection.isDisconnected()) {
+        throw new Error('Websocket is not connected');
+      }
 
       return this.connection.emit('rest', {
         type: type,
@@ -67,13 +86,16 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
     value: function emitSubscribe(type) {
       var _this2 = this;
 
-      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) args[_key2 - 1] = arguments[_key2];
+      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        args[_key2 - 1] = arguments[_key2];
+      }
 
       var emit = function emit() {
         return _this2.emit.apply(_this2, [type].concat(args));
       };
       return emit().then(function () {
-        return _this2.connection.on('reconnect', emit), function () {
+        _this2.connection.on('reconnect', emit);
+        return function () {
           return _this2.connection.off('reconnect', emit);
         };
       });
@@ -85,7 +107,9 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
 
       var _returnType = t.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-      return t.param('object', _objectType).assert(object), this.emit('insertOne', object).then(function (_arg) {
+      t.param('object', _objectType).assert(object);
+
+      return this.emit('insertOne', object).then(function (_arg) {
         return _returnType.assert(_arg);
       });
     }
@@ -96,7 +120,9 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
 
       var _returnType2 = t.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-      return t.param('object', _objectType2).assert(object), this.emit('updateOne', object).then(function (_arg2) {
+      t.param('object', _objectType2).assert(object);
+
+      return this.emit('updateOne', object).then(function (_arg2) {
         return _returnType2.assert(_arg2);
       });
     }
@@ -107,7 +133,9 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
 
       var _returnType3 = t.return(t.array(this[_WebsocketStoreTypeParametersSymbol].ModelType));
 
-      return t.param('objects', _objectsType).assert(objects), this.emit('updateSeveral', objects).then(function (_arg3) {
+      t.param('objects', _objectsType).assert(objects);
+
+      return this.emit('updateSeveral', objects).then(function (_arg3) {
         return _returnType3.assert(_arg3);
       });
     }
@@ -120,7 +148,10 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
 
       var _returnType4 = t.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-      return t.param('key', _keyType2).assert(key), t.param('partialUpdate', _partialUpdateType).assert(partialUpdate), this.emit('partialUpdateByKey', key, partialUpdate).then(function (_arg4) {
+      t.param('key', _keyType2).assert(key);
+      t.param('partialUpdate', _partialUpdateType).assert(partialUpdate);
+
+      return this.emit('partialUpdateByKey', key, partialUpdate).then(function (_arg4) {
         return _returnType4.assert(_arg4);
       });
     }
@@ -133,7 +164,10 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
 
       var _returnType5 = t.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-      return t.param('object', _objectType3).assert(object), t.param('partialUpdate', _partialUpdateType2).assert(partialUpdate), this.emit('partialUpdateOne', object, partialUpdate).then(function (_arg5) {
+      t.param('object', _objectType3).assert(object);
+      t.param('partialUpdate', _partialUpdateType2).assert(partialUpdate);
+
+      return this.emit('partialUpdateOne', object, partialUpdate).then(function (_arg5) {
         return _returnType5.assert(_arg5);
       });
     }
@@ -144,7 +178,9 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
 
       var _returnType6 = t.return(t.void());
 
-      return t.param('partialUpdate', _partialUpdateType3).assert(partialUpdate), this.emit('partialUpdateMany', criteria, partialUpdate).then(function (_arg6) {
+      t.param('partialUpdate', _partialUpdateType3).assert(partialUpdate);
+
+      return this.emit('partialUpdateMany', criteria, partialUpdate).then(function (_arg6) {
         return _returnType6.assert(_arg6);
       });
     }
@@ -155,7 +191,9 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
 
       var _returnType7 = t.return(t.void());
 
-      return t.param('key', _keyType3).assert(key), this.emit('deleteByKey', key).then(function (_arg7) {
+      t.param('key', _keyType3).assert(key);
+
+      return this.emit('deleteByKey', key).then(function (_arg7) {
         return _returnType7.assert(_arg7);
       });
     }
@@ -166,7 +204,9 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
 
       var _returnType8 = t.return(t.void());
 
-      return t.param('object', _objectType4).assert(object), this.emit('deleteOne', object).then(function (_arg8) {
+      t.param('object', _objectType4).assert(object);
+
+      return this.emit('deleteOne', object).then(function (_arg8) {
         return _returnType8.assert(_arg8);
       });
     }
@@ -179,7 +219,10 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
 
       var _returnType9 = t.return(t.ref(WebsocketCursor, this[_WebsocketStoreTypeParametersSymbol].ModelType));
 
-      return t.param('criteria', _criteriaType).assert(criteria), t.param('sort', _sortType).assert(sort), Promise.resolve(new WebsocketCursor(this, { criteria: criteria, sort: sort })).then(function (_arg9) {
+      t.param('criteria', _criteriaType).assert(criteria);
+      t.param('sort', _sortType).assert(sort);
+
+      return Promise.resolve(new WebsocketCursor(this, { criteria: criteria, sort: sort })).then(function (_arg9) {
         return _returnType9.assert(_arg9);
       });
     }
@@ -188,7 +231,9 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
     value: function findByKey(key) {
       var _keyType4 = t.any();
 
-      return t.param('key', _keyType4).assert(key), this.findOne({ id: key });
+      t.param('key', _keyType4).assert(key);
+
+      return this.findOne({ id: key });
     }
   }, {
     key: 'findOne',
@@ -199,11 +244,16 @@ var WebsocketStore = (_temp = _class = function (_AbstractStore) {
 
       var _returnType10 = t.return(t.object());
 
-      return t.param('criteria', _criteriaType2).assert(criteria), t.param('sort', _sortType2).assert(sort), this.emit('findOne', criteria, sort).then(function (_arg10) {
+      t.param('criteria', _criteriaType2).assert(criteria);
+      t.param('sort', _sortType2).assert(sort);
+
+      return this.emit('findOne', criteria, sort).then(function (_arg10) {
         return _returnType10.assert(_arg10);
       });
     }
-  }]), WebsocketStore;
+  }]);
+
+  return WebsocketStore;
 }(AbstractStore), _class[t.TypeParametersSymbol] = _WebsocketStoreTypeParametersSymbol, _temp);
 export { WebsocketStore as default };
 //# sourceMappingURL=WebsocketStore.js.map

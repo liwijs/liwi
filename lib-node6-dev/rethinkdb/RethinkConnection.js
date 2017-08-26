@@ -3,9 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]); } return target; };
+exports.default = undefined;
 
 var _nightingaleLogger = require('nightingale-logger');
 
@@ -32,7 +30,19 @@ let RethinkConnection = class extends _AbstractConnection2.default {
   constructor(config) {
     let _configType = _flowRuntime2.default.ref('Map', _flowRuntime2.default.string(), _flowRuntime2.default.union(_flowRuntime2.default.string(), _flowRuntime2.default.number()));
 
-    if (_flowRuntime2.default.param('config', _configType).assert(config), super(), config.has('host') || config.set('host', 'localhost'), config.has('port') || config.set('port', '28015'), !config.has('database')) throw new Error('Missing config database');
+    _flowRuntime2.default.param('config', _configType).assert(config);
+
+    super();
+
+    if (!config.has('host')) {
+      config.set('host', 'localhost');
+    }
+    if (!config.has('port')) {
+      config.set('port', '28015');
+    }
+    if (!config.has('database')) {
+      throw new Error('Missing config database');
+    }
 
     this.connect({
       host: config.get('host'),
@@ -44,12 +54,26 @@ let RethinkConnection = class extends _AbstractConnection2.default {
   connect(options) {
     let _optionsType = _flowRuntime2.default.object();
 
-    _flowRuntime2.default.param('options', _optionsType).assert(options), logger.info('connecting', options), this._connection = (0, _rethinkdbdash2.default)(_extends({}, options, {
+    _flowRuntime2.default.param('options', _optionsType).assert(options);
+
+    logger.info('connecting', options);
+
+    this._connection = (0, _rethinkdbdash2.default)(Object.assign({}, options, {
       buffer: 20,
       max: 100
-    })), this._connection.getPoolMaster().on('healthy', healthy => {
-      healthy === true ? (this.getConnection = () => Promise.resolve(this._connection), logger.info('healthy')) : (this.getConnection = () => Promise.reject(new Error('Connection not healthy')), logger.warn('not healthy'));
-    }), this.getConnection = () => Promise.resolve(this._connection);
+    }));
+
+    this._connection.getPoolMaster().on('healthy', healthy => {
+      if (healthy === true) {
+        this.getConnection = () => Promise.resolve(this._connection);
+        logger.info('healthy');
+      } else {
+        this.getConnection = () => Promise.reject(new Error('Connection not healthy'));
+        logger.warn('not healthy');
+      }
+    });
+
+    this.getConnection = () => Promise.resolve(this._connection);
   }
 
   getConnection() {
@@ -59,9 +83,15 @@ let RethinkConnection = class extends _AbstractConnection2.default {
   }
 
   close() {
-    return (this.getConnection = () => Promise.reject(new Error('Connection closed')), this._connection) ? this._connection.getPoolMaster().drain().then(() => {
-      logger.info('connection closed'), this._connection = null;
-    }) : this._connecting ? this.getConnection().then(() => this.close()) : void 0;
+    this.getConnection = () => Promise.reject(new Error('Connection closed'));
+    if (this._connection) {
+      return this._connection.getPoolMaster().drain().then(() => {
+        logger.info('connection closed');
+        this._connection = null;
+      });
+    } else if (this._connecting) {
+      return this.getConnection().then(() => this.close());
+    }
   }
 };
 exports.default = RethinkConnection;

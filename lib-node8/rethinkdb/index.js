@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RethinkConnection = exports.RethinkStore = void 0;
+exports.RethinkConnection = exports.RethinkStore = undefined;
 
 var _RethinkStore2 = require('./RethinkStore');
 

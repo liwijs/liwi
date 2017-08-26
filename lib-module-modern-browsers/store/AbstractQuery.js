@@ -1,7 +1,8 @@
 let AbstractQuery = class {
 
   constructor(store, queryCallback) {
-    this.store = store, this.queryCallback = queryCallback;
+    this.store = store;
+    this.queryCallback = queryCallback;
   }
 
   fetchAndSubscribe(callback, ...args) {

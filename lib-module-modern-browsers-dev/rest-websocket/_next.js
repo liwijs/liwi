@@ -11,19 +11,27 @@ export default function init(io, restService) {
     let activeListeners = new Map();
 
     const closeCursor = function closeCursor(id) {
-      clearTimeout(timeouts[id]), timeouts.delete(id), openCursors[id].close(), openCursors.delete(id);
+      clearTimeout(timeouts[id]);
+      timeouts.delete(id);
+      openCursors[id].close();
+      openCursors.delete(id);
     };
 
     socket.on('disconnect', function () {
       openCursors.forEach(function (cursor) {
         return cursor.close();
-      }), timeouts.forEach(function (timeout) {
+      });
+      timeouts.forEach(function (timeout) {
         return clearTimeout(timeout);
-      }), activeListeners.forEach(function (listener) {
+      });
+      activeListeners.forEach(function (listener) {
         return listener.close();
-      }), openCursors = null, timeouts = null, activeListeners = null;
-    });
+      });
 
+      openCursors = null;
+      timeouts = null;
+      activeListeners = null;
+    });
 
     let nextIdCursor = 1;
 
@@ -32,10 +40,12 @@ export default function init(io, restService) {
 
       let _callbackType = t.function();
 
-      t.param('args', _argsType).assert(args), t.param('callback', _callbackType).assert(callback);
+      t.param('args', _argsType).assert(args);
+      t.param('callback', _callbackType).assert(callback);
       let { type, restName } = t.object(t.property('type', t.string()), t.property('restName', t.string())).assert(_arg);
 
-      switch (logger.info('rest', { type, restName, args }), type) {
+      logger.info('rest', { type, restName, args });
+      switch (type) {
         case 'createCursor':
           {
             if (openCursors.size > MAX_OPENED_CURSORS) return callback('too many cursors');
@@ -43,9 +53,14 @@ export default function init(io, restService) {
             const id = nextIdCursor++;
             const [options] = args;
             const cursor = restService.createCursor(restName, options);
-            return cursor ? (timeouts.set(id, setTimeout(function () {
-              logger.warn('socket closed by timeout', { id, restName }), closeCursor(id);
-            })), callback(null, id)) : callback('failed to create cursor');
+            if (!cursor) return callback('failed to create cursor');
+
+            timeouts.set(id, setTimeout(function () {
+              logger.warn('socket closed by timeout', { id, restName });
+              closeCursor(id);
+            }));
+
+            return callback(null, id);
           }
 
         case 'cursor toArray':
@@ -68,7 +83,8 @@ export default function init(io, restService) {
             if (!cursor) return callback(`failed to find cursor "${idCursor}"`);
             switch (typeCursorAction) {
               case 'close':
-                return closeCursor(idCursor), callback();
+                closeCursor(idCursor);
+                return callback();
 
               case 'advance':
               case 'next':
@@ -91,7 +107,6 @@ export default function init(io, restService) {
 
               default:
                 callback(`Unknown command: "${type}"`);
-
             }
 
             break;
@@ -115,7 +130,6 @@ export default function init(io, restService) {
 
         default:
           callback(`Unknown command: "${type}"`);
-
       }
     });
   });

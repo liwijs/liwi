@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = undefined;
 
 var _AbstractQuery = require('../store/AbstractQuery');
 
@@ -23,7 +23,9 @@ const SubscribeReturnType = _flowRuntime2.default.type('SubscribeReturnType', _f
 
 let Query = class extends _AbstractQuery2.default {
   constructor(...args) {
-    super(...args), _flowRuntime2.default.bindTypeParameters(this, _flowRuntime2.default.ref(_RethinkStore2.default));
+    super(...args);
+
+    _flowRuntime2.default.bindTypeParameters(this, _flowRuntime2.default.ref(_RethinkStore2.default));
   }
 
   fetch(callback) {
@@ -31,7 +33,9 @@ let Query = class extends _AbstractQuery2.default {
 
     const _returnType = _flowRuntime2.default.return(_flowRuntime2.default.any());
 
-    return _flowRuntime2.default.param('callback', _callbackType).assert(callback), this.queryCallback(this.store.query(), this.store.r).run().then(callback).then(_arg => _returnType.assert(_arg));
+    _flowRuntime2.default.param('callback', _callbackType).assert(callback);
+
+    return this.queryCallback(this.store.query(), this.store.r).run().then(callback).then(_arg => _returnType.assert(_arg));
   }
 
   _subscribe(callback, _includeInitial = false, args) {
@@ -41,7 +45,9 @@ let Query = class extends _AbstractQuery2.default {
 
     const _returnType2 = _flowRuntime2.default.return(SubscribeReturnType);
 
-    _flowRuntime2.default.param('callback', _callbackType2).assert(callback), _flowRuntime2.default.param('args', _argsType).assert(args);
+    _flowRuntime2.default.param('callback', _callbackType2).assert(callback);
+
+    _flowRuntime2.default.param('args', _argsType).assert(args);
 
     let _feed;
     let promise = this.queryCallback(this.store.query(), this.store.r).changes({
@@ -49,10 +55,17 @@ let Query = class extends _AbstractQuery2.default {
       includeStates: true,
       includeTypes: true,
       includeOffsets: true
-    }).then(feed => (args.length === 0 && (_feed = feed, delete this._promise), feed.each(callback), feed));
+    }).then(feed => {
+      if (args.length === 0) {
+        _feed = feed;
+        delete this._promise;
+      }
 
-    args.length === 0 && (this._promise = promise);
+      feed.each(callback);
+      return feed;
+    });
 
+    if (args.length === 0) this._promise = promise;
 
     const stop = () => {
       this.closeFeed(_feed, promise);
@@ -66,7 +79,11 @@ let Query = class extends _AbstractQuery2.default {
   }
 
   closeFeed(feed, promise) {
-    feed ? feed.close() : promise && promise.then(feed => feed.close());
+    if (feed) {
+      feed.close();
+    } else if (promise) {
+      promise.then(feed => feed.close());
+    }
   }
 };
 exports.default = Query;

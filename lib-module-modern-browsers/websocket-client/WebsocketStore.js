@@ -9,18 +9,26 @@ const logger = new Logger('liwi:websocket-client');
 let WebsocketStore = class extends AbstractStore {
 
   constructor(websocket, restName) {
+    super(websocket);
 
-    if (super(websocket), this.keyPath = 'id', !restName) throw new Error(`Invalid restName: "${restName}"`);
+    this.keyPath = 'id';
+    if (!restName) {
+      throw new Error(`Invalid restName: "${restName}"`);
+    }
 
     this.restName = restName;
   }
 
   createQuery(key) {
-    return logger.debug('createQuery', { key }), new Query(this, key);
+    logger.debug('createQuery', { key });
+    return new Query(this, key);
   }
 
   emit(type, ...args) {
-    if (logger.debug('emit', { type, args }), this.connection.isDisconnected()) throw new Error('Websocket is not connected');
+    logger.debug('emit', { type, args });
+    if (this.connection.isDisconnected()) {
+      throw new Error('Websocket is not connected');
+    }
 
     return this.connection.emit('rest', {
       type,
@@ -38,7 +46,8 @@ let WebsocketStore = class extends AbstractStore {
       return _this.emit(type, ...args);
     };
     return emit().then(function () {
-      return _this.connection.on('reconnect', emit), function () {
+      _this.connection.on('reconnect', emit);
+      return function () {
         return _this.connection.off('reconnect', emit);
       };
     });

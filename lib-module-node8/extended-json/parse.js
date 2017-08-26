@@ -14,7 +14,9 @@ const internalReviver = (key, value) => {
 
   if (typeof value === 'string') {
     const matchDate = regexpStringDate.exec(value);
-    if (matchDate) return new Date(Date.UTC(+matchDate[1], +matchDate[2] - 1, +matchDate[3], +matchDate[4], +matchDate[5], +matchDate[6]));
+    if (matchDate) {
+      return new Date(Date.UTC(+matchDate[1], +matchDate[2] - 1, +matchDate[3], +matchDate[4], +matchDate[5], +matchDate[6]));
+    }
   }
 
   return value;

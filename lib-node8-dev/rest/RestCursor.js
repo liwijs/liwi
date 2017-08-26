@@ -5,7 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 let RestCursor = class {
   constructor(restResource, connectedUser, cursor) {
-    this._restResource = restResource, this._connectedUser = connectedUser, this._cursor = cursor;
+    this._restResource = restResource;
+    this._connectedUser = connectedUser;
+    this._cursor = cursor;
   }
 
   toArray() {

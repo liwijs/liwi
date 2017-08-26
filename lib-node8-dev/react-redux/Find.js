@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = undefined;
 
 var _class, _temp2;
 
@@ -35,7 +35,7 @@ let FindComponent = (_temp2 = _class = class extends _react.Component {
 
     return _temp = super(...args), this.state = {
       fetched: false,
-      result: void 0
+      result: undefined
     }, _temp;
   }
 
@@ -46,21 +46,30 @@ let FindComponent = (_temp2 = _class = class extends _react.Component {
 
       _flowRuntime2.default.param('result', _resultType).assert(result);
 
-      this._find && (this.setState({
+      if (!this._find) return;
+      this.setState({
         fetched: true,
         result
-      }), delete this._find);
+      });
+      delete this._find;
     });
   }
 
   componentWillUnmount() {
-    this._find && delete this._find;
+    if (this._find) {
+      // this._find.cancel();
+      delete this._find;
+    }
   }
 
   render() {
     const _returnType = _flowRuntime2.default.return(_flowRuntime2.default.ref(ReactNodeType));
 
-    return this.state.fetched ? _returnType.assert(_react2.default.createElement(this.props.component, { [this.props.name]: this.state.result })) : _returnType.assert(this.props.loadingComponent ? _react2.default.createElement(this.props.loadingComponent) : null);
+    if (!this.state.fetched) {
+      return _returnType.assert(this.props.loadingComponent ? _react2.default.createElement(this.props.loadingComponent) : null);
+    }
+
+    return _returnType.assert(_react2.default.createElement(this.props.component, { [this.props.name]: this.state.result }));
   }
 }, _class.propTypes = _flowRuntime2.default.propTypes(PropsType), _temp2);
 exports.default = FindComponent;

@@ -5,7 +5,7 @@ let FindComponent = class extends Component {
 
     return _temp = super(...args), this.state = {
       fetched: false,
-      result: void 0
+      result: undefined
     }, _temp;
   }
 
@@ -14,19 +14,28 @@ let FindComponent = class extends Component {
 
     const { query } = this.props;
     this._find = query.fetch(function (result) {
-      _this._find && (_this.setState({
+      if (!_this._find) return;
+      _this.setState({
         fetched: true,
         result
-      }), delete _this._find);
+      });
+      delete _this._find;
     });
   }
 
   componentWillUnmount() {
-    this._find && delete this._find;
+    if (this._find) {
+      // this._find.cancel();
+      delete this._find;
+    }
   }
 
   render() {
-    return this.state.fetched ? React.createElement(this.props.component, { [this.props.name]: this.state.result }) : this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null;
+    if (!this.state.fetched) {
+      return this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null;
+    }
+
+    return React.createElement(this.props.component, { [this.props.name]: this.state.result });
   }
 };
 export { FindComponent as default };

@@ -41,7 +41,7 @@ let AbstractCursor = class {
   }
 
   async forEachKeys(callback) {
-    for (;;) {
+    while (true) {
       const key = await this.next();
       if (!key) return;
 
@@ -60,16 +60,20 @@ let AbstractCursor = class {
   }
 
   *keysIterator() {
-    for (;;) yield this.next();
+    while (true) {
+      yield this.next();
+    }
   }
 
   *[Symbol.iterator]() {
     var _this3 = this;
 
     // eslint-disable-next-line no-restricted-syntax
-    for (let keyPromise of this.keysIterator()) yield keyPromise.then(function (key) {
-      return key && _this3.result();
-    });
+    for (let keyPromise of this.keysIterator()) {
+      yield keyPromise.then(function (key) {
+        return key && _this3.result();
+      });
+    }
   }
 
   // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356

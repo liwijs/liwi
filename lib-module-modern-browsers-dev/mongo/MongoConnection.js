@@ -11,7 +11,19 @@ let MongoConnection = class extends AbstractConnection {
   constructor(config) {
     let _configType = t.ref('Map', t.string(), t.union(t.string(), t.number()));
 
-    if (t.param('config', _configType).assert(config), super(), config.has('host') || config.set('host', 'localhost'), config.has('port') || config.set('port', '27017'), !config.has('database')) throw new Error('Missing config database');
+    t.param('config', _configType).assert(config);
+
+    super();
+
+    if (!config.has('host')) {
+      config.set('host', 'localhost');
+    }
+    if (!config.has('port')) {
+      config.set('port', '27017');
+    }
+    if (!config.has('database')) {
+      throw new Error('Missing config database');
+    }
 
     const connectionString = `mongodb://${config.has('user') ? `${config.get('user')}:${config.get('password')}@` : ''}` + `${config.get('host')}:${config.get('port')}/${config.get('database')}`;
 
@@ -23,35 +35,54 @@ let MongoConnection = class extends AbstractConnection {
 
     logger.info('connecting', { connectionString });
 
-
     const connectPromise = MongoClient.connect(connectionString).then(function (connection) {
-      return logger.info('connected', { connectionString }), connection.on('close', function () {
-        logger.warn('close', { connectionString }), _this.connectionFailed = true, _this.getConnection = function () {
+      logger.info('connected', { connectionString });
+      connection.on('close', function () {
+        logger.warn('close', { connectionString });
+        _this.connectionFailed = true;
+        _this.getConnection = function () {
           return Promise.reject(new Error('MongoDB connection closed'));
         };
-      }), connection.on('timeout', function () {
-        logger.warn('timeout', { connectionString }), _this.connectionFailed = true, _this.getConnection = function () {
+      });
+      connection.on('timeout', function () {
+        logger.warn('timeout', { connectionString });
+        _this.connectionFailed = true;
+        _this.getConnection = function () {
           return Promise.reject(new Error('MongoDB connection timeout'));
         };
-      }), connection.on('reconnect', function () {
-        logger.warn('reconnect', { connectionString }), _this.connectionFailed = false, _this.getConnection = function () {
+      });
+      connection.on('reconnect', function () {
+        logger.warn('reconnect', { connectionString });
+        _this.connectionFailed = false;
+        _this.getConnection = function () {
           return Promise.resolve(_this._connection);
         };
-      }), connection.on('error', function (err) {
+      });
+      connection.on('error', function (err) {
         logger.warn('error', { connectionString, err });
-      }), _this._connection = connection, _this._connecting = null, _this.getConnection = function () {
-        return Promise.resolve(_this._connection);
-      }, connection;
-    }).catch(function (err) {
+      });
 
-      throw logger.info('not connected', { connectionString }), console.error(err.message || err), process.nextTick(function () {
+      _this._connection = connection;
+      _this._connecting = null;
+      _this.getConnection = function () {
+        return Promise.resolve(_this._connection);
+      };
+      return connection;
+    }).catch(function (err) {
+      logger.info('not connected', { connectionString });
+      console.error(err.message || err);
+      // throw err;
+      process.nextTick(function () {
         process.exit(1);
-      }), err;
+      });
+
+      throw err;
     });
 
     this.getConnection = function () {
       return Promise.resolve(connectPromise);
-    }, this._connecting = this.getConnection();
+    };
+    this._connecting = this.getConnection();
   }
 
   getConnection() {
@@ -63,13 +94,18 @@ let MongoConnection = class extends AbstractConnection {
   close() {
     var _this2 = this;
 
-    return (this.getConnection = function () {
+    this.getConnection = function () {
       return Promise.reject(new Error('Connection closed'));
-    }, this._connection) ? this._connection.close().then(function () {
-      _this2._connection = null;
-    }) : this._connecting ? this._connecting.then(function () {
-      return _this2.close();
-    }) : void 0;
+    };
+    if (this._connection) {
+      return this._connection.close().then(function () {
+        _this2._connection = null;
+      });
+    } else if (this._connecting) {
+      return this._connecting.then(function () {
+        return _this2.close();
+      });
+    }
   }
 };
 export { MongoConnection as default };

@@ -17,20 +17,35 @@ let FindAndSubscribeComponent = class extends Component {
 
     const { query } = this.props;
     this._subscribe = query.fetchAndSubscribe(function (err, change) {
-      if (err) return void alert(`Unexpected error: ${err}`);
+      if (err) {
+        // eslint-disable-next-line no-alert
+        alert(`Unexpected error: ${err}`);
+        return;
+      }
 
       const newResult = applyChange(_this.state.result, change);
 
-      _this.state.fetched ? newResult !== _this.state.result && _this.setState({ result: newResult }) : _this.setState({ fetched: true, result: newResult });
+      if (!_this.state.fetched) {
+        _this.setState({ fetched: true, result: newResult });
+      } else if (newResult !== _this.state.result) {
+        _this.setState({ result: newResult });
+      }
     });
   }
 
   componentWillUnmount() {
-    this._subscribe && (this._subscribe.stop(), delete this._subscribe);
+    if (this._subscribe) {
+      this._subscribe.stop();
+      delete this._subscribe;
+    }
   }
 
   render() {
-    return this.state.fetched ? React.createElement(this.props.component, { [this.props.name]: this.state.result }) : this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null;
+    if (!this.state.fetched) {
+      return this.props.loadingComponent ? React.createElement(this.props.loadingComponent) : null;
+    }
+
+    return React.createElement(this.props.component, { [this.props.name]: this.state.result });
   }
 };
 export { FindAndSubscribeComponent as default };

@@ -12,19 +12,26 @@ let AbstractQuery = (_temp = _class = class {
   constructor(store, queryCallback) {
     this[_AbstractQueryTypeParametersSymbol] = {
       Store: t.typeParameter('Store', t.ref(AbstractStore))
-    }, this.store = store, this.queryCallback = queryCallback;
+    };
+
+    this.store = store;
+    this.queryCallback = queryCallback;
   }
 
   fetchAndSubscribe(callback, ...args) {
     let _callbackType = t.function();
 
-    return t.param('callback', _callbackType).assert(callback), this._subscribe(callback, true, args);
+    t.param('callback', _callbackType).assert(callback);
+
+    return this._subscribe(callback, true, args);
   }
 
   subscribe(callback, ...args) {
     let _callbackType2 = t.function();
 
-    return t.param('callback', _callbackType2).assert(callback), this._subscribe(callback, false, args);
+    t.param('callback', _callbackType2).assert(callback);
+
+    return this._subscribe(callback, false, args);
   }
 }, _class[t.TypeParametersSymbol] = _AbstractQueryTypeParametersSymbol, _temp);
 export { AbstractQuery as default };

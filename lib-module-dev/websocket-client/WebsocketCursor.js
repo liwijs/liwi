@@ -1,10 +1,10 @@
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false, descriptor.configurable = true, "value" in descriptor && (descriptor.writable = true), Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function"); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }), superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 import WebsocketStore from './WebsocketStore';
 import AbstractCursor from '../store/AbstractCursor';
@@ -16,6 +16,8 @@ var ResultType = t.tdz(function () {
 });
 
 var WebsocketCursor = function (_AbstractCursor) {
+  _inherits(WebsocketCursor, _AbstractCursor);
+
   function WebsocketCursor(store, options) {
     _classCallCheck(this, WebsocketCursor);
 
@@ -25,21 +27,26 @@ var WebsocketCursor = function (_AbstractCursor) {
 
     var _this = _possibleConstructorReturn(this, (WebsocketCursor.__proto__ || Object.getPrototypeOf(WebsocketCursor)).call(this, store));
 
-    return _this._options = options, t.bindTypeParameters(_this, t.ref(WebsocketStore)), _this._options = options, _this;
+    t.bindTypeParameters(_this, t.ref(WebsocketStore));
+
+    _this._options = options;
+    return _this;
   }
 
   /* options */
 
-  return _inherits(WebsocketCursor, _AbstractCursor), _createClass(WebsocketCursor, [{
+  _createClass(WebsocketCursor, [{
     key: 'limit',
     value: function limit(newLimit) {
       var _newLimitType = t.number();
 
       var _returnType = t.return(t.this(this));
 
-      if (t.param('newLimit', _newLimitType).assert(newLimit), this._idCursor) throw new Error('Cursor already created');
+      t.param('newLimit', _newLimitType).assert(newLimit);
 
-      return this._options.limit = newLimit, Promise.resolve(this).then(function (_arg) {
+      if (this._idCursor) throw new Error('Cursor already created');
+      this._options.limit = newLimit;
+      return Promise.resolve(this).then(function (_arg) {
         return _returnType.assert(_arg);
       });
     }
@@ -53,7 +60,8 @@ var WebsocketCursor = function (_AbstractCursor) {
 
       if (this._idCursor) throw new Error('Cursor already created');
       return this.store.connection.emit('createCursor', this._options).then(function (idCursor) {
-        idCursor && (_this2._idCursor = idCursor);
+        if (!idCursor) return;
+        _this2._idCursor = idCursor;
       });
     }
   }, {
@@ -61,16 +69,22 @@ var WebsocketCursor = function (_AbstractCursor) {
     value: function emit(type) {
       var _this3 = this;
 
-      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) args[_key - 1] = arguments[_key];
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
 
       var _returnType2 = t.return(t.any());
 
-      return this._idCursor ? this.store.emit('cursor', { type: type, id: this._idCursor }, args).then(function (_arg3) {
+      if (!this._idCursor) {
+        return this._create().then(function () {
+          return _this3.emit.apply(_this3, [type].concat(args));
+        }).then(function (_arg2) {
+          return _returnType2.assert(_arg2);
+        });
+      }
+
+      return this.store.emit('cursor', { type: type, id: this._idCursor }, args).then(function (_arg3) {
         return _returnType2.assert(_arg3);
-      }) : this._create().then(function () {
-        return _this3.emit.apply(_this3, [type].concat(args));
-      }).then(function (_arg2) {
-        return _returnType2.assert(_arg2);
       });
     }
   }, {
@@ -78,7 +92,10 @@ var WebsocketCursor = function (_AbstractCursor) {
     value: function advance(count) {
       var _countType = t.number();
 
-      return t.param('count', _countType).assert(count), this.emit('advance', count), this;
+      t.param('count', _countType).assert(count);
+
+      this.emit('advance', count);
+      return this;
     }
   }, {
     key: 'next',
@@ -88,7 +105,9 @@ var WebsocketCursor = function (_AbstractCursor) {
       var _returnType3 = t.return(t.nullable(t.any()));
 
       return this.emit('next').then(function (result) {
-        return _this4._result = result, _this4.key = result && result[_this4._store.keyPath], _this4.key;
+        _this4._result = result;
+        _this4.key = result && result[_this4._store.keyPath];
+        return _this4.key;
       }).then(function (_arg4) {
         return _returnType3.assert(_arg4);
       });
@@ -105,11 +124,13 @@ var WebsocketCursor = function (_AbstractCursor) {
   }, {
     key: 'count',
     value: function count() {
-      var applyLimit = arguments.length > 0 && arguments[0] !== void 0 && arguments[0];
+      var applyLimit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
       var _applyLimitType = t.boolean();
 
-      return t.param('applyLimit', _applyLimitType).assert(applyLimit), this.emit('count', applyLimit);
+      t.param('applyLimit', _applyLimitType).assert(applyLimit);
+
+      return this.emit('count', applyLimit);
     }
   }, {
     key: 'close',
@@ -121,8 +142,11 @@ var WebsocketCursor = function (_AbstractCursor) {
       });
 
       var closedPromise = this._idCursor ? this.emit('close') : Promise.resolve();
-
-      return this._idCursor = null, this._options = null, this._store = void 0, this._result = void 0, closedPromise.then(function (_arg7) {
+      this._idCursor = null;
+      this._options = null;
+      this._store = undefined;
+      this._result = undefined;
+      return closedPromise.then(function (_arg7) {
         return _returnType5.assert(_arg7);
       });
     }
@@ -134,12 +158,15 @@ var WebsocketCursor = function (_AbstractCursor) {
       var _returnType6 = t.return(t.array(t.array(t.ref(ResultType))));
 
       return this.store.emit('cursor toArray', this._options).then(function (result) {
-        return _this5.close(), result;
+        _this5.close();
+        return result;
       }).then(function (_arg8) {
         return _returnType6.assert(_arg8);
       });
     }
-  }]), WebsocketCursor;
+  }]);
+
+  return WebsocketCursor;
 }(AbstractCursor);
 
 export { WebsocketCursor as default };

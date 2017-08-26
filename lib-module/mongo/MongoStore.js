@@ -1,10 +1,10 @@
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false, descriptor.configurable = true, "value" in descriptor && (descriptor.writable = true), Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function"); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }), superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 import { ObjectID } from 'mongodb';
 
@@ -12,25 +12,29 @@ import AbstractStore from '../store/AbstractStore';
 import MongoCursor from './MongoCursor';
 
 var MongoStore = function (_AbstractStore) {
+  _inherits(MongoStore, _AbstractStore);
+
   function MongoStore(connection, collectionName) {
     _classCallCheck(this, MongoStore);
 
     var _this = _possibleConstructorReturn(this, (MongoStore.__proto__ || Object.getPrototypeOf(MongoStore)).call(this, connection));
 
-    if (_this.keyPath = '_id', !collectionName) throw new Error('Invalid collectionName: "' + collectionName + '"');
+    _this.keyPath = '_id';
 
-    return _this._collection = connection.getConnection().then(function (db) {
+
+    if (!collectionName) {
+      throw new Error('Invalid collectionName: "' + collectionName + '"');
+    }
+
+    _this._collection = connection.getConnection().then(function (db) {
       return _this._collection = db.collection(collectionName);
     }).catch(function (err) {
       return _this._collection = Promise.reject(err);
-    }), _this._collection = connection.getConnection().then(function (db) {
-      return _this._collection = db.collection(collectionName);
-    }).catch(function (err) {
-      return _this._collection = Promise.reject(err);
-    }), _this;
+    });
+    return _this;
   }
 
-  return _inherits(MongoStore, _AbstractStore), _createClass(MongoStore, [{
+  _createClass(MongoStore, [{
     key: 'create',
     value: function create() {
       return Promise.resolve();
@@ -38,15 +42,23 @@ var MongoStore = function (_AbstractStore) {
   }, {
     key: 'insertOne',
     value: function insertOne(object) {
+      if (!object._id) {
+        object._id = new ObjectID().toString();
+      }
+      if (!object.created) {
+        object.created = new Date();
+      }
 
-      return object._id || (object._id = new ObjectID().toString()), object.created || (object.created = new Date()), this.collection.then(function (collection) {
+      return this.collection.then(function (collection) {
         return collection.insertOne(object);
       }).then(function (_ref) {
         var result = _ref.result,
             connection = _ref.connection,
             ops = _ref.ops;
 
-        if (!result.ok || result.n !== 1) throw new Error('Fail to insert');
+        if (!result.ok || result.n !== 1) {
+          throw new Error('Fail to insert');
+        }
       }).then(function () {
         return object;
       });
@@ -59,8 +71,11 @@ var MongoStore = function (_AbstractStore) {
   }, {
     key: 'replaceOne',
     value: function replaceOne(object) {
+      if (!object.updated) {
+        object.updated = new Date();
+      }
 
-      return object.updated || (object.updated = new Date()), this.collection.then(function (collection) {
+      return this.collection.then(function (collection) {
         return collection.updateOne({ _id: object._id }, object);
       }).then(function () {
         return object;
@@ -69,8 +84,11 @@ var MongoStore = function (_AbstractStore) {
   }, {
     key: 'upsertOne',
     value: function upsertOne(object) {
+      if (!object.updated) {
+        object.updated = new Date();
+      }
 
-      return object.updated || (object.updated = new Date()), this.collection.then(function (collection) {
+      return this.collection.then(function (collection) {
         return collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true });
       }).then(function () {
         return object;
@@ -90,14 +108,19 @@ var MongoStore = function (_AbstractStore) {
     value: function _partialUpdate(partialUpdate) {
       // https://docs.mongodb.com/manual/reference/operator/update/
       // if has a mongo operator
-      return Object.keys(partialUpdate).some(function (key) {
+      if (Object.keys(partialUpdate).some(function (key) {
         return key[0] === '$';
-      }) ? partialUpdate : { $set: partialUpdate };
+      })) {
+        return partialUpdate;
+      } else {
+        return { $set: partialUpdate };
+      }
     }
   }, {
     key: 'partialUpdateByKey',
     value: function partialUpdateByKey(key, partialUpdate) {
-      return partialUpdate = this._partialUpdate(partialUpdate), this.collection.then(function (collection) {
+      partialUpdate = this._partialUpdate(partialUpdate);
+      return this.collection.then(function (collection) {
         return collection.updateOne({ _id: key }, partialUpdate);
       });
     }
@@ -106,14 +129,16 @@ var MongoStore = function (_AbstractStore) {
     value: function partialUpdateOne(object, partialUpdate) {
       var _this3 = this;
 
-      return partialUpdate = this._partialUpdate(partialUpdate), this.partialUpdateByKey(object._id, partialUpdate).then(function () {
+      partialUpdate = this._partialUpdate(partialUpdate);
+      return this.partialUpdateByKey(object._id, partialUpdate).then(function () {
         return _this3.findByKey(object._id);
       });
     }
   }, {
     key: 'partialUpdateMany',
     value: function partialUpdateMany(criteria, partialUpdate) {
-      return partialUpdate = this._partialUpdate(partialUpdate), this.collection.then(function (collection) {
+      partialUpdate = this._partialUpdate(partialUpdate);
+      return this.collection.then(function (collection) {
         return collection.updateMany(criteria, partialUpdate);
       }).then(function () {
         return null;
@@ -160,9 +185,15 @@ var MongoStore = function (_AbstractStore) {
   }, {
     key: 'collection',
     get: function get() {
-      return this.connection.connectionFailed ? Promise.reject(new Error('MongoDB connection failed')) : Promise.resolve(this._collection);
+      if (this.connection.connectionFailed) {
+        return Promise.reject(new Error('MongoDB connection failed'));
+      }
+
+      return Promise.resolve(this._collection);
     }
-  }]), MongoStore;
+  }]);
+
+  return MongoStore;
 }(AbstractStore);
 
 export { MongoStore as default };

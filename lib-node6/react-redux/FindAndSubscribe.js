@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = undefined;
 
 var _react = require('react');
 
@@ -28,20 +28,35 @@ let FindAndSubscribeComponent = class extends _react.Component {
   componentDidMount() {
     const { query } = this.props;
     this._subscribe = query.fetchAndSubscribe((err, change) => {
-      if (err) return void alert(`Unexpected error: ${err}`);
+      if (err) {
+        // eslint-disable-next-line no-alert
+        alert(`Unexpected error: ${err}`);
+        return;
+      }
 
       const newResult = (0, _applyChange2.default)(this.state.result, change);
 
-      this.state.fetched ? newResult !== this.state.result && this.setState({ result: newResult }) : this.setState({ fetched: true, result: newResult });
+      if (!this.state.fetched) {
+        this.setState({ fetched: true, result: newResult });
+      } else if (newResult !== this.state.result) {
+        this.setState({ result: newResult });
+      }
     });
   }
 
   componentWillUnmount() {
-    this._subscribe && (this._subscribe.stop(), delete this._subscribe);
+    if (this._subscribe) {
+      this._subscribe.stop();
+      delete this._subscribe;
+    }
   }
 
   render() {
-    return this.state.fetched ? _react2.default.createElement(this.props.component, { [this.props.name]: this.state.result }) : this.props.loadingComponent ? _react2.default.createElement(this.props.loadingComponent) : null;
+    if (!this.state.fetched) {
+      return this.props.loadingComponent ? _react2.default.createElement(this.props.loadingComponent) : null;
+    }
+
+    return _react2.default.createElement(this.props.component, { [this.props.name]: this.state.result });
   }
 };
 exports.default = FindAndSubscribeComponent;

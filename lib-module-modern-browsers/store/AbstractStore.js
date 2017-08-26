@@ -5,7 +5,8 @@ let AbstractStore = class {
      * @param {AbstractConnection} connection
      */
   constructor(connection) {
-    assert(connection), this._connection = connection;
+    assert(connection);
+    this._connection = connection;
   }
 
   get connection() {

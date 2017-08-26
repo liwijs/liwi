@@ -5,13 +5,17 @@ let RestService = class {
   constructor(restResources) {
     let _restResourcesType = t.ref('Map', t.string(), t.any());
 
-    t.param('restResources', _restResourcesType).assert(restResources), this.restResources = restResources;
+    t.param('restResources', _restResourcesType).assert(restResources);
+
+    this.restResources = restResources;
   }
 
   addRestResource(key, restResource) {
     let _keyType = t.string();
 
-    t.param('key', _keyType).assert(key), this.restResources.set(key, restResource);
+    t.param('key', _keyType).assert(key);
+
+    this.restResources.set(key, restResource);
   }
 
   get(key) {
@@ -31,11 +35,14 @@ let RestService = class {
 
     t.param('connectedUser', _connectedUserType).assert(connectedUser);
     let { criteria, sort, limit } = t.object(t.property('criteria', t.nullable(t.object())), t.property('sort', t.nullable(t.object())), t.property('limit', t.nullable(t.number()))).assert(_arg);
-    criteria = restResource.criteria(connectedUser, criteria || {}), sort = restResource.sort(connectedUser, sort);
 
+    // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
+    criteria = restResource.criteria(connectedUser, criteria || {});
+    sort = restResource.sort(connectedUser, sort);
     const cursor = await restResource.store.cursor(criteria, sort);
-
-    return limit = restResource.limit(limit), limit && cursor.limit(connectedUser, limit), _returnType.assert(new RestCursor(restResource, connectedUser, cursor));
+    limit = restResource.limit(limit);
+    if (limit) cursor.limit(connectedUser, limit);
+    return _returnType.assert(new RestCursor(restResource, connectedUser, cursor));
   }
 };
 export { RestService as default };

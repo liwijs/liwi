@@ -2,7 +2,8 @@
 import AbstractCursor from '../store/AbstractCursor';
 let MongoCursor = class extends AbstractCursor {
   constructor(store, cursor) {
-    super(store), this._cursor = cursor;
+    super(store);
+    this._cursor = cursor;
   }
 
   advance(count) {
@@ -10,11 +11,16 @@ let MongoCursor = class extends AbstractCursor {
   }
 
   next() {
-    return this._cursor.next().then(value => (this._result = value, this.key = value && value._id, this.key));
+    return this._cursor.next().then(value => {
+      this._result = value;
+      this.key = value && value._id;
+      return this.key;
+    });
   }
 
   limit(newLimit) {
-    return this._cursor.limit(newLimit), Promise.resolve(this);
+    this._cursor.limit(newLimit);
+    return Promise.resolve(this);
   }
 
   count(applyLimit = false) {
@@ -26,8 +32,14 @@ let MongoCursor = class extends AbstractCursor {
   }
 
   close() {
+    if (this._cursor) {
+      this._cursor.close();
+      this._cursor = undefined;
+      this._store = undefined;
+      this._result = undefined;
+    }
 
-    return this._cursor && (this._cursor.close(), this._cursor = void 0, this._store = void 0, this._result = void 0), Promise.resolve();
+    return Promise.resolve();
   }
 
   toArray() {

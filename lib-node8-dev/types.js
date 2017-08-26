@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.StoreInterfaceType = exports.CursorInterfaceType = exports.ResultType = exports.UpdateType = exports.InsertType = void 0;
+exports.StoreInterfaceType = exports.CursorInterfaceType = exports.ResultType = exports.UpdateType = exports.InsertType = undefined;
 
 var _flowRuntime = require("flow-runtime");
 

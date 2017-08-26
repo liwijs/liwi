@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = undefined;
 
 var _AbstractQuery = require('../store/AbstractQuery');
 
@@ -23,10 +23,17 @@ let Query = class extends _AbstractQuery2.default {
       includeStates: true,
       includeTypes: true,
       includeOffsets: true
-    }).then(feed => (args.length === 0 && (_feed = feed, delete this._promise), feed.each(callback), feed));
+    }).then(feed => {
+      if (args.length === 0) {
+        _feed = feed;
+        delete this._promise;
+      }
 
-    args.length === 0 && (this._promise = promise);
+      feed.each(callback);
+      return feed;
+    });
 
+    if (args.length === 0) this._promise = promise;
 
     const stop = () => {
       this.closeFeed(_feed, promise);
@@ -40,7 +47,11 @@ let Query = class extends _AbstractQuery2.default {
   }
 
   closeFeed(feed, promise) {
-    feed ? feed.close() : promise && promise.then(feed => feed.close());
+    if (feed) {
+      feed.close();
+    } else if (promise) {
+      promise.then(feed => feed.close());
+    }
   }
 };
 exports.default = Query;

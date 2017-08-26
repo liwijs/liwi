@@ -5,14 +5,22 @@ import MongoCursor from './MongoCursor';
 let MongoStore = class extends AbstractStore {
 
   constructor(connection, collectionName) {
+    super(connection);
 
-    if (super(connection), this.keyPath = '_id', !collectionName) throw new Error(`Invalid collectionName: "${collectionName}"`);
+    this.keyPath = '_id';
+    if (!collectionName) {
+      throw new Error(`Invalid collectionName: "${collectionName}"`);
+    }
 
     this._collection = connection.getConnection().then(db => this._collection = db.collection(collectionName)).catch(err => this._collection = Promise.reject(err));
   }
 
   get collection() {
-    return this.connection.connectionFailed ? Promise.reject(new Error('MongoDB connection failed')) : Promise.resolve(this._collection);
+    if (this.connection.connectionFailed) {
+      return Promise.reject(new Error('MongoDB connection failed'));
+    }
+
+    return Promise.resolve(this._collection);
   }
 
   create() {
@@ -20,9 +28,17 @@ let MongoStore = class extends AbstractStore {
   }
 
   insertOne(object) {
+    if (!object._id) {
+      object._id = new ObjectID().toString();
+    }
+    if (!object.created) {
+      object.created = new Date();
+    }
 
-    return object._id || (object._id = new ObjectID().toString()), object.created || (object.created = new Date()), this.collection.then(collection => collection.insertOne(object)).then(({ result, connection, ops }) => {
-      if (!result.ok || result.n !== 1) throw new Error('Fail to insert');
+    return this.collection.then(collection => collection.insertOne(object)).then(({ result, connection, ops }) => {
+      if (!result.ok || result.n !== 1) {
+        throw new Error('Fail to insert');
+      }
     }).then(() => object);
   }
 
@@ -31,13 +47,19 @@ let MongoStore = class extends AbstractStore {
   }
 
   replaceOne(object) {
+    if (!object.updated) {
+      object.updated = new Date();
+    }
 
-    return object.updated || (object.updated = new Date()), this.collection.then(collection => collection.updateOne({ _id: object._id }, object)).then(() => object);
+    return this.collection.then(collection => collection.updateOne({ _id: object._id }, object)).then(() => object);
   }
 
   upsertOne(object) {
+    if (!object.updated) {
+      object.updated = new Date();
+    }
 
-    return object.updated || (object.updated = new Date()), this.collection.then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })).then(() => object);
+    return this.collection.then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })).then(() => object);
   }
 
   replaceSeveral(objects) {
@@ -47,19 +69,26 @@ let MongoStore = class extends AbstractStore {
   _partialUpdate(partialUpdate) {
     // https://docs.mongodb.com/manual/reference/operator/update/
     // if has a mongo operator
-    return Object.keys(partialUpdate).some(key => key[0] === '$') ? partialUpdate : { $set: partialUpdate };
+    if (Object.keys(partialUpdate).some(key => key[0] === '$')) {
+      return partialUpdate;
+    } else {
+      return { $set: partialUpdate };
+    }
   }
 
   partialUpdateByKey(key, partialUpdate) {
-    return partialUpdate = this._partialUpdate(partialUpdate), this.collection.then(collection => collection.updateOne({ _id: key }, partialUpdate));
+    partialUpdate = this._partialUpdate(partialUpdate);
+    return this.collection.then(collection => collection.updateOne({ _id: key }, partialUpdate));
   }
 
   partialUpdateOne(object, partialUpdate) {
-    return partialUpdate = this._partialUpdate(partialUpdate), this.partialUpdateByKey(object._id, partialUpdate).then(() => this.findByKey(object._id));
+    partialUpdate = this._partialUpdate(partialUpdate);
+    return this.partialUpdateByKey(object._id, partialUpdate).then(() => this.findByKey(object._id));
   }
 
   partialUpdateMany(criteria, partialUpdate) {
-    return partialUpdate = this._partialUpdate(partialUpdate), this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(() => null); // TODO return updated object
+    partialUpdate = this._partialUpdate(partialUpdate);
+    return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(() => null); // TODO return updated object
   }
 
   deleteByKey(key) {

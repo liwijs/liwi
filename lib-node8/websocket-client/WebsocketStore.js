@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = undefined;
 
 var _nightingaleLogger = require('nightingale-logger');
 
@@ -30,18 +30,26 @@ const logger = new _nightingaleLogger2.default('liwi:websocket-client');
 let WebsocketStore = class extends _AbstractStore2.default {
 
   constructor(websocket, restName) {
+    super(websocket);
 
-    if (super(websocket), this.keyPath = 'id', !restName) throw new Error(`Invalid restName: "${restName}"`);
+    this.keyPath = 'id';
+    if (!restName) {
+      throw new Error(`Invalid restName: "${restName}"`);
+    }
 
     this.restName = restName;
   }
 
   createQuery(key) {
-    return logger.debug('createQuery', { key }), new _Query2.default(this, key);
+    logger.debug('createQuery', { key });
+    return new _Query2.default(this, key);
   }
 
   emit(type, ...args) {
-    if (logger.debug('emit', { type, args }), this.connection.isDisconnected()) throw new Error('Websocket is not connected');
+    logger.debug('emit', { type, args });
+    if (this.connection.isDisconnected()) {
+      throw new Error('Websocket is not connected');
+    }
 
     return this.connection.emit('rest', {
       type,
@@ -52,7 +60,10 @@ let WebsocketStore = class extends _AbstractStore2.default {
 
   emitSubscribe(type, ...args) {
     const emit = () => this.emit(type, ...args);
-    return emit().then(() => (this.connection.on('reconnect', emit), () => this.connection.off('reconnect', emit)));
+    return emit().then(() => {
+      this.connection.on('reconnect', emit);
+      return () => this.connection.off('reconnect', emit);
+    });
   }
 
   insertOne(object) {

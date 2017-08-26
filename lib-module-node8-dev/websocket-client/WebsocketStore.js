@@ -22,7 +22,17 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
     let _restNameType = t.string();
 
-    if (t.param('websocket', WebsocketConnectionType).assert(websocket), t.param('restName', _restNameType).assert(restName), super(websocket), this.keyPath = 'id', this[_WebsocketStoreTypeParametersSymbol] = _typeParameters, t.bindTypeParameters(this, WebsocketConnectionType), !restName) throw new Error(`Invalid restName: "${restName}"`);
+    t.param('websocket', WebsocketConnectionType).assert(websocket);
+    t.param('restName', _restNameType).assert(restName);
+
+    super(websocket);
+
+    this.keyPath = 'id';
+    this[_WebsocketStoreTypeParametersSymbol] = _typeParameters;
+    t.bindTypeParameters(this, WebsocketConnectionType);
+    if (!restName) {
+      throw new Error(`Invalid restName: "${restName}"`);
+    }
 
     this.restName = restName;
   }
@@ -30,11 +40,17 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
   createQuery(key) {
     let _keyType = t.string();
 
-    return t.param('key', _keyType).assert(key), logger.debug('createQuery', { key }), new Query(this, key);
+    t.param('key', _keyType).assert(key);
+
+    logger.debug('createQuery', { key });
+    return new Query(this, key);
   }
 
   emit(type, ...args) {
-    if (logger.debug('emit', { type, args }), this.connection.isDisconnected()) throw new Error('Websocket is not connected');
+    logger.debug('emit', { type, args });
+    if (this.connection.isDisconnected()) {
+      throw new Error('Websocket is not connected');
+    }
 
     return this.connection.emit('rest', {
       type,
@@ -45,7 +61,10 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
   emitSubscribe(type, ...args) {
     const emit = () => this.emit(type, ...args);
-    return emit().then(() => (this.connection.on('reconnect', emit), () => this.connection.off('reconnect', emit)));
+    return emit().then(() => {
+      this.connection.on('reconnect', emit);
+      return () => this.connection.off('reconnect', emit);
+    });
   }
 
   insertOne(object) {
@@ -53,7 +72,9 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
     const _returnType = t.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-    return t.param('object', _objectType).assert(object), this.emit('insertOne', object).then(_arg => _returnType.assert(_arg));
+    t.param('object', _objectType).assert(object);
+
+    return this.emit('insertOne', object).then(_arg => _returnType.assert(_arg));
   }
 
   updateOne(object) {
@@ -61,7 +82,9 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
     const _returnType2 = t.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-    return t.param('object', _objectType2).assert(object), this.emit('updateOne', object).then(_arg2 => _returnType2.assert(_arg2));
+    t.param('object', _objectType2).assert(object);
+
+    return this.emit('updateOne', object).then(_arg2 => _returnType2.assert(_arg2));
   }
 
   updateSeveral(objects) {
@@ -69,7 +92,9 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
     const _returnType3 = t.return(t.array(this[_WebsocketStoreTypeParametersSymbol].ModelType));
 
-    return t.param('objects', _objectsType).assert(objects), this.emit('updateSeveral', objects).then(_arg3 => _returnType3.assert(_arg3));
+    t.param('objects', _objectsType).assert(objects);
+
+    return this.emit('updateSeveral', objects).then(_arg3 => _returnType3.assert(_arg3));
   }
 
   partialUpdateByKey(key, partialUpdate) {
@@ -79,7 +104,10 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
     const _returnType4 = t.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-    return t.param('key', _keyType2).assert(key), t.param('partialUpdate', _partialUpdateType).assert(partialUpdate), this.emit('partialUpdateByKey', key, partialUpdate).then(_arg4 => _returnType4.assert(_arg4));
+    t.param('key', _keyType2).assert(key);
+    t.param('partialUpdate', _partialUpdateType).assert(partialUpdate);
+
+    return this.emit('partialUpdateByKey', key, partialUpdate).then(_arg4 => _returnType4.assert(_arg4));
   }
 
   partialUpdateOne(object, partialUpdate) {
@@ -89,7 +117,10 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
     const _returnType5 = t.return(this[_WebsocketStoreTypeParametersSymbol].ModelType);
 
-    return t.param('object', _objectType3).assert(object), t.param('partialUpdate', _partialUpdateType2).assert(partialUpdate), this.emit('partialUpdateOne', object, partialUpdate).then(_arg5 => _returnType5.assert(_arg5));
+    t.param('object', _objectType3).assert(object);
+    t.param('partialUpdate', _partialUpdateType2).assert(partialUpdate);
+
+    return this.emit('partialUpdateOne', object, partialUpdate).then(_arg5 => _returnType5.assert(_arg5));
   }
 
   partialUpdateMany(criteria, partialUpdate) {
@@ -97,7 +128,9 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
     const _returnType6 = t.return(t.void());
 
-    return t.param('partialUpdate', _partialUpdateType3).assert(partialUpdate), this.emit('partialUpdateMany', criteria, partialUpdate).then(_arg6 => _returnType6.assert(_arg6));
+    t.param('partialUpdate', _partialUpdateType3).assert(partialUpdate);
+
+    return this.emit('partialUpdateMany', criteria, partialUpdate).then(_arg6 => _returnType6.assert(_arg6));
   }
 
   deleteByKey(key) {
@@ -105,7 +138,9 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
     const _returnType7 = t.return(t.void());
 
-    return t.param('key', _keyType3).assert(key), this.emit('deleteByKey', key).then(_arg7 => _returnType7.assert(_arg7));
+    t.param('key', _keyType3).assert(key);
+
+    return this.emit('deleteByKey', key).then(_arg7 => _returnType7.assert(_arg7));
   }
 
   deleteOne(object) {
@@ -113,7 +148,9 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
     const _returnType8 = t.return(t.void());
 
-    return t.param('object', _objectType4).assert(object), this.emit('deleteOne', object).then(_arg8 => _returnType8.assert(_arg8));
+    t.param('object', _objectType4).assert(object);
+
+    return this.emit('deleteOne', object).then(_arg8 => _returnType8.assert(_arg8));
   }
 
   cursor(criteria, sort) {
@@ -123,13 +160,18 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
     const _returnType9 = t.return(t.ref(WebsocketCursor, this[_WebsocketStoreTypeParametersSymbol].ModelType));
 
-    return t.param('criteria', _criteriaType).assert(criteria), t.param('sort', _sortType).assert(sort), Promise.resolve(new WebsocketCursor(this, { criteria, sort })).then(_arg9 => _returnType9.assert(_arg9));
+    t.param('criteria', _criteriaType).assert(criteria);
+    t.param('sort', _sortType).assert(sort);
+
+    return Promise.resolve(new WebsocketCursor(this, { criteria, sort })).then(_arg9 => _returnType9.assert(_arg9));
   }
 
   findByKey(key) {
     let _keyType4 = t.any();
 
-    return t.param('key', _keyType4).assert(key), this.findOne({ id: key });
+    t.param('key', _keyType4).assert(key);
+
+    return this.findOne({ id: key });
   }
 
   findOne(criteria, sort) {
@@ -139,7 +181,10 @@ let WebsocketStore = (_temp = _class = class extends AbstractStore {
 
     const _returnType10 = t.return(t.object());
 
-    return t.param('criteria', _criteriaType2).assert(criteria), t.param('sort', _sortType2).assert(sort), this.emit('findOne', criteria, sort).then(_arg10 => _returnType10.assert(_arg10));
+    t.param('criteria', _criteriaType2).assert(criteria);
+    t.param('sort', _sortType2).assert(sort);
+
+    return this.emit('findOne', criteria, sort).then(_arg10 => _returnType10.assert(_arg10));
   }
 }, _class[t.TypeParametersSymbol] = _WebsocketStoreTypeParametersSymbol, _temp);
 export { WebsocketStore as default };

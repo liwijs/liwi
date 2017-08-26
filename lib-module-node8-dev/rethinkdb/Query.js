@@ -5,7 +5,8 @@ import t from 'flow-runtime';
 const SubscribeReturnType = t.type('SubscribeReturnType', t.object(t.property('cancel', t.function()), t.property('stop', t.function())));
 let Query = class extends AbstractQuery {
   constructor(...args) {
-    super(...args), t.bindTypeParameters(this, t.ref(RethinkStore));
+    super(...args);
+    t.bindTypeParameters(this, t.ref(RethinkStore));
   }
 
   fetch(callback) {
@@ -13,7 +14,9 @@ let Query = class extends AbstractQuery {
 
     const _returnType = t.return(t.any());
 
-    return t.param('callback', _callbackType).assert(callback), this.queryCallback(this.store.query(), this.store.r).run().then(callback).then(_arg => _returnType.assert(_arg));
+    t.param('callback', _callbackType).assert(callback);
+
+    return this.queryCallback(this.store.query(), this.store.r).run().then(callback).then(_arg => _returnType.assert(_arg));
   }
 
   _subscribe(callback, _includeInitial = false, args) {
@@ -23,7 +26,8 @@ let Query = class extends AbstractQuery {
 
     const _returnType2 = t.return(SubscribeReturnType);
 
-    t.param('callback', _callbackType2).assert(callback), t.param('args', _argsType).assert(args);
+    t.param('callback', _callbackType2).assert(callback);
+    t.param('args', _argsType).assert(args);
 
     let _feed;
     let promise = this.queryCallback(this.store.query(), this.store.r).changes({
@@ -31,10 +35,17 @@ let Query = class extends AbstractQuery {
       includeStates: true,
       includeTypes: true,
       includeOffsets: true
-    }).then(feed => (args.length === 0 && (_feed = feed, delete this._promise), feed.each(callback), feed));
+    }).then(feed => {
+      if (args.length === 0) {
+        _feed = feed;
+        delete this._promise;
+      }
 
-    args.length === 0 && (this._promise = promise);
+      feed.each(callback);
+      return feed;
+    });
 
+    if (args.length === 0) this._promise = promise;
 
     const stop = () => {
       this.closeFeed(_feed, promise);
@@ -48,7 +59,11 @@ let Query = class extends AbstractQuery {
   }
 
   closeFeed(feed, promise) {
-    feed ? feed.close() : promise && promise.then(feed => feed.close());
+    if (feed) {
+      feed.close();
+    } else if (promise) {
+      promise.then(feed => feed.close());
+    }
   }
 };
 export { Query as default };

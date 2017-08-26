@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { return void reject(error); } return info.done ? void resolve(value) : Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } return step("next"); }); }; }
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 let AbstractCursor = class {
 
@@ -48,7 +48,7 @@ let AbstractCursor = class {
     var _this = this;
 
     return _asyncToGenerator(function* () {
-      for (;;) {
+      while (true) {
         const key = yield _this.next();
         if (!key) return;
 
@@ -62,12 +62,16 @@ let AbstractCursor = class {
   }
 
   *keysIterator() {
-    for (;;) yield this.next();
+    while (true) {
+      yield this.next();
+    }
   }
 
   *[Symbol.iterator]() {
     // eslint-disable-next-line no-restricted-syntax
-    for (let keyPromise of this.keysIterator()) yield keyPromise.then(key => key && this.result());
+    for (let keyPromise of this.keysIterator()) {
+      yield keyPromise.then(key => key && this.result());
+    }
   }
 
   // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356

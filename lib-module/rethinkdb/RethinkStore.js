@@ -1,25 +1,31 @@
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false, descriptor.configurable = true, "value" in descriptor && (descriptor.writable = true), Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function"); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }), superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 import AbstractStore from '../store/AbstractStore';
 import Query from './Query';
 // import RethinkCursor from './RethinkCursor';
 
 var RethinkStore = function (_AbstractStore) {
+  _inherits(RethinkStore, _AbstractStore);
+
   function RethinkStore(connection, tableName) {
     _classCallCheck(this, RethinkStore);
 
     var _this = _possibleConstructorReturn(this, (RethinkStore.__proto__ || Object.getPrototypeOf(RethinkStore)).call(this, connection));
 
-    return _this.r = _this.connection._connection, _this.keyPath = 'id', _this._tableName = tableName, _this.r = _this.connection._connection, _this;
+    _this.keyPath = 'id';
+
+    _this._tableName = tableName;
+    _this.r = _this.connection._connection;
+    return _this;
   }
 
-  return _inherits(RethinkStore, _AbstractStore), _createClass(RethinkStore, [{
+  _createClass(RethinkStore, [{
     key: 'table',
     value: function table() {
       return this.r.table(this._tableName);
@@ -41,9 +47,21 @@ var RethinkStore = function (_AbstractStore) {
 
       var query = this.table();
 
-      return criteria && query.filter(criteria), sort && Object.keys(sort).forEach(function (key) {
-        sort[key] === -1 ? query.orderBy(_this2.r.desc(key)) : query.orderBy(key);
-      }), query;
+      if (criteria) {
+        query.filter(criteria);
+      }
+
+      if (sort) {
+        Object.keys(sort).forEach(function (key) {
+          if (sort[key] === -1) {
+            query.orderBy(_this2.r.desc(key));
+          } else {
+            query.orderBy(key);
+          }
+        });
+      }
+
+      return query;
     }
   }, {
     key: 'create',
@@ -55,13 +73,16 @@ var RethinkStore = function (_AbstractStore) {
   }, {
     key: 'insertOne',
     value: function insertOne(object) {
+      if (!object.created) object.created = new Date();
 
-      return object.created || (object.created = new Date()), this.table().insert(object).then(function (_ref) {
+      return this.table().insert(object).then(function (_ref) {
         var inserted = _ref.inserted,
             generatedKeys = _ref.generated_keys;
 
         if (inserted !== 1) throw new Error('Could not insert');
-        object.id == null && (object.id = generatedKeys[0]);
+        if (object.id == null) {
+          object.id = generatedKeys[0];
+        }
       }).then(function () {
         return object;
       });
@@ -74,16 +95,19 @@ var RethinkStore = function (_AbstractStore) {
   }, {
     key: 'replaceOne',
     value: function replaceOne(object) {
+      if (!object.created) object.created = new Date();
+      if (!object.updated) object.updated = new Date();
 
-      return object.created || (object.created = new Date()), object.updated || (object.updated = new Date()), this.table().get(object.id).replace(object).then(function () {
+      return this.table().get(object.id).replace(object).then(function () {
         return object;
       });
     }
   }, {
     key: 'upsertOne',
     value: function upsertOne(object) {
+      if (!object.updated) object.updated = new Date();
 
-      return object.updated || (object.updated = new Date()), this.table().insert(object, { conflict: 'replace' }).run().then(function () {
+      return this.table().insert(object, { conflict: 'replace' }).run().then(function () {
         return object;
       });
     }
@@ -153,7 +177,9 @@ var RethinkStore = function (_AbstractStore) {
         });
       });
     }
-  }]), RethinkStore;
+  }]);
+
+  return RethinkStore;
 }(AbstractStore);
 
 export { RethinkStore as default };
