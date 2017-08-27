@@ -45,12 +45,18 @@ let WebsocketStore = class extends AbstractStore {
     const emit = function emit() {
       return _this.emit(type, ...args);
     };
-    return emit().then(function () {
-      _this.connection.on('reconnect', emit);
+    const registerOnConnect = function registerOnConnect() {
+      _this.connection.on('connect', emit);
       return function () {
-        return _this.connection.off('reconnect', emit);
+        return _this.connection.off('connect', emit);
       };
-    });
+    };
+
+    if (this.connection.isConnected()) {
+      return emit().then(registerOnConnect);
+    }
+
+    return Promise.resolve(registerOnConnect());
   }
 
   insertOne(object) {

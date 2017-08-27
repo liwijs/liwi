@@ -71,12 +71,18 @@ var WebsocketStore = function (_AbstractStore) {
       var emit = function emit() {
         return _this2.emit.apply(_this2, [type].concat(args));
       };
-      return emit().then(function () {
-        _this2.connection.on('reconnect', emit);
+      var registerOnConnect = function registerOnConnect() {
+        _this2.connection.on('connect', emit);
         return function () {
-          return _this2.connection.off('reconnect', emit);
+          return _this2.connection.off('connect', emit);
         };
-      });
+      };
+
+      if (this.connection.isConnected()) {
+        return emit().then(registerOnConnect);
+      }
+
+      return Promise.resolve(registerOnConnect());
     }
   }, {
     key: 'insertOne',

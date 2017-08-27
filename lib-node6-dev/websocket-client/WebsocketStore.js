@@ -88,10 +88,16 @@ let WebsocketStore = (_temp = _class = class extends _AbstractStore2.default {
 
   emitSubscribe(type, ...args) {
     const emit = () => this.emit(type, ...args);
-    return emit().then(() => {
-      this.connection.on('reconnect', emit);
-      return () => this.connection.off('reconnect', emit);
-    });
+    const registerOnConnect = () => {
+      this.connection.on('connect', emit);
+      return () => this.connection.off('connect', emit);
+    };
+
+    if (this.connection.isConnected()) {
+      return emit().then(registerOnConnect);
+    }
+
+    return Promise.resolve(registerOnConnect());
   }
 
   insertOne(object) {

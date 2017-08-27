@@ -46,10 +46,16 @@ export default class WebsocketStore<ModelType> extends AbstractStore<WebsocketCo
 
   emitSubscribe(type, ...args) {
     const emit = () => this.emit(type, ...args);
-    return emit().then(result => {
-      this.connection.on('reconnect', emit);
-      return () => this.connection.off('reconnect', emit);
-    });
+    const registerOnConnect = () => {
+      this.connection.on('connect', emit);
+      return () => this.connection.off('connect', emit);
+    };
+
+    if (this.connection.isConnected()) {
+      return emit().then(registerOnConnect);
+    }
+
+    return Promise.resolve(registerOnConnect());
   }
 
   insertOne(object: ModelType): Promise<ModelType> {
