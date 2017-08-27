@@ -118,7 +118,7 @@
     "rethinkdbdash": "^2.3.31"
   },
   "devDependencies": {
-    "alp-react-redux": "^12.1.0",
+    "alp-react-redux": "^14.0.0",
     "babel-eslint": "^7.2.3",
     "babel-preset-env": "^1.6.0",
     "babel-preset-latest-node": "^0.4.0",
@@ -148,7 +148,7 @@
     "xunit-file": "1.0.0"
   },
   "peerDependencies": {
-    "alp-react-redux": "^12.1.0",
+    "alp-react-redux": "^12.1.0 || ^14.0.0",
     "prop-types": "^15.5.10",
     "react": "^15.5.4 || ^16.0.0-beta.5"
   }
