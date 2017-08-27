@@ -1,3 +1,12 @@
+<a name="0.18.3"></a>
+## [0.18.3](https://github.com/liwijs/liwi/compare/v0.18.2...v0.18.3) (2017-08-27)
+
+
+### Bug Fixes
+
+* when socket is not connected ([59fe144](https://github.com/liwijs/liwi/commit/59fe144))
+
+
 <a name="0.18.2"></a>
 ## [0.18.2](https://github.com/liwijs/liwi/compare/v0.18.1...v0.18.2) (2017-08-26)
 
