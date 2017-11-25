@@ -16,7 +16,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const ObjectArrayType = _flowRuntime2.default.type('ObjectArrayType', _flowRuntime2.default.array(_flowRuntime2.default.object()));
 
-const ChangeType = _flowRuntime2.default.type('ChangeType', _flowRuntime2.default.object(_flowRuntime2.default.property('type', _flowRuntime2.default.string()), _flowRuntime2.default.property('state', _flowRuntime2.default.nullable(_flowRuntime2.default.string())), _flowRuntime2.default.property('old_offset', _flowRuntime2.default.nullable(_flowRuntime2.default.number())), _flowRuntime2.default.property('new_offset', _flowRuntime2.default.nullable(_flowRuntime2.default.number())), _flowRuntime2.default.property('old_val', _flowRuntime2.default.nullable(_flowRuntime2.default.object())), _flowRuntime2.default.property('new_val', _flowRuntime2.default.nullable(_flowRuntime2.default.object()))));
+const ChangeType = _flowRuntime2.default.type('ChangeType', _flowRuntime2.default.object(_flowRuntime2.default.property('type', _flowRuntime2.default.string()), _flowRuntime2.default.property('state', _flowRuntime2.default.nullable(_flowRuntime2.default.string()), true), _flowRuntime2.default.property('old_offset', _flowRuntime2.default.nullable(_flowRuntime2.default.number()), true), _flowRuntime2.default.property('new_offset', _flowRuntime2.default.nullable(_flowRuntime2.default.number()), true), _flowRuntime2.default.property('old_val', _flowRuntime2.default.nullable(_flowRuntime2.default.object()), true), _flowRuntime2.default.property('new_val', _flowRuntime2.default.nullable(_flowRuntime2.default.object()), true)));
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 

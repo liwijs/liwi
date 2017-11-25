@@ -58,10 +58,13 @@ export default class RethinkConnection extends AbstractConnection {
   close() {
     this.getConnection = () => Promise.reject(new Error('Connection closed'));
     if (this._connection) {
-      return this._connection.getPoolMaster().drain().then(() => {
-        logger.info('connection closed');
-        this._connection = null;
-      });
+      return this._connection
+        .getPoolMaster()
+        .drain()
+        .then(() => {
+          logger.info('connection closed');
+          this._connection = null;
+        });
     } else if (this._connecting) {
       return this.getConnection().then(() => this.close());
     }

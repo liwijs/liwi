@@ -106,7 +106,6 @@ export default function init(io, restService) {
               }
 
               if (type === 'fetch') {
-                // eslint-disable-next-line prettier/prettier
                 return query[type].apply(query, [function (result) {
                   return callback(null, result && encode(result));
                 }].concat(_toConsumableArray(otherArgs))).catch(function (err) {

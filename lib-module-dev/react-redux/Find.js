@@ -21,7 +21,7 @@ var ReactNodeType = t.tdz(function () {
 var ReactComponentType = t.tdz(function () {
   return _ReactComponentType;
 });
-var PropsType = t.type('PropsType', t.object(t.property('name', t.string()), t.property('query', t.ref(AbstractQuery)), t.property('component', t.ref(ReactComponentType)), t.property('loadingComponent', t.nullable(t.ref(ReactComponentType)))));
+var PropsType = t.type('PropsType', t.exactObject(t.property('name', t.string()), t.property('query', t.ref(AbstractQuery)), t.property('component', t.ref(ReactComponentType)), t.property('loadingComponent', t.nullable(t.ref(ReactComponentType)), true)));
 var FindComponent = (_temp2 = _class = function (_Component) {
   _inherits(FindComponent, _Component);
 

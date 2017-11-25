@@ -47,9 +47,9 @@ let RestService = class {
 
     const _returnType = _flowRuntime2.default.return(_flowRuntime2.default.mixed());
 
-    _flowRuntime2.default.param('connectedUser', _connectedUserType).assert(connectedUser);
+    _flowRuntime2.default.param('connectedUser', _connectedUserType, true).assert(connectedUser);
 
-    let { criteria, sort, limit } = _flowRuntime2.default.object(_flowRuntime2.default.property('criteria', _flowRuntime2.default.nullable(_flowRuntime2.default.object())), _flowRuntime2.default.property('sort', _flowRuntime2.default.nullable(_flowRuntime2.default.object())), _flowRuntime2.default.property('limit', _flowRuntime2.default.nullable(_flowRuntime2.default.number()))).assert(_arg);
+    let { criteria, sort, limit } = _flowRuntime2.default.object(_flowRuntime2.default.property('criteria', _flowRuntime2.default.nullable(_flowRuntime2.default.object()), true), _flowRuntime2.default.property('sort', _flowRuntime2.default.nullable(_flowRuntime2.default.object()), true), _flowRuntime2.default.property('limit', _flowRuntime2.default.nullable(_flowRuntime2.default.number()), true)).assert(_arg);
 
     // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
     criteria = restResource.criteria(connectedUser, criteria || {});

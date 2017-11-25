@@ -27,7 +27,7 @@ const ReactNodeType = _flowRuntime2.default.tdz(() => _types.ReactNodeType);
 
 const ReactComponentType = _flowRuntime2.default.tdz(() => _types.ReactComponentType);
 
-const PropsType = _flowRuntime2.default.type('PropsType', _flowRuntime2.default.object(_flowRuntime2.default.property('name', _flowRuntime2.default.string()), _flowRuntime2.default.property('query', _flowRuntime2.default.ref(_AbstractQuery2.default)), _flowRuntime2.default.property('component', _flowRuntime2.default.ref(ReactComponentType)), _flowRuntime2.default.property('loadingComponent', _flowRuntime2.default.nullable(_flowRuntime2.default.ref(ReactComponentType)))));
+const PropsType = _flowRuntime2.default.type('PropsType', _flowRuntime2.default.exactObject(_flowRuntime2.default.property('name', _flowRuntime2.default.string()), _flowRuntime2.default.property('query', _flowRuntime2.default.ref(_AbstractQuery2.default)), _flowRuntime2.default.property('component', _flowRuntime2.default.ref(ReactComponentType)), _flowRuntime2.default.property('loadingComponent', _flowRuntime2.default.nullable(_flowRuntime2.default.ref(ReactComponentType)), true)));
 
 let FindComponent = (_temp2 = _class = class extends _react.Component {
   constructor(...args) {

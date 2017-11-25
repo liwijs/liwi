@@ -6,8 +6,8 @@ import assert from 'assert';
 
 var AbstractStore = function () {
   /**
-     * @param {AbstractConnection} connection
-     */
+   * @param {AbstractConnection} connection
+   */
   function AbstractStore(connection) {
     _classCallCheck(this, AbstractStore);
 

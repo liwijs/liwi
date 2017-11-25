@@ -94,6 +94,7 @@ let RethinkStore = class extends AbstractStore {
     return this.table().insert(object).then(function ({ inserted, generated_keys: generatedKeys }) {
       if (inserted !== 1) throw new Error('Could not insert');
       if (object.id == null) {
+        // eslint-disable-next-line prefer-destructuring
         object.id = generatedKeys[0];
       }
     }).then(function () {

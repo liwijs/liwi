@@ -51,8 +51,8 @@ var RestService = function () {
               case 0:
                 _connectedUserType = t.nullable(t.object());
                 _returnType = t.return(t.mixed());
-                t.param('connectedUser', _connectedUserType).assert(connectedUser);
-                _t$object$assert = t.object(t.property('criteria', t.nullable(t.object())), t.property('sort', t.nullable(t.object())), t.property('limit', t.nullable(t.number()))).assert(_arg), criteria = _t$object$assert.criteria, sort = _t$object$assert.sort, limit = _t$object$assert.limit;
+                t.param('connectedUser', _connectedUserType, true).assert(connectedUser);
+                _t$object$assert = t.object(t.property('criteria', t.nullable(t.object()), true), t.property('sort', t.nullable(t.object()), true), t.property('limit', t.nullable(t.number()), true)).assert(_arg), criteria = _t$object$assert.criteria, sort = _t$object$assert.sort, limit = _t$object$assert.limit;
 
                 // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
                 criteria = restResource.criteria(connectedUser, criteria || {});

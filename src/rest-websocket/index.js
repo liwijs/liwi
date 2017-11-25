@@ -14,7 +14,7 @@ export default function init(io, restService) {
     socket.on(
       'rest',
       (
-        { type, restName, json }: { type: string, restName: string, json: ?string },
+        { type, restName, json }: { type: string, restName: string, json?: ?string },
         args: ?Array<any> | Function,
         callback: ?Function,
       ) => {
@@ -99,12 +99,13 @@ export default function init(io, restService) {
                 }
 
                 if (type === 'fetch') {
-                  // eslint-disable-next-line prettier/prettier
-                  return query[type](result => callback(null, result && encode(result)), ...otherArgs)
-                    .catch(err => {
-                      logger.error(type, { err });
-                      callback(err.message || err);
-                    });
+                  return query[type](
+                    result => callback(null, result && encode(result)),
+                    ...otherArgs,
+                  ).catch(err => {
+                    logger.error(type, { err });
+                    callback(err.message || err);
+                  });
                 } else {
                   const watcher = query[type]((err, result) => {
                     if (err) {

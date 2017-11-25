@@ -2,8 +2,8 @@ import assert from 'assert';
 
 let AbstractStore = class {
   /**
-     * @param {AbstractConnection} connection
-     */
+   * @param {AbstractConnection} connection
+   */
   constructor(connection) {
     assert(connection);
     this._connection = connection;

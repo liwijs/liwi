@@ -58,6 +58,7 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
       .then(({ inserted, generated_keys: generatedKeys }) => {
         if (inserted !== 1) throw new Error('Could not insert');
         if (object.id == null) {
+          // eslint-disable-next-line prefer-destructuring
           object.id = generatedKeys[0];
         }
       })
@@ -72,13 +73,19 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
     if (!object.created) object.created = new Date();
     if (!object.updated) object.updated = new Date();
 
-    return this.table().get(object.id).replace(object).then(() => object);
+    return this.table()
+      .get(object.id)
+      .replace(object)
+      .then(() => object);
   }
 
   upsertOne(object: UpdateType): Promise<ResultType> {
     if (!object.updated) object.updated = new Date();
 
-    return this.table().insert(object, { conflict: 'replace' }).run().then(() => object);
+    return this.table()
+      .insert(object, { conflict: 'replace' })
+      .run()
+      .then(() => object);
   }
 
   replaceSeveral(objects: Array<InsertType>): Promise<Array<ResultType>> {
@@ -86,7 +93,10 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
   }
 
   partialUpdateByKey(key: any, partialUpdate: Object): Promise<void> {
-    return this.table().get(key).update(partialUpdate).run();
+    return this.table()
+      .get(key)
+      .update(partialUpdate)
+      .run();
   }
 
   partialUpdateOne(object: ResultType, partialUpdate: UpdateType): Promise<ResultType> {
@@ -97,11 +107,17 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
   }
 
   partialUpdateMany(criteria, partialUpdate: Object): Promise<void> {
-    return this.table().filter(criteria).update(partialUpdate).run();
+    return this.table()
+      .filter(criteria)
+      .update(partialUpdate)
+      .run();
   }
 
   deleteByKey(key: any): Promise<void> {
-    return this.table().get(key).delete().run();
+    return this.table()
+      .get(key)
+      .delete()
+      .run();
   }
 
   cursor(query, sort: ?Object) {
@@ -115,7 +131,9 @@ export default class RethinkStore extends AbstractStore<RethinkConnection> {
   }
 
   findByKey(key: any): Promise<?ResultType> {
-    return this.table().get(key).run();
+    return this.table()
+      .get(key)
+      .run();
   }
 
   findOne(query): Promise<?ResultType> {

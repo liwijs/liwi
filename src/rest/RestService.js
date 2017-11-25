@@ -17,8 +17,8 @@ export default class RestService {
 
   async createCursor(
     restResource,
-    connectedUser: ?Object,
-    { criteria, sort, limit }: { criteria: ?Object, sort: ?Object, limit: ?number },
+    connectedUser?: ?Object,
+    { criteria, sort, limit }: { criteria?: ?Object, sort?: ?Object, limit?: ?number },
   ): Promise {
     // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
     criteria = restResource.criteria(connectedUser, criteria || {});

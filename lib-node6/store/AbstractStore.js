@@ -13,8 +13,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 let AbstractStore = class {
   /**
-     * @param {AbstractConnection} connection
-     */
+   * @param {AbstractConnection} connection
+   */
   constructor(connection) {
     (0, _assert2.default)(connection);
     this._connection = connection;

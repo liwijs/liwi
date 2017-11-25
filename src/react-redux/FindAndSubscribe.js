@@ -3,12 +3,12 @@ import type { ReactNodeType, ReactComponentType } from 'alp-react-redux/types';
 import type AbstractQuery from '../store/AbstractQuery';
 import applyChange from './applyChange';
 
-type PropsType = {
+type PropsType = {|
   name: string,
   query: AbstractQuery,
   component: ReactComponentType,
-  loadingComponent: ?ReactComponentType,
-};
+  loadingComponent?: ?ReactComponentType,
+|};
 
 export default class FindAndSubscribeComponent extends Component {
   props: PropsType;

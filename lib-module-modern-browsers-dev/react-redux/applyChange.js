@@ -2,7 +2,7 @@ import deepEqual from 'deep-equal';
 
 import t from 'flow-runtime';
 const ObjectArrayType = t.type('ObjectArrayType', t.array(t.object()));
-const ChangeType = t.type('ChangeType', t.object(t.property('type', t.string()), t.property('state', t.nullable(t.string())), t.property('old_offset', t.nullable(t.number())), t.property('new_offset', t.nullable(t.number())), t.property('old_val', t.nullable(t.object())), t.property('new_val', t.nullable(t.object()))));
+const ChangeType = t.type('ChangeType', t.object(t.property('type', t.string()), t.property('state', t.nullable(t.string()), true), t.property('old_offset', t.nullable(t.number()), true), t.property('new_offset', t.nullable(t.number()), true), t.property('old_val', t.nullable(t.object()), true), t.property('new_val', t.nullable(t.object()), true)));
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 

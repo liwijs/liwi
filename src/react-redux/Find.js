@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import type { ReactNodeType, ReactComponentType } from 'alp-react-redux/src/types';
 import AbstractQuery from '../store/AbstractQuery';
 
-type PropsType = {
+type PropsType = {|
   name: string,
   query: AbstractQuery,
   component: ReactComponentType,
-  loadingComponent: ?ReactComponentType,
-};
+  loadingComponent?: ?ReactComponentType,
+|};
 
 export default class FindComponent extends Component {
   props: PropsType;

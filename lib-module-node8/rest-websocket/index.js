@@ -82,7 +82,6 @@ export default function init(io, restService) {
               }
 
               if (type === 'fetch') {
-                // eslint-disable-next-line prettier/prettier
                 return query[type](result => callback(null, result && encode(result)), ...otherArgs).catch(err => {
                   logger.error(type, { err });
                   callback(err.message || err);

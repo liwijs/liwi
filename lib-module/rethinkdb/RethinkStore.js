@@ -81,6 +81,7 @@ var RethinkStore = function (_AbstractStore) {
 
         if (inserted !== 1) throw new Error('Could not insert');
         if (object.id == null) {
+          // eslint-disable-next-line prefer-destructuring
           object.id = generatedKeys[0];
         }
       }).then(function () {

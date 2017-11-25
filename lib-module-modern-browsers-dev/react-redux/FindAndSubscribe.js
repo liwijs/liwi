@@ -15,7 +15,7 @@ const ReactNodeType = t.tdz(function () {
 const ReactComponentType = t.tdz(function () {
   return _ReactComponentType;
 });
-const PropsType = t.type('PropsType', t.object(t.property('name', t.string()), t.property('query', t.ref(AbstractQuery)), t.property('component', t.ref(ReactComponentType)), t.property('loadingComponent', t.nullable(t.ref(ReactComponentType)))));
+const PropsType = t.type('PropsType', t.exactObject(t.property('name', t.string()), t.property('query', t.ref(AbstractQuery)), t.property('component', t.ref(ReactComponentType)), t.property('loadingComponent', t.nullable(t.ref(ReactComponentType)), true)));
 let FindAndSubscribeComponent = (_temp2 = _class = class extends Component {
   constructor(...args) {
     var _temp;

@@ -33,8 +33,8 @@ let RestService = class {
 
     const _returnType = t.return(t.mixed());
 
-    t.param('connectedUser', _connectedUserType).assert(connectedUser);
-    let { criteria, sort, limit } = t.object(t.property('criteria', t.nullable(t.object())), t.property('sort', t.nullable(t.object())), t.property('limit', t.nullable(t.number()))).assert(_arg);
+    t.param('connectedUser', _connectedUserType, true).assert(connectedUser);
+    let { criteria, sort, limit } = t.object(t.property('criteria', t.nullable(t.object()), true), t.property('sort', t.nullable(t.object()), true), t.property('limit', t.nullable(t.number()), true)).assert(_arg);
 
     // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
     criteria = restResource.criteria(connectedUser, criteria || {});

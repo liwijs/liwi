@@ -36,7 +36,7 @@ function init(io, restService) {
 
       _flowRuntime2.default.param('callback', _callbackType).assert(callback);
 
-      let { type, restName, json } = _flowRuntime2.default.object(_flowRuntime2.default.property('type', _flowRuntime2.default.string()), _flowRuntime2.default.property('restName', _flowRuntime2.default.string()), _flowRuntime2.default.property('json', _flowRuntime2.default.nullable(_flowRuntime2.default.string()))).assert(_arg);
+      let { type, restName, json } = _flowRuntime2.default.object(_flowRuntime2.default.property('type', _flowRuntime2.default.string()), _flowRuntime2.default.property('restName', _flowRuntime2.default.string()), _flowRuntime2.default.property('json', _flowRuntime2.default.nullable(_flowRuntime2.default.string()), true)).assert(_arg);
 
       try {
         if (json) {
@@ -114,7 +114,6 @@ function init(io, restService) {
               }
 
               if (type === 'fetch') {
-                // eslint-disable-next-line prettier/prettier
                 return query[type](result => callback(null, result && (0, _extendedJson.encode)(result)), ...otherArgs).catch(err => {
                   logger.error(type, { err });
                   callback(err.message || err);
