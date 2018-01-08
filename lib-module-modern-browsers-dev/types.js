@@ -1,7 +1,7 @@
 import t from "flow-runtime";
 export const InsertType = t.type("InsertType", t.object());
 export const UpdateType = t.type("UpdateType", t.object());
-export const ResultType = t.type("ResultType", t.object(t.property("created", t.ref("Date"))));
+export const ResultType = t.type("ResultType", t.object(t.property("created", t.union(t.ref("Date"), t.object()))));
 
 export const CursorInterfaceType = t.type("CursorInterfaceType", t.object(t.property("close", t.function(t.return(t.union(t.ref("Promise", t.void()), t.void())))), t.property("next", t.function(t.return(t.ref("Promise", t.any())))), t.property("nextResult", t.function(t.return(t.ref("Promise", t.any())))), t.property("limit", t.function(t.param("newLimit", t.number()), t.return(t.ref("Promise", t.void())))), t.property("count", t.function(t.param("applyLimit", t.nullable(t.boolean())), t.return(t.ref("Promise", t.number())))), t.property("result", t.function(t.return(t.ref("Promise", ResultType)))), t.property("delete", t.function(t.return(t.ref("Promise", t.void())))), t.property("forEachKeys", t.function(t.param("callback", t.function()), t.return(t.ref("Promise", t.void())))), t.property("forEach", t.function(t.param("callback", t.function()), t.return(t.ref("Promise", t.void()))))));
 

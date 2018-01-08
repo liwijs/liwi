@@ -1,7 +1,7 @@
 export type InsertType = {};
 export type UpdateType = {};
 export type ResultType = {
-  created: Date,
+  created: Date | Object, // created can be specified
 };
 
 export type CursorInterfaceType = {
