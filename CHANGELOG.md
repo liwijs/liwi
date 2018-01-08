@@ -1,3 +1,12 @@
+<a name="0.18.6"></a>
+## [0.18.6](https://github.com/liwijs/liwi/compare/v0.18.5...v0.18.6) (2018-01-08)
+
+
+### Bug Fixes
+
+* allow created to be an object ([c51bb43](https://github.com/liwijs/liwi/commit/c51bb43))
+
+
 <a name="0.18.5"></a>
 ## [0.18.5](https://github.com/liwijs/liwi/compare/v0.18.4...v0.18.5) (2017-11-25)
 
