@@ -118,9 +118,7 @@ export default class MongoStore extends AbstractStore<MongoConnection> {
 
   partialUpdateOne(object: ResultType, partialUpdate: UpdateType): Promise<ResultType> {
     partialUpdate = this._partialUpdate(partialUpdate);
-    return this.partialUpdateByKey(object._id, partialUpdate).then(res =>
-      this.findByKey(object._id),
-    );
+    return this.partialUpdateByKey(object._id, partialUpdate);
   }
 
   partialUpdateMany(criteria, partialUpdate: UpdateType): Promise<void> {
