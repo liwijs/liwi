@@ -1,3 +1,12 @@
+<a name="0.18.7"></a>
+## [0.18.7](https://github.com/liwijs/liwi/compare/v0.18.6...v0.18.7) (2018-01-08)
+
+
+### Bug Fixes
+
+* partialUpdateByKey did not return result ([e2681b0](https://github.com/liwijs/liwi/commit/e2681b0))
+
+
 <a name="0.18.6"></a>
 ## [0.18.6](https://github.com/liwijs/liwi/compare/v0.18.5...v0.18.6) (2018-01-08)
 
