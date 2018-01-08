@@ -17,6 +17,8 @@ var _MongoCursor2 = _interopRequireDefault(_MongoCursor);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 let MongoStore = class extends _AbstractStore2.default {
 
   constructor(connection, collectionName) {
@@ -92,8 +94,18 @@ let MongoStore = class extends _AbstractStore2.default {
   }
 
   partialUpdateByKey(key, partialUpdate) {
-    partialUpdate = this._partialUpdate(partialUpdate);
-    return this.collection.then(collection => collection.updateOne({ _id: key }, partialUpdate));
+    var _this = this;
+
+    return _asyncToGenerator(function* () {
+      partialUpdate = _this._partialUpdate(partialUpdate);
+      const collection = yield _this.collection;
+      const commandResult = yield collection.updateOne({ _id: key }, partialUpdate);
+      if (!commandResult.result.ok) {
+        console.error(commandResult);
+        throw new Error('Update failed');
+      }
+      return _this.findByKey(key);
+    })();
   }
 
   partialUpdateOne(object, partialUpdate) {

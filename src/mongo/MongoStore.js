@@ -6,6 +6,15 @@ import AbstractStore from '../store/AbstractStore';
 import MongoCursor from './MongoCursor';
 import type { InsertType, UpdateType, ResultType } from '../types';
 
+type MongoUpdateCommandResultType = {
+  result: {| n: number, nModified: number, ok: number |},
+  connection: any,
+  modifiedCount: number,
+  upsertedId: null,
+  upsertedCount: number,
+  matchedCount: number,
+};
+
 export default class MongoStore extends AbstractStore<MongoConnection> {
   _collection: Collection | Promise<Collection>;
   keyPath = '_id';
@@ -93,9 +102,18 @@ export default class MongoStore extends AbstractStore<MongoConnection> {
     }
   }
 
-  partialUpdateByKey(key: any, partialUpdate: UpdateType): Promise<ResultType> {
+  async partialUpdateByKey(key: any, partialUpdate: UpdateType): Promise<ResultType> {
     partialUpdate = this._partialUpdate(partialUpdate);
-    return this.collection.then(collection => collection.updateOne({ _id: key }, partialUpdate));
+    const collection = await this.collection;
+    const commandResult: MongoUpdateCommandResultType = await collection.updateOne(
+      { _id: key },
+      partialUpdate,
+    );
+    if (!commandResult.result.ok) {
+      console.error(commandResult);
+      throw new Error('Update failed');
+    }
+    return this.findByKey(key);
   }
 
   partialUpdateOne(object: ResultType, partialUpdate: UpdateType): Promise<ResultType> {

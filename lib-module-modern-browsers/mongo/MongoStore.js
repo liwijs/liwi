@@ -100,11 +100,15 @@ let MongoStore = class extends AbstractStore {
     }
   }
 
-  partialUpdateByKey(key, partialUpdate) {
+  async partialUpdateByKey(key, partialUpdate) {
     partialUpdate = this._partialUpdate(partialUpdate);
-    return this.collection.then(function (collection) {
-      return collection.updateOne({ _id: key }, partialUpdate);
-    });
+    const collection = await this.collection;
+    const commandResult = await collection.updateOne({ _id: key }, partialUpdate);
+    if (!commandResult.result.ok) {
+      console.error(commandResult);
+      throw new Error('Update failed');
+    }
+    return this.findByKey(key);
   }
 
   partialUpdateOne(object, partialUpdate) {

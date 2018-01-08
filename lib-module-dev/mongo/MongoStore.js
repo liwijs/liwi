@@ -1,5 +1,7 @@
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -24,6 +26,7 @@ var UpdateType = t.tdz(function () {
 var ResultType = t.tdz(function () {
   return _ResultType;
 });
+var MongoUpdateCommandResultType = t.type('MongoUpdateCommandResultType', t.object(t.property('result', t.exactObject(t.property('n', t.number()), t.property('nModified', t.number()), t.property('ok', t.number()))), t.property('connection', t.any()), t.property('modifiedCount', t.number()), t.property('upsertedId', t.null()), t.property('upsertedCount', t.number()), t.property('matchedCount', t.number())));
 
 var MongoStore = function (_AbstractStore) {
   _inherits(MongoStore, _AbstractStore);
@@ -62,16 +65,16 @@ var MongoStore = function (_AbstractStore) {
   _createClass(MongoStore, [{
     key: 'create',
     value: function create() {
-      var _returnType2 = t.return(t.ref('Promise'));
+      var _returnType3 = t.return(t.ref('Promise'));
 
-      return _returnType2.assert(Promise.resolve());
+      return _returnType3.assert(Promise.resolve());
     }
   }, {
     key: 'insertOne',
     value: function insertOne(object) {
       var _objectType = t.ref(InsertType);
 
-      var _returnType3 = t.return(t.ref(ResultType));
+      var _returnType4 = t.return(t.ref(ResultType));
 
       t.param('object', _objectType).assert(object);
 
@@ -95,7 +98,7 @@ var MongoStore = function (_AbstractStore) {
       }).then(function () {
         return object;
       }).then(function (_arg3) {
-        return _returnType3.assert(_arg3);
+        return _returnType4.assert(_arg3);
       });
     }
   }, {
@@ -108,7 +111,7 @@ var MongoStore = function (_AbstractStore) {
     value: function replaceOne(object) {
       var _objectType2 = t.ref(InsertType);
 
-      var _returnType4 = t.return(t.ref(ResultType));
+      var _returnType5 = t.return(t.ref(ResultType));
 
       t.param('object', _objectType2).assert(object);
 
@@ -121,7 +124,7 @@ var MongoStore = function (_AbstractStore) {
       }).then(function () {
         return object;
       }).then(function (_arg4) {
-        return _returnType4.assert(_arg4);
+        return _returnType5.assert(_arg4);
       });
     }
   }, {
@@ -129,7 +132,7 @@ var MongoStore = function (_AbstractStore) {
     value: function upsertOne(object) {
       var _objectType3 = t.ref(InsertType);
 
-      var _returnType5 = t.return(t.ref(ResultType));
+      var _returnType6 = t.return(t.ref(ResultType));
 
       t.param('object', _objectType3).assert(object);
 
@@ -142,7 +145,7 @@ var MongoStore = function (_AbstractStore) {
       }).then(function () {
         return object;
       }).then(function (_arg5) {
-        return _returnType5.assert(_arg5);
+        return _returnType6.assert(_arg5);
       });
     }
   }, {
@@ -152,14 +155,14 @@ var MongoStore = function (_AbstractStore) {
 
       var _objectsType = t.array(t.ref(InsertType));
 
-      var _returnType6 = t.return(t.array(t.ref(ResultType)));
+      var _returnType7 = t.return(t.array(t.ref(ResultType)));
 
       t.param('objects', _objectsType).assert(objects);
 
       return Promise.all(objects.map(function (object) {
         return _this2.updateOne(object);
       })).then(function (_arg6) {
-        return _returnType6.assert(_arg6);
+        return _returnType7.assert(_arg6);
       });
     }
   }, {
@@ -181,23 +184,57 @@ var MongoStore = function (_AbstractStore) {
     }
   }, {
     key: 'partialUpdateByKey',
-    value: function partialUpdateByKey(key, partialUpdate) {
-      var _keyType = t.any();
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(key, partialUpdate) {
+        var _keyType, _partialUpdateType2, _returnType, collection, commandResult;
 
-      var _partialUpdateType2 = t.ref(UpdateType);
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _keyType = t.any();
+                _partialUpdateType2 = t.ref(UpdateType);
+                _returnType = t.return(t.union(t.ref(ResultType), t.ref('Promise', t.ref(ResultType))));
+                t.param('key', _keyType).assert(key);
+                t.param('partialUpdate', _partialUpdateType2).assert(partialUpdate);
 
-      var _returnType7 = t.return(t.ref(ResultType));
+                partialUpdate = _partialUpdateType2.assert(this._partialUpdate(partialUpdate));
+                _context.next = 8;
+                return this.collection;
 
-      t.param('key', _keyType).assert(key);
-      t.param('partialUpdate', _partialUpdateType2).assert(partialUpdate);
+              case 8:
+                collection = _context.sent;
+                _context.t0 = MongoUpdateCommandResultType;
+                _context.next = 12;
+                return collection.updateOne({ _id: key }, partialUpdate);
 
-      partialUpdate = _partialUpdateType2.assert(this._partialUpdate(partialUpdate));
-      return this.collection.then(function (collection) {
-        return collection.updateOne({ _id: key }, partialUpdate);
-      }).then(function (_arg7) {
-        return _returnType7.assert(_arg7);
-      });
-    }
+              case 12:
+                _context.t1 = _context.sent;
+                commandResult = _context.t0.assert.call(_context.t0, _context.t1);
+
+                if (commandResult.result.ok) {
+                  _context.next = 17;
+                  break;
+                }
+
+                console.error(commandResult);
+                throw new Error('Update failed');
+
+              case 17:
+                return _context.abrupt('return', _returnType.assert(this.findByKey(key)));
+
+              case 18:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      return function partialUpdateByKey() {
+        return _ref2.apply(this, arguments);
+      };
+    }()
   }, {
     key: 'partialUpdateOne',
     value: function partialUpdateOne(object, partialUpdate) {
@@ -215,8 +252,8 @@ var MongoStore = function (_AbstractStore) {
       partialUpdate = _partialUpdateType3.assert(this._partialUpdate(partialUpdate));
       return this.partialUpdateByKey(object._id, partialUpdate).then(function () {
         return _this3.findByKey(object._id);
-      }).then(function (_arg8) {
-        return _returnType8.assert(_arg8);
+      }).then(function (_arg7) {
+        return _returnType8.assert(_arg7);
       });
     }
   }, {
@@ -233,8 +270,8 @@ var MongoStore = function (_AbstractStore) {
         return collection.updateMany(criteria, partialUpdate);
       }).then(function () {
         return null;
-      }).then(function (_arg9) {
-        return _returnType9.assert(_arg9);
+      }).then(function (_arg8) {
+        return _returnType9.assert(_arg8);
       }); // TODO return updated object
     }
   }, {
@@ -250,8 +287,8 @@ var MongoStore = function (_AbstractStore) {
         return collection.removeOne({ _id: key });
       }).then(function () {
         return null;
-      }).then(function (_arg10) {
-        return _returnType10.assert(_arg10);
+      }).then(function (_arg9) {
+        return _returnType10.assert(_arg9);
       });
     }
   }, {
@@ -274,8 +311,8 @@ var MongoStore = function (_AbstractStore) {
         return cursor.sort(sort);
       }).then(function (cursor) {
         return new MongoCursor(_this4, cursor);
-      }).then(function (_arg11) {
-        return _returnType11.assert(_arg11);
+      }).then(function (_arg10) {
+        return _returnType11.assert(_arg10);
       });
     }
   }, {
@@ -287,8 +324,8 @@ var MongoStore = function (_AbstractStore) {
 
       t.param('key', _keyType3).assert(key);
 
-      return this.findOne({ _id: key }).then(function (_arg12) {
-        return _returnType12.assert(_arg12);
+      return this.findOne({ _id: key }).then(function (_arg11) {
+        return _returnType12.assert(_arg11);
       });
     }
   }, {
@@ -309,23 +346,23 @@ var MongoStore = function (_AbstractStore) {
         return cursor.sort(sort);
       }).then(function (cursor) {
         return cursor.limit(1).next();
-      }).then(function (_arg13) {
-        return _returnType13.assert(_arg13);
+      }).then(function (_arg12) {
+        return _returnType13.assert(_arg12);
       });
     }
   }, {
     key: 'collection',
     get: function get() {
-      var _returnType = t.return(t.ref(Collection));
+      var _returnType2 = t.return(t.ref(Collection));
 
       if (this.connection.connectionFailed) {
         return Promise.reject(new Error('MongoDB connection failed')).then(function (_arg) {
-          return _returnType.assert(_arg);
+          return _returnType2.assert(_arg);
         });
       }
 
       return Promise.resolve(this._collection).then(function (_arg2) {
-        return _returnType.assert(_arg2);
+        return _returnType2.assert(_arg2);
       });
     }
   }]);

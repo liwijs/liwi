@@ -10,6 +10,7 @@ import t from 'flow-runtime';
 const InsertType = t.tdz(() => _InsertType);
 const UpdateType = t.tdz(() => _UpdateType);
 const ResultType = t.tdz(() => _ResultType);
+const MongoUpdateCommandResultType = t.type('MongoUpdateCommandResultType', t.object(t.property('result', t.exactObject(t.property('n', t.number()), t.property('nModified', t.number()), t.property('ok', t.number()))), t.property('connection', t.any()), t.property('modifiedCount', t.number()), t.property('upsertedId', t.null()), t.property('upsertedCount', t.number()), t.property('matchedCount', t.number())));
 let MongoStore = class extends AbstractStore {
 
   constructor(connection, collectionName) {
@@ -37,25 +38,25 @@ let MongoStore = class extends AbstractStore {
   }
 
   get collection() {
-    const _returnType = t.return(t.ref(Collection));
+    const _returnType2 = t.return(t.ref(Collection));
 
     if (this.connection.connectionFailed) {
-      return Promise.reject(new Error('MongoDB connection failed')).then(_arg => _returnType.assert(_arg));
+      return Promise.reject(new Error('MongoDB connection failed')).then(_arg => _returnType2.assert(_arg));
     }
 
-    return Promise.resolve(this._collection).then(_arg2 => _returnType.assert(_arg2));
+    return Promise.resolve(this._collection).then(_arg2 => _returnType2.assert(_arg2));
   }
 
   create() {
-    const _returnType2 = t.return(t.ref('Promise'));
+    const _returnType3 = t.return(t.ref('Promise'));
 
-    return _returnType2.assert(Promise.resolve());
+    return _returnType3.assert(Promise.resolve());
   }
 
   insertOne(object) {
     let _objectType = t.ref(InsertType);
 
-    const _returnType3 = t.return(t.ref(ResultType));
+    const _returnType4 = t.return(t.ref(ResultType));
 
     t.param('object', _objectType).assert(object);
 
@@ -70,7 +71,7 @@ let MongoStore = class extends AbstractStore {
       if (!result.ok || result.n !== 1) {
         throw new Error('Fail to insert');
       }
-    }).then(() => object).then(_arg3 => _returnType3.assert(_arg3));
+    }).then(() => object).then(_arg3 => _returnType4.assert(_arg3));
   }
 
   updateOne(object) {
@@ -80,7 +81,7 @@ let MongoStore = class extends AbstractStore {
   replaceOne(object) {
     let _objectType2 = t.ref(InsertType);
 
-    const _returnType4 = t.return(t.ref(ResultType));
+    const _returnType5 = t.return(t.ref(ResultType));
 
     t.param('object', _objectType2).assert(object);
 
@@ -88,13 +89,13 @@ let MongoStore = class extends AbstractStore {
       object.updated = new Date();
     }
 
-    return this.collection.then(collection => collection.updateOne({ _id: object._id }, object)).then(() => object).then(_arg4 => _returnType4.assert(_arg4));
+    return this.collection.then(collection => collection.updateOne({ _id: object._id }, object)).then(() => object).then(_arg4 => _returnType5.assert(_arg4));
   }
 
   upsertOne(object) {
     let _objectType3 = t.ref(InsertType);
 
-    const _returnType5 = t.return(t.ref(ResultType));
+    const _returnType6 = t.return(t.ref(ResultType));
 
     t.param('object', _objectType3).assert(object);
 
@@ -102,17 +103,17 @@ let MongoStore = class extends AbstractStore {
       object.updated = new Date();
     }
 
-    return this.collection.then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })).then(() => object).then(_arg5 => _returnType5.assert(_arg5));
+    return this.collection.then(collection => collection.updateOne({ _id: object._id }, { $set: object }, { upsert: true })).then(() => object).then(_arg5 => _returnType6.assert(_arg5));
   }
 
   replaceSeveral(objects) {
     let _objectsType = t.array(t.ref(InsertType));
 
-    const _returnType6 = t.return(t.array(t.ref(ResultType)));
+    const _returnType7 = t.return(t.array(t.ref(ResultType)));
 
     t.param('objects', _objectsType).assert(objects);
 
-    return Promise.all(objects.map(object => this.updateOne(object))).then(_arg6 => _returnType6.assert(_arg6));
+    return Promise.all(objects.map(object => this.updateOne(object))).then(_arg6 => _returnType7.assert(_arg6));
   }
 
   _partialUpdate(partialUpdate) {
@@ -129,18 +130,24 @@ let MongoStore = class extends AbstractStore {
     }
   }
 
-  partialUpdateByKey(key, partialUpdate) {
+  async partialUpdateByKey(key, partialUpdate) {
     let _keyType = t.any();
 
     let _partialUpdateType2 = t.ref(UpdateType);
 
-    const _returnType7 = t.return(t.ref(ResultType));
+    const _returnType = t.return(t.union(t.ref(ResultType), t.ref('Promise', t.ref(ResultType))));
 
     t.param('key', _keyType).assert(key);
     t.param('partialUpdate', _partialUpdateType2).assert(partialUpdate);
 
     partialUpdate = _partialUpdateType2.assert(this._partialUpdate(partialUpdate));
-    return this.collection.then(collection => collection.updateOne({ _id: key }, partialUpdate)).then(_arg7 => _returnType7.assert(_arg7));
+    const collection = await this.collection;
+    const commandResult = MongoUpdateCommandResultType.assert((await collection.updateOne({ _id: key }, partialUpdate)));
+    if (!commandResult.result.ok) {
+      console.error(commandResult);
+      throw new Error('Update failed');
+    }
+    return _returnType.assert(this.findByKey(key));
   }
 
   partialUpdateOne(object, partialUpdate) {
@@ -154,7 +161,7 @@ let MongoStore = class extends AbstractStore {
     t.param('partialUpdate', _partialUpdateType3).assert(partialUpdate);
 
     partialUpdate = _partialUpdateType3.assert(this._partialUpdate(partialUpdate));
-    return this.partialUpdateByKey(object._id, partialUpdate).then(() => this.findByKey(object._id)).then(_arg8 => _returnType8.assert(_arg8));
+    return this.partialUpdateByKey(object._id, partialUpdate).then(() => this.findByKey(object._id)).then(_arg7 => _returnType8.assert(_arg7));
   }
 
   partialUpdateMany(criteria, partialUpdate) {
@@ -165,7 +172,7 @@ let MongoStore = class extends AbstractStore {
     t.param('partialUpdate', _partialUpdateType4).assert(partialUpdate);
 
     partialUpdate = _partialUpdateType4.assert(this._partialUpdate(partialUpdate));
-    return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(() => null).then(_arg9 => _returnType9.assert(_arg9)); // TODO return updated object
+    return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(() => null).then(_arg8 => _returnType9.assert(_arg8)); // TODO return updated object
   }
 
   deleteByKey(key) {
@@ -175,7 +182,7 @@ let MongoStore = class extends AbstractStore {
 
     t.param('key', _keyType2).assert(key);
 
-    return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => null).then(_arg10 => _returnType10.assert(_arg10));
+    return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => null).then(_arg9 => _returnType10.assert(_arg9));
   }
 
   cursor(criteria, sort) {
@@ -188,7 +195,7 @@ let MongoStore = class extends AbstractStore {
     t.param('criteria', _criteriaType).assert(criteria);
     t.param('sort', _sortType).assert(sort);
 
-    return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => new MongoCursor(this, cursor)).then(_arg11 => _returnType11.assert(_arg11));
+    return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => new MongoCursor(this, cursor)).then(_arg10 => _returnType11.assert(_arg10));
   }
 
   findByKey(key) {
@@ -198,7 +205,7 @@ let MongoStore = class extends AbstractStore {
 
     t.param('key', _keyType3).assert(key);
 
-    return this.findOne({ _id: key }).then(_arg12 => _returnType12.assert(_arg12));
+    return this.findOne({ _id: key }).then(_arg11 => _returnType12.assert(_arg11));
   }
 
   findOne(criteria, sort) {
@@ -211,7 +218,7 @@ let MongoStore = class extends AbstractStore {
     t.param('criteria', _criteriaType2).assert(criteria);
     t.param('sort', _sortType2).assert(sort);
 
-    return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => cursor.limit(1).next()).then(_arg13 => _returnType13.assert(_arg13));
+    return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => cursor.limit(1).next()).then(_arg12 => _returnType13.assert(_arg12));
   }
 };
 export { MongoStore as default };
