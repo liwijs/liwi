@@ -191,8 +191,6 @@ let MongoStore = class extends AbstractStore {
   }
 
   partialUpdateOne(object, partialUpdate) {
-    var _this3 = this;
-
     let _objectType4 = t.ref(ResultType);
 
     let _partialUpdateType3 = t.ref(UpdateType);
@@ -203,9 +201,7 @@ let MongoStore = class extends AbstractStore {
     t.param('partialUpdate', _partialUpdateType3).assert(partialUpdate);
 
     partialUpdate = _partialUpdateType3.assert(this._partialUpdate(partialUpdate));
-    return this.partialUpdateByKey(object._id, partialUpdate).then(function () {
-      return _this3.findByKey(object._id);
-    }).then(function (_arg7) {
+    return this.partialUpdateByKey(object._id, partialUpdate).then(function (_arg7) {
       return _returnType8.assert(_arg7);
     });
   }
@@ -221,7 +217,7 @@ let MongoStore = class extends AbstractStore {
     return this.collection.then(function (collection) {
       return collection.updateMany(criteria, partialUpdate);
     }).then(function () {
-      return null;
+      return undefined;
     }).then(function (_arg8) {
       return _returnType9.assert(_arg8);
     }); // TODO return updated object
@@ -237,14 +233,14 @@ let MongoStore = class extends AbstractStore {
     return this.collection.then(function (collection) {
       return collection.removeOne({ _id: key });
     }).then(function () {
-      return null;
+      return undefined;
     }).then(function (_arg9) {
       return _returnType10.assert(_arg9);
     });
   }
 
   cursor(criteria, sort) {
-    var _this4 = this;
+    var _this3 = this;
 
     let _criteriaType = t.nullable(t.object());
 
@@ -260,7 +256,7 @@ let MongoStore = class extends AbstractStore {
     }).then(sort && function (cursor) {
       return cursor.sort(sort);
     }).then(function (cursor) {
-      return new MongoCursor(_this4, cursor);
+      return new MongoCursor(_this3, cursor);
     }).then(function (_arg10) {
       return _returnType11.assert(_arg10);
     });

@@ -112,12 +112,8 @@ let MongoStore = class extends AbstractStore {
   }
 
   partialUpdateOne(object, partialUpdate) {
-    var _this3 = this;
-
     partialUpdate = this._partialUpdate(partialUpdate);
-    return this.partialUpdateByKey(object._id, partialUpdate).then(function () {
-      return _this3.findByKey(object._id);
-    });
+    return this.partialUpdateByKey(object._id, partialUpdate);
   }
 
   partialUpdateMany(criteria, partialUpdate) {
@@ -125,7 +121,7 @@ let MongoStore = class extends AbstractStore {
     return this.collection.then(function (collection) {
       return collection.updateMany(criteria, partialUpdate);
     }).then(function () {
-      return null;
+      return undefined;
     }); // TODO return updated object
   }
 
@@ -133,19 +129,19 @@ let MongoStore = class extends AbstractStore {
     return this.collection.then(function (collection) {
       return collection.removeOne({ _id: key });
     }).then(function () {
-      return null;
+      return undefined;
     });
   }
 
   cursor(criteria, sort) {
-    var _this4 = this;
+    var _this3 = this;
 
     return this.collection.then(function (collection) {
       return collection.find(criteria);
     }).then(sort && function (cursor) {
       return cursor.sort(sort);
     }).then(function (cursor) {
-      return new MongoCursor(_this4, cursor);
+      return new MongoCursor(_this3, cursor);
     });
   }
 

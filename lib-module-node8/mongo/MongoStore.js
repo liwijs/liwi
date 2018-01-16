@@ -89,16 +89,16 @@ let MongoStore = class extends AbstractStore {
 
   partialUpdateOne(object, partialUpdate) {
     partialUpdate = this._partialUpdate(partialUpdate);
-    return this.partialUpdateByKey(object._id, partialUpdate).then(() => this.findByKey(object._id));
+    return this.partialUpdateByKey(object._id, partialUpdate);
   }
 
   partialUpdateMany(criteria, partialUpdate) {
     partialUpdate = this._partialUpdate(partialUpdate);
-    return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(() => null); // TODO return updated object
+    return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(() => undefined); // TODO return updated object
   }
 
   deleteByKey(key) {
-    return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => null);
+    return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => undefined);
   }
 
   cursor(criteria, sort) {

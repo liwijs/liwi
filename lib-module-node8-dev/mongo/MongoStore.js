@@ -161,7 +161,7 @@ let MongoStore = class extends AbstractStore {
     t.param('partialUpdate', _partialUpdateType3).assert(partialUpdate);
 
     partialUpdate = _partialUpdateType3.assert(this._partialUpdate(partialUpdate));
-    return this.partialUpdateByKey(object._id, partialUpdate).then(() => this.findByKey(object._id)).then(_arg7 => _returnType8.assert(_arg7));
+    return this.partialUpdateByKey(object._id, partialUpdate).then(_arg7 => _returnType8.assert(_arg7));
   }
 
   partialUpdateMany(criteria, partialUpdate) {
@@ -172,7 +172,7 @@ let MongoStore = class extends AbstractStore {
     t.param('partialUpdate', _partialUpdateType4).assert(partialUpdate);
 
     partialUpdate = _partialUpdateType4.assert(this._partialUpdate(partialUpdate));
-    return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(() => null).then(_arg8 => _returnType9.assert(_arg8)); // TODO return updated object
+    return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(() => undefined).then(_arg8 => _returnType9.assert(_arg8)); // TODO return updated object
   }
 
   deleteByKey(key) {
@@ -182,7 +182,7 @@ let MongoStore = class extends AbstractStore {
 
     t.param('key', _keyType2).assert(key);
 
-    return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => null).then(_arg9 => _returnType10.assert(_arg9));
+    return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => undefined).then(_arg9 => _returnType10.assert(_arg9));
   }
 
   cursor(criteria, sort) {

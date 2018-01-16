@@ -125,11 +125,13 @@ export default class MongoStore extends AbstractStore<MongoConnection> {
     partialUpdate = this._partialUpdate(partialUpdate);
     return this.collection
       .then(collection => collection.updateMany(criteria, partialUpdate))
-      .then(res => null); // TODO return updated object
+      .then(res => undefined); // TODO return updated object
   }
 
   deleteByKey(key: any): Promise<void> {
-    return this.collection.then(collection => collection.removeOne({ _id: key })).then(() => null);
+    return this.collection
+      .then(collection => collection.removeOne({ _id: key }))
+      .then(() => undefined);
   }
 
   cursor(criteria: ?Object, sort: ?Object): Promise<MongoCursor<ResultType>> {
