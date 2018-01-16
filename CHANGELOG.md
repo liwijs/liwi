@@ -1,3 +1,13 @@
+<a name="0.18.8"></a>
+## [0.18.8](https://github.com/liwijs/liwi/compare/v0.18.7...v0.18.8) (2018-01-16)
+
+
+### Bug Fixes
+
+* partialUpdateOne avoid duplicated findByKey ([fd8f7c1](https://github.com/liwijs/liwi/commit/fd8f7c1))
+* void must return undefined not null ([92872e8](https://github.com/liwijs/liwi/commit/92872e8))
+
+
 <a name="0.18.7"></a>
 ## [0.18.7](https://github.com/liwijs/liwi/compare/v0.18.6...v0.18.7) (2018-01-08)
 
