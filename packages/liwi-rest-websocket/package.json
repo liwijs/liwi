@@ -1,13 +1,15 @@
 {
   "name": "liwi-rest-websocket",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "liwi implementation for websocket",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "repository": "git@github.com:liwijs/liwi.git",
   "homepage": "https://github.com/liwijs/liwi",
-  "engines": { "node": ">=8.3.0" },
+  "engines": {
+    "node": ">=8.3.0"
+  },
   "main": "./index.js",
   "module": "./dist/index-browser.es.js",
   "module-dev": "./dist/index-browser-dev.es.js",
@@ -26,9 +28,13 @@
     "test": "echo \"No tests\"",
     "watch": "pob-watch"
   },
-  "prettier": { "trailingComma": "all", "singleQuote": true, "printWidth": 100 },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "printWidth": 100
+  },
   "dependencies": {
-    "extended-json": "^0.0.0",
+    "extended-json": "^1.0.0",
     "flow-runtime": "^0.17.0",
     "nightingale-logger": "^4.0.0"
   },

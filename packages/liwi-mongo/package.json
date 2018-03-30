@@ -1,13 +1,15 @@
 {
   "name": "liwi-mongo",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "mongo implementation for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "repository": "git@github.com:liwijs/liwi.git",
   "homepage": "https://github.com/liwijs/liwi",
-  "engines": { "node": ">=8.3.0" },
+  "engines": {
+    "node": ">=8.3.0"
+  },
   "main": "./index.js",
   "module:node": "./dist/index-node8.es.js",
   "module:node-dev": "./dist/index-node8-dev.es.js",
@@ -18,10 +20,14 @@
     "test": "echo \"No tests\"",
     "watch": "pob-watch"
   },
-  "prettier": { "trailingComma": "all", "singleQuote": true, "printWidth": 100 },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "printWidth": 100
+  },
   "dependencies": {
     "flow-runtime": "^0.17.0",
-    "liwi-store": "^0.0.0",
+    "liwi-store": "^1.0.0",
     "mongodb": "^2.2.33",
     "nightingale-logger": "^4.0.0"
   },

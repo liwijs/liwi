@@ -1,10 +1,9 @@
 {
   "name": "liwi",
-  "version": "0.18.8",
+  "version": "1.0.0",
   "description": "db abstraction",
   "keywords": [],
-  "author":
-    "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
+  "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
   "license": "ISC",
   "repository": "git@github.com:liwijs/liwi.git",
   "homepage": "https://github.com/liwijs/liwi",

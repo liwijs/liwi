@@ -1,13 +1,15 @@
 {
   "name": "extended-json",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "extended json with date using reviver",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "repository": "git@github.com:liwijs/liwi.git",
   "homepage": "https://github.com/liwijs/liwi",
-  "engines": { "node": ">=8.3.0" },
+  "engines": {
+    "node": ">=8.3.0"
+  },
   "main": "./index.js",
   "module": "./dist/index-browser.es.js",
   "module-dev": "./dist/index-browser-dev.es.js",
@@ -22,19 +24,29 @@
   "scripts": {
     "build": "pob-build",
     "flow": "flow",
-    "generate:test-coverage":
-      "rm -Rf docs/coverage/ ; NODE_ENV=production BABEL_ENV=test jest --coverage --coverageReporters=lcov --coverageDirectory=docs/coverage/",
+    "generate:test-coverage": "rm -Rf docs/coverage/ ; NODE_ENV=production BABEL_ENV=test jest --coverage --coverageReporters=lcov --coverageDirectory=docs/coverage/",
     "lint": "eslint src/",
     "test": "jest",
     "watch": "pob-watch"
   },
-  "prettier": { "trailingComma": "all", "singleQuote": true, "printWidth": 100 },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "printWidth": 100
+  },
   "jest": {
     "cacheDirectory": "./node_modules/.cache/jest",
-    "testMatch": ["<rootDir>/src/**/__tests__/**/*.js", "<rootDir>/src/**/*.test.js"],
-    "collectCoverageFrom": ["src/**/*.js"]
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.js",
+      "<rootDir>/src/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
   },
-  "dependencies": { "flow-runtime": "^0.17.0" },
+  "dependencies": {
+    "flow-runtime": "^0.17.0"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
