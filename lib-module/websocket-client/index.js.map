@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../src/websocket-client/index.js"],"names":["WebsocketStore","WebsocketCursor"],"mappings":"4BAA2B,kB;4BAApBA,c;6BACqB,mB;6BAArBC,e","file":"index.js","sourcesContent":["export WebsocketStore from './WebsocketStore';\nexport WebsocketCursor from './WebsocketCursor';\n"]}

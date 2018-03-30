@@ -1,155 +1,53 @@
 {
   "name": "liwi",
+  "private": true,
   "version": "0.18.8",
-  "description": "Liwi",
+  "description": "db abstraction",
   "keywords": [],
-  "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
+  "author":
+    "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
   "license": "ISC",
   "repository": "git@github.com:liwijs/liwi.git",
   "homepage": "https://github.com/liwijs/liwi",
-  "engines": {
-    "node": ">=6.5.0"
-  },
-  "main": "./lib/index.js",
-  "module": "./lib-module/index.js",
-  "module-dev": "./lib-module-dev/index.js",
-  "module:node": "./lib-module-node8/index.js",
-  "module:node-dev": "./lib-module-node8-dev/index.js",
-  "module:modern-browsers": "./lib-module-modern-browsers/index.js",
-  "module:modern-browsers-dev": "./lib-module-modern-browsers-dev/index.js",
-  "module:aliases-node": {
-    "./extended-json.js": "./lib-module-node8/extended-json/index.js",
-    "./mongo.js": "./lib-module-node8/mongo/index.js",
-    "./react-redux.js": "./lib-module-node8/react-redux/index.js",
-    "./rest.js": "./lib-module-node8/rest/index.js",
-    "./rest-websocket.js": "./lib-module-node8/rest-websocket/index.js",
-    "./rethinkdb.js": "./lib-module-node8/rethinkdb/index.js",
-    "./websocket-client.js": "./lib-module-node8/websocket-client/index.js"
-  },
-  "module:aliases-node-dev": {
-    "./extended-json.js": "./lib-module-node8-dev/extended-json/index.js",
-    "./mongo.js": "./lib-module-node8-dev/mongo/index.js",
-    "./react-redux.js": "./lib-module-node8-dev/react-redux/index.js",
-    "./rest.js": "./lib-module-node8-dev/rest/index.js",
-    "./rest-websocket.js": "./lib-module-node8-dev/rest-websocket/index.js",
-    "./rethinkdb.js": "./lib-module-node8-dev/rethinkdb/index.js",
-    "./websocket-client.js": "./lib-module-node8-dev/websocket-client/index.js"
-  },
-  "module:aliases-browser": {
-    "./extended-json.js": "./lib-module/extended-json/index.js",
-    "./mongo.js": "./lib-module/mongo/index.js",
-    "./react-redux.js": "./lib-module/react-redux/index.js",
-    "./rest.js": "./lib-module/rest/index.js",
-    "./rest-websocket.js": "./lib-module/rest-websocket/index.js",
-    "./rethinkdb.js": "./lib-module/rethinkdb/index.js",
-    "./websocket-client.js": "./lib-module/websocket-client/index.js"
-  },
-  "module:aliases-browser-dev": {
-    "./extended-json.js": "./lib-module-dev/extended-json/index.js",
-    "./mongo.js": "./lib-module-dev/mongo/index.js",
-    "./react-redux.js": "./lib-module-dev/react-redux/index.js",
-    "./rest.js": "./lib-module-dev/rest/index.js",
-    "./rest-websocket.js": "./lib-module-dev/rest-websocket/index.js",
-    "./rethinkdb.js": "./lib-module-dev/rethinkdb/index.js",
-    "./websocket-client.js": "./lib-module-dev/websocket-client/index.js"
-  },
-  "module:aliases-modern-browsers": {
-    "./extended-json.js": "./lib-module-modern-browsers/extended-json/index.js",
-    "./mongo.js": "./lib-module-modern-browsers/mongo/index.js",
-    "./react-redux.js": "./lib-module-modern-browsers/react-redux/index.js",
-    "./rest.js": "./lib-module-modern-browsers/rest/index.js",
-    "./rest-websocket.js": "./lib-module-modern-browsers/rest-websocket/index.js",
-    "./rethinkdb.js": "./lib-module-modern-browsers/rethinkdb/index.js",
-    "./websocket-client.js": "./lib-module-modern-browsers/websocket-client/index.js"
-  },
-  "module:aliases-modern-browsers-dev": {
-    "./extended-json.js": "./lib-module-modern-browsers-dev/extended-json/index.js",
-    "./mongo.js": "./lib-module-modern-browsers-dev/mongo/index.js",
-    "./react-redux.js": "./lib-module-modern-browsers-dev/react-redux/index.js",
-    "./rest.js": "./lib-module-modern-browsers-dev/rest/index.js",
-    "./rest-websocket.js": "./lib-module-modern-browsers-dev/rest-websocket/index.js",
-    "./rethinkdb.js": "./lib-module-modern-browsers-dev/rethinkdb/index.js",
-    "./websocket-client.js": "./lib-module-modern-browsers-dev/websocket-client/index.js"
-  },
+  "engines": { "node": ">=6.5.0" },
+  "workspaces": ["packages/*"],
   "scripts": {
-    "build": "pob-build",
+    "build": "lerna run --parallel --ignore \"*-example\" build",
     "clean": "rm -Rf docs dist test/node6 coverage",
-    "generate:test-coverage": "NODE_ENV=production rm -Rf coverage/ ; jest --coverage --coverageReporters=lcov --coverageDirectory=coverage/",
-    "lint": "eslint --ext .js,.jsx src/",
-    "postcheckout": "./.git-hooks/post-checkout",
-    "postmerge": "./.git-hooks/post-merge",
-    "precommit": "./.git-hooks/pre-commit",
-    "preparecommitmsg": "./.git-hooks/prepare-commit-msg ${GIT_PARAMS}",
-    "preversion": "yarn run lint && yarn run build && pob-repository-check-clean",
-    "release": "pob-repository-check-clean && pob-release",
-    "test": "jest",
-    "version": "pob-version",
-    "watch": "pob-watch"
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "lint": "lerna run --stream lint",
+    "postcheckout": "yarnhook",
+    "postmerge": "yarnhook",
+    "postrewrite": "yarnhook",
+    "precommit": "lint-staged",
+    "preversion": "yarn run lint && yarn run build",
+    "release": "lerna publish --conventional-commits -m 'chore: release'",
+    "test": "lerna run --stream test",
+    "watch": "lerna run --parallel --ignore \"*-example\" watch"
   },
   "lint-staged": {
-    "package.json": [
+    "{package.json,packages/*/package.json,,.eslintrc.json}": [
       "prettier --write",
       "git add"
     ],
-    "src/**/*.json": [
-      "prettier --write",
-      "git add"
-    ],
-    "src/**/*.{js,jsx}": [
-      "eslint --fix --quiet",
-      "git add"
-    ]
+    "packages/*/lib/**/*.json": ["prettier --write", "git add"],
+    "packages/*/lib/**/*.js": ["eslint --fix --quiet", "git add"]
   },
+  "commitlint": { "extends": ["@commitlint/config-conventional"] },
   "jest": {
     "cacheDirectory": "./node_modules/.cache/jest",
     "testMatch": [
       "**/src/**/?(*.)test.js?(x)",
       "**/__tests__/**/*.test.js?(x)"
     ],
-    "collectCoverageFrom": [
-      "src/**/*.js?(x)"
-    ]
-  },
-  "dependencies": {
-    "deep-equal": "^1.0.1",
-    "flow-runtime": "^0.16.0",
-    "mongodb": "^2.2.33",
-    "nightingale-logger": "^3.4.0",
-    "rethinkdbdash": "^2.3.31"
+    "collectCoverageFrom": ["src/**/*.js?(x)"]
   },
   "devDependencies": {
-    "alp-react-redux": "^14.2.3",
-    "babel-eslint": "^7.2.3",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-latest-node": "^0.4.0",
-    "babel-preset-modern-browsers": "^10.0.1",
-    "babel-preset-pob-react": "^0.2.4",
-    "eslint": "^4.12.1",
-    "eslint-config-airbnb": "^16.0.0",
-    "eslint-config-pob": "^17.1.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-babel": "^4.1.2",
-    "eslint-plugin-flowtype": "^2.39.1",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-prettier": "^2.3.1",
-    "eslint-plugin-react": "^7.5.1",
+    "@commitlint/cli": "^6.1.3",
+    "@commitlint/config-conventional": "^6.1.3",
     "husky": "^0.14.3",
-    "jest": "^21.2.1",
-    "jest-junit-reporter": "^1.1.0",
-    "komet": "^0.1.4",
-    "komet-karma": "^0.2.5",
-    "lint-staged": "^5.0.0",
-    "pob-babel": "^18.2.0",
-    "pob-release": "^3.1.0",
-    "prettier": "^1.8.2",
-    "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "xunit-file": "1.0.0"
-  },
-  "peerDependencies": {
-    "alp-react-redux": "^12.1.0 || ^14.0.0",
-    "prop-types": "^15.5.10",
-    "react": "^15.5.4 || ^16.0.0-beta.5"
+    "lerna": "2.9.1",
+    "lint-staged": "^7.0.0",
+    "yarnhook": "^0.2.0"
   }
 }

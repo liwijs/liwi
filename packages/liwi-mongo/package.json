@@ -1,0 +1,42 @@
+{
+  "name": "liwi-mongo",
+  "version": "0.0.0",
+  "description": "mongo implementation for liwi",
+  "keywords": [],
+  "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
+  "license": "ISC",
+  "repository": "git@github.com:liwijs/liwi.git",
+  "homepage": "https://github.com/liwijs/liwi",
+  "engines": { "node": ">=8.3.0" },
+  "main": "./index.js",
+  "module:node": "./dist/index-node8.es.js",
+  "module:node-dev": "./dist/index-node8-dev.es.js",
+  "scripts": {
+    "build": "pob-build",
+    "flow": "flow",
+    "lint": "eslint src/",
+    "test": "echo \"No tests\"",
+    "watch": "pob-watch"
+  },
+  "prettier": { "trailingComma": "all", "singleQuote": true, "printWidth": 100 },
+  "dependencies": {
+    "flow-runtime": "^0.17.0",
+    "liwi-store": "^0.0.0",
+    "mongodb": "^2.2.33",
+    "nightingale-logger": "^4.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-preset-latest-node": "^1.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-pob": "^18.0.0",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-flowtype": "^2.46.1",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "flow-bin": "^0.69.0",
+    "pob-babel": "^20.2.0",
+    "prettier": "^1.11.1"
+  }
+}

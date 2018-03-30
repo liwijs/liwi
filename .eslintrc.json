@@ -1,6 +1,0 @@
-{
-  "extends": "pob/react-flow",
-  "env": {
-    "browser": true
-  }
-}

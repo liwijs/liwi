@@ -1,0 +1,10 @@
+{
+  "extends": [
+    "pob/babel",
+    "pob/flow",
+    "pob/react"
+  ],
+  "env": {
+    "browser": true
+  }
+}
