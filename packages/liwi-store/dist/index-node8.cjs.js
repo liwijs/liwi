@@ -6,11 +6,15 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var assert = _interopDefault(require('assert'));
 
-let AbstractConnection = class {};
+class AbstractConnection {}
 
-let AbstractCursor = class {
+var _Symbol$iterator = Symbol.iterator;
 
+/* eslint-disable no-await-in-loop */
+class AbstractCursor {
   constructor(store) {
+    this.key = void 0;
+    this._store = void 0;
     this._store = store;
   }
 
@@ -18,27 +22,12 @@ let AbstractCursor = class {
     return this._store;
   }
 
-  close() {
-    throw new Error('close() missing implementation');
-  }
-
-  next() {
-    throw new Error('next() missing implementation');
-  }
-
   nextResult() {
     return this.next().then(() => this.result());
   }
 
-  limit() {
-    throw new Error('limit() missing implementation');
-  }
-
-  count(applyLimit = false) {
-    throw new Error('count() missing implementation');
-  }
-
   result() {
+    if (!this.key) throw new Error('Cannot call result() before next()');
     return this.store.findByKey(this.key);
   }
 
@@ -50,7 +39,6 @@ let AbstractCursor = class {
     while (true) {
       const key = await this.next();
       if (!key) return;
-
       await callback(key);
     }
   }
@@ -65,14 +53,13 @@ let AbstractCursor = class {
     }
   }
 
-  *[Symbol.iterator]() {
+  *[_Symbol$iterator]() {
     // eslint-disable-next-line no-restricted-syntax
     for (const keyPromise of this.keysIterator()) {
       yield keyPromise.then(key => key && this.result());
     }
-  }
+  } // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
 
-  // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
   /*
     async *keysAsyncIterator() {
         while (true) {
@@ -87,13 +74,14 @@ let AbstractCursor = class {
         }
      }
      */
-}; /* eslint-disable no-await-in-loop */
 
-let AbstractQuery = class {
 
-  constructor(store, queryCallback) {
+}
+
+class AbstractQuery {
+  constructor(store) {
+    this.store = void 0;
     this.store = store;
-    this.queryCallback = queryCallback;
   }
 
   fetchAndSubscribe(callback, ...args) {
@@ -103,15 +91,16 @@ let AbstractQuery = class {
   subscribe(callback, ...args) {
     return this._subscribe(callback, false, args);
   }
-}; // eslint-disable-next-line no-unused-vars
 
-let AbstractStore = class {
-  /**
-   * @param {AbstractConnection} connection
-   */
-  constructor(connection) {
+}
+
+class AbstractStore {
+  constructor(connection, keyPath) {
+    this._connection = void 0;
+    this.keyPath = void 0;
     assert(connection);
     this._connection = connection;
+    this.keyPath = keyPath;
   }
 
   get connection() {
@@ -121,7 +110,8 @@ let AbstractStore = class {
   findAll(criteria, sort) {
     return this.cursor(criteria, sort).then(cursor => cursor.toArray());
   }
-};
+
+}
 
 exports.AbstractConnection = AbstractConnection;
 exports.AbstractCursor = AbstractCursor;

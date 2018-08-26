@@ -20,6 +20,7 @@ This repository is a monorepo that we manage using [Lerna](https://github.com/le
 | [liwi-rest-websocket](/packages/liwi-rest-websocket) | <a href="https://npmjs.org/package/liwi-rest-websocket"><img src="https://img.shields.io/npm/v/liwi-rest-websocket.svg?style=flat-square"></a> | liwi implementation for websocket
 | [liwi-rethinkdb](/packages/liwi-rethinkdb) | <a href="https://npmjs.org/package/liwi-rethinkdb"><img src="https://img.shields.io/npm/v/liwi-rethinkdb.svg?style=flat-square"></a> | rethinkdb implementation for liwi
 | [liwi-store](/packages/liwi-store) | <a href="https://npmjs.org/package/liwi-store"><img src="https://img.shields.io/npm/v/liwi-store.svg?style=flat-square"></a> | abstract store used by liwi implementations
+| [liwi-types](/packages/liwi-types) | <a href="https://npmjs.org/package/liwi-types"><img src="https://img.shields.io/npm/v/liwi-types.svg?style=flat-square"></a> | typescript types for liwi
 | [liwi-websocket-client](/packages/liwi-websocket-client) | <a href="https://npmjs.org/package/liwi-websocket-client"><img src="https://img.shields.io/npm/v/liwi-websocket-client.svg?style=flat-square"></a> | websocket client implementation for liwi
 
 ## Install

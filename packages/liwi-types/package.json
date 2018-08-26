@@ -1,0 +1,30 @@
+{
+  "name": "liwi-types",
+  "version": "0.0.0",
+  "description": "typescript types for liwi",
+  "keywords": [],
+  "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
+  "license": "ISC",
+  "repository": "git@github.com:liwijs/liwi.git",
+  "homepage": "https://github.com/liwijs/liwi",
+  "engines": {
+    "node": ">=8.3.0"
+  },
+  "main": "./index.js",
+  "typings": "./index.d.ts",
+  "scripts": {
+    "lint": "npm run typescript-check",
+    "test": "echo \"No tests\"",
+    "typescript-check": "tsc --noEmit"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^3.0.1",
+    "typescript-eslint-parser": "^18.0.0"
+  }
+}

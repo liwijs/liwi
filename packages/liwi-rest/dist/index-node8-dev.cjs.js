@@ -2,66 +2,53 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var t = _interopDefault(require('flow-runtime'));
-
-let RestCursor = class {
+class RestCursor {
   constructor(restResource, connectedUser, cursor) {
-    this._restResource = restResource;
-    this._connectedUser = connectedUser;
-    this._cursor = cursor;
+    this.restResource = void 0;
+    this.connectedUser = void 0;
+    this.cursor = void 0;
+    this.restResource = restResource;
+    this.connectedUser = connectedUser;
+    this.cursor = cursor;
   }
 
   toArray() {
-    return this._cursor.toArray().then(results => results && results.map(result => this._restResource.transform(result, this._connectedUser)));
+    return this.cursor.toArray().then(results => results && results.map(result => this.restResource.transform(result, this.connectedUser)));
   }
-};
 
-let RestService = class {
+}
+
+class RestService {
   constructor(restResources) {
-    let _restResourcesType = t.ref('Map', t.string(), t.any());
-
-    t.param('restResources', _restResourcesType).assert(restResources);
-
+    this.restResources = void 0;
     this.restResources = restResources;
   }
 
   addRestResource(key, restResource) {
-    let _keyType = t.string();
-
-    t.param('key', _keyType).assert(key);
-
     this.restResources.set(key, restResource);
   }
 
   get(key) {
-    let _keyType2 = t.string();
-
-    t.param('key', _keyType2).assert(key);
-
     const restResource = this.restResources.get(key);
     if (!restResource) throw new Error(`Invalid rest resource: "${key}"`);
     return restResource;
   }
 
-  async createCursor(restResource, connectedUser, _arg) {
-    let _connectedUserType = t.nullable(t.object());
-
-    const _returnType = t.return(t.mixed());
-
-    t.param('connectedUser', _connectedUserType, true).assert(connectedUser);
-    let { criteria, sort, limit } = t.object(t.property('criteria', t.nullable(t.object()), true), t.property('sort', t.nullable(t.object()), true), t.property('limit', t.nullable(t.number()), true)).assert(_arg);
-
+  async createCursor(restResource, connectedUser, {
+    criteria,
+    sort,
+    limit
+  }) {
     // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
     criteria = restResource.criteria(connectedUser, criteria || {});
     sort = restResource.sort(connectedUser, sort);
     const cursor = await restResource.store.cursor(criteria, sort);
     limit = restResource.limit(limit);
     if (limit) cursor.limit(connectedUser, limit);
-    return _returnType.assert(new RestCursor(restResource, connectedUser, cursor));
+    return new RestCursor(restResource, connectedUser, cursor);
   }
-};
+
+}
 
 exports.RestService = RestService;
 //# sourceMappingURL=index-node8-dev.cjs.js.map

@@ -24,8 +24,8 @@ jobs:
           name: tests
           command: yarn run test
       - run:
-          name: Generate Coverage doc
-          command: yarn run generate:test-coverage
+          name: docs
+          command: yarn run generate:docs
       - run:
           name: Send results to codecov
           command: bash <(curl -s https://codecov.io/bash)
@@ -34,20 +34,40 @@ jobs:
 #          name: Check nothing was forget before commit
 #          command: npx pob-repository-check-clean
 
-  test-node9:
+  test-node6:
     docker:
-      - image: circleci/node:9
+      - image: circleci/node:6
     steps:
       - checkout
       - restore_cache:
           keys:
-            - dependencies-node9-{{ arch }}-{{ checksum "yarn.lock" }}
-            - dependencies-node9-{{ arch }}
+            - dependencies-node6-{{ arch }}-{{ checksum "yarn.lock" }}
+            - dependencies-node6-{{ arch }}
       - run:
           name: Install dependencies
           command: yarn --prefer-offline --pure-lockfile
       - save_cache:
-          key: dependencies-node9-{{ arch }}-{{ checksum "yarn.lock" }}
+          key: dependencies-node6-{{ arch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run:
+          name: tests
+          command: yarn run test
+
+  test-node10:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependencies-node10-{{ arch }}-{{ checksum "yarn.lock" }}
+            - dependencies-node10-{{ arch }}
+      - run:
+          name: Install dependencies
+          command: yarn --prefer-offline --pure-lockfile
+      - save_cache:
+          key: dependencies-node10-{{ arch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
       - run:
@@ -60,4 +80,5 @@ workflows:
   tests:
     jobs:
       - test-node8
-      - test-node9
+      - test-node6
+      - test-node10

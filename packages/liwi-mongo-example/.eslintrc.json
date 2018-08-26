@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "pob/babel-node",
+    "pob/typescript"
+  ],
+  "parser": "typescript-eslint-parser",
+  "plugins": [
+    "typescript"
+  ],
+  "rules": {
+    "unicorn/no-process-exit": "off"
+  }
+}

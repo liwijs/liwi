@@ -2,26 +2,28 @@ import { AbstractCursor, AbstractQuery, AbstractStore } from 'liwi-store';
 import Logger from 'nightingale-logger';
 import { decode, encode } from 'extended-json';
 
-let WebsocketCursor = class extends AbstractCursor {
-
+class WebsocketCursor extends AbstractCursor {
   constructor(store, options) {
     super(store);
-    this._options = options;
+    this._idCursor = void 0;
+    this.options = void 0;
+    this._result = void 0;
+    this.options = options;
   }
-
   /* options */
+
 
   limit(newLimit) {
     if (this._idCursor) throw new Error('Cursor already created');
-    this._options.limit = newLimit;
+    this.options.limit = newLimit;
     return Promise.resolve(this);
   }
-
   /* results */
+
 
   _create() {
     if (this._idCursor) throw new Error('Cursor already created');
-    return this.store.connection.emit('createCursor', this._options).then(idCursor => {
+    return this.store.connection.emit('createCursor', this.options).then(idCursor => {
       if (!idCursor) return;
       this._idCursor = idCursor;
     });
@@ -32,7 +34,10 @@ let WebsocketCursor = class extends AbstractCursor {
       return this._create().then(() => this.emit(type, ...args));
     }
 
-    return this.store.emit('cursor', { type, id: this._idCursor }, args);
+    return this.store.emit('cursor', {
+      type,
+      id: this._idCursor
+    }, args);
   }
 
   advance(count) {
@@ -49,6 +54,7 @@ let WebsocketCursor = class extends AbstractCursor {
   }
 
   result() {
+    if (!this._result) throw new Error('Cannot call result() before next()');
     return Promise.resolve(this._result);
   }
 
@@ -58,45 +64,45 @@ let WebsocketCursor = class extends AbstractCursor {
 
   close() {
     if (!this._store) return Promise.resolve();
-
     const closedPromise = this._idCursor ? this.emit('close') : Promise.resolve();
-    this._idCursor = null;
-    this._options = null;
-    this._store = undefined;
+    this._idCursor = undefined;
     this._result = undefined;
     return closedPromise;
   }
 
   toArray() {
-    return this.store.emit('cursor toArray', this._options).then(result => {
+    return this.store.emit('cursor toArray', this.options).then(result => {
       this.close();
       return result;
     });
   }
-};
+
+}
 
 const logger = new Logger('liwi:websocket-client:query');
-
-let Query = class extends AbstractQuery {
+class Query extends AbstractQuery {
   constructor(store, key) {
     super(store);
+    this.key = void 0;
     this.key = key;
   }
 
-  fetch(callback) {
-    return this.store.emit('fetch', this.key).then(callback);
+  fetch(onFulfilled) {
+    return this.store.emit('fetch', this.key).then(onFulfilled);
   }
 
   _subscribe(callback, _includeInitial = false, args) {
     const eventName = `subscribe:${this.store.restName}.${this.key}`;
+
     const listener = (err, result) => {
       const decodedResult = result && decode(result);
-
       callback(err, decodedResult);
     };
+
     this.store.connection.on(eventName, listener);
 
     let _stopEmitSubscribe;
+
     let promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(stopEmitSubscribe => {
       _stopEmitSubscribe = stopEmitSubscribe;
       logger.info('subscribed');
@@ -107,9 +113,11 @@ let Query = class extends AbstractQuery {
 
     const stop = () => {
       if (!promise) return;
+
       _stopEmitSubscribe();
+
       promise.then(() => {
-        promise = null;
+        promise = undefined;
         this.store.connection.off(eventName, listener);
       });
     };
@@ -120,16 +128,15 @@ let Query = class extends AbstractQuery {
       then: cb => Promise.resolve(promise).then(cb)
     };
   }
-};
+
+}
 
 const logger$1 = new Logger('liwi:websocket-client');
+class WebsocketStore extends AbstractStore {
+  constructor(websocket, restName, keyPath) {
+    super(websocket, keyPath);
+    this.restName = void 0;
 
-let WebsocketStore = class extends AbstractStore {
-
-  constructor(websocket, restName) {
-    super(websocket);
-
-    this.keyPath = 'id';
     if (!restName) {
       throw new Error(`Invalid restName: "${restName}"`);
     }
@@ -138,25 +145,15 @@ let WebsocketStore = class extends AbstractStore {
   }
 
   createQuery(key) {
-    logger$1.debug('createQuery', { key });
+    logger$1.debug('createQuery', {
+      key
+    });
     return new Query(this, key);
-  }
-
-  emit(type, ...args) {
-    logger$1.debug('emit', { type, args });
-    if (this.connection.isDisconnected()) {
-      throw new Error('Websocket is not connected');
-    }
-
-    return this.connection.emit('rest', {
-      type,
-      restName: this.restName,
-      json: encode(args)
-    }).then(result => result && decode(result));
   }
 
   emitSubscribe(type, ...args) {
     const emit = () => this.emit(type, ...args);
+
     const registerOnConnect = () => {
       this.connection.on('connect', emit);
       return () => this.connection.off('connect', emit);
@@ -173,12 +170,12 @@ let WebsocketStore = class extends AbstractStore {
     return this.emit('insertOne', object);
   }
 
-  updateOne(object) {
-    return this.emit('updateOne', object);
+  replaceOne(object) {
+    return this.emit('replaceOne', object);
   }
 
-  updateSeveral(objects) {
-    return this.emit('updateSeveral', objects);
+  upsertOne(object) {
+    return this.emit('upsertOne', object);
   }
 
   partialUpdateByKey(key, partialUpdate) {
@@ -202,17 +199,40 @@ let WebsocketStore = class extends AbstractStore {
   }
 
   cursor(criteria, sort) {
-    return Promise.resolve(new WebsocketCursor(this, { criteria, sort }));
+    return Promise.resolve(new WebsocketCursor(this, {
+      criteria,
+      sort
+    }));
   }
 
   findByKey(key) {
-    return this.findOne({ id: key });
+    return this.findOne({
+      [this.keyPath]: key
+    });
   }
 
   findOne(criteria, sort) {
     return this.emit('findOne', criteria, sort);
   }
-};
+
+  emit(type, ...args) {
+    logger$1.debug('emit', {
+      type,
+      args
+    });
+
+    if (this.connection.isDisconnected()) {
+      throw new Error('Websocket is not connected');
+    }
+
+    return this.connection.emit('rest', {
+      type,
+      restName: this.restName,
+      json: encode(args)
+    }).then(result => result && decode(result));
+  }
+
+}
 
 export { WebsocketStore, WebsocketCursor };
 //# sourceMappingURL=index-node8.es.js.map

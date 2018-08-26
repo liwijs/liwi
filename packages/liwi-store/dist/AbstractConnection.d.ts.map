@@ -1,0 +1,1 @@
+{"version":3,"file":"AbstractConnection.d.ts","sourceRoot":"","sources":["../src/AbstractConnection.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,CAAC,QAAQ,OAAO,kBAAkB;IAC9C,QAAQ,CAAC,aAAa,IAAI,OAAO,CAAC,GAAG,CAAC;IAEtC,QAAQ,CAAC,KAAK,IAAI,OAAO,CAAC,IAAI,CAAC;CAChC"}

@@ -2,20 +2,25 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-let RestCursor = class {
+class RestCursor {
   constructor(restResource, connectedUser, cursor) {
-    this._restResource = restResource;
-    this._connectedUser = connectedUser;
-    this._cursor = cursor;
+    this.restResource = void 0;
+    this.connectedUser = void 0;
+    this.cursor = void 0;
+    this.restResource = restResource;
+    this.connectedUser = connectedUser;
+    this.cursor = cursor;
   }
 
   toArray() {
-    return this._cursor.toArray().then(results => results && results.map(result => this._restResource.transform(result, this._connectedUser)));
+    return this.cursor.toArray().then(results => results && results.map(result => this.restResource.transform(result, this.connectedUser)));
   }
-};
 
-let RestService = class {
+}
+
+class RestService {
   constructor(restResources) {
+    this.restResources = void 0;
     this.restResources = restResources;
   }
 
@@ -29,7 +34,11 @@ let RestService = class {
     return restResource;
   }
 
-  async createCursor(restResource, connectedUser, { criteria, sort, limit }) {
+  async createCursor(restResource, connectedUser, {
+    criteria,
+    sort,
+    limit
+  }) {
     // TODO: restResource.query(connectedUser, criteria || {}, sort).cursor()
     criteria = restResource.criteria(connectedUser, criteria || {});
     sort = restResource.sort(connectedUser, sort);
@@ -38,7 +47,8 @@ let RestService = class {
     if (limit) cursor.limit(connectedUser, limit);
     return new RestCursor(restResource, connectedUser, cursor);
   }
-};
+
+}
 
 exports.RestService = RestService;
 //# sourceMappingURL=index-node8.cjs.js.map

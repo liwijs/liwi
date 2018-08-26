@@ -1,10 +1,14 @@
 {
   "extends": [
     "pob/babel",
-    "pob/flow",
-    "pob/react"
+    "pob/react",
+    "pob/typescript"
   ],
   "env": {
     "browser": true
-  }
+  },
+  "parser": "typescript-eslint-parser",
+  "plugins": [
+    "typescript"
+  ]
 }
