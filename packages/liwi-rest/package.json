@@ -1,6 +1,6 @@
 {
   "name": "liwi-rest",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "rest service for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -27,7 +27,7 @@
     "arrowParens": "always"
   },
   "dependencies": {
-    "liwi-types": "^0.0.0"
+    "liwi-types": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.0.0-rc.3",

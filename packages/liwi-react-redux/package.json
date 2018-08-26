@@ -1,6 +1,6 @@
 {
   "name": "liwi-react-redux",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "react-redux with liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "deep-equal": "^1.0.1",
-    "liwi-store": "^1.0.0"
+    "liwi-store": "^2.0.0"
   },
   "peerDependencies": {
     "alp-react-redux": "^14.0.0",

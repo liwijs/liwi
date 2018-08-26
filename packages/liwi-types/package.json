@@ -1,6 +1,6 @@
 {
   "name": "liwi-types",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "typescript types for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -22,7 +22,6 @@
     "singleQuote": true,
     "arrowParens": "always"
   },
-  "dependencies": {},
   "devDependencies": {
     "typescript": "^3.0.1",
     "typescript-eslint-parser": "^18.0.0"
