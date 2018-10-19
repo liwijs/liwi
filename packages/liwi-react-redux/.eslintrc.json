@@ -1,8 +1,8 @@
 {
   "extends": [
     "pob/babel",
-    "pob/react",
-    "pob/typescript"
+    "pob/typescript",
+    "pob/typescript-react"
   ],
   "env": {
     "browser": true
