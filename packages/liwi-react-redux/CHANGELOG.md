@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/liwijs/liwi/compare/liwi-react-redux@2.0.0...liwi-react-redux@2.1.0) (2018-11-23)
+
+
+### Features
+
+* add and export mongo types ([aec6dba](https://github.com/liwijs/liwi/commit/aec6dba))
+
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/liwijs/liwi/compare/liwi-react-redux@1.0.0...liwi-react-redux@2.0.0) (2018-08-26)
 
