@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var liwiStore = require('liwi-store');
-var mongodb = require('mongodb');
 var Logger = _interopDefault(require('nightingale-logger'));
+var mongodb = require('mongodb');
+var liwiStore = require('liwi-store');
 
 class MongoCursor extends liwiStore.AbstractCursor {
   // key in AbstractCursor
@@ -297,6 +297,8 @@ class MongoConnection extends liwiStore.AbstractConnection {
   }
 
 }
+
+/* eslint-disable typescript/no-use-before-define */
 
 exports.MongoStore = MongoStore;
 exports.MongoConnection = MongoConnection;

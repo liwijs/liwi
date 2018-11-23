@@ -7,13 +7,14 @@ export interface MongoModel extends BaseModel {
     _id: string;
 }
 export declare type MongoKeyPath = '_id';
+export declare type MongoInsertType<Model extends MongoModel> = InsertType<Model, MongoKeyPath>;
 export default class MongoStore<Model extends MongoModel> extends AbstractStore<Model, MongoKeyPath, MongoConnection, MongoCursor<Model>> {
     _collection: Collection | Promise<Collection>;
     constructor(connection: MongoConnection, collectionName: string);
     readonly collection: Promise<Collection>;
-    insertOne(object: InsertType<Model, MongoKeyPath>): Promise<Model>;
+    insertOne(object: MongoInsertType<Model>): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
-    upsertOne(object: InsertType<Model, MongoKeyPath>): Promise<Model>;
+    upsertOne(object: MongoInsertType<Model>): Promise<Model>;
     replaceSeveral(objects: Array<Model>): Promise<Array<Model>>;
     partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;

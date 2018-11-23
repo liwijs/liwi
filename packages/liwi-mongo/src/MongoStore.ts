@@ -10,6 +10,11 @@ export interface MongoModel extends BaseModel {
 
 export type MongoKeyPath = '_id';
 
+export type MongoInsertType<Model extends MongoModel> = InsertType<
+  Model,
+  MongoKeyPath
+>;
+
 export default class MongoStore<Model extends MongoModel> extends AbstractStore<
   Model,
   MongoKeyPath,
@@ -45,7 +50,7 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     return Promise.resolve(this._collection);
   }
 
-  async insertOne(object: InsertType<Model, MongoKeyPath>): Promise<Model> {
+  async insertOne(object: MongoInsertType<Model>): Promise<Model> {
     if (!object._id) {
       object._id = new ObjectID().toString();
     }
@@ -70,7 +75,7 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     return object as Model;
   }
 
-  async upsertOne(object: InsertType<Model, MongoKeyPath>): Promise<Model> {
+  async upsertOne(object: MongoInsertType<Model>): Promise<Model> {
     const $setOnInsert = {
       created: new Date(),
     };

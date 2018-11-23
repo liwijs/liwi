@@ -11,7 +11,7 @@
     "node": ">=8.3.0"
   },
   "main": "./index.js",
-  "typings": "./dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "module:node": "./dist/index-node8.es.js",
   "module:node-dev": "./dist/index-node8-dev.es.js",
   "scripts": {
@@ -34,18 +34,18 @@
     "nightingale-logger": "^5.1.0"
   },
   "devDependencies": {
-    "@babel/core": "7.1.2",
+    "@babel/core": "7.1.6",
     "babel-eslint": "10.0.1",
     "babel-preset-latest-node": "2.0.2",
-    "eslint": "5.7.0",
-    "eslint-config-pob": "22.0.3",
-    "eslint-plugin-babel": "5.2.1",
+    "eslint": "5.9.0",
+    "eslint-config-pob": "24.0.2",
+    "eslint-plugin-babel": "5.3.0",
     "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-node": "7.0.1",
-    "eslint-plugin-typescript": "0.12.0",
-    "pob-babel": "^23.3.1",
-    "prettier": "1.14.3",
-    "typescript": "3.1.3",
-    "typescript-eslint-parser": "20.0.0"
+    "eslint-plugin-node": "8.0.0",
+    "eslint-plugin-typescript": "0.13.0",
+    "pob-babel": "^23.4.0",
+    "prettier": "1.15.2",
+    "typescript": "3.1.6",
+    "typescript-eslint-parser": "21.0.1"
   }
 }

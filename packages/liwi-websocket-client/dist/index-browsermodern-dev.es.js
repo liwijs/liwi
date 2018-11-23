@@ -1,6 +1,6 @@
-import { AbstractCursor, AbstractQuery, AbstractStore } from 'liwi-store';
 import Logger from 'nightingale-logger';
 import { decode, encode } from 'extended-json';
+import { AbstractCursor, AbstractQuery, AbstractStore } from 'liwi-store';
 
 class WebsocketCursor extends AbstractCursor {
   constructor(store, options) {

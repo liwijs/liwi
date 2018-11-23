@@ -1,6 +1,6 @@
-import { AbstractCursor, AbstractStore, AbstractConnection } from 'liwi-store';
-import { ObjectID, MongoClient } from 'mongodb';
 import Logger from 'nightingale-logger';
+import { ObjectID, MongoClient } from 'mongodb';
+import { AbstractCursor, AbstractStore, AbstractConnection } from 'liwi-store';
 
 class MongoCursor extends AbstractCursor {
   // key in AbstractCursor
@@ -291,6 +291,8 @@ class MongoConnection extends AbstractConnection {
   }
 
 }
+
+/* eslint-disable typescript/no-use-before-define */
 
 export { MongoStore, MongoConnection };
 //# sourceMappingURL=index-node8-dev.es.js.map

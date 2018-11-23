@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var liwiStore = require('liwi-store');
 var Logger = _interopDefault(require('nightingale-logger'));
 var extendedJson = require('extended-json');
+var liwiStore = require('liwi-store');
 
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
