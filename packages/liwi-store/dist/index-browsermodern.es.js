@@ -2,18 +2,18 @@ import assert from 'assert';
 
 class AbstractConnection {}
 
-var _Symbol$iterator = Symbol.iterator;
-
 /* eslint-disable no-await-in-loop */
 class AbstractCursor {
   constructor(store) {
-    this.key = void 0;
-    this._store = void 0;
     this._store = store;
   }
 
   get store() {
     return this._store;
+  }
+
+  overrideStore(store) {
+    this._store = store;
   }
 
   nextResult() {
@@ -57,7 +57,7 @@ class AbstractCursor {
     }
   }
 
-  *[_Symbol$iterator]() {
+  *[Symbol.iterator]() {
     var _this3 = this;
 
     // eslint-disable-next-line no-restricted-syntax
@@ -88,7 +88,6 @@ class AbstractCursor {
 
 class AbstractQuery {
   constructor(store) {
-    this.store = void 0;
     this.store = store;
   }
 
@@ -104,8 +103,6 @@ class AbstractQuery {
 
 class AbstractStore {
   constructor(connection, keyPath) {
-    this._connection = void 0;
-    this.keyPath = void 0;
     assert(connection);
     this._connection = connection;
     this.keyPath = keyPath;
@@ -119,6 +116,15 @@ class AbstractStore {
     return this.cursor(criteria, sort).then(function (cursor) {
       return cursor.toArray();
     });
+  }
+
+  async upsertOne(object) {
+    const result = await this.upsertOneWithInfo(object);
+    return result.object;
+  }
+
+  deleteOne(object) {
+    return this.deleteByKey(object[this.keyPath]);
   }
 
 }

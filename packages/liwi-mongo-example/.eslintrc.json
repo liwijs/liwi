@@ -1,12 +1,7 @@
 {
-  "extends": [
-    "pob/babel-node",
-    "pob/typescript"
-  ],
   "parser": "typescript-eslint-parser",
-  "plugins": [
-    "typescript"
-  ],
+  "plugins": ["typescript"],
+  "extends": ["pob/babel-node", "pob/typescript"],
   "rules": {
     "unicorn/no-process-exit": "off"
   }

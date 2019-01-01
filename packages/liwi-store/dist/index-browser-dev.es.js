@@ -54,19 +54,19 @@ function _createClass(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
-var _Symbol$iterator = Symbol.iterator;
-
 /* eslint-disable no-await-in-loop */
 var AbstractCursor =
 /*#__PURE__*/
 function () {
   function AbstractCursor(store) {
-    this.key = void 0;
-    this._store = void 0;
     this._store = store;
   }
 
   var _proto = AbstractCursor.prototype;
+
+  _proto.overrideStore = function overrideStore(store) {
+    this._store = store;
+  };
 
   _proto.nextResult = function nextResult() {
     var _this = this;
@@ -161,7 +161,7 @@ function () {
       }
     }, keysIterator, this);
   });
-  _proto[_Symbol$iterator] =
+  _proto[Symbol.iterator] =
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee2() {
     var _this3 = this;
@@ -222,7 +222,7 @@ function () {
         }
       }
     }, _callee2, this);
-  }); // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
+  }) // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
 
   /*
     async *keysAsyncIterator() {
@@ -238,6 +238,7 @@ function () {
         }
      }
      */
+  ;
 
   _createClass(AbstractCursor, [{
     key: "store",
@@ -253,7 +254,6 @@ var AbstractQuery =
 /*#__PURE__*/
 function () {
   function AbstractQuery(store) {
-    this.store = void 0;
     this.store = store;
   }
 
@@ -286,8 +286,6 @@ var AbstractStore =
 /*#__PURE__*/
 function () {
   function AbstractStore(connection, keyPath) {
-    this._connection = void 0;
-    this.keyPath = void 0;
     assert(connection);
     this._connection = connection;
     this.keyPath = keyPath;
@@ -299,6 +297,41 @@ function () {
     return this.cursor(criteria, sort).then(function (cursor) {
       return cursor.toArray();
     });
+  };
+
+  _proto.upsertOne =
+  /*#__PURE__*/
+  function () {
+    var _upsertOne = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee(object) {
+      var result;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return this.upsertOneWithInfo(object);
+
+            case 2:
+              result = _context.sent;
+              return _context.abrupt("return", result.object);
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    return function upsertOne() {
+      return _upsertOne.apply(this, arguments);
+    };
+  }();
+
+  _proto.deleteOne = function deleteOne(object) {
+    return this.deleteByKey(object[this.keyPath]);
   };
 
   _createClass(AbstractStore, [{

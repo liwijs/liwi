@@ -23,7 +23,7 @@
     "arrowParens": "always"
   },
   "devDependencies": {
-    "typescript": "^3.1.6",
-    "typescript-eslint-parser": "^21.0.1"
+    "typescript": "^3.2.2",
+    "typescript-eslint-parser": "^21.0.2"
   }
 }

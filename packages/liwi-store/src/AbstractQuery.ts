@@ -1,4 +1,5 @@
-import AbstractStore from './AbstractStore';
+import { BaseModel, Changes } from 'liwi-types';
+import StoreInterface from './Store';
 
 export interface SubscribeResult {
   cancel: () => void;
@@ -6,10 +7,14 @@ export interface SubscribeResult {
   then: (cb: any) => Promise<any>;
 }
 
-export type Callback = (err: Error | null, result: any) => void;
+export type SubscribeCallback<Model> = (
+  err: Error | null,
+  changes: Changes<Model>,
+) => void;
 
 export default abstract class AbstractQuery<
-  Store extends AbstractStore<any, any, any, any>
+  Model extends BaseModel,
+  Store extends StoreInterface<Model, any, any, any, any>
 > {
   store: Store;
 
@@ -19,16 +24,16 @@ export default abstract class AbstractQuery<
 
   abstract fetch(onFulfilled?: (value: any) => any): Promise<any>;
 
-  fetchAndSubscribe(callback: Callback, ...args: Array<any>) {
+  fetchAndSubscribe(callback: SubscribeCallback<Model>, ...args: Array<any>) {
     return this._subscribe(callback, true, args);
   }
 
-  subscribe(callback: Callback, ...args: Array<any>) {
+  subscribe(callback: SubscribeCallback<Model>, ...args: Array<any>) {
     return this._subscribe(callback, false, args);
   }
 
   abstract _subscribe(
-    callback: Callback,
+    callback: SubscribeCallback<Model>,
     _includeInitial: boolean,
     args: Array<any>,
   ): SubscribeResult;

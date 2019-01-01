@@ -8,18 +8,18 @@ var assert = _interopDefault(require('assert'));
 
 class AbstractConnection {}
 
-var _Symbol$iterator = Symbol.iterator;
-
 /* eslint-disable no-await-in-loop */
 class AbstractCursor {
   constructor(store) {
-    this.key = void 0;
-    this._store = void 0;
     this._store = store;
   }
 
   get store() {
     return this._store;
+  }
+
+  overrideStore(store) {
+    this._store = store;
   }
 
   nextResult() {
@@ -53,7 +53,7 @@ class AbstractCursor {
     }
   }
 
-  *[_Symbol$iterator]() {
+  *[Symbol.iterator]() {
     // eslint-disable-next-line no-restricted-syntax
     for (const keyPromise of this.keysIterator()) {
       yield keyPromise.then(key => key && this.result());
@@ -80,7 +80,6 @@ class AbstractCursor {
 
 class AbstractQuery {
   constructor(store) {
-    this.store = void 0;
     this.store = store;
   }
 
@@ -96,8 +95,6 @@ class AbstractQuery {
 
 class AbstractStore {
   constructor(connection, keyPath) {
-    this._connection = void 0;
-    this.keyPath = void 0;
     assert(connection);
     this._connection = connection;
     this.keyPath = keyPath;
@@ -109,6 +106,15 @@ class AbstractStore {
 
   findAll(criteria, sort) {
     return this.cursor(criteria, sort).then(cursor => cursor.toArray());
+  }
+
+  async upsertOne(object) {
+    const result = await this.upsertOneWithInfo(object);
+    return result.object;
+  }
+
+  deleteOne(object) {
+    return this.deleteByKey(object[this.keyPath]);
   }
 
 }

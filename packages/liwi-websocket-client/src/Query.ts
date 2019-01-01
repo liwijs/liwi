@@ -11,6 +11,7 @@ type SubscribeReturn = {
   then: (cb: any) => Promise<any>;
 };
 
+type UnsubscribeCallback = () => void;
 type Callback = (err: Error | null, result: any) => void;
 
 const logger = new Logger('liwi:websocket-client:query');
@@ -18,7 +19,7 @@ const logger = new Logger('liwi:websocket-client:query');
 export default class Query<
   Model extends BaseModel,
   KeyPath extends string
-> extends AbstractQuery<WebsocketStore<Model, KeyPath>> {
+> extends AbstractQuery<Model, WebsocketStore<Model, KeyPath>> {
   key: string;
 
   constructor(store: WebsocketStore<Model, KeyPath>, key: string) {
@@ -27,7 +28,7 @@ export default class Query<
   }
 
   fetch(onFulfilled?: (value: any) => any): Promise<any> {
-    return this.store.emit('fetch', this.key).then(onFulfilled);
+    return super.store.emit('fetch', this.key).then(onFulfilled);
   }
 
   _subscribe(
@@ -35,28 +36,31 @@ export default class Query<
     _includeInitial = false,
     args: Array<any>,
   ): SubscribeReturn {
-    const eventName = `subscribe:${this.store.restName}.${this.key}`;
+    const eventName = `subscribe:${super.store.restName}.${this.key}`;
     const listener = (err: Error | null, result?: string) => {
       const decodedResult = result && decode(result);
       if (!PRODUCTION) logger.debug(eventName, { result, decodedResult });
       callback(err, decodedResult);
     };
-    this.store.connection.on(eventName, listener);
 
-    let _stopEmitSubscribe: () => void;
-    let promise: Promise<void> | undefined = this.store
+    const connection = super.store.connection;
+
+    connection.on(eventName, listener);
+
+    let _stopEmitSubscribe: UnsubscribeCallback;
+    let promise: Promise<void> | undefined = super.store
       .emitSubscribe(
         _includeInitial ? 'fetchAndSubscribe' : 'subscribe',
         this.key,
         eventName,
         args,
       )
-      .then((stopEmitSubscribe) => {
+      .then((stopEmitSubscribe: UnsubscribeCallback) => {
         _stopEmitSubscribe = stopEmitSubscribe;
         logger.info('subscribed');
       })
-      .catch((err) => {
-        this.store.connection.off(eventName, listener);
+      .catch((err: Error) => {
+        connection.off(eventName, listener);
         throw err;
       });
 
@@ -65,7 +69,7 @@ export default class Query<
       _stopEmitSubscribe();
       promise.then(() => {
         promise = undefined;
-        this.store.connection.off(eventName, listener);
+        connection.off(eventName, listener);
       });
     };
 

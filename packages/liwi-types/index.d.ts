@@ -1,12 +1,11 @@
-
 export interface BaseModel {
   created: Date;
   updated: Date;
   [key: string]: any;
 }
 
-export type InsertType<T extends BaseModel, IdKey> = Pick<T, Exclude<keyof T, IdKey | 'created' | 'updated'>>;
-// & Partial<Pick<T, 'created' | 'updated'>>;
+export type InsertType<T extends BaseModel, IdKey extends string>
+  = Pick<T, Exclude<keyof T, IdKey | 'created' | 'updated'>> & Partial<Pick<T, IdKey | 'created' | 'updated'>>;
 
 // export type InsertedType<T extends BaseModel> = T;
 
@@ -36,3 +35,11 @@ export interface Criteria<Model> {
 export interface Sort<Model> {
   [key: string]: any
 }
+
+export type Change<Model> =
+  | { type: 'initial'; initial: Array<Model> }
+  | { type: 'inserted'; objects: Array<Model> }
+  | { type: 'updated'; objects: Array<Model> }
+  | { type: 'deleted'; keys: Array<string> };
+
+export type Changes<Model> = Array<Change<Model>>;

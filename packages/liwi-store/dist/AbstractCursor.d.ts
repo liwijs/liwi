@@ -1,10 +1,11 @@
 import { BaseModel } from 'liwi-types';
 import AbstractStore from './AbstractStore';
-export default abstract class AbstractCursor<Model extends BaseModel, KeyPath extends string, Store extends AbstractStore<Model, KeyPath, any, any>> {
+export default abstract class AbstractCursor<Model extends BaseModel, KeyPath extends string, Store extends AbstractStore<Model, KeyPath, any, any, any>> {
     key: any;
-    _store: Store;
+    protected _store: Store;
     constructor(store: Store);
     readonly store: Store;
+    overrideStore(store: Store): void;
     abstract close(): Promise<void> | void;
     abstract next(): Promise<any>;
     nextResult(): Promise<Model>;

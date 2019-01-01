@@ -52,12 +52,13 @@ function init(io, restService) {
 
           case 'insertOne':
           case 'replaceOne':
-          case 'upsertOne':
+          case 'replaceSeveral':
+          case 'upsertOneWithInfo':
           case 'partialUpdateByKey':
           case 'partialUpdateOne':
           case 'partialUpdateMany':
           case 'deleteByKey':
-          case 'deleteOne':
+          case 'deleteMany':
           case 'findOne':
             try {
               if (!restResource[type]) {

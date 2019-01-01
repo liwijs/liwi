@@ -1,7 +1,7 @@
 import Logger from 'nightingale-logger';
 import { encode, decode } from 'extended-json';
-import { AbstractStore, AbstractConnection } from 'liwi-store';
-import { BaseModel, Update, Criteria, Sort } from 'liwi-types';
+import { AbstractStore, AbstractConnection, UpsertResult } from 'liwi-store';
+import { BaseModel, Update, Criteria, Sort, InsertType } from 'liwi-types';
 import WebsocketCursor from './WebsocketCursor';
 import Query from './Query';
 
@@ -15,6 +15,8 @@ export interface WebsocketConnection extends AbstractConnection {
   off: (event: string, listener: Function) => this;
 }
 
+type UnsubscribeCallback = () => void;
+
 export default class WebsocketStore<
   Model extends BaseModel,
   KeyPath extends string
@@ -22,7 +24,8 @@ export default class WebsocketStore<
   Model,
   KeyPath,
   WebsocketConnection,
-  WebsocketCursor<Model, KeyPath>
+  WebsocketCursor<Model, KeyPath>,
+  Query<Model, KeyPath>
 > {
   restName: string;
 
@@ -45,14 +48,20 @@ export default class WebsocketStore<
     return new Query(this, key);
   }
 
-  emitSubscribe(type: string, ...args: Array<any>) {
+  emitSubscribe(
+    type: string,
+    ...args: Array<any>
+  ): Promise<UnsubscribeCallback> {
+    const connection = super.connection;
     const emit = () => this.emit(type, ...args);
     const registerOnConnect = () => {
-      this.connection.on('connect', emit);
-      return () => this.connection.off('connect', emit);
+      connection.on('connect', emit);
+      return () => {
+        connection.off('connect', emit);
+      };
     };
 
-    if (this.connection.isConnected()) {
+    if (connection.isConnected()) {
       return emit().then(registerOnConnect);
     }
 
@@ -67,8 +76,14 @@ export default class WebsocketStore<
     return this.emit('replaceOne', object);
   }
 
-  upsertOne(object: Model): Promise<Model> {
-    return this.emit('upsertOne', object);
+  replaceSeveral(objects: Array<Model>): Promise<Array<Model>> {
+    return this.emit('replaceSeveral', objects);
+  }
+
+  upsertOneWithInfo(
+    object: InsertType<Model, KeyPath>,
+  ): Promise<UpsertResult<Model>> {
+    return this.emit('upsertOneWithInfo', object);
   }
 
   partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model> {
@@ -89,14 +104,6 @@ export default class WebsocketStore<
     return this.emit('partialUpdateMany', criteria, partialUpdate);
   }
 
-  deleteByKey(key: any): Promise<void> {
-    return this.emit('deleteByKey', key);
-  }
-
-  deleteOne(object: Model): Promise<void> {
-    return this.emit('deleteOne', object);
-  }
-
   cursor(
     criteria?: Criteria<Model>,
     sort?: Sort<Model>,
@@ -105,7 +112,7 @@ export default class WebsocketStore<
   }
 
   findByKey(key: any): Promise<Model | undefined> {
-    return this.findOne({ [this.keyPath]: key });
+    return this.findOne({ [super.keyPath]: key });
   }
 
   findOne(
@@ -115,18 +122,26 @@ export default class WebsocketStore<
     return this.emit('findOne', criteria, sort);
   }
 
+  deleteByKey(key: any): Promise<void> {
+    return this.emit('deleteByKey', key);
+  }
+
+  deleteMany(criteria: Criteria<Model>): Promise<void> {
+    return this.emit('deleteMany', criteria);
+  }
+
   emit(type: string, ...args: Array<any>) {
     logger.debug('emit', { type, args });
-    if (this.connection.isDisconnected()) {
+    if (super.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
     }
 
-    return this.connection
+    return super.connection
       .emit('rest', {
         type,
         restName: this.restName,
         json: encode(args),
       })
-      .then((result) => result && decode(result));
+      .then((result: any) => result && decode(result));
   }
 }

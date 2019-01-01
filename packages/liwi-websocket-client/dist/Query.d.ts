@@ -7,7 +7,7 @@ declare type SubscribeReturn = {
     then: (cb: any) => Promise<any>;
 };
 declare type Callback = (err: Error | null, result: any) => void;
-export default class Query<Model extends BaseModel, KeyPath extends string> extends AbstractQuery<WebsocketStore<Model, KeyPath>> {
+export default class Query<Model extends BaseModel, KeyPath extends string> extends AbstractQuery<Model, WebsocketStore<Model, KeyPath>> {
     key: string;
     constructor(store: WebsocketStore<Model, KeyPath>, key: string);
     fetch(onFulfilled?: (value: any) => any): Promise<any>;

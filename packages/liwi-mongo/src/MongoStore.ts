@@ -1,27 +1,36 @@
 import { ObjectID, Collection, Db } from 'mongodb';
-import { AbstractStore } from 'liwi-store';
+import { AbstractStore, UpsertResult } from 'liwi-store';
 import { BaseModel, InsertType, Criteria, Sort, Update } from 'liwi-types';
 import MongoConnection from './MongoConnection';
 import MongoCursor from './MongoCursor';
+import MongoQuery from './MongoQuery';
+import { MongoKeyPath } from '.';
+
+export type MongoKeyPath = '_id';
 
 export interface MongoModel extends BaseModel {
   _id: string;
 }
-
-export type MongoKeyPath = '_id';
 
 export type MongoInsertType<Model extends MongoModel> = InsertType<
   Model,
   MongoKeyPath
 >;
 
+export interface MongoUpsertResult<Model extends MongoModel>
+  extends UpsertResult<Model> {
+  object: Model;
+  inserted: boolean;
+}
+
 export default class MongoStore<Model extends MongoModel> extends AbstractStore<
   Model,
   MongoKeyPath,
   MongoConnection,
-  MongoCursor<Model>
+  MongoCursor<Model>,
+  MongoQuery<Model>
 > {
-  _collection: Collection | Promise<Collection>;
+  private _collection: Collection | Promise<Collection>;
 
   constructor(connection: MongoConnection, collectionName: string) {
     super(connection, '_id');
@@ -43,11 +52,15 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
   }
 
   get collection(): Promise<Collection> {
-    if (this.connection.connectionFailed) {
+    if (super.connection.connectionFailed) {
       return Promise.reject(new Error('MongoDB connection failed'));
     }
 
     return Promise.resolve(this._collection);
+  }
+
+  createQuery(criteria: Criteria<Model>): MongoQuery<Model> {
+    return new MongoQuery(this, criteria);
   }
 
   async insertOne(object: MongoInsertType<Model>): Promise<Model> {
@@ -75,7 +88,9 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     return object as Model;
   }
 
-  async upsertOne(object: MongoInsertType<Model>): Promise<Model> {
+  async upsertOneWithInfo(
+    object: MongoInsertType<Model>,
+  ): Promise<MongoUpsertResult<Model>> {
     const $setOnInsert = {
       created: new Date(),
     };
@@ -97,7 +112,7 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
       object.created = $setOnInsert.created;
     }
 
-    return object as Model;
+    return { object: object as Model, inserted: !!upsertedCount };
   }
 
   replaceSeveral(objects: Array<Model>): Promise<Array<Model>> {

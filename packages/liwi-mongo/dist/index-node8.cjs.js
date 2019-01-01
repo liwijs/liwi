@@ -4,16 +4,16 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var Logger = _interopDefault(require('nightingale-logger'));
 var mongodb = require('mongodb');
 var liwiStore = require('liwi-store');
+var mingo = _interopDefault(require('mingo'));
+var liwiSubscribeStore = require('liwi-subscribe-store');
+var Logger = _interopDefault(require('nightingale-logger'));
 
 class MongoCursor extends liwiStore.AbstractCursor {
   // key in AbstractCursor
   constructor(store, cursor) {
     super(store);
-    this.cursor = void 0;
-    this._result = void 0;
     this.cursor = cursor;
   }
 
@@ -57,10 +57,131 @@ class MongoCursor extends liwiStore.AbstractCursor {
 
 }
 
+class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
+  constructor(store, criteria, sort) {
+    super(store);
+    this.criteria = criteria;
+    this.sort = sort;
+  }
+
+  getMingoQuery() {
+    if (!this.mingoQuery) {
+      this.mingoQuery = new mingo.Query(this.criteria);
+    }
+
+    return this.mingoQuery;
+  }
+
+  fetch(onFulfilled) {
+    return super.store.findAll(this.criteria, this.sort).then(onFulfilled);
+  }
+
+  _subscribe(callback, _includeInitial) {
+    const store = super.getSubscribeStore();
+    const mingoQuery = this.getMingoQuery();
+
+    const promise = _includeInitial && this.fetch(result => {
+      callback(null, [{
+        type: 'initial',
+        initial: result
+      }]);
+      return result;
+    });
+
+    const unsubscribe = store.subscribe(action => {
+      const filtered = (action.type === 'inserted' ? action.next : action.prev).filter(object => mingoQuery.test(object));
+      const changes = [];
+
+      switch (action.type) {
+        case 'inserted':
+          changes.push({
+            type: 'inserted',
+            objects: filtered
+          });
+          break;
+
+        case 'deleted':
+          changes.push({
+            type: 'deleted',
+            keys: filtered.map(object => object[super.store.keyPath])
+          });
+          break;
+
+        case 'updated':
+          {
+            const {
+              deleted,
+              updated
+            } = filtered.reduce((acc, object, index) => {
+              const nextObject = action.next[index];
+
+              if (!mingoQuery.test(nextObject)) {
+                acc.deleted.push(object[super.store.keyPath]);
+              } else {
+                acc.updated.push(nextObject);
+              }
+
+              return acc;
+            }, {
+              deleted: [],
+              updated: []
+            });
+
+            if (deleted.length !== 0) {
+              changes.push({
+                type: 'deleted',
+                keys: deleted
+              });
+            }
+
+            if (updated.length !== 0) {
+              changes.push({
+                type: 'updated',
+                objects: updated
+              });
+            }
+
+            break;
+          }
+
+        default:
+          throw new Error('Unsupported type');
+      }
+
+      if (changes.length === 0) return;
+      callback(null, changes);
+    }); // let _feed;
+    // const promise = this.queryCallback(this.store.query(), this.store.r)
+    //   .changes({
+    //     includeInitial: _includeInitial,
+    //     includeStates: true,
+    //     includeTypes: true,
+    //     includeOffsets: true,
+    //   })
+    //   .then((feed) => {
+    //     if (args.length === 0) {
+    //       _feed = feed;
+    //       delete this._promise;
+    //     }
+    //
+    //     feed.each(callback);
+    //     return feed;
+    //   });
+    //
+    // if (args.length === 0) this._promise = promise;
+
+    return {
+      stop: unsubscribe,
+      cancel: unsubscribe,
+      then: _includeInitial ? onFulfilled => promise.then(onFulfilled) : () => Promise.resolve()
+    };
+  }
+
+}
+
 class MongoStore extends liwiStore.AbstractStore {
   constructor(connection, collectionName) {
     super(connection, '_id');
-    this._collection = void 0;
 
     if (!collectionName) {
       throw new Error(`Invalid collectionName: "${collectionName}"`);
@@ -76,11 +197,15 @@ class MongoStore extends liwiStore.AbstractStore {
   }
 
   get collection() {
-    if (this.connection.connectionFailed) {
+    if (super.connection.connectionFailed) {
       return Promise.reject(new Error('MongoDB connection failed'));
     }
 
     return Promise.resolve(this._collection);
+  }
+
+  createQuery(criteria) {
+    return new MongoQuery(this, criteria);
   }
 
   async insertOne(object) {
@@ -111,7 +236,7 @@ class MongoStore extends liwiStore.AbstractStore {
     return object;
   }
 
-  async upsertOne(object) {
+  async upsertOneWithInfo(object) {
     const $setOnInsert = {
       created: new Date()
     };
@@ -134,7 +259,10 @@ class MongoStore extends liwiStore.AbstractStore {
       object.created = $setOnInsert.created;
     }
 
-    return object;
+    return {
+      object: object,
+      inserted: !!upsertedCount
+    };
   }
 
   replaceSeveral(objects) {
@@ -194,9 +322,6 @@ const logger = new Logger('liwi:mongo:MongoConnection');
 class MongoConnection extends liwiStore.AbstractConnection {
   constructor(config) {
     super();
-    this._connection = void 0;
-    this._connecting = void 0;
-    this.connectionFailed = void 0;
 
     if (!config.has('host')) {
       config.set('host', 'localhost');

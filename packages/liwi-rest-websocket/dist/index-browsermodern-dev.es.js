@@ -1,5 +1,5 @@
 import Logger from 'nightingale-logger';
-import { encode, decode } from 'extended-json';
+import { decode, encode } from 'extended-json';
 
 /* eslint-disable complexity */
 const logger = new Logger('liwi:rest-websocket');
@@ -52,12 +52,13 @@ function init(io, restService) {
 
           case 'insertOne':
           case 'replaceOne':
-          case 'upsertOne':
+          case 'replaceSeveral':
+          case 'upsertOneWithInfo':
           case 'partialUpdateByKey':
           case 'partialUpdateOne':
           case 'partialUpdateMany':
           case 'deleteByKey':
-          case 'deleteOne':
+          case 'deleteMany':
           case 'findOne':
             try {
               if (!restResource[type]) {

@@ -12,12 +12,13 @@
   },
   "main": "./index.js",
   "types": "./dist/index.d.ts",
-  "module:node": "./dist/index-node8.es.js",
-  "module:node-dev": "./dist/index-node8-dev.es.js",
+  "module:node": "./dist/index-node10.es.js",
+  "module:node-dev": "./dist/index-node10-dev.es.js",
+  "sideEffects": false,
   "scripts": {
-    "build": "pob-build && tsc -p tsconfig.build.json",
-    "lint": "npm run typescript-check && eslint --ext .ts  src/",
-    "test": "echo \"No tests\"",
+    "build": "pob-build",
+    "build:definitions": "tsc -p tsconfig.build.json",
+    "lint": "npm run typescript-check && eslint --ext .ts src/",
     "typescript-check": "tsc --noEmit",
     "watch": "pob-watch"
   },
@@ -29,23 +30,25 @@
   "dependencies": {
     "@types/mongodb": "^2.0.0",
     "liwi-store": "^2.1.0",
+    "liwi-subscribe-store": "^1.0.0-pre",
     "liwi-types": "^1.1.0",
+    "mingo": "^2.2.8",
     "mongodb": "^2.2.33",
-    "nightingale-logger": "^5.1.0"
+    "nightingale-logger": "^6.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.1.6",
+    "@babel/core": "7.2.2",
     "babel-eslint": "10.0.1",
-    "babel-preset-latest-node": "2.0.2",
-    "eslint": "5.9.0",
-    "eslint-config-pob": "24.0.2",
+    "babel-preset-latest-node": "3.0.1",
+    "eslint": "5.11.1",
+    "eslint-config-pob": "24.0.3",
     "eslint-plugin-babel": "5.3.0",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-node": "8.0.0",
-    "eslint-plugin-typescript": "0.13.0",
-    "pob-babel": "^23.4.0",
-    "prettier": "1.15.2",
-    "typescript": "3.1.6",
-    "typescript-eslint-parser": "21.0.1"
+    "eslint-plugin-typescript": "0.14.0",
+    "pob-babel": "23.5.5",
+    "prettier": "1.15.3",
+    "typescript": "3.2.2",
+    "typescript-eslint-parser": "21.0.2"
   }
 }

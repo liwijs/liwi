@@ -6,11 +6,11 @@ import AbstractStore from './AbstractStore';
 export default abstract class AbstractCursor<
   Model extends BaseModel,
   KeyPath extends string,
-  Store extends AbstractStore<Model, KeyPath, any, any>
+  Store extends AbstractStore<Model, KeyPath, any, any, any>
 > {
   key: any;
 
-  _store: Store;
+  protected _store: Store;
 
   constructor(store: Store) {
     this._store = store;
@@ -18,6 +18,10 @@ export default abstract class AbstractCursor<
 
   get store(): Store {
     return this._store;
+  }
+
+  overrideStore(store: Store) {
+    this._store = store;
   }
 
   abstract close(): Promise<void> | void;

@@ -45,7 +45,7 @@ var parse = (function (text, reviver) {
 });
 
 exports.stringify = stringify;
-exports.parse = parse;
 exports.encode = stringify;
+exports.parse = parse;
 exports.decode = parse;
 //# sourceMappingURL=index-browser.cjs.js.map

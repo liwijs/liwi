@@ -1,30 +1,24 @@
 {
   "pob": {
-    "pob-config": {
-      "envs": [
-        "node6",
-        "node8",
-        "module-modern-browsers",
-        "module",
-        "module-node8"
-      ],
-      "testing": {
-        "circleci": true,
-        "travisci": true,
-        "codecov": true
-      },
+    "monorepo": {
+      "ci": true,
+      "testing": true,
+      "codecov": true,
       "documentation": false,
-      "doclets": false,
-      "entries": [
+      "packageNames": [
         "extended-json",
-        "index",
-        "mongo",
-        "react-redux",
-        "rest",
-        "rest-websocket",
-        "rethinkdb",
-        "websocket-client"
-      ]
+        "liwi",
+        "liwi-mongo",
+        "liwi-mongo-example",
+        "liwi-rest",
+        "liwi-rest-websocket",
+        "liwi-store",
+        "liwi-subscribe-store",
+        "liwi-types",
+        "liwi-websocket-client",
+        "react-liwi"
+      ],
+      "typescript": false
     }
   }
 }

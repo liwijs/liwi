@@ -5,9 +5,6 @@ import { AbstractCursor, AbstractQuery, AbstractStore } from 'liwi-store';
 class WebsocketCursor extends AbstractCursor {
   constructor(store, options) {
     super(store);
-    this._idCursor = void 0;
-    this.options = void 0;
-    this._result = void 0;
     this.options = options;
   }
   /* options */
@@ -94,18 +91,15 @@ const logger = new Logger('liwi:websocket-client:query');
 class Query extends AbstractQuery {
   constructor(store, key) {
     super(store);
-    this.key = void 0;
     this.key = key;
   }
 
   fetch(onFulfilled) {
-    return this.store.emit('fetch', this.key).then(onFulfilled);
+    return super.store.emit('fetch', this.key).then(onFulfilled);
   }
 
   _subscribe(callback, _includeInitial = false, args) {
-    var _this = this;
-
-    const eventName = `subscribe:${this.store.restName}.${this.key}`;
+    const eventName = `subscribe:${super.store.restName}.${this.key}`;
 
     const listener = function listener(err, result) {
       const decodedResult = result && decode(result);
@@ -116,16 +110,16 @@ class Query extends AbstractQuery {
       callback(err, decodedResult);
     };
 
-    this.store.connection.on(eventName, listener);
+    const connection = super.store.connection;
+    connection.on(eventName, listener);
 
     let _stopEmitSubscribe;
 
-    let promise = this.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
+    let promise = super.store.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
       _stopEmitSubscribe = stopEmitSubscribe;
       logger.info('subscribed');
     }).catch(function (err) {
-      _this.store.connection.off(eventName, listener);
-
+      connection.off(eventName, listener);
       throw err;
     });
 
@@ -136,8 +130,7 @@ class Query extends AbstractQuery {
 
       promise.then(function () {
         promise = undefined;
-
-        _this.store.connection.off(eventName, listener);
+        connection.off(eventName, listener);
       });
     };
 
@@ -156,7 +149,6 @@ const logger$1 = new Logger('liwi:websocket-client');
 class WebsocketStore extends AbstractStore {
   constructor(websocket, restName, keyPath) {
     super(websocket, keyPath);
-    this.restName = void 0;
 
     if (!restName) {
       throw new Error(`Invalid restName: "${restName}"`);
@@ -175,19 +167,20 @@ class WebsocketStore extends AbstractStore {
   emitSubscribe(type, ...args) {
     var _this = this;
 
+    const connection = super.connection;
+
     const emit = function emit() {
       return _this.emit(type, ...args);
     };
 
     const registerOnConnect = function registerOnConnect() {
-      _this.connection.on('connect', emit);
-
+      connection.on('connect', emit);
       return function () {
-        return _this.connection.off('connect', emit);
+        connection.off('connect', emit);
       };
     };
 
-    if (this.connection.isConnected()) {
+    if (connection.isConnected()) {
       return emit().then(registerOnConnect);
     }
 
@@ -202,8 +195,12 @@ class WebsocketStore extends AbstractStore {
     return this.emit('replaceOne', object);
   }
 
-  upsertOne(object) {
-    return this.emit('upsertOne', object);
+  replaceSeveral(objects) {
+    return this.emit('replaceSeveral', objects);
+  }
+
+  upsertOneWithInfo(object) {
+    return this.emit('upsertOneWithInfo', object);
   }
 
   partialUpdateByKey(key, partialUpdate) {
@@ -218,14 +215,6 @@ class WebsocketStore extends AbstractStore {
     return this.emit('partialUpdateMany', criteria, partialUpdate);
   }
 
-  deleteByKey(key) {
-    return this.emit('deleteByKey', key);
-  }
-
-  deleteOne(object) {
-    return this.emit('deleteOne', object);
-  }
-
   cursor(criteria, sort) {
     return Promise.resolve(new WebsocketCursor(this, {
       criteria,
@@ -235,12 +224,20 @@ class WebsocketStore extends AbstractStore {
 
   findByKey(key) {
     return this.findOne({
-      [this.keyPath]: key
+      [super.keyPath]: key
     });
   }
 
   findOne(criteria, sort) {
     return this.emit('findOne', criteria, sort);
+  }
+
+  deleteByKey(key) {
+    return this.emit('deleteByKey', key);
+  }
+
+  deleteMany(criteria) {
+    return this.emit('deleteMany', criteria);
   }
 
   emit(type, ...args) {
@@ -249,11 +246,11 @@ class WebsocketStore extends AbstractStore {
       args
     });
 
-    if (this.connection.isDisconnected()) {
+    if (super.connection.isDisconnected()) {
       throw new Error('Websocket is not connected');
     }
 
-    return this.connection.emit('rest', {
+    return super.connection.emit('rest', {
       type,
       restName: this.restName,
       json: encode(args)

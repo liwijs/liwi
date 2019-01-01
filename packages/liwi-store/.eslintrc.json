@@ -1,12 +1,7 @@
 {
-  "extends": [
-    "pob/babel",
-    "pob/typescript"
-  ],
   "parser": "typescript-eslint-parser",
-  "plugins": [
-    "typescript"
-  ],
+  "plugins": ["typescript"],
+  "extends": ["pob/babel", "pob/typescript"],
   "rules": {
     "import/no-cycle": "off"
   }

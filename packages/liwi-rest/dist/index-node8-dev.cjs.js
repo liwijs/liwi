@@ -4,9 +4,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 class RestCursor {
   constructor(restResource, connectedUser, cursor) {
-    this.restResource = void 0;
-    this.connectedUser = void 0;
-    this.cursor = void 0;
     this.restResource = restResource;
     this.connectedUser = connectedUser;
     this.cursor = cursor;
@@ -20,7 +17,6 @@ class RestCursor {
 
 class RestService {
   constructor(restResources) {
-    this.restResources = void 0;
     this.restResources = restResources;
   }
 

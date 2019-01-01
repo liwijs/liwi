@@ -39,7 +39,7 @@ const internalReviver = (key, value) => {
 var parse = ((text, reviver) => JSON.parse(text, reviver == null ? internalReviver : (key, value) => reviver(key, internalReviver(key, value))));
 
 exports.stringify = stringify;
-exports.parse = parse;
 exports.encode = stringify;
+exports.parse = parse;
 exports.decode = parse;
 //# sourceMappingURL=index-node8-dev.cjs.js.map

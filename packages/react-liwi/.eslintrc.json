@@ -1,0 +1,8 @@
+{
+  "parser": "typescript-eslint-parser",
+  "plugins": ["typescript"],
+  "extends": ["pob/babel", "pob/typescript", "pob/typescript-react"],
+  "env": {
+    "browser": true
+  }
+}

@@ -1,20 +1,27 @@
 import { Collection } from 'mongodb';
-import { AbstractStore } from 'liwi-store';
+import { AbstractStore, UpsertResult } from 'liwi-store';
 import { BaseModel, InsertType, Criteria, Sort, Update } from 'liwi-types';
 import MongoConnection from './MongoConnection';
 import MongoCursor from './MongoCursor';
+import MongoQuery from './MongoQuery';
+import { MongoKeyPath } from '.';
+export declare type MongoKeyPath = '_id';
 export interface MongoModel extends BaseModel {
     _id: string;
 }
-export declare type MongoKeyPath = '_id';
 export declare type MongoInsertType<Model extends MongoModel> = InsertType<Model, MongoKeyPath>;
-export default class MongoStore<Model extends MongoModel> extends AbstractStore<Model, MongoKeyPath, MongoConnection, MongoCursor<Model>> {
-    _collection: Collection | Promise<Collection>;
+export interface MongoUpsertResult<Model extends MongoModel> extends UpsertResult<Model> {
+    object: Model;
+    inserted: boolean;
+}
+export default class MongoStore<Model extends MongoModel> extends AbstractStore<Model, MongoKeyPath, MongoConnection, MongoCursor<Model>, MongoQuery<Model>> {
+    private _collection;
     constructor(connection: MongoConnection, collectionName: string);
     readonly collection: Promise<Collection>;
+    createQuery(criteria: Criteria<Model>): MongoQuery<Model>;
     insertOne(object: MongoInsertType<Model>): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
-    upsertOne(object: MongoInsertType<Model>): Promise<Model>;
+    upsertOneWithInfo(object: MongoInsertType<Model>): Promise<MongoUpsertResult<Model>>;
     replaceSeveral(objects: Array<Model>): Promise<Array<Model>>;
     partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;

@@ -63,12 +63,13 @@ export default function init(io: Server, restService: RestService) {
 
             case 'insertOne':
             case 'replaceOne':
-            case 'upsertOne':
+            case 'replaceSeveral':
+            case 'upsertOneWithInfo':
             case 'partialUpdateByKey':
             case 'partialUpdateOne':
             case 'partialUpdateMany':
             case 'deleteByKey':
-            case 'deleteOne':
+            case 'deleteMany':
             case 'findOne':
               try {
                 if (!PRODUCTION && !restResource[type]) {
