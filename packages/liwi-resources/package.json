@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "resources for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -37,9 +37,9 @@
     "arrowParens": "always"
   },
   "dependencies": {
-    "extended-json": "^2.1.0",
-    "liwi-store": "^2.1.0",
-    "liwi-types": "^1.1.0",
+    "extended-json": "^2.2.0",
+    "liwi-store": "^2.2.0",
+    "liwi-types": "^1.2.0",
     "nightingale-logger": "^6.0.0"
   },
   "devDependencies": {

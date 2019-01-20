@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/liwijs/liwi/compare/liwi@1.0.0...liwi@1.1.0) (2019-01-20)
+
+
+### Features
+
+* liwi-subscribe-store ([53b18a3](https://github.com/liwijs/liwi/commit/53b18a3))
+
+
+
+
+
 <a name="1.0.0"></a>
 # 1.0.0 (2018-03-30)
 

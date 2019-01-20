@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.1.1 (2019-01-20)
+
+
+### Bug Fixes
+
+* fixes ([482c388](https://github.com/liwijs/liwi/commit/482c388))
+
+
+
+
+
 # [2.1.0](https://github.com/liwijs/liwi/compare/liwi-rest-websocket@2.0.0...liwi-rest-websocket@2.1.0) (2018-11-23)
 
 
