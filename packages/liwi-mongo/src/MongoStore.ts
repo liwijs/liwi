@@ -1,6 +1,13 @@
 import { ObjectID, Collection, Db } from 'mongodb';
 import { AbstractStore, UpsertResult } from 'liwi-store';
-import { BaseModel, InsertType, Criteria, Sort, Update } from 'liwi-types';
+import {
+  BaseModel,
+  InsertType,
+  Criteria,
+  Sort,
+  Update,
+  QueryOptions,
+} from 'liwi-types';
 import MongoConnection from './MongoConnection';
 import MongoCursor from './MongoCursor';
 import MongoQuery from './MongoQuery';
@@ -59,8 +66,8 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     return Promise.resolve(this._collection);
   }
 
-  createQuery(criteria: Criteria<Model>): MongoQuery<Model> {
-    return new MongoQuery(this, criteria);
+  createQuery(options: QueryOptions<Model>): MongoQuery<Model> {
+    return new MongoQuery(this, options);
   }
 
   async insertOne(object: MongoInsertType<Model>): Promise<Model> {
@@ -68,8 +75,8 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
       object._id = new ObjectID().toString();
     }
 
-    object.created = new Date();
-    object.updated = new Date();
+    if (!object.created) object.created = new Date();
+    if (!object.updated) object.updated = new Date();
 
     const collection = await this.collection;
     const { result } = await collection.insertOne(object);
@@ -81,7 +88,7 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
   }
 
   async replaceOne(object: Model): Promise<Model> {
-    object.updated = new Date();
+    if (!object.updated) object.updated = new Date();
 
     const collection = await this.collection;
     await collection.updateOne({ _id: object._id }, object);
@@ -92,10 +99,10 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     object: MongoInsertType<Model>,
   ): Promise<MongoUpsertResult<Model>> {
     const $setOnInsert = {
-      created: new Date(),
+      created: object.created || new Date(),
     };
 
-    object.updated = new Date();
+    if (!object.updated) object.updated = new Date();
 
     const $set = Object.assign({}, object);
     delete $set.created;

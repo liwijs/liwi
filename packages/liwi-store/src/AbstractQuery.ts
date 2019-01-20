@@ -1,5 +1,10 @@
-import { BaseModel, Changes } from 'liwi-types';
-import StoreInterface from './Store';
+import { BaseModel, Changes, Fields, Criteria, Sort } from 'liwi-types';
+
+export interface QueryOptions<Model extends BaseModel> {
+  fields?: Fields<Model>;
+  criteria?: Criteria<Model>;
+  sort?: Sort<Model>;
+}
 
 export interface SubscribeResult {
   cancel: () => void;
@@ -12,16 +17,7 @@ export type SubscribeCallback<Model> = (
   changes: Changes<Model>,
 ) => void;
 
-export default abstract class AbstractQuery<
-  Model extends BaseModel,
-  Store extends StoreInterface<Model, any, any, any, any>
-> {
-  store: Store;
-
-  constructor(store: Store) {
-    this.store = store;
-  }
-
+export default abstract class AbstractQuery<Model extends BaseModel> {
   abstract fetch(onFulfilled?: (value: any) => any): Promise<any>;
 
   fetchAndSubscribe(callback: SubscribeCallback<Model>, ...args: Array<any>) {

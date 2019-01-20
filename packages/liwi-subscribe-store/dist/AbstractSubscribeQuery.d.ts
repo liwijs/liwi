@@ -1,7 +1,7 @@
 import { BaseModel } from 'liwi-types';
 import { AbstractQuery, Store as StoreInterface } from 'liwi-store';
 import SubscribeStore from './SubscribeStore';
-export default abstract class AbstractSubscribeQuery<Model extends BaseModel, Store extends StoreInterface<Model, any, any, any, any>> extends AbstractQuery<Model, Store> {
+export default abstract class AbstractSubscribeQuery<Model extends BaseModel, Store extends StoreInterface<Model, any, any, any, any>> extends AbstractQuery<Model> {
     private _subscribeStore?;
     setSubscribeStore(store: SubscribeStore<Model, any, any, any, any, any>): void;
     getSubscribeStore(): SubscribeStore<Model, any, any, any, any, any>;

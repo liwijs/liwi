@@ -253,9 +253,7 @@ function () {
 var AbstractQuery =
 /*#__PURE__*/
 function () {
-  function AbstractQuery(store) {
-    this.store = store;
-  }
+  function AbstractQuery() {}
 
   var _proto = AbstractQuery.prototype;
 

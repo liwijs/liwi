@@ -13,9 +13,7 @@ const applyChange = <Model extends BaseModel>(
       return change.initial;
 
     case 'inserted': {
-      const newState = copy(state);
-      newState.push(...change.objects);
-      return newState;
+      return [...change.objects, ...state.slice(0, -change.objects.length)];
     }
 
     case 'deleted': {

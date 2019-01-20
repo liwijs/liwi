@@ -76,9 +76,7 @@ var applyChange = function applyChange(state, change, keyPath) {
 
     case 'inserted':
       {
-        var newState = copy(state);
-        newState.push.apply(newState, change.objects);
-        return newState;
+        return [].concat(change.objects, state.slice(0, -change.objects.length));
       }
 
     case 'deleted':
@@ -91,17 +89,15 @@ var applyChange = function applyChange(state, change, keyPath) {
 
     case 'updated':
       {
-        var _newState = copy(state);
-
+        var newState = copy(state);
         change.objects.forEach(function (newObject) {
-          var index = _newState.findIndex(function (o) {
+          var index = newState.findIndex(function (o) {
             return o[keyPath] === newObject[keyPath];
           });
-
           if (index === -1) return;
-          _newState[index] = newObject;
+          newState[index] = newObject;
         });
-        return _newState;
+        return newState;
       }
 
     default:
@@ -158,7 +154,8 @@ function (_Component) {
         return;
       }
 
-      var newResult = applyChanges(_this2.state.result, changes, query.store.keyPath);
+      var newResult = applyChanges(_this2.state.result, changes, '_id' // TODO get keyPath from client(/store)
+      );
 
       if (!_this2.state.fetched) {
         _this2.setState({

@@ -58,9 +58,7 @@ const applyChange = function applyChange(state, change, keyPath) {
 
     case 'inserted':
       {
-        const newState = copy(state);
-        newState.push(...change.objects);
-        return newState;
+        return [...change.objects, ...state.slice(0, -change.objects.length)];
       }
 
     case 'deleted':
@@ -127,7 +125,8 @@ class FindAndSubscribeComponent extends Component {
         return;
       }
 
-      const newResult = applyChanges(_this.state.result, changes, query.store.keyPath);
+      const newResult = applyChanges(_this.state.result, changes, '_id' // TODO get keyPath from client(/store)
+      );
 
       if (!_this.state.fetched) {
         _this.setState({

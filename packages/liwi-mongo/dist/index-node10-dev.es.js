@@ -52,27 +52,28 @@ class MongoCursor extends AbstractCursor {
 }
 
 class MongoQuery extends AbstractSubscribeQuery {
-  constructor(store, criteria, sort) {
-    super(store);
-    this.criteria = criteria;
-    this.sort = sort;
+  constructor(store, options) {
+    super();
+    this.store = store;
+    this.options = options;
   }
 
-  getMingoQuery() {
+  createMingoQuery() {
     if (!this.mingoQuery) {
-      this.mingoQuery = new mingo.Query(this.criteria);
+      this.mingoQuery = new mingo.Query(this.options.criteria);
     }
 
     return this.mingoQuery;
   }
 
-  fetch(onFulfilled) {
-    return super.store.findAll(this.criteria, this.sort).then(onFulfilled);
+  async fetch(onFulfilled) {
+    const cursor = await this.createMongoCursor();
+    return cursor.toArray().then(onFulfilled);
   }
 
   _subscribe(callback, _includeInitial) {
     const store = super.getSubscribeStore();
-    const mingoQuery = this.getMingoQuery();
+    const mingoQuery = this.createMingoQuery();
 
     const promise = _includeInitial && this.fetch(result => {
       callback(null, [{
@@ -97,7 +98,7 @@ class MongoQuery extends AbstractSubscribeQuery {
         case 'deleted':
           changes.push({
             type: 'deleted',
-            keys: filtered.map(object => object[super.store.keyPath])
+            keys: filtered.map(object => object[this.store.keyPath])
           });
           break;
 
@@ -110,7 +111,7 @@ class MongoQuery extends AbstractSubscribeQuery {
               const nextObject = action.next[index];
 
               if (!mingoQuery.test(nextObject)) {
-                acc.deleted.push(object[super.store.keyPath]);
+                acc.deleted.push(object[this.store.keyPath]);
               } else {
                 acc.updated.push(nextObject);
               }
@@ -171,6 +172,16 @@ class MongoQuery extends AbstractSubscribeQuery {
     };
   }
 
+  async createMongoCursor() {
+    const cursor = await this.store.cursor(this.options.criteria, this.options.sort);
+
+    if (this.options.limit) {
+      await cursor.limit(this.options.limit);
+    }
+
+    return cursor;
+  }
+
 }
 
 class MongoStore extends AbstractStore {
@@ -198,8 +209,8 @@ class MongoStore extends AbstractStore {
     return Promise.resolve(this._collection);
   }
 
-  createQuery(criteria) {
-    return new MongoQuery(this, criteria);
+  createQuery(options) {
+    return new MongoQuery(this, options);
   }
 
   async insertOne(object) {
@@ -207,8 +218,8 @@ class MongoStore extends AbstractStore {
       object._id = new ObjectID().toString();
     }
 
-    object.created = new Date();
-    object.updated = new Date();
+    if (!object.created) object.created = new Date();
+    if (!object.updated) object.updated = new Date();
     const collection = await this.collection;
     const {
       result
@@ -222,7 +233,7 @@ class MongoStore extends AbstractStore {
   }
 
   async replaceOne(object) {
-    object.updated = new Date();
+    if (!object.updated) object.updated = new Date();
     const collection = await this.collection;
     await collection.updateOne({
       _id: object._id
@@ -232,9 +243,9 @@ class MongoStore extends AbstractStore {
 
   async upsertOneWithInfo(object) {
     const $setOnInsert = {
-      created: new Date()
+      created: object.created || new Date()
     };
-    object.updated = new Date();
+    if (!object.updated) object.updated = new Date();
     const $set = Object.assign({}, object);
     delete $set.created;
     const collection = await this.collection;

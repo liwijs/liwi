@@ -87,10 +87,6 @@ class AbstractCursor {
 }
 
 class AbstractQuery {
-  constructor(store) {
-    this.store = store;
-  }
-
   fetchAndSubscribe(callback, ...args) {
     return this._subscribe(callback, true, args);
   }

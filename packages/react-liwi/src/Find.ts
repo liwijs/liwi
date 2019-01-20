@@ -1,20 +1,16 @@
 import React, { Component, ReactNode, ComponentType } from 'react';
-import { AbstractQuery, AbstractStore } from 'liwi-store';
+import { AbstractQuery } from 'liwi-store';
 import { BaseModel } from 'liwi-types';
 
 interface LoadingProps {}
 
 type Record<K extends string, T> = { [P in K]: T };
 
-interface Props<
-  Name extends string,
-  Model extends BaseModel,
-  Store extends AbstractStore<any, any, any, any, any>
-> {
+interface Props<Name extends string, Model extends BaseModel> {
   component: ComponentType<Record<Name, Array<Model>>>;
   loadingComponent?: ComponentType<LoadingProps>;
   name: Name;
-  query: AbstractQuery<Model, Store>;
+  query: AbstractQuery<Model>;
 }
 
 interface State<Result> {
@@ -24,9 +20,8 @@ interface State<Result> {
 
 export default class FindComponent<
   Name extends string,
-  Model extends BaseModel,
-  Store extends AbstractStore<any, any, any, any, any>
-> extends Component<Props<Name, Model, Store>, State<Array<Model>>> {
+  Model extends BaseModel
+> extends Component<Props<Name, Model>, State<Array<Model>>> {
   state = {
     fetched: false,
     result: undefined,

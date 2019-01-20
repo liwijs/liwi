@@ -1,39 +1,35 @@
 import mingo from 'mingo';
 import { SubscribeResult, SubscribeCallback } from 'liwi-store';
-import { Changes, Criteria, Sort } from 'liwi-types';
+import { Changes, QueryOptions } from 'liwi-types';
 import { AbstractSubscribeQuery, Actions } from 'liwi-subscribe-store';
 import MongoStore, { MongoModel } from './MongoStore';
 
 export default class MongoQuery<
   Model extends MongoModel
 > extends AbstractSubscribeQuery<Model, MongoStore<Model>> {
-  private readonly criteria: Criteria<Model>;
+  private readonly store: MongoStore<Model>;
 
-  private readonly sort?: Sort<Model>;
+  private readonly options: QueryOptions<Model>;
 
   private mingoQuery?: mingo.Query;
 
-  constructor(
-    store: MongoStore<Model>,
-    criteria: Criteria<Model>,
-    sort?: Sort<Model>,
-  ) {
-    super(store);
-
-    this.criteria = criteria;
-    this.sort = sort;
+  constructor(store: MongoStore<Model>, options: QueryOptions<Model>) {
+    super();
+    this.store = store;
+    this.options = options;
   }
 
-  getMingoQuery(): mingo.Query {
+  createMingoQuery(): mingo.Query {
     if (!this.mingoQuery) {
-      this.mingoQuery = new mingo.Query(this.criteria);
+      this.mingoQuery = new mingo.Query(this.options.criteria);
     }
 
     return this.mingoQuery;
   }
 
-  fetch<T>(onFulfilled: (result: Array<Model>) => T): Promise<T> {
-    return super.store.findAll(this.criteria, this.sort).then(onFulfilled);
+  async fetch<T>(onFulfilled: (result: Array<Model>) => T): Promise<T> {
+    const cursor = await this.createMongoCursor();
+    return cursor.toArray().then(onFulfilled);
   }
 
   _subscribe(
@@ -42,7 +38,7 @@ export default class MongoQuery<
     args: Array<any>,
   ): SubscribeResult {
     const store = super.getSubscribeStore();
-    const mingoQuery: mingo.Query = this.getMingoQuery();
+    const mingoQuery: mingo.Query = this.createMingoQuery();
 
     const promise =
       _includeInitial &&
@@ -64,7 +60,7 @@ export default class MongoQuery<
         case 'deleted':
           changes.push({
             type: 'deleted',
-            keys: filtered.map((object: Model) => object[super.store.keyPath]),
+            keys: filtered.map((object: Model) => object[this.store.keyPath]),
           });
           break;
         case 'updated': {
@@ -76,7 +72,7 @@ export default class MongoQuery<
             ) => {
               const nextObject = action.next[index];
               if (!mingoQuery.test(nextObject)) {
-                acc.deleted.push(object[super.store.keyPath]);
+                acc.deleted.push(object[this.store.keyPath]);
               } else {
                 acc.updated.push(nextObject);
               }
@@ -131,5 +127,18 @@ export default class MongoQuery<
             (promise as Promise<Array<Model>>).then(onFulfilled)
         : () => Promise.resolve(),
     };
+  }
+
+  private async createMongoCursor() {
+    const cursor = await this.store.cursor(
+      this.options.criteria,
+      this.options.sort,
+    );
+
+    if (this.options.limit) {
+      await cursor.limit(this.options.limit);
+    }
+
+    return cursor;
   }
 }

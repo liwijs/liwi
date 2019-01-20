@@ -1,4 +1,5 @@
 import { BaseModel } from 'liwi-types';
+import InternalCommonStoreClientInterface from './InternalCommonStoreClient';
 import StoreInterface, {
   UpsertResult as AbstractStoreUpsertResult,
 } from './Store';
@@ -10,12 +11,18 @@ import AbstractQuery, {
 } from './AbstractQuery';
 import AbstractStore from './AbstractStore';
 
+export type InternalCommonStoreClient<
+  Model extends BaseModel,
+  KeyPath extends string,
+  Cursor extends AbstractCursor<Model, KeyPath, any>
+> = InternalCommonStoreClientInterface<Model, KeyPath, Cursor>;
+
 export type Store<
   Model extends BaseModel,
   KeyPath extends string,
   Connection extends AbstractConnection,
   Cursor extends AbstractCursor<Model, KeyPath, any>,
-  Query extends AbstractQuery<Model, any>
+  Query extends AbstractQuery<Model>
 > = StoreInterface<Model, KeyPath, Connection, Cursor, Query>;
 
 export type UpsertResult<Model extends BaseModel> = AbstractStoreUpsertResult<

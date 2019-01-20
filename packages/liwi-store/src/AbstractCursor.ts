@@ -1,12 +1,12 @@
 /* eslint-disable no-await-in-loop */
 
 import { BaseModel } from 'liwi-types';
-import AbstractStore from './AbstractStore';
+import InternalCommonStoreClient from './InternalCommonStoreClient';
 
 export default abstract class AbstractCursor<
   Model extends BaseModel,
   KeyPath extends string,
-  Store extends AbstractStore<Model, KeyPath, any, any, any>
+  Store extends InternalCommonStoreClient<Model, KeyPath, any>
 > {
   key: any;
 

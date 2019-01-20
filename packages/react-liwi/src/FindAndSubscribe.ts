@@ -1,21 +1,15 @@
 import React, { Component, ReactNode, ComponentType } from 'react';
 import { BaseModel, Changes } from 'liwi-types';
-import { AbstractQuery, AbstractStore } from 'liwi-store';
+import { AbstractQuery } from 'liwi-store';
 import applyChanges from './applyChanges';
 
 interface LoadingProps {}
 
-type Record<K extends string, T> = { [P in K]: T };
-
-interface Props<
-  Name extends string,
-  Model extends BaseModel,
-  Store extends AbstractStore<any, any, any, any, any>
-> {
-  component: ComponentType<Record<Name, Array<Model>>>;
+interface Props<Name extends string, Model extends BaseModel> {
+  component: ComponentType<{ [P in Name]: Array<Model> }>;
   loadingComponent?: ComponentType<LoadingProps>;
   name: Name;
-  query: AbstractQuery<Model, Store>;
+  query: AbstractQuery<Model>;
 }
 
 interface State<Result> {
@@ -25,9 +19,8 @@ interface State<Result> {
 
 export default class FindAndSubscribeComponent<
   Name extends string,
-  Model extends BaseModel,
-  Store extends AbstractStore<Model, any, any, any, any>
-> extends Component<Props<Name, Model, Store>, State<Array<Model>>> {
+  Model extends BaseModel
+> extends Component<Props<Name, Model>, State<Array<Model>>> {
   state = {
     fetched: false,
     result: undefined,
@@ -49,7 +42,7 @@ export default class FindAndSubscribeComponent<
         const newResult = applyChanges(
           this.state.result,
           changes,
-          query.store.keyPath,
+          '_id', // TODO get keyPath from client(/store)
         );
 
         if (!this.state.fetched) {

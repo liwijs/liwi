@@ -1,5 +1,12 @@
 import assert from 'assert';
-import { BaseModel, InsertType, Update, Criteria, Sort } from 'liwi-types';
+import {
+  BaseModel,
+  InsertType,
+  Update,
+  Criteria,
+  Sort,
+  QueryOptions,
+} from 'liwi-types';
 import Store, { UpsertResult } from './Store';
 import AbstractConnection from './AbstractConnection';
 import AbstractCursor from './AbstractCursor';
@@ -10,7 +17,7 @@ export default abstract class AbstractStore<
   KeyPath extends string,
   Connection extends AbstractConnection,
   Cursor extends AbstractCursor<Model, KeyPath, any>,
-  Query extends AbstractQuery<Model, any>
+  Query extends AbstractQuery<Model>
 > implements Store<Model, KeyPath, Connection, Cursor, Query> {
   private readonly _connection: Connection;
 
@@ -26,9 +33,12 @@ export default abstract class AbstractStore<
     return this._connection;
   }
 
-  abstract createQuery(criteria: any): Query;
+  abstract createQuery(options: QueryOptions<Model>): Query;
 
-  findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Array<any>> {
+  findAll(
+    criteria?: Criteria<Model>,
+    sort?: Sort<Model>,
+  ): Promise<Array<Model>> {
     return this.cursor(criteria, sort).then((cursor: Cursor) =>
       cursor.toArray(),
     );

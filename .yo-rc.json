@@ -10,12 +10,12 @@
         "liwi",
         "liwi-mongo",
         "liwi-mongo-example",
-        "liwi-rest",
-        "liwi-rest-websocket",
+        "liwi-resources",
+        "liwi-resources-websocket-client",
+        "liwi-resources-websocket-server",
         "liwi-store",
         "liwi-subscribe-store",
         "liwi-types",
-        "liwi-websocket-client",
         "react-liwi"
       ],
       "typescript": false

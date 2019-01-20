@@ -1,15 +1,15 @@
-import { BaseModel, InsertType, Update, Criteria, Sort } from 'liwi-types';
+import { BaseModel, InsertType, Update, Criteria, Sort, QueryOptions } from 'liwi-types';
 import Store, { UpsertResult } from './Store';
 import AbstractConnection from './AbstractConnection';
 import AbstractCursor from './AbstractCursor';
 import AbstractQuery from './AbstractQuery';
-export default abstract class AbstractStore<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractCursor<Model, KeyPath, any>, Query extends AbstractQuery<Model, any>> implements Store<Model, KeyPath, Connection, Cursor, Query> {
+export default abstract class AbstractStore<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractCursor<Model, KeyPath, any>, Query extends AbstractQuery<Model>> implements Store<Model, KeyPath, Connection, Cursor, Query> {
     private readonly _connection;
     readonly keyPath: KeyPath;
     constructor(connection: Connection, keyPath: KeyPath);
     readonly connection: Connection;
-    abstract createQuery(criteria: any): Query;
-    findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Array<any>>;
+    abstract createQuery(options: QueryOptions<Model>): Query;
+    findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Array<Model>>;
     abstract findByKey(key: any): Promise<Model | undefined>;
     abstract findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;
     abstract cursor(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Cursor>;

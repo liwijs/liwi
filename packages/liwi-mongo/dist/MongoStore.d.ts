@@ -1,6 +1,6 @@
 import { Collection } from 'mongodb';
 import { AbstractStore, UpsertResult } from 'liwi-store';
-import { BaseModel, InsertType, Criteria, Sort, Update } from 'liwi-types';
+import { BaseModel, InsertType, Criteria, Sort, Update, QueryOptions } from 'liwi-types';
 import MongoConnection from './MongoConnection';
 import MongoCursor from './MongoCursor';
 import MongoQuery from './MongoQuery';
@@ -18,7 +18,7 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     private _collection;
     constructor(connection: MongoConnection, collectionName: string);
     readonly collection: Promise<Collection>;
-    createQuery(criteria: Criteria<Model>): MongoQuery<Model>;
+    createQuery(options: QueryOptions<Model>): MongoQuery<Model>;
     insertOne(object: MongoInsertType<Model>): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
     upsertOneWithInfo(object: MongoInsertType<Model>): Promise<MongoUpsertResult<Model>>;
