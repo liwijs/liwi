@@ -16,7 +16,7 @@ export type InsertType<T extends BaseModel, IdKey extends string>
 
 export type $CurrentDateSpec = true | { $type: "timestamp" } | { $type: "date" };
 
-export interface Update<Model> {
+export interface Update<Model extends BaseModel> {
   /* Field Update Operators */
   $currentDate?: { [P in keyof Model]?: $CurrentDateSpec } & { [field: string]: $CurrentDateSpec },
   $inc?: { [P in keyof Model]?: number } & { [field: string]: number },
@@ -24,8 +24,8 @@ export interface Update<Model> {
   $max?: { [P in keyof Model]?: number } & { [field: string]: number },
   $mul?: { [P in keyof Model]?: number } & { [field: string]: number },
   $rename?: { [P in keyof Model]?: string } & { [field: string]: string },
-  $set?: { [P in keyof Model]?: any } & { [field: string]: any },
-  $setOnInsert?: { [P in keyof Model]?: any } & { [field: string]: any },
+  $set?: Partial<Model> & { [field: string]: any },
+  $setOnInsert?: Partial<Model> & { [field: string]: any },
   $unset?: { [P in keyof Model]?: any } & { [field: string]: any },
 
   /* Array Update Operators */
