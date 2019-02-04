@@ -1,4 +1,4 @@
-import { BaseModel } from 'liwi-types';
+import { BaseModel, Update as UpdateType } from 'liwi-types';
 import InternalCommonStoreClientInterface from './InternalCommonStoreClient';
 import StoreInterface, { UpsertResult as AbstractStoreUpsertResult } from './Store';
 import AbstractConnection from './AbstractConnection';
@@ -10,5 +10,6 @@ export declare type Store<Model extends BaseModel, KeyPath extends string, Conne
 export declare type UpsertResult<Model extends BaseModel> = AbstractStoreUpsertResult<Model>;
 export declare type SubscribeResult = AbstractQuerySubscribeResult;
 export declare type SubscribeCallback<Model extends BaseModel> = AbstractQuerySubscribeCallback<Model>;
+export declare type Update<Model extends BaseModel> = UpdateType<Model>;
 export { AbstractConnection, AbstractCursor, AbstractQuery, AbstractStore };
 //# sourceMappingURL=index.d.ts.map

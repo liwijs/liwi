@@ -1,4 +1,4 @@
-import { BaseModel } from 'liwi-types';
+import { BaseModel, Update as UpdateType } from 'liwi-types';
 import InternalCommonStoreClientInterface from './InternalCommonStoreClient';
 import StoreInterface, {
   UpsertResult as AbstractStoreUpsertResult,
@@ -33,5 +33,7 @@ export type SubscribeResult = AbstractQuerySubscribeResult;
 export type SubscribeCallback<
   Model extends BaseModel
 > = AbstractQuerySubscribeCallback<Model>;
+
+export type Update<Model extends BaseModel> = UpdateType<Model>;
 
 export { AbstractConnection, AbstractCursor, AbstractQuery, AbstractStore };
