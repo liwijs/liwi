@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/liwijs/liwi/compare/liwi-types@1.2.0...liwi-types@1.2.1) (2019-02-04)
+
+
+### Bug Fixes
+
+* use partial for $set and $setOnInsert ([2e02952](https://github.com/liwijs/liwi/commit/2e02952))
+
+
+
+
+
 # [1.2.0](https://github.com/liwijs/liwi/compare/liwi-types@1.1.0...liwi-types@1.2.0) (2019-01-20)
 
 
