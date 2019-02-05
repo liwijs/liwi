@@ -57,3 +57,21 @@ export interface QueryOptions<Model extends BaseModel> {
   sort?: Sort<Model>;
   limit?: number;
 }
+
+export type ResourceOperationKey =
+  | 'findByKey'
+  | 'findOne'
+  | 'upsertOne'
+  | 'insertOne'
+  | 'replaceOne'
+  | 'replaceSeveral'
+  | 'upsertOneWithInfo'
+  | 'partialUpdateByKey'
+  | 'partialUpdateMany'
+  | 'deleteByKey'
+  | 'deleteMany'
+  | 'fetch'
+  | 'subscribe'
+  | 'fetchAndSubscribe'
+  | 'cursor'
+  | 'cursor toArray';

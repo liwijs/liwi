@@ -1,6 +1,6 @@
 import Logger from 'nightingale-logger';
 import { encode, decode } from 'extended-json';
-import { AbstractClient } from 'liwi-resources';
+import { AbstractClient } from 'liwi-resources-client';
 
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);

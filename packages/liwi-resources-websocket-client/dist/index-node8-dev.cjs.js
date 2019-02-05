@@ -6,10 +6,10 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var Logger = _interopDefault(require('nightingale-logger'));
 var extendedJson = require('extended-json');
-var liwiResources = require('liwi-resources');
+var liwiResourcesClient = require('liwi-resources-client');
 
 const logger = new Logger('liwi:resources-websocket-client');
-class WebsocketClient extends liwiResources.AbstractClient {
+class WebsocketClient extends liwiResourcesClient.AbstractClient {
   // eslint-disable-next-line typescript/member-ordering
   constructor(websocket, resourceName, keyPath) {
     super(resourceName, keyPath);

@@ -1,5 +1,5 @@
 import { BaseModel, QueryOptions } from 'liwi-types';
-import { AbstractClient } from 'liwi-resources';
+import { AbstractClient } from 'liwi-resources-client';
 export interface Websocket {
     emit: (event: string, ...args: any[]) => Promise<any>;
     isConnected: () => boolean;
@@ -12,9 +12,9 @@ export default class WebsocketClient<Model extends BaseModel, KeyPath extends st
     readonly resourceName: string;
     private readonly websocket;
     constructor(websocket: Websocket, resourceName: string, keyPath: KeyPath);
-    emitSubscribe(type: string, ...args: Array<any>): Promise<UnsubscribeCallback>;
+    emitSubscribe(type: string, ...args: any[]): Promise<UnsubscribeCallback>;
     createCursor(options: QueryOptions<Model>): Promise<number>;
-    send(type: string, ...args: Array<any>): Promise<any>;
+    send(type: string, ...args: any[]): Promise<any>;
     on(event: string, handler: Function): Function;
     off(event: string, handler: Function): void;
 }

@@ -6,7 +6,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var Logger = _interopDefault(require('nightingale-logger'));
 var extendedJson = require('extended-json');
-var liwiResources = require('liwi-resources');
+var liwiResourcesClient = require('liwi-resources-client');
 
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
@@ -105,7 +105,7 @@ function (_AbstractClient) {
   };
 
   return WebsocketClient;
-}(liwiResources.AbstractClient);
+}(liwiResourcesClient.AbstractClient);
 
 exports.WebsocketClient = WebsocketClient;
 //# sourceMappingURL=index-browser-dev.cjs.js.map

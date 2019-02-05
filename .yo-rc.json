@@ -11,6 +11,8 @@
         "liwi-mongo",
         "liwi-mongo-example",
         "liwi-resources",
+        "liwi-resources-client",
+        "liwi-resources-server",
         "liwi-resources-websocket-client",
         "liwi-resources-websocket-server",
         "liwi-store",

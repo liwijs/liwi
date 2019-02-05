@@ -1,7 +1,7 @@
 import Logger from 'nightingale-logger';
 import { encode, decode } from 'extended-json';
 import { BaseModel, QueryOptions } from 'liwi-types';
-import { AbstractClient } from 'liwi-resources';
+import { AbstractClient } from 'liwi-resources-client';
 
 const logger = new Logger('liwi:resources-websocket-client');
 
@@ -30,10 +30,7 @@ export default class WebsocketClient<
     this.resourceName = resourceName;
   }
 
-  emitSubscribe(
-    type: string,
-    ...args: Array<any>
-  ): Promise<UnsubscribeCallback> {
+  emitSubscribe(type: string, ...args: any[]): Promise<UnsubscribeCallback> {
     const websocket = this.websocket;
     const emit = () => this.send(type, ...args);
     const registerOnConnect = () => {
@@ -54,7 +51,7 @@ export default class WebsocketClient<
     return this.websocket.emit('createCursor', options);
   }
 
-  send(type: string, ...args: Array<any>) {
+  send(type: string, ...args: any[]) {
     logger.debug('emit', { type, args });
     if (this.websocket.isDisconnected()) {
       throw new Error('Websocket is not connected');

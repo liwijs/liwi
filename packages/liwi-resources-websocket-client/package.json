@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "extended-json": "^2.2.0",
-    "liwi-resources": "^2.1.2",
+    "liwi-resources-client": "^2.1.2",
     "liwi-store": "^2.3.0",
     "liwi-types": "^1.2.1",
     "nightingale-logger": "^6.0.0"

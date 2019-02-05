@@ -2,10 +2,10 @@
 // import { PRODUCTION } from 'pob-babel';
 // eslint-disable-next-line import/no-unresolved, import/extensions
 import { Server, Socket } from 'socket.io';
-import { ResourcesService, ResourceOperationKey } from 'liwi-resources';
+import { ResourcesServerService } from 'liwi-resources-server';
 import Logger from 'nightingale-logger';
 import { encode, decode } from 'extended-json';
-import { QueryOptions } from 'liwi-types';
+import { QueryOptions, ResourceOperationKey } from 'liwi-types';
 
 const logger = new Logger('liwi:rest-websocket');
 
@@ -18,7 +18,10 @@ declare module 'socket.io' {
   }
 }
 
-export default function init(io: Server, resourcesService: ResourcesService) {
+export default function init(
+  io: Server,
+  resourcesService: ResourcesServerService,
+) {
   io.on('connection', (socket: Socket) => {
     const openWatchers = new Set();
 

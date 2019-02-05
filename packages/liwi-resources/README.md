@@ -13,14 +13,4 @@
 
 ## Install
 
-```bash
-npm install --save liwi-rest
-```
-
-## Usage
-
-```js
-import liwiRest from 'liwi-rest';
-
-console.log(liwiRest);
-```
+Use liwi-resources-client or liwi-resources-server instead
