@@ -15,12 +15,12 @@ This repository is a monorepo that we manage using [Lerna](https://github.com/le
 | [extended-json](/packages/extended-json) | <a href="https://npmjs.org/package/extended-json"><img src="https://img.shields.io/npm/v/extended-json.svg?style=flat-square"></a> | extended json with date using reviver
 | [liwi](/packages/liwi) | <a href="https://npmjs.org/package/liwi"><img src="https://img.shields.io/npm/v/liwi.svg?style=flat-square"></a> | db abstraction
 | [liwi-mongo](/packages/liwi-mongo) | <a href="https://npmjs.org/package/liwi-mongo"><img src="https://img.shields.io/npm/v/liwi-mongo.svg?style=flat-square"></a> | mongo implementation for liwi
-| [liwi-rest](/packages/liwi-resources) | <a href="https://npmjs.org/package/liwi-rest"><img src="https://img.shields.io/npm/v/liwi-rest.svg?style=flat-square"></a> | rest service for liwi
-| [liwi-rest-websocket](/packages/liwi-resources-websocket-server) | <a href="https://npmjs.org/package/liwi-rest-websocket"><img src="https://img.shields.io/npm/v/liwi-rest-websocket.svg?style=flat-square"></a> | liwi implementation for websocket
+| [liwi-resources](/packages/liwi-resources) | <a href="https://npmjs.org/package/liwi-resources"><img src="https://img.shields.io/npm/v/liwi-resources.svg?style=flat-square"></a> | resources for liwi
+| [liwi-resources-websocket-client](/packages/liwi-resources-websocket-client) | <a href="https://npmjs.org/package/liwi-resources-websocket-client"><img src="https://img.shields.io/npm/v/liwi-resources-websocket-client.svg?style=flat-square"></a> | websocket client implementation for liwi
+| [liwi-resources-websocket-server](/packages/liwi-resources-websocket-server) | <a href="https://npmjs.org/package/liwi-resources-websocket-server"><img src="https://img.shields.io/npm/v/liwi-resources-websocket-server.svg?style=flat-square"></a> | liwi resources client implementation for websocket
 | [liwi-store](/packages/liwi-store) | <a href="https://npmjs.org/package/liwi-store"><img src="https://img.shields.io/npm/v/liwi-store.svg?style=flat-square"></a> | abstract store used by liwi implementations
 | [liwi-subscribe-store](/packages/liwi-subscribe-store) | <a href="https://npmjs.org/package/liwi-subscribe-store"><img src="https://img.shields.io/npm/v/liwi-subscribe-store.svg?style=flat-square"></a> | subscribe store proxy
 | [liwi-types](/packages/liwi-types) | <a href="https://npmjs.org/package/liwi-types"><img src="https://img.shields.io/npm/v/liwi-types.svg?style=flat-square"></a> | typescript types for liwi
-| [liwi-websocket-client](/packages/liwi-resources-websocket-client) | <a href="https://npmjs.org/package/liwi-websocket-client"><img src="https://img.shields.io/npm/v/liwi-websocket-client.svg?style=flat-square"></a> | websocket client implementation for liwi
 | [react-liwi](/packages/react-liwi) | <a href="https://npmjs.org/package/react-liwi"><img src="https://img.shields.io/npm/v/react-liwi.svg?style=flat-square"></a> | react with liwi
 
 ## Install

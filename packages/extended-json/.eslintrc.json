@@ -1,6 +1,6 @@
 {
-  "parser": "eslint-plugin-typescript/parser",
-  "plugins": ["typescript"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "extends": ["pob/babel", "pob/typescript"],
   "overrides": [
     {

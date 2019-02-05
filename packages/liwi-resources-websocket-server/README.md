@@ -1,14 +1,14 @@
 <h3 align="center">
-  liwi-rest-websocket
+  liwi-resources-websocket-server
 </h3>
 
 <p align="center">
-  liwi implementation for websocket
+  liwi resources client implementation for websocket
 </p>
 
 <p align="center">
-  <a href="https://npmjs.org/package/liwi-rest-websocket"><img src="https://img.shields.io/npm/v/liwi-rest-websocket.svg?style=flat-square"></a>
-  <a href="https://david-dm.org/liwijs/liwi?path=packages/liwi-rest-websocket"><img src="https://david-dm.org/liwijs/liwi?path=packages/liwi-rest-websocket.svg?style=flat-square"></a>
+  <a href="https://npmjs.org/package/liwi-resources-websocket-server"><img src="https://img.shields.io/npm/v/liwi-resources-websocket-server.svg?style=flat-square"></a>
+  <a href="https://david-dm.org/liwijs/liwi?path=packages/liwi-resources-websocket-server"><img src="https://david-dm.org/liwijs/liwi?path=packages/liwi-resources-websocket-server.svg?style=flat-square"></a>
 </p>
 
 ## Install
