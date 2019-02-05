@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Logger from 'nightingale-logger';
 
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
@@ -121,6 +122,8 @@ var applyChanges = (function (state, changes, keyPath) {
   }, state);
 });
 
+var logger = new Logger('react-liwi:FindAndSubscribe');
+
 var FindAndSubscribeComponent =
 /*#__PURE__*/
 function (_Component) {
@@ -138,43 +141,79 @@ function (_Component) {
       fetched: false,
       result: undefined
     };
+    _this.timeout = undefined;
+    _this._subscribe = undefined;
+
+    _this.handleVisibilityChange = function () {
+      if (!document.hidden) {
+        if (_this.timeout !== undefined) {
+          logger.log('timeout cleared', {
+            name: _this.props.name
+          });
+          clearTimeout(_this.timeout);
+          _this.timeout = undefined;
+        } else {
+          logger.debug('resubscribe', {
+            name: _this.props.name
+          });
+
+          _this.subscribe();
+        }
+
+        return;
+      }
+
+      if (_this._subscribe === undefined) return;
+      logger.log('timeout visible', {
+        name: _this.props.name
+      });
+      _this.timeout = setTimeout(_this.unsubscribe, _this.props.visibleTimeout);
+    };
+
+    _this.subscribe = function () {
+      var query = _this.props.query;
+      _this._subscribe = query.fetchAndSubscribe(function (err, changes) {
+        if (err) {
+          // eslint-disable-next-line no-alert
+          alert("Unexpected error: " + err);
+          return;
+        }
+
+        var newResult = applyChanges(_this.state.result, changes, '_id' // TODO get keyPath from client(/store)
+        );
+
+        if (!_this.state.fetched) {
+          _this.setState({
+            fetched: true,
+            result: newResult
+          });
+        } else if (newResult !== _this.state.result) {
+          _this.setState({
+            result: newResult
+          });
+        }
+      });
+    };
+
     return _this;
   }
 
   var _proto = FindAndSubscribeComponent.prototype;
 
   _proto.componentDidMount = function componentDidMount() {
-    var _this2 = this;
-
-    var query = this.props.query;
-    this._subscribe = query.fetchAndSubscribe(function (err, changes) {
-      if (err) {
-        // eslint-disable-next-line no-alert
-        alert("Unexpected error: " + err);
-        return;
-      }
-
-      var newResult = applyChanges(_this2.state.result, changes, '_id' // TODO get keyPath from client(/store)
-      );
-
-      if (!_this2.state.fetched) {
-        _this2.setState({
-          fetched: true,
-          result: newResult
-        });
-      } else if (newResult !== _this2.state.result) {
-        _this2.setState({
-          result: newResult
-        });
-      }
-    });
+    this.subscribe();
+    document.addEventListener('visibilitychange', this.handleVisibilityChange, false);
   };
 
   _proto.componentWillUnmount = function componentWillUnmount() {
+    this.unsubscribe();
+  };
+
+  _proto.unsubscribe = function unsubscribe() {
     if (this._subscribe) {
       this._subscribe.stop();
 
-      delete this._subscribe;
+      this._subscribe = undefined;
     }
   };
 
@@ -190,6 +229,11 @@ function (_Component) {
 
   return FindAndSubscribeComponent;
 }(Component);
+
+FindAndSubscribeComponent.defaultProps = {
+  visibleTimeout: 120000 // 2 minutes
+
+};
 
 export { FindComponent as Find, FindAndSubscribeComponent as FindAndSubscribe };
 //# sourceMappingURL=index-browser.es.js.map

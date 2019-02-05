@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Logger from 'nightingale-logger';
 
 class FindComponent extends Component {
   constructor(...args) {
@@ -103,49 +104,88 @@ var applyChanges = (function (state, changes, keyPath) {
   }, state);
 });
 
+const logger = new Logger('react-liwi:FindAndSubscribe');
 class FindAndSubscribeComponent extends Component {
   constructor(...args) {
+    var _this;
+
     super(...args);
+    _this = this;
     this.state = {
       fetched: false,
       result: undefined
     };
-  }
+    this.timeout = undefined;
+    this._subscribe = undefined;
 
-  componentDidMount() {
-    var _this = this;
+    this.handleVisibilityChange = function () {
+      if (!document.hidden) {
+        if (_this.timeout !== undefined) {
+          logger.log('timeout cleared', {
+            name: _this.props.name
+          });
+          clearTimeout(_this.timeout);
+          _this.timeout = undefined;
+        } else {
+          logger.debug('resubscribe', {
+            name: _this.props.name
+          });
 
-    const {
-      query
-    } = this.props;
-    this._subscribe = query.fetchAndSubscribe(function (err, changes) {
-      if (err) {
-        // eslint-disable-next-line no-alert
-        alert(`Unexpected error: ${err}`);
+          _this.subscribe();
+        }
+
         return;
       }
 
-      const newResult = applyChanges(_this.state.result, changes, '_id' // TODO get keyPath from client(/store)
-      );
+      if (_this._subscribe === undefined) return;
+      logger.log('timeout visible', {
+        name: _this.props.name
+      });
+      _this.timeout = setTimeout(_this.unsubscribe, _this.props.visibleTimeout);
+    };
 
-      if (!_this.state.fetched) {
-        _this.setState({
-          fetched: true,
-          result: newResult
-        });
-      } else if (newResult !== _this.state.result) {
-        _this.setState({
-          result: newResult
-        });
-      }
-    });
+    this.subscribe = function () {
+      const {
+        query
+      } = _this.props;
+      _this._subscribe = query.fetchAndSubscribe(function (err, changes) {
+        if (err) {
+          // eslint-disable-next-line no-alert
+          alert(`Unexpected error: ${err}`);
+          return;
+        }
+
+        const newResult = applyChanges(_this.state.result, changes, '_id' // TODO get keyPath from client(/store)
+        );
+
+        if (!_this.state.fetched) {
+          _this.setState({
+            fetched: true,
+            result: newResult
+          });
+        } else if (newResult !== _this.state.result) {
+          _this.setState({
+            result: newResult
+          });
+        }
+      });
+    };
+  }
+
+  componentDidMount() {
+    this.subscribe();
+    document.addEventListener('visibilitychange', this.handleVisibilityChange, false);
   }
 
   componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  unsubscribe() {
     if (this._subscribe) {
       this._subscribe.stop();
 
-      delete this._subscribe;
+      this._subscribe = undefined;
     }
   }
 
@@ -160,6 +200,10 @@ class FindAndSubscribeComponent extends Component {
   }
 
 }
+FindAndSubscribeComponent.defaultProps = {
+  visibleTimeout: 120000 // 2 minutes
+
+};
 
 export { FindComponent as Find, FindAndSubscribeComponent as FindAndSubscribe };
 //# sourceMappingURL=index-browsermodern-dev.es.js.map

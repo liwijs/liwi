@@ -6,6 +6,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var React = require('react');
 var React__default = _interopDefault(React);
+var Logger = _interopDefault(require('nightingale-logger'));
 
 class FindComponent extends React.Component {
   constructor(...args) {
@@ -98,6 +99,7 @@ var applyChanges = ((state, changes, keyPath) => {
   return changes.reduce((stateValue, change) => applyChange(stateValue, change, keyPath), state);
 });
 
+const logger = new Logger('react-liwi:FindAndSubscribe');
 class FindAndSubscribeComponent extends React.Component {
   constructor(...args) {
     super(...args);
@@ -105,40 +107,76 @@ class FindAndSubscribeComponent extends React.Component {
       fetched: false,
       result: undefined
     };
-  }
+    this.timeout = undefined;
+    this._subscribe = undefined;
 
-  componentDidMount() {
-    const {
-      query
-    } = this.props;
-    this._subscribe = query.fetchAndSubscribe((err, changes) => {
-      if (err) {
-        // eslint-disable-next-line no-alert
-        alert(`Unexpected error: ${err}`);
+    this.handleVisibilityChange = () => {
+      if (!document.hidden) {
+        if (this.timeout !== undefined) {
+          logger.log('timeout cleared', {
+            name: this.props.name
+          });
+          clearTimeout(this.timeout);
+          this.timeout = undefined;
+        } else {
+          logger.debug('resubscribe', {
+            name: this.props.name
+          });
+          this.subscribe();
+        }
+
         return;
       }
 
-      const newResult = applyChanges(this.state.result, changes, '_id' // TODO get keyPath from client(/store)
-      );
+      if (this._subscribe === undefined) return;
+      logger.log('timeout visible', {
+        name: this.props.name
+      });
+      this.timeout = setTimeout(this.unsubscribe, this.props.visibleTimeout);
+    };
 
-      if (!this.state.fetched) {
-        this.setState({
-          fetched: true,
-          result: newResult
-        });
-      } else if (newResult !== this.state.result) {
-        this.setState({
-          result: newResult
-        });
-      }
-    });
+    this.subscribe = () => {
+      const {
+        query
+      } = this.props;
+      this._subscribe = query.fetchAndSubscribe((err, changes) => {
+        if (err) {
+          // eslint-disable-next-line no-alert
+          alert(`Unexpected error: ${err}`);
+          return;
+        }
+
+        const newResult = applyChanges(this.state.result, changes, '_id' // TODO get keyPath from client(/store)
+        );
+
+        if (!this.state.fetched) {
+          this.setState({
+            fetched: true,
+            result: newResult
+          });
+        } else if (newResult !== this.state.result) {
+          this.setState({
+            result: newResult
+          });
+        }
+      });
+    };
+  }
+
+  componentDidMount() {
+    this.subscribe();
+    document.addEventListener('visibilitychange', this.handleVisibilityChange, false);
   }
 
   componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  unsubscribe() {
     if (this._subscribe) {
       this._subscribe.stop();
 
-      delete this._subscribe;
+      this._subscribe = undefined;
     }
   }
 
@@ -153,6 +191,10 @@ class FindAndSubscribeComponent extends React.Component {
   }
 
 }
+FindAndSubscribeComponent.defaultProps = {
+  visibleTimeout: 120000 // 2 minutes
+
+};
 
 exports.Find = FindComponent;
 exports.FindAndSubscribe = FindAndSubscribeComponent;
