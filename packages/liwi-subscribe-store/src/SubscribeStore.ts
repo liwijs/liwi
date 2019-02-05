@@ -8,9 +8,9 @@ import { BaseModel, InsertType, Update, Criteria, Sort } from 'liwi-types';
 import AbstractSubscribeQuery from './AbstractSubscribeQuery';
 
 export type Actions<Model> =
-  | { type: 'inserted'; next: Array<Model> }
-  | { type: 'updated'; prev: Array<Model>; next: Array<Model> }
-  | { type: 'deleted'; prev: Array<Model> };
+  | { type: 'inserted'; next: Model[] }
+  | { type: 'updated'; prev: Model[]; next: Model[] }
+  | { type: 'deleted'; prev: Model[] };
 
 export type Listener<Model> = (action: Actions<Model>) => void;
 
@@ -56,10 +56,7 @@ export default class SubscribeStore<
     return query;
   }
 
-  findAll(
-    criteria?: Criteria<Model>,
-    sort?: Sort<Model>,
-  ): Promise<Array<Model>> {
+  findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]> {
     return this.store.findAll(criteria, sort);
   }
 
@@ -86,7 +83,7 @@ export default class SubscribeStore<
     return replaced;
   }
 
-  async replaceSeveral(objects: Array<Model>): Promise<Array<Model>> {
+  async replaceSeveral(objects: Model[]): Promise<Model[]> {
     const replacedObjects = await this.store.replaceSeveral(objects);
     this.callSubscribed({
       type: 'updated',

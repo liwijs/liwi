@@ -6,7 +6,7 @@ import applyChanges from './applyChanges';
 interface LoadingProps {}
 
 interface Props<Name extends string, Model extends BaseModel> {
-  component: ComponentType<{ [P in Name]: Array<Model> }>;
+  component: ComponentType<{ [P in Name]: Model[] }>;
   loadingComponent?: ComponentType<LoadingProps>;
   name: Name;
   query: AbstractQuery<Model>;
@@ -20,7 +20,7 @@ interface State<Result> {
 export default class FindAndSubscribeComponent<
   Name extends string,
   Model extends BaseModel
-> extends Component<Props<Name, Model>, State<Array<Model>>> {
+> extends Component<Props<Name, Model>, State<Model[]>> {
   state = {
     fetched: false,
     result: undefined,

@@ -12,8 +12,8 @@ export interface SubscribeResult {
 export declare type SubscribeCallback<Model> = (err: Error | null, changes: Changes<Model>) => void;
 export default abstract class AbstractQuery<Model extends BaseModel> {
     abstract fetch(onFulfilled?: (value: any) => any): Promise<any>;
-    fetchAndSubscribe(callback: SubscribeCallback<Model>, ...args: Array<any>): SubscribeResult;
-    subscribe(callback: SubscribeCallback<Model>, ...args: Array<any>): SubscribeResult;
-    abstract _subscribe(callback: SubscribeCallback<Model>, _includeInitial: boolean, args: Array<any>): SubscribeResult;
+    fetchAndSubscribe(callback: SubscribeCallback<Model>, ...args: any[]): SubscribeResult;
+    subscribe(callback: SubscribeCallback<Model>, ...args: any[]): SubscribeResult;
+    abstract _subscribe(callback: SubscribeCallback<Model>, _includeInitial: boolean, args: any[]): SubscribeResult;
 }
 //# sourceMappingURL=AbstractQuery.d.ts.map

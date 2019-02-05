@@ -7,7 +7,7 @@ interface LoadingProps {}
 type Record<K extends string, T> = { [P in K]: T };
 
 interface Props<Name extends string, Model extends BaseModel> {
-  component: ComponentType<Record<Name, Array<Model>>>;
+  component: ComponentType<Record<Name, Model[]>>;
   loadingComponent?: ComponentType<LoadingProps>;
   name: Name;
   query: AbstractQuery<Model>;
@@ -21,7 +21,7 @@ interface State<Result> {
 export default class FindComponent<
   Name extends string,
   Model extends BaseModel
-> extends Component<Props<Name, Model>, State<Array<Model>>> {
+> extends Component<Props<Name, Model>, State<Model[]>> {
   state = {
     fetched: false,
     result: undefined,
@@ -32,7 +32,7 @@ export default class FindComponent<
 
   componentDidMount() {
     const { query } = this.props;
-    this._find = query.fetch((result: Array<Model>) => {
+    this._find = query.fetch((result: Model[]) => {
       if (!this._find) return;
       this.setState({
         fetched: true,

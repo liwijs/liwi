@@ -35,10 +35,7 @@ export default abstract class AbstractStore<
 
   abstract createQuery(options: QueryOptions<Model>): Query;
 
-  findAll(
-    criteria?: Criteria<Model>,
-    sort?: Sort<Model>,
-  ): Promise<Array<Model>> {
+  findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]> {
     return this.cursor(criteria, sort).then((cursor: Cursor) =>
       cursor.toArray(),
     );
@@ -60,7 +57,7 @@ export default abstract class AbstractStore<
 
   abstract replaceOne(object: Model): Promise<Model>;
 
-  abstract replaceSeveral(objects: Array<Model>): Promise<Array<Model>>;
+  abstract replaceSeveral(objects: Model[]): Promise<Model[]>;
 
   async upsertOne(object: InsertType<Model, KeyPath>): Promise<Model> {
     const result = await this.upsertOneWithInfo(object);

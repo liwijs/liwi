@@ -50,7 +50,7 @@ export default class MongoCursor<
     return Promise.resolve();
   }
 
-  toArray(): Promise<Array<Model>> {
+  toArray(): Promise<Model[]> {
     return this.cursor.toArray();
   }
 }

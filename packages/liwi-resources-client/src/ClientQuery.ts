@@ -5,11 +5,11 @@ import { AbstractQuery } from 'liwi-store';
 import { BaseModel } from 'liwi-types';
 import AbstractClient from './AbstractClient';
 
-type SubscribeReturn = {
+interface SubscribeReturn {
   cancel: () => void;
   stop: () => void;
   then: (cb: any) => Promise<any>;
-};
+}
 
 type UnsubscribeCallback = () => void;
 type Callback = (err: Error | null, result: any) => void;
@@ -37,7 +37,7 @@ export default class Query<
   _subscribe(
     callback: Callback,
     _includeInitial = false,
-    args: Array<any>,
+    args: any[],
   ): SubscribeReturn {
     const eventName = `subscribe:${this.client.resourceName}.${this.key}`;
     const listener = (err: Error | null, result?: string) => {

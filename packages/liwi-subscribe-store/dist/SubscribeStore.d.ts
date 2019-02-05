@@ -3,14 +3,14 @@ import { BaseModel, InsertType, Update, Criteria, Sort } from 'liwi-types';
 import AbstractSubscribeQuery from './AbstractSubscribeQuery';
 export declare type Actions<Model> = {
     type: 'inserted';
-    next: Array<Model>;
+    next: Model[];
 } | {
     type: 'updated';
-    prev: Array<Model>;
-    next: Array<Model>;
+    prev: Model[];
+    next: Model[];
 } | {
     type: 'deleted';
-    prev: Array<Model>;
+    prev: Model[];
 };
 export declare type Listener<Model> = (action: Actions<Model>) => void;
 export default class SubscribeStore<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractCursor<Model, KeyPath, any>, Store extends StoreInterface<Model, KeyPath, Connection, Cursor, any>, Query extends AbstractSubscribeQuery<Model, StoreInterface<Model, KeyPath, Connection, Cursor, any>>> implements StoreInterface<Model, KeyPath, Connection, Cursor, Query> {
@@ -22,12 +22,12 @@ export default class SubscribeStore<Model extends BaseModel, KeyPath extends str
     subscribe(callback: Listener<Model>): () => boolean;
     callSubscribed(action: Actions<Model>): void;
     createQuery(criteria: any): Query;
-    findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Array<Model>>;
+    findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
     findByKey(key: any): Promise<Model | undefined>;
     findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;
     insertOne(object: InsertType<Model, KeyPath>): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
-    replaceSeveral(objects: Array<Model>): Promise<Array<Model>>;
+    replaceSeveral(objects: Model[]): Promise<Model[]>;
     upsertOne(object: InsertType<Model, KeyPath>): Promise<Model>;
     upsertOneWithInfo(object: InsertType<Model, KeyPath>): Promise<UpsertResult<Model>>;
     partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model>;

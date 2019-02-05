@@ -36,7 +36,7 @@ export default abstract class AbstractCursor<
 
   abstract count(applyLimit: boolean /*  = false */): Promise<number>;
 
-  abstract toArray(): Promise<Array<Model>>;
+  abstract toArray(): Promise<Model[]>;
 
   result(): Promise<Model> {
     if (!this.key) throw new Error('Cannot call result() before next()');

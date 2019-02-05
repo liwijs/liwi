@@ -1,13 +1,13 @@
 /* eslint-disable camelcase, complexity */
 import { BaseModel, Change, Changes } from 'liwi-types';
 
-const copy = <Model>(state: Array<Model>) => state.slice();
+const copy = <Model>(state: Model[]) => state.slice();
 
 const applyChange = <Model extends BaseModel>(
-  state: Array<Model>,
+  state: Model[],
   change: Change<Model>,
   keyPath: string,
-): Array<Model> => {
+): Model[] => {
   switch (change.type) {
     case 'initial':
       return change.initial;
@@ -40,10 +40,10 @@ const applyChange = <Model extends BaseModel>(
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 export default <Model extends BaseModel>(
-  state: undefined | Array<Model>,
+  state: undefined | Model[],
   changes: Changes<Model>,
   keyPath: string,
-): undefined | Array<Model> => {
+): undefined | Model[] => {
   if (changes.length === 1) {
     const firstChange = changes[0];
     if (firstChange.type === 'initial') {
@@ -54,7 +54,7 @@ export default <Model extends BaseModel>(
   if (state === undefined) return state;
 
   return changes.reduce(
-    (stateValue: Array<Model>, change: Change<Model>) =>
+    (stateValue: Model[], change: Change<Model>) =>
       applyChange(stateValue, change, keyPath),
     state,
   );

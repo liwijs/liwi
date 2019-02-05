@@ -122,7 +122,7 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     return { object: object as Model, inserted: !!upsertedCount };
   }
 
-  replaceSeveral(objects: Array<Model>): Promise<Array<Model>> {
+  replaceSeveral(objects: Model[]): Promise<Model[]> {
     return Promise.all(objects.map((object: Model) => this.replaceOne(object)));
   }
 

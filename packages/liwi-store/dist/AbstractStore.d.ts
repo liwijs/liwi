@@ -9,13 +9,13 @@ export default abstract class AbstractStore<Model extends BaseModel, KeyPath ext
     constructor(connection: Connection, keyPath: KeyPath);
     readonly connection: Connection;
     abstract createQuery(options: QueryOptions<Model>): Query;
-    findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Array<Model>>;
+    findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
     abstract findByKey(key: any): Promise<Model | undefined>;
     abstract findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;
     abstract cursor(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Cursor>;
     abstract insertOne(object: InsertType<Model, KeyPath>): Promise<Model>;
     abstract replaceOne(object: Model): Promise<Model>;
-    abstract replaceSeveral(objects: Array<Model>): Promise<Array<Model>>;
+    abstract replaceSeveral(objects: Model[]): Promise<Model[]>;
     upsertOne(object: InsertType<Model, KeyPath>): Promise<Model>;
     abstract upsertOneWithInfo(object: InsertType<Model, KeyPath>): Promise<UpsertResult<Model>>;
     abstract partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model>;

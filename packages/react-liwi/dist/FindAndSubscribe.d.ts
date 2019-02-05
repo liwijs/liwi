@@ -5,7 +5,7 @@ interface LoadingProps {
 }
 interface Props<Name extends string, Model extends BaseModel> {
     component: ComponentType<{
-        [P in Name]: Array<Model>;
+        [P in Name]: Model[];
     }>;
     loadingComponent?: ComponentType<LoadingProps>;
     name: Name;
@@ -15,7 +15,7 @@ interface State<Result> {
     fetched: boolean;
     result: Result | undefined;
 }
-export default class FindAndSubscribeComponent<Name extends string, Model extends BaseModel> extends Component<Props<Name, Model>, State<Array<Model>>> {
+export default class FindAndSubscribeComponent<Name extends string, Model extends BaseModel> extends Component<Props<Name, Model>, State<Model[]>> {
     state: {
         fetched: boolean;
         result: undefined;

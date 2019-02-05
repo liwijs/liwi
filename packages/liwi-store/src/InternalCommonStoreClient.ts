@@ -12,7 +12,7 @@ export default interface InternalCommonStoreClient<
 > {
   readonly keyPath: KeyPath;
 
-  findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Array<any>>;
+  findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<any[]>;
 
   findByKey(key: any): Promise<Model | undefined>;
 
@@ -27,7 +27,7 @@ export default interface InternalCommonStoreClient<
 
   replaceOne(object: Model): Promise<Model>;
 
-  replaceSeveral(objects: Array<Model>): Promise<Array<Model>>;
+  replaceSeveral(objects: Model[]): Promise<Model[]>;
 
   upsertOne(object: InsertType<Model, KeyPath>): Promise<Model>;
 

@@ -27,7 +27,7 @@ export default class MongoQuery<
     return this.mingoQuery;
   }
 
-  async fetch<T>(onFulfilled: (result: Array<Model>) => T): Promise<T> {
+  async fetch<T>(onFulfilled: (result: Model[]) => T): Promise<T> {
     const cursor = await this.createMongoCursor();
     return cursor.toArray().then(onFulfilled);
   }
@@ -35,14 +35,14 @@ export default class MongoQuery<
   _subscribe(
     callback: SubscribeCallback<Model>,
     _includeInitial: boolean,
-    args: Array<any>,
+    args: any[],
   ): SubscribeResult {
     const store = super.getSubscribeStore();
     const mingoQuery: mingo.Query = this.createMingoQuery();
 
     const promise =
       _includeInitial &&
-      this.fetch((result: Array<Model>) => {
+      this.fetch((result: Model[]) => {
         callback(null, [{ type: 'initial', initial: result }]);
         return result;
       });
@@ -66,7 +66,7 @@ export default class MongoQuery<
         case 'updated': {
           const { deleted, updated } = filtered.reduce(
             (
-              acc: { deleted: Array<string>; updated: Array<Model> },
+              acc: { deleted: string[]; updated: Model[] },
               object: Model,
               index: number,
             ) => {
@@ -123,8 +123,8 @@ export default class MongoQuery<
       stop: unsubscribe,
       cancel: unsubscribe,
       then: _includeInitial
-        ? (onFulfilled: (result: Array<Model>) => any) =>
-            (promise as Promise<Array<Model>>).then(onFulfilled)
+        ? (onFulfilled: (result: Model[]) => any) =>
+            (promise as Promise<Model[]>).then(onFulfilled)
         : () => Promise.resolve(),
     };
   }

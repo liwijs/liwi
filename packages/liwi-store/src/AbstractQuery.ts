@@ -20,17 +20,17 @@ export type SubscribeCallback<Model> = (
 export default abstract class AbstractQuery<Model extends BaseModel> {
   abstract fetch(onFulfilled?: (value: any) => any): Promise<any>;
 
-  fetchAndSubscribe(callback: SubscribeCallback<Model>, ...args: Array<any>) {
+  fetchAndSubscribe(callback: SubscribeCallback<Model>, ...args: any[]) {
     return this._subscribe(callback, true, args);
   }
 
-  subscribe(callback: SubscribeCallback<Model>, ...args: Array<any>) {
+  subscribe(callback: SubscribeCallback<Model>, ...args: any[]) {
     return this._subscribe(callback, false, args);
   }
 
   abstract _subscribe(
     callback: SubscribeCallback<Model>,
     _includeInitial: boolean,
-    args: Array<any>,
+    args: any[],
   ): SubscribeResult;
 }

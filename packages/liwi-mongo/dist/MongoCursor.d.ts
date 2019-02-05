@@ -11,6 +11,6 @@ export default class MongoCursor<Model extends MongoModel> extends AbstractCurso
     count(applyLimit?: boolean): Promise<number>;
     result(): Promise<Model>;
     close(): Promise<void>;
-    toArray(): Promise<Array<Model>>;
+    toArray(): Promise<Model[]>;
 }
 //# sourceMappingURL=MongoCursor.d.ts.map
