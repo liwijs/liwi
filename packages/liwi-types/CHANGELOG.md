@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/liwijs/liwi/compare/liwi-types@1.2.1...liwi-types@1.3.0) (2019-02-05)
+
+
+### Features
+
+* split liwi-resources into server and client ([df73bf9](https://github.com/liwijs/liwi/commit/df73bf9))
+
+
+
+
+
 ## [1.2.1](https://github.com/liwijs/liwi/compare/liwi-types@1.2.0...liwi-types@1.2.1) (2019-02-04)
 
 

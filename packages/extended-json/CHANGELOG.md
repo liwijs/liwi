@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/liwijs/liwi/compare/extended-json@2.2.0...extended-json@2.2.1) (2019-02-05)
+
+
+### Bug Fixes
+
+* eslint error ([206b1b5](https://github.com/liwijs/liwi/commit/206b1b5))
+
+
+
+
+
 # [2.2.0](https://github.com/liwijs/liwi/compare/extended-json@2.1.0...extended-json@2.2.0) (2019-01-20)
 
 

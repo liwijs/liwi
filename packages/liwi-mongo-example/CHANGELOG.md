@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/liwijs/liwi/compare/liwi-mongo-example@1.2.1...liwi-mongo-example@1.3.0) (2019-02-05)
+
+
+### Bug Fixes
+
+* eslint error ([206b1b5](https://github.com/liwijs/liwi/commit/206b1b5))
+
+
+### Features
+
+* split liwi-resources into server and client ([df73bf9](https://github.com/liwijs/liwi/commit/df73bf9))
+
+
+
+
+
 ## [1.2.1](https://github.com/liwijs/liwi/compare/liwi-mongo-example@1.2.0...liwi-mongo-example@1.2.1) (2019-02-04)
 
 **Note:** Version bump only for package liwi-mongo-example
