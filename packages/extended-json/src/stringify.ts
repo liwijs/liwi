@@ -1,7 +1,7 @@
 type JsonReplacer = (
   key: string,
   value: any,
-) => number | string | boolean | Object | undefined;
+) => number | string | boolean | Record<string, any> | undefined;
 
 // const internalReplacer = (key, value) => {
 //   return value;

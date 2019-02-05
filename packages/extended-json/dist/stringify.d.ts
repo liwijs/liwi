@@ -1,4 +1,4 @@
-declare type JsonReplacer = (key: string, value: any) => number | string | boolean | Object | undefined;
+declare type JsonReplacer = (key: string, value: any) => number | string | boolean | Record<string, any> | undefined;
 declare const _default: (value: any, replacer?: JsonReplacer | undefined, space?: string | number | undefined) => string;
 /**
  * @param {*} value The value to convert to a JSON string
