@@ -1,5 +1,5 @@
 import { Store as StoreInterface, AbstractConnection, AbstractCursor, UpsertResult } from 'liwi-store';
-import { BaseModel, InsertType, Update, Criteria, Sort } from 'liwi-types';
+import { BaseModel, InsertType, Update, Criteria, Sort, QueryOptions } from 'liwi-types';
 import AbstractSubscribeQuery from './AbstractSubscribeQuery';
 export declare type Actions<Model> = {
     type: 'inserted';
@@ -21,7 +21,7 @@ export default class SubscribeStore<Model extends BaseModel, KeyPath extends str
     readonly connection: Connection;
     subscribe(callback: Listener<Model>): () => boolean;
     callSubscribed(action: Actions<Model>): void;
-    createQuery(criteria: any): Query;
+    createQuery(options: QueryOptions<Model>): Query;
     findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
     findByKey(key: any): Promise<Model | undefined>;
     findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;

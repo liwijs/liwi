@@ -4,7 +4,14 @@ import {
   AbstractCursor,
   UpsertResult,
 } from 'liwi-store';
-import { BaseModel, InsertType, Update, Criteria, Sort } from 'liwi-types';
+import {
+  BaseModel,
+  InsertType,
+  Update,
+  Criteria,
+  Sort,
+  QueryOptions,
+} from 'liwi-types';
 import AbstractSubscribeQuery from './AbstractSubscribeQuery';
 
 export type Actions<Model> =
@@ -50,8 +57,8 @@ export default class SubscribeStore<
     this.listeners.forEach((listener) => listener(action));
   }
 
-  createQuery(criteria: any): Query {
-    const query: Query = this.store.createQuery(criteria);
+  createQuery(options: QueryOptions<Model>): Query {
+    const query: Query = this.store.createQuery(options);
     query.setSubscribeStore(this);
     return query;
   }

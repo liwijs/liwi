@@ -87,8 +87,8 @@ function () {
     });
   };
 
-  _proto.createQuery = function createQuery(criteria) {
-    var query = this.store.createQuery(criteria);
+  _proto.createQuery = function createQuery(options) {
+    var query = this.store.createQuery(options);
     query.setSubscribeStore(this);
     return query;
   };
