@@ -1,10 +1,10 @@
 import { ObjectID, MongoClient } from 'mongodb';
-import { AbstractCursor, AbstractStore, AbstractConnection } from 'liwi-store';
+import { AbstractStoreCursor, AbstractStore, AbstractConnection } from 'liwi-store';
 import mingo from 'mingo';
 import { AbstractSubscribeQuery } from 'liwi-subscribe-store';
 import Logger from 'nightingale-logger';
 
-class MongoCursor extends AbstractCursor {
+class MongoCursor extends AbstractStoreCursor {
   // key in AbstractCursor
   constructor(store, cursor) {
     super(store);

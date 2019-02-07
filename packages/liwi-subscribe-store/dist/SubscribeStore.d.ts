@@ -1,4 +1,4 @@
-import { Store as StoreInterface, AbstractConnection, AbstractCursor, UpsertResult } from 'liwi-store';
+import { Store as StoreInterface, AbstractConnection, AbstractStoreCursor, UpsertResult } from 'liwi-store';
 import { BaseModel, InsertType, Update, Criteria, Sort, QueryOptions } from 'liwi-types';
 import AbstractSubscribeQuery from './AbstractSubscribeQuery';
 export declare type Actions<Model> = {
@@ -13,7 +13,7 @@ export declare type Actions<Model> = {
     prev: Model[];
 };
 export declare type Listener<Model> = (action: Actions<Model>) => void;
-export default class SubscribeStore<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractCursor<Model, KeyPath, any>, Store extends StoreInterface<Model, KeyPath, Connection, Cursor, any>, Query extends AbstractSubscribeQuery<Model, StoreInterface<Model, KeyPath, Connection, Cursor, any>>> implements StoreInterface<Model, KeyPath, Connection, Cursor, Query> {
+export default class SubscribeStore<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractStoreCursor<Model, KeyPath, any>, Store extends StoreInterface<Model, KeyPath, Connection, Cursor, any>, Query extends AbstractSubscribeQuery<Model, StoreInterface<Model, KeyPath, Connection, Cursor, any>>> implements StoreInterface<Model, KeyPath, Connection, Cursor, Query> {
     private store;
     private listeners;
     constructor(store: Store);

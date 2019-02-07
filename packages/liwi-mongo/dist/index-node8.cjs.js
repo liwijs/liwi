@@ -10,7 +10,7 @@ var mingo = _interopDefault(require('mingo'));
 var liwiSubscribeStore = require('liwi-subscribe-store');
 var Logger = _interopDefault(require('nightingale-logger'));
 
-class MongoCursor extends liwiStore.AbstractCursor {
+class MongoCursor extends liwiStore.AbstractStoreCursor {
   // key in AbstractCursor
   constructor(store, cursor) {
     super(store);

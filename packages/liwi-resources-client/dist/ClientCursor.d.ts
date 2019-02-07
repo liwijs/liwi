@@ -1,14 +1,16 @@
 import { AbstractCursor } from 'liwi-store';
 import { BaseModel, QueryOptions } from 'liwi-types';
 import AbstractClient from './AbstractClient';
-export default class ClientCursor<Model extends BaseModel, KeyPath extends string> extends AbstractCursor<Model, KeyPath, AbstractClient<Model, KeyPath>> {
-    _idCursor?: number;
+export default class ClientCursor<Model extends BaseModel, KeyPath extends string, Client extends AbstractClient<Model, KeyPath>> extends AbstractCursor<Model, KeyPath> {
+    key: any;
+    private _idCursor?;
+    private client;
     private options;
     private _result?;
-    constructor(client: AbstractClient<Model, KeyPath>, options: QueryOptions<Model>);
+    constructor(client: Client, options: QueryOptions<Model>);
     limit(newLimit: number): Promise<this>;
     _create(): Promise<void>;
-    emit(type: string, ...args: any[]): Promise<any>;
+    private emit;
     advance(count: number): this;
     next(): Promise<any>;
     result(): Promise<Model>;

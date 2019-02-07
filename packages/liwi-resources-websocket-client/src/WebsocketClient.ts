@@ -30,9 +30,9 @@ export default class WebsocketClient<
     this.resourceName = resourceName;
   }
 
-  emitSubscribe(type: string, ...args: any[]): Promise<UnsubscribeCallback> {
+  emitSubscribe(type: string, args: any[]): Promise<UnsubscribeCallback> {
     const websocket = this.websocket;
-    const emit = () => this.send(type, ...args);
+    const emit = () => this.send(type, args);
     const registerOnConnect = () => {
       websocket.on('connect', emit);
       return () => {

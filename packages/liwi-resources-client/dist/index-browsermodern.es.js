@@ -1,83 +1,6 @@
-import { AbstractCursor, AbstractQuery } from 'liwi-store';
 import Logger from 'nightingale-logger';
 import { decode } from 'extended-json';
-
-class ClientCursor extends AbstractCursor {
-  constructor(client, options) {
-    super(client);
-    this.options = options;
-  }
-  /* options */
-
-
-  limit(newLimit) {
-    if (this._idCursor) throw new Error('Cursor already created');
-    this.options.limit = newLimit;
-    return Promise.resolve(this);
-  }
-  /* results */
-
-
-  _create() {
-    var _this = this;
-
-    if (this._idCursor) throw new Error('Cursor already created');
-    return super.store.createCursor(this.options).then(function (idCursor) {
-      if (!idCursor) return;
-      _this._idCursor = idCursor;
-    });
-  }
-
-  emit(type, ...args) {
-    var _this2 = this;
-
-    if (!this._idCursor) {
-      return this._create().then(function () {
-        return _this2.emit(type, ...args);
-      });
-    }
-
-    return super.store.send('cursor', {
-      type,
-      id: this._idCursor
-    }, args);
-  }
-
-  advance(count) {
-    this.emit('advance', count);
-    return this;
-  }
-
-  async next() {
-    const result = await this.emit('next');
-    this._result = result;
-    super.key = result && result[super.store.keyPath];
-    return super.key;
-  }
-
-  result() {
-    if (!this._result) throw new Error('Cannot call result() before next()');
-    return Promise.resolve(this._result);
-  }
-
-  count(applyLimit = false) {
-    return this.emit('count', applyLimit);
-  }
-
-  close() {
-    if (!super.store) return Promise.resolve();
-    const closedPromise = this._idCursor ? this.emit('close') : Promise.resolve();
-    this._idCursor = undefined;
-    this._result = undefined;
-    return closedPromise;
-  }
-
-  toArray() {
-    if (this._idCursor) throw new Error('Cursor created, cannot call toArray');
-    return super.store.send('cursor toArray', this.options);
-  }
-
-}
+import { AbstractQuery } from 'liwi-store';
 
 const logger = new Logger('liwi:resources:query');
 class Query extends AbstractQuery {
@@ -105,7 +28,7 @@ class Query extends AbstractQuery {
 
     let _stopEmitSubscribe;
 
-    let promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', this.key, eventName, args).then(function (stopEmitSubscribe) {
+    let promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, eventName, args]).then(function (stopEmitSubscribe) {
       _stopEmitSubscribe = stopEmitSubscribe;
       logger.info('subscribed');
     }).catch(function (err) {
@@ -152,73 +75,42 @@ class AbstractClient {
     return new Query(this, key);
   }
 
-  cursor(criteria, sort) {
-    return Promise.resolve(new ClientCursor(this, {
-      criteria,
-      sort
-    }));
+  // cursor(
+  //   criteria?: Criteria<Model>,
+  //   sort?: Sort<Model>,
+  // ): Promise<ClientCursor<Model, KeyPath>> {
+  //   return Promise.resolve(new ClientCursor(this, { criteria, sort }));
+  // }
+  findByKey() {
+    throw new Error('Use operations instead');
   }
 
-  findAll(criteria, sort) {
-    return this.send('cursor toArray', {
-      criteria,
-      sort
-    });
+  replaceOne() {
+    throw new Error('Use operations instead');
   }
 
-  findByKey(key) {
-    return this.send('findByKey', key);
+  partialUpdateByKey() {
+    throw new Error('Use operations instead');
   }
 
-  findOne(criteria, sort) {
-    return this.send('findOne', criteria, sort);
-  }
-
-  upsertOne(object) {
-    return this.send('upsertOne', object);
-  }
-
-  insertOne(object) {
-    return this.send('insertOne', object);
-  }
-
-  replaceOne(object) {
-    return this.send('replaceOne', object);
-  }
-
-  replaceSeveral(objects) {
-    return this.send('replaceSeveral', objects);
-  }
-
-  upsertOneWithInfo(object) {
-    return this.send('upsertOneWithInfo', object);
-  }
-
-  partialUpdateByKey(key, partialUpdate) {
-    return this.send('partialUpdateByKey', key, partialUpdate);
-  }
-
-  partialUpdateOne(object, partialUpdate) {
-    return this.partialUpdateByKey(object[this.keyPath], partialUpdate);
-  }
-
-  partialUpdateMany(criteria, partialUpdate) {
-    return this.send('partialUpdateMany', criteria, partialUpdate);
-  }
-
-  deleteByKey(key) {
-    return this.send('deleteByKey', key);
-  }
-
-  deleteOne(object) {
-    return this.send('deleteByKey', object[this.keyPath]);
-  }
-
-  deleteMany(criteria) {
-    return this.send('deleteMany', criteria);
+  deleteByKey() {
+    throw new Error('Use operations instead');
   }
 
 }
 
-export { AbstractClient };
+const createResourceClient = function createResourceClient(client, options) {
+  return {
+    queries: options.queries.map(function (queryKey) {
+      return client.createQuery(queryKey);
+    }),
+    operations: options.operations.map(function (operationKey) {
+      return function (params) {
+        return client.send('do', [operationKey, params]);
+      };
+    })
+  };
+};
+
+export { createResourceClient, AbstractClient };
 //# sourceMappingURL=index-browsermodern.es.js.map

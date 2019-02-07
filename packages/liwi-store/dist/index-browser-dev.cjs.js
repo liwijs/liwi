@@ -60,19 +60,19 @@ function _createClass(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
+function _inheritsLoose(subClass, superClass) {
+  subClass.prototype = Object.create(superClass.prototype);
+  subClass.prototype.constructor = subClass;
+  subClass.__proto__ = superClass;
+}
+
 /* eslint-disable no-await-in-loop */
 var AbstractCursor =
 /*#__PURE__*/
 function () {
-  function AbstractCursor(store) {
-    this._store = store;
-  }
+  function AbstractCursor() {}
 
   var _proto = AbstractCursor.prototype;
-
-  _proto.overrideStore = function overrideStore(store) {
-    this._store = store;
-  };
 
   _proto.nextResult = function nextResult() {
     var _this = this;
@@ -80,15 +80,6 @@ function () {
     return this.next().then(function () {
       return _this.result();
     });
-  };
-
-  _proto.result = function result() {
-    if (!this.key) throw new Error('Cannot call result() before next()');
-    return this.store.findByKey(this.key);
-  };
-
-  _proto.delete = function _delete() {
-    return this.store.deleteByKey(this.key);
   };
 
   _proto.forEachKeys =
@@ -245,16 +236,45 @@ function () {
      }
      */
   ;
+  return AbstractCursor;
+}();
 
-  _createClass(AbstractCursor, [{
+var AbstractStoreCursor =
+/*#__PURE__*/
+function (_AbstractCursor) {
+  _inheritsLoose(AbstractStoreCursor, _AbstractCursor);
+
+  function AbstractStoreCursor(store) {
+    var _this = _AbstractCursor.call(this) || this;
+
+    _this._store = store;
+    return _this;
+  }
+
+  var _proto = AbstractStoreCursor.prototype;
+
+  _proto.overrideStore = function overrideStore(store) {
+    this._store = store;
+  };
+
+  _proto.result = function result() {
+    if (!this.key) throw new Error('Cannot call result() before next()');
+    return this.store.findByKey(this.key);
+  };
+
+  _proto.delete = function _delete() {
+    return this.store.deleteByKey(this.key);
+  };
+
+  _createClass(AbstractStoreCursor, [{
     key: "store",
     get: function get() {
       return this._store;
     }
   }]);
 
-  return AbstractCursor;
-}();
+  return AbstractStoreCursor;
+}(AbstractCursor);
 
 var AbstractQuery =
 /*#__PURE__*/
@@ -350,6 +370,7 @@ function () {
 
 exports.AbstractConnection = AbstractConnection;
 exports.AbstractCursor = AbstractCursor;
+exports.AbstractStoreCursor = AbstractStoreCursor;
 exports.AbstractQuery = AbstractQuery;
 exports.AbstractStore = AbstractStore;
 //# sourceMappingURL=index-browser-dev.cjs.js.map

@@ -1,29 +1,11 @@
 /* eslint-disable no-await-in-loop */
 
 import { BaseModel } from 'liwi-types';
-import InternalCommonStoreClient from './InternalCommonStoreClient';
 
 export default abstract class AbstractCursor<
   Model extends BaseModel,
-  KeyPath extends string,
-  Store extends InternalCommonStoreClient<Model, KeyPath, any>
+  KeyPath extends string
 > {
-  key: any;
-
-  protected _store: Store;
-
-  constructor(store: Store) {
-    this._store = store;
-  }
-
-  get store(): Store {
-    return this._store;
-  }
-
-  overrideStore(store: Store) {
-    this._store = store;
-  }
-
   abstract close(): Promise<void> | void;
 
   abstract next(): Promise<any>;
@@ -38,14 +20,7 @@ export default abstract class AbstractCursor<
 
   abstract toArray(): Promise<Model[]>;
 
-  result(): Promise<Model> {
-    if (!this.key) throw new Error('Cannot call result() before next()');
-    return this.store.findByKey(this.key) as Promise<Model>;
-  }
-
-  delete(): Promise<void> {
-    return this.store.deleteByKey(this.key);
-  }
+  abstract result(): Promise<Model>;
 
   async forEachKeys(callback: (key: any) => any): Promise<void> {
     while (true) {

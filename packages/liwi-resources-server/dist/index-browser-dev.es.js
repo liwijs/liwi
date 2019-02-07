@@ -99,7 +99,7 @@ function () {
               cursor = _context.sent;
               limit = resource.limit(limit);
               if (limit) cursor.limit(connectedUser, limit);
-              return _context.abrupt("return", new ResourceServerCursor(resource, connectedUser, cursor));
+              return _context.abrupt("return", new ResourceServerCursor(resource, cursor, connectedUser));
 
             case 9:
             case "end":

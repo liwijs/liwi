@@ -1,9 +1,6 @@
-import { InternalCommonStoreClient, UpsertResult } from 'liwi-store';
+import { InternalCommonStoreClient } from 'liwi-store';
 import {
   BaseModel,
-  Criteria,
-  InsertType,
-  Sort,
   Update,
   QueryOptions,
   ResourceOperationKey,
@@ -18,7 +15,11 @@ export default abstract class AbstractClient<
   KeyPath extends string
 >
   implements
-    InternalCommonStoreClient<Model, KeyPath, ClientCursor<Model, KeyPath>> {
+    InternalCommonStoreClient<
+      Model,
+      KeyPath,
+      ClientCursor<Model, KeyPath, any>
+    > {
   readonly resourceName: string;
 
   readonly keyPath: KeyPath;
@@ -39,7 +40,7 @@ export default abstract class AbstractClient<
 
   abstract createCursor(options: QueryOptions<Model>): Promise<number>;
 
-  abstract send<T>(key: ResourceOperationKey, ...args: any[]): Promise<T>;
+  abstract send<T>(key: ResourceOperationKey, value: any): Promise<T>;
 
   abstract on(event: string, listener: Function): void;
 
@@ -47,80 +48,29 @@ export default abstract class AbstractClient<
 
   abstract emitSubscribe(
     type: string,
-    ...args: any[]
+    args: any[],
   ): Promise<UnsubscribeCallback>;
 
-  cursor(
-    criteria?: Criteria<Model>,
-    sort?: Sort<Model>,
-  ): Promise<ClientCursor<Model, KeyPath>> {
-    return Promise.resolve(new ClientCursor(this, { criteria, sort }));
-  }
-
-  findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<any[]> {
-    return this.send('cursor toArray', { criteria, sort });
-  }
+  // cursor(
+  //   criteria?: Criteria<Model>,
+  //   sort?: Sort<Model>,
+  // ): Promise<ClientCursor<Model, KeyPath>> {
+  //   return Promise.resolve(new ClientCursor(this, { criteria, sort }));
+  // }
 
   findByKey(key: any): Promise<Model | undefined> {
-    return this.send('findByKey', key);
-  }
-
-  findOne(
-    criteria: Criteria<Model>,
-    sort?: Sort<Model>,
-  ): Promise<Model | undefined> {
-    return this.send('findOne', criteria, sort);
-  }
-
-  upsertOne(object: InsertType<Model, KeyPath>): Promise<Model> {
-    return this.send('upsertOne', object);
-  }
-
-  insertOne(object: Model): Promise<Model> {
-    return this.send('insertOne', object);
+    throw new Error('Use operations instead');
   }
 
   replaceOne(object: Model): Promise<Model> {
-    return this.send('replaceOne', object);
-  }
-
-  replaceSeveral(objects: Model[]): Promise<Model[]> {
-    return this.send('replaceSeveral', objects);
-  }
-
-  upsertOneWithInfo(
-    object: InsertType<Model, KeyPath>,
-  ): Promise<UpsertResult<Model>> {
-    return this.send('upsertOneWithInfo', object);
+    throw new Error('Use operations instead');
   }
 
   partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model> {
-    return this.send('partialUpdateByKey', key, partialUpdate);
-  }
-
-  partialUpdateOne(
-    object: Model,
-    partialUpdate: Update<Model>,
-  ): Promise<Model> {
-    return this.partialUpdateByKey(object[this.keyPath], partialUpdate);
-  }
-
-  partialUpdateMany(
-    criteria: Criteria<Model>,
-    partialUpdate: Update<Model>,
-  ): Promise<void> {
-    return this.send('partialUpdateMany', criteria, partialUpdate);
+    throw new Error('Use operations instead');
   }
 
   deleteByKey(key: any): Promise<void> {
-    return this.send('deleteByKey', key);
-  }
-
-  deleteOne(object: Model): Promise<void> {
-    return this.send('deleteByKey', object[this.keyPath]);
-  }
-
-  deleteMany(criteria: Criteria<Model>): Promise<void> {
-    return this.send('deleteMany', criteria);
+    throw new Error('Use operations instead');
   }
 }

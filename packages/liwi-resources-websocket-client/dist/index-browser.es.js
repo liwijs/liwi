@@ -26,20 +26,13 @@ function (_AbstractClient) {
 
   var _proto = WebsocketClient.prototype;
 
-  _proto.emitSubscribe = function emitSubscribe(type) {
-    var _this2 = this,
-        _len,
-        args,
-        _key;
-
-    for (_len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
+  _proto.emitSubscribe = function emitSubscribe(type, args) {
+    var _this2 = this;
 
     var websocket = this.websocket;
 
     var emit = function emit() {
-      return _this2.send.apply(_this2, [type].concat(args));
+      return _this2.send(type, args);
     };
 
     var registerOnConnect = function registerOnConnect() {
@@ -61,10 +54,10 @@ function (_AbstractClient) {
   };
 
   _proto.send = function send(type) {
-    var _len2, args, _key2;
+    var _len, args, _key;
 
-    for (_len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-      args[_key2 - 1] = arguments[_key2];
+    for (_len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
     }
 
     logger.debug('emit', {

@@ -5,7 +5,7 @@ import { Server, Socket } from 'socket.io';
 import { ResourcesServerService } from 'liwi-resources-server';
 import Logger from 'nightingale-logger';
 import { encode, decode } from 'extended-json';
-import { QueryOptions, ResourceOperationKey } from 'liwi-types';
+import { ResourceOperationKey } from 'liwi-types';
 
 const logger = new Logger('liwi:rest-websocket');
 
@@ -16,6 +16,12 @@ declare module 'socket.io' {
     // user added in alp-auth
     user?: any;
   }
+}
+
+interface EventResourceParams {
+  type: ResourceOperationKey;
+  json: string;
+  resourceName: string;
 }
 
 export default function init(
@@ -32,31 +38,19 @@ export default function init(
     socket.on(
       'resource',
       (
-        {
-          type,
-          resourceName,
-          json,
-        }: { json: string; resourceName: string; type: ResourceOperationKey },
+        { type, resourceName, json }: EventResourceParams,
         callback: Callback,
       ) => {
         try {
-          const args = decode(json);
-          if (!Array.isArray(args)) {
-            logger.debug('args', { args });
-
-            if (callback) {
-              throw new Error('Invalid args');
-            }
-          }
+          const value = json && decode(json);
 
           const resource = resourcesService.get(resourceName);
 
-          logger.info('resource', { type, resourceName, args });
+          logger.info('resource', { type, resourceName, value });
           switch (type) {
             case 'cursor toArray': {
-              const [options]: [QueryOptions<any>] = args;
               return resourcesService
-                .createCursor(resource, socket.user, options)
+                .createCursor(resource, socket.user, value)
                 .then((cursor) => cursor.toArray())
                 .then((results) => callback(null, encode(results)))
                 .catch((err) => {
@@ -65,43 +59,11 @@ export default function init(
                 });
             }
 
-            case 'findByKey':
-            case 'findOne':
-            case 'insertOne':
-            case 'replaceOne':
-            case 'replaceSeveral':
-            case 'upsertOneWithInfo':
-            case 'partialUpdateByKey':
-            case 'partialUpdateMany':
-            case 'deleteByKey':
-            case 'deleteMany':
-              callback('TODO: to implement');
-              break;
-            // try {
-            //   if (!PRODUCTION && !resource[type]) {
-            //     throw new Error(
-            //       `rest: ${resourceName}.${type} is not available`,
-            //     );
-            //   }
-            //
-            //   // eslint-disable-next-line prettier/prettier
-            //   return resource[type](socket.user, ...args)
-            //     .then((result: any) => callback(null, encode(result)))
-            //     .catch((err: Error) => {
-            //       logger.error(type, { err });
-            //       callback(err.message);
-            //     });
-            // } catch (err) {
-            //   logger.error(type, { err });
-            //   callback(err.message || err);
-            // }
-            // break;
-
             case 'fetch':
             case 'subscribe':
             case 'fetchAndSubscribe':
               try {
-                const [key, eventName, otherArgs = []] = args;
+                const [key, eventName, otherArgs] = value;
 
                 if (!key.startsWith('query')) {
                   throw new Error('Invalid query key');
@@ -114,7 +76,6 @@ export default function init(
                     `rest: ${resourceName}.${type}.${key} is not available`,
                   );
                 }
-                console.log(queryOptions);
                 const query = resource.store.createQuery(queryOptions); // todo pass connected user
 
                 if (type === 'fetch') {
@@ -150,6 +111,30 @@ export default function init(
                 callback(err.message || err);
               }
               break;
+
+            case 'do': {
+              try {
+                const [key, params] = value;
+
+                const operation = resource.operations[key];
+
+                if (!operation) {
+                  throw new Error('Operation not found');
+                }
+
+                operation(params).then(
+                  (result) => callback(null, result),
+                  (err: Error) => {
+                    logger.error(type, { err });
+                    callback(err.message);
+                  },
+                );
+              } catch (err) {
+                logger.error(type, { err });
+                callback(err.message || err);
+              }
+              break;
+            }
 
             default:
               try {

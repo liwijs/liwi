@@ -9,14 +9,14 @@ import {
 } from 'liwi-types';
 import Store, { UpsertResult } from './Store';
 import AbstractConnection from './AbstractConnection';
-import AbstractCursor from './AbstractCursor';
+import AbstractStoreCursor from './AbstractStoreCursor';
 import AbstractQuery from './AbstractQuery';
 
 export default abstract class AbstractStore<
   Model extends BaseModel,
   KeyPath extends string,
   Connection extends AbstractConnection,
-  Cursor extends AbstractCursor<Model, KeyPath, any>,
+  Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
   Query extends AbstractQuery<Model>
 > implements Store<Model, KeyPath, Connection, Cursor, Query> {
   private readonly _connection: Connection;

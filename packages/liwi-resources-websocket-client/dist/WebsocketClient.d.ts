@@ -12,7 +12,7 @@ export default class WebsocketClient<Model extends BaseModel, KeyPath extends st
     readonly resourceName: string;
     private readonly websocket;
     constructor(websocket: Websocket, resourceName: string, keyPath: KeyPath);
-    emitSubscribe(type: string, ...args: any[]): Promise<UnsubscribeCallback>;
+    emitSubscribe(type: string, args: any[]): Promise<UnsubscribeCallback>;
     createCursor(options: QueryOptions<Model>): Promise<number>;
     send(type: string, ...args: any[]): Promise<any>;
     on(event: string, handler: Function): Function;

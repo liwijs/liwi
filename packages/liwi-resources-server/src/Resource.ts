@@ -1,14 +1,22 @@
 import { BaseModel, Criteria, QueryOptions, Sort } from 'liwi-types';
 import { Store } from 'liwi-store';
+import { OperationDescriptions } from 'liwi-resources';
 
 export default interface Resource<
   Model extends BaseModel,
+  QueryKeys extends string,
+  Operations extends OperationDescriptions,
   Transformed = any,
   ConnectedUser = any
 > {
   store: Store<Model, any, any, any, any>;
 
-  queries: { [key: string]: QueryOptions<Model> };
+  queries: Record<QueryKeys, QueryOptions<Model>>;
+  operations: {
+    [P in keyof Operations]: (
+      params: Operations[P]['params'],
+    ) => Promise<Operations[P]['result']>
+  };
 
   criteria(
     connectedUser: ConnectedUser,

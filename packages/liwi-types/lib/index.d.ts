@@ -59,19 +59,9 @@ export interface QueryOptions<Model extends BaseModel> {
 }
 
 export type ResourceOperationKey =
-  | 'findByKey'
-  | 'findOne'
-  | 'upsertOne'
-  | 'insertOne'
-  | 'replaceOne'
-  | 'replaceSeveral'
-  | 'upsertOneWithInfo'
-  | 'partialUpdateByKey'
-  | 'partialUpdateMany'
-  | 'deleteByKey'
-  | 'deleteMany'
   | 'fetch'
   | 'subscribe'
   | 'fetchAndSubscribe'
   | 'cursor'
-  | 'cursor toArray';
+  | 'cursor toArray'
+  | 'do';

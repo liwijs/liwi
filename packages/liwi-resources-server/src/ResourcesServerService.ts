@@ -9,13 +9,13 @@ export interface CreateCursorOptions<Model extends BaseModel> {
 }
 
 export default class ResourcesServerService {
-  resources: Map<string, Resource<any, any, any>>;
+  resources: Map<string, Resource<any, any, any, any, any>>;
 
-  constructor(resources: Map<string, Resource<any, any, any>>) {
+  constructor(resources: Map<string, Resource<any, any, any, any, any>>) {
     this.resources = resources;
   }
 
-  addResource(key: string, resource: Resource<any, any, any>) {
+  addResource(key: string, resource: Resource<any, any, any, any, any>) {
     this.resources.set(key, resource);
   }
 
@@ -26,8 +26,8 @@ export default class ResourcesServerService {
   }
 
   async createCursor<Model extends BaseModel, Transformed, ConnectedUser>(
-    resource: Resource<Model, Transformed, ConnectedUser>,
-    connectedUser: any,
+    resource: Resource<Model, any, any, Transformed, ConnectedUser>,
+    connectedUser: ConnectedUser,
     { criteria, sort, limit }: CreateCursorOptions<Model>,
   ): Promise<ResourceServerCursor<Model, Transformed, ConnectedUser>> {
     // TODO: resource.query(connectedUser, criteria || {}, sort).cursor()
@@ -36,6 +36,6 @@ export default class ResourcesServerService {
     const cursor = await resource.store.cursor(criteria, sort);
     limit = resource.limit(limit);
     if (limit) cursor.limit(connectedUser, limit);
-    return new ResourceServerCursor(resource, connectedUser, cursor);
+    return new ResourceServerCursor(resource, cursor, connectedUser);
   }
 }

@@ -41,7 +41,7 @@ class ResourcesServerService {
     const cursor = await resource.store.cursor(criteria, sort);
     limit = resource.limit(limit);
     if (limit) cursor.limit(connectedUser, limit);
-    return new ResourceServerCursor(resource, connectedUser, cursor);
+    return new ResourceServerCursor(resource, cursor, connectedUser);
   }
 
 }

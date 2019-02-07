@@ -15,37 +15,25 @@ function init(io, resourcesService) {
       var type = _ref.type,
           resourceName = _ref.resourceName,
           json = _ref.json,
-          options,
           key,
           eventName,
-          _args$,
-          otherArgs;
+          otherArgs,
+          _key,
+          params;
 
       try {
-        var args = decode(json);
-
-        if (!Array.isArray(args)) {
-          logger.debug('args', {
-            args: args
-          });
-
-          if (callback) {
-            throw new Error('Invalid args');
-          }
-        }
-
+        var value = json && decode(json);
         var resource = resourcesService.get(resourceName);
         logger.info('resource', {
           type: type,
           resourceName: resourceName,
-          args: args
+          value: value
         });
 
         switch (type) {
           case 'cursor toArray':
             {
-              options = args[0];
-              return resourcesService.createCursor(resource, socket.user, options).then(function (cursor) {
+              return resourcesService.createCursor(resource, socket.user, value).then(function (cursor) {
                 return cursor.toArray();
               }).then(function (results) {
                 return callback(null, encode(results));
@@ -55,43 +43,11 @@ function init(io, resourcesService) {
               });
             }
 
-          case 'findByKey':
-          case 'findOne':
-          case 'insertOne':
-          case 'replaceOne':
-          case 'replaceSeveral':
-          case 'upsertOneWithInfo':
-          case 'partialUpdateByKey':
-          case 'partialUpdateMany':
-          case 'deleteByKey':
-          case 'deleteMany':
-            callback('TODO: to implement');
-            break;
-          // try {
-          //   if (!PRODUCTION && !resource[type]) {
-          //     throw new Error(
-          //       `rest: ${resourceName}.${type} is not available`,
-          //     );
-          //   }
-          //
-          //   // eslint-disable-next-line prettier/prettier
-          //   return resource[type](socket.user, ...args)
-          //     .then((result: any) => callback(null, encode(result)))
-          //     .catch((err: Error) => {
-          //       logger.error(type, { err });
-          //       callback(err.message);
-          //     });
-          // } catch (err) {
-          //   logger.error(type, { err });
-          //   callback(err.message || err);
-          // }
-          // break;
-
           case 'fetch':
           case 'subscribe':
           case 'fetchAndSubscribe':
             try {
-              key = args[0], eventName = args[1], _args$ = args[2], otherArgs = _args$ === void 0 ? [] : _args$;
+              key = value[0], eventName = value[1], otherArgs = value[2];
 
               if (!key.startsWith('query')) {
                 throw new Error('Invalid query key');
@@ -103,7 +59,6 @@ function init(io, resourcesService) {
                 throw new Error("rest: " + resourceName + "." + type + "." + key + " is not available");
               }
 
-              console.log(queryOptions);
               var query = resource.store.createQuery(queryOptions); // todo pass connected user
 
               if (type === 'fetch') {
@@ -143,6 +98,34 @@ function init(io, resourcesService) {
             }
 
             break;
+
+          case 'do':
+            {
+              try {
+                _key = value[0], params = value[1];
+                var operation = resource.operations[_key];
+
+                if (!operation) {
+                  throw new Error('Operation not found');
+                }
+
+                operation(params).then(function (result) {
+                  return callback(null, result);
+                }, function (err) {
+                  logger.error(type, {
+                    err: err
+                  });
+                  callback(err.message);
+                });
+              } catch (err) {
+                logger.error(type, {
+                  err: err
+                });
+                callback(err.message || err);
+              }
+
+              break;
+            }
 
           default:
             try {

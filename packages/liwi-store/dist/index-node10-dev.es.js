@@ -4,29 +4,8 @@ class AbstractConnection {}
 
 /* eslint-disable no-await-in-loop */
 class AbstractCursor {
-  constructor(store) {
-    this._store = store;
-  }
-
-  get store() {
-    return this._store;
-  }
-
-  overrideStore(store) {
-    this._store = store;
-  }
-
   nextResult() {
     return this.next().then(() => this.result());
-  }
-
-  result() {
-    if (!this.key) throw new Error('Cannot call result() before next()');
-    return this.store.findByKey(this.key);
-  }
-
-  delete() {
-    return this.store.deleteByKey(this.key);
   }
 
   async forEachKeys(callback) {
@@ -72,6 +51,32 @@ class AbstractCursor {
 
 }
 
+/* eslint-disable no-await-in-loop */
+class AbstractStoreCursor extends AbstractCursor {
+  constructor(store) {
+    super();
+    this._store = store;
+  }
+
+  get store() {
+    return this._store;
+  }
+
+  overrideStore(store) {
+    this._store = store;
+  }
+
+  result() {
+    if (!this.key) throw new Error('Cannot call result() before next()');
+    return this.store.findByKey(this.key);
+  }
+
+  delete() {
+    return this.store.deleteByKey(this.key);
+  }
+
+}
+
 class AbstractQuery {
   fetchAndSubscribe(callback, ...args) {
     return this._subscribe(callback, true, args);
@@ -109,5 +114,5 @@ class AbstractStore {
 
 }
 
-export { AbstractConnection, AbstractCursor, AbstractQuery, AbstractStore };
+export { AbstractConnection, AbstractCursor, AbstractStoreCursor, AbstractQuery, AbstractStore };
 //# sourceMappingURL=index-node10-dev.es.js.map

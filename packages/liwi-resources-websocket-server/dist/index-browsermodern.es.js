@@ -17,30 +17,18 @@ function init(io, resourcesService) {
       json
     }, callback) {
       try {
-        const args = decode(json);
-
-        if (!Array.isArray(args)) {
-          logger.debug('args', {
-            args
-          });
-
-          if (callback) {
-            throw new Error('Invalid args');
-          }
-        }
-
+        const value = json && decode(json);
         const resource = resourcesService.get(resourceName);
         logger.info('resource', {
           type,
           resourceName,
-          args
+          value
         });
 
         switch (type) {
           case 'cursor toArray':
             {
-              const [options] = args;
-              return resourcesService.createCursor(resource, socket.user, options).then(function (cursor) {
+              return resourcesService.createCursor(resource, socket.user, value).then(function (cursor) {
                 return cursor.toArray();
               }).then(function (results) {
                 return callback(null, encode(results));
@@ -50,43 +38,11 @@ function init(io, resourcesService) {
               });
             }
 
-          case 'findByKey':
-          case 'findOne':
-          case 'insertOne':
-          case 'replaceOne':
-          case 'replaceSeveral':
-          case 'upsertOneWithInfo':
-          case 'partialUpdateByKey':
-          case 'partialUpdateMany':
-          case 'deleteByKey':
-          case 'deleteMany':
-            callback('TODO: to implement');
-            break;
-          // try {
-          //   if (!PRODUCTION && !resource[type]) {
-          //     throw new Error(
-          //       `rest: ${resourceName}.${type} is not available`,
-          //     );
-          //   }
-          //
-          //   // eslint-disable-next-line prettier/prettier
-          //   return resource[type](socket.user, ...args)
-          //     .then((result: any) => callback(null, encode(result)))
-          //     .catch((err: Error) => {
-          //       logger.error(type, { err });
-          //       callback(err.message);
-          //     });
-          // } catch (err) {
-          //   logger.error(type, { err });
-          //   callback(err.message || err);
-          // }
-          // break;
-
           case 'fetch':
           case 'subscribe':
           case 'fetchAndSubscribe':
             try {
-              const [key, eventName, otherArgs = []] = args;
+              const [key, eventName, otherArgs] = value;
 
               if (!key.startsWith('query')) {
                 throw new Error('Invalid query key');
@@ -98,7 +54,6 @@ function init(io, resourcesService) {
                 throw new Error(`rest: ${resourceName}.${type}.${key} is not available`);
               }
 
-              console.log(queryOptions);
               const query = resource.store.createQuery(queryOptions); // todo pass connected user
 
               if (type === 'fetch') {
@@ -138,6 +93,34 @@ function init(io, resourcesService) {
             }
 
             break;
+
+          case 'do':
+            {
+              try {
+                const [key, params] = value;
+                const operation = resource.operations[key];
+
+                if (!operation) {
+                  throw new Error('Operation not found');
+                }
+
+                operation(params).then(function (result) {
+                  return callback(null, result);
+                }, function (err) {
+                  logger.error(type, {
+                    err
+                  });
+                  callback(err.message);
+                });
+              } catch (err) {
+                logger.error(type, {
+                  err
+                });
+                callback(err.message || err);
+              }
+
+              break;
+            }
 
           default:
             try {

@@ -5,6 +5,7 @@ import StoreInterface, {
 } from './Store';
 import AbstractConnection from './AbstractConnection';
 import AbstractCursor from './AbstractCursor';
+import AbstractStoreCursor from './AbstractStoreCursor';
 import AbstractQuery, {
   SubscribeResult as AbstractQuerySubscribeResult,
   SubscribeCallback as AbstractQuerySubscribeCallback,
@@ -14,14 +15,14 @@ import AbstractStore from './AbstractStore';
 export type InternalCommonStoreClient<
   Model extends BaseModel,
   KeyPath extends string,
-  Cursor extends AbstractCursor<Model, KeyPath, any>
+  Cursor extends AbstractCursor<Model, KeyPath>
 > = InternalCommonStoreClientInterface<Model, KeyPath, Cursor>;
 
 export type Store<
   Model extends BaseModel,
   KeyPath extends string,
   Connection extends AbstractConnection,
-  Cursor extends AbstractCursor<Model, KeyPath, any>,
+  Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
   Query extends AbstractQuery<Model>
 > = StoreInterface<Model, KeyPath, Connection, Cursor, Query>;
 
@@ -36,4 +37,10 @@ export type SubscribeCallback<
 
 export type Update<Model extends BaseModel> = UpdateType<Model>;
 
-export { AbstractConnection, AbstractCursor, AbstractQuery, AbstractStore };
+export {
+  AbstractConnection,
+  AbstractCursor,
+  AbstractStoreCursor,
+  AbstractQuery,
+  AbstractStore,
+};

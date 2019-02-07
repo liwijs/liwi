@@ -1,7 +1,7 @@
 import {
   Store as StoreInterface,
   AbstractConnection,
-  AbstractCursor,
+  AbstractStoreCursor,
   UpsertResult,
 } from 'liwi-store';
 import {
@@ -25,7 +25,7 @@ export default class SubscribeStore<
   Model extends BaseModel,
   KeyPath extends string,
   Connection extends AbstractConnection,
-  Cursor extends AbstractCursor<Model, KeyPath, any>,
+  Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
   Store extends StoreInterface<Model, KeyPath, Connection, Cursor, any>,
   Query extends AbstractSubscribeQuery<
     Model,

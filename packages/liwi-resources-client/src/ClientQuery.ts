@@ -50,12 +50,11 @@ export default class Query<
 
     let _stopEmitSubscribe: UnsubscribeCallback;
     let promise: Promise<void> | undefined = this.client
-      .emitSubscribe(
-        _includeInitial ? 'fetchAndSubscribe' : 'subscribe',
+      .emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [
         this.key,
         eventName,
         args,
-      )
+      ])
       .then((stopEmitSubscribe: UnsubscribeCallback) => {
         _stopEmitSubscribe = stopEmitSubscribe;
         logger.info('subscribed');

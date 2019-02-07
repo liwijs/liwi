@@ -10,11 +10,12 @@
   "engines": {
     "node": ">=8.3.0"
   },
-  "main": "./index.js",
-  "typings": "./index.d.ts",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "scripts": {
     "lint": "npm run typescript-check",
     "test": "echo \"No tests\"",
+    "build:definitions": "tsc --noEmit ./lib/index.d.ts",
     "typescript-check": "tsc --noEmit"
   },
   "prettier": {
@@ -23,6 +24,7 @@
     "arrowParens": "always"
   },
   "devDependencies": {
+    "eslint": "^5.13.0",
     "typescript": "^3.3.1"
   }
 }

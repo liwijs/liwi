@@ -11,10 +11,10 @@ class WebsocketClient extends AbstractClient {
     this.resourceName = resourceName;
   }
 
-  emitSubscribe(type, ...args) {
+  emitSubscribe(type, args) {
     const websocket = this.websocket;
 
-    const emit = () => this.send(type, ...args);
+    const emit = () => this.send(type, args);
 
     const registerOnConnect = () => {
       websocket.on('connect', emit);
