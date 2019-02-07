@@ -122,7 +122,7 @@ export default function init(
                   throw new Error('Operation not found');
                 }
 
-                operation(params).then(
+                operation(params, socket.user).then(
                   (result) => callback(null, result),
                   (err: Error) => {
                     logger.error(type, { err });

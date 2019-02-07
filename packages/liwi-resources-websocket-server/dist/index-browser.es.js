@@ -109,7 +109,7 @@ function init(io, resourcesService) {
                   throw new Error('Operation not found');
                 }
 
-                operation(params).then(function (result) {
+                operation(params, socket.user).then(function (result) {
                   return callback(null, result);
                 }, function (err) {
                   logger.error(type, {

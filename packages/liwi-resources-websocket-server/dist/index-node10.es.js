@@ -94,7 +94,7 @@ function init(io, resourcesService) {
                   throw new Error('Operation not found');
                 }
 
-                operation(params).then(result => callback(null, result), err => {
+                operation(params, socket.user).then(result => callback(null, result), err => {
                   logger.error(type, {
                     err
                   });

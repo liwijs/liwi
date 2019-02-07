@@ -15,20 +15,24 @@ export default interface Resource<
   operations: {
     [P in keyof Operations]: (
       params: Operations[P]['params'],
+      connectedUser: undefined | ConnectedUser,
     ) => Promise<Operations[P]['result']>
   };
 
   criteria(
-    connectedUser: ConnectedUser,
+    connectedUser: undefined | ConnectedUser,
     criteria: Criteria<Model>,
   ): Criteria<Model>;
 
   sort(
-    connectedUser: ConnectedUser,
+    connectedUser: undefined | ConnectedUser,
     sort: undefined | Sort<Model>,
   ): undefined | Sort<Model>;
 
   limit(limit: undefined | number): undefined | number;
 
-  transform(result: Model, connectedUser: ConnectedUser): Transformed;
+  transform(
+    result: Model,
+    connectedUser: undefined | ConnectedUser,
+  ): Transformed;
 }
