@@ -1,13 +1,18 @@
 import { BaseModel } from 'liwi-types';
-import { OperationDescriptions } from 'liwi-resources';
-import ResourceInterface from './Resource';
+import { OperationDescriptions, QueryDescriptions } from 'liwi-resources';
+import ServiceResourceInterface from './ServiceResource';
+import CursorResourceInterface from './CursorResource';
 
 export { default as ResourcesServerService } from './ResourcesServerService';
 
-export type Resource<
-  Model extends BaseModel,
-  QueryKeys extends string,
+export type ServiceResource<
+  Queries extends QueryDescriptions,
   Operations extends OperationDescriptions,
+  ConnectedUser = any
+> = ServiceResourceInterface<Queries, Operations, ConnectedUser>;
+
+export type CursorResource<
+  Model extends BaseModel,
   Transformed = any,
   ConnectedUser = any
-> = ResourceInterface<Model, QueryKeys, Operations, Transformed, ConnectedUser>;
+> = CursorResourceInterface<Model, Transformed, ConnectedUser>;

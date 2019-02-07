@@ -92,12 +92,12 @@ class AbstractStoreCursor extends AbstractCursor {
 }
 
 class AbstractQuery {
-  fetchAndSubscribe(callback, ...args) {
-    return this._subscribe(callback, true, args);
+  fetchAndSubscribe(callback) {
+    return this._subscribe(callback, true);
   }
 
-  subscribe(callback, ...args) {
-    return this._subscribe(callback, false, args);
+  subscribe(callback) {
+    return this._subscribe(callback, false);
   }
 
 }

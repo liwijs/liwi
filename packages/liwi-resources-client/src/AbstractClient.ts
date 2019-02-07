@@ -34,8 +34,8 @@ export default abstract class AbstractClient<
     this.keyPath = keyPath;
   }
 
-  createQuery(key: string): ClientQuery<Model, KeyPath> {
-    return new ClientQuery(this, key);
+  createQuery(key: string, params: any): ClientQuery<Model, KeyPath> {
+    return new ClientQuery(this, key, params);
   }
 
   abstract createCursor(options: QueryOptions<Model>): Promise<number>;

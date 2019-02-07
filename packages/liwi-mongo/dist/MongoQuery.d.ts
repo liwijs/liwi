@@ -10,7 +10,7 @@ export default class MongoQuery<Model extends MongoModel> extends AbstractSubscr
     constructor(store: MongoStore<Model>, options: QueryOptions<Model>);
     createMingoQuery(): mingo.Query;
     fetch<T>(onFulfilled: (result: Model[]) => T): Promise<T>;
-    _subscribe(callback: SubscribeCallback<Model>, _includeInitial: boolean, args: any[]): SubscribeResult;
+    _subscribe(callback: SubscribeCallback<Model>, _includeInitial: boolean): SubscribeResult<Model[]>;
     private createMongoCursor;
 }
 //# sourceMappingURL=MongoQuery.d.ts.map

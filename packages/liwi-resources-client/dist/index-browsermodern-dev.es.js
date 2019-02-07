@@ -4,17 +4,18 @@ import { AbstractQuery } from 'liwi-store';
 
 const logger = new Logger('liwi:resources:query');
 class Query extends AbstractQuery {
-  constructor(client, key) {
+  constructor(client, key, params) {
     super();
     this.client = client;
     this.key = key;
+    this.params = params;
   }
 
   fetch(onFulfilled) {
-    return this.client.send('fetch', this.key).then(onFulfilled);
+    return this.client.send('fetch', [this.key, this.params, undefined]).then(onFulfilled);
   }
 
-  _subscribe(callback, _includeInitial = false, args) {
+  _subscribe(callback, _includeInitial = false) {
     var _this = this;
 
     const eventName = `subscribe:${this.client.resourceName}.${this.key}`;
@@ -32,7 +33,7 @@ class Query extends AbstractQuery {
 
     let _stopEmitSubscribe;
 
-    let promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, eventName, args]).then(function (stopEmitSubscribe) {
+    let promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, this.params, eventName]).then(function (stopEmitSubscribe) {
       _stopEmitSubscribe = stopEmitSubscribe;
       logger.info('subscribed');
     }).catch(function (err) {
@@ -75,8 +76,8 @@ class AbstractClient {
     this.keyPath = keyPath;
   }
 
-  createQuery(key) {
-    return new Query(this, key);
+  createQuery(key, params) {
+    return new Query(this, key, params);
   }
 
   // cursor(
@@ -106,7 +107,9 @@ class AbstractClient {
 const createResourceClient = function createResourceClient(client, options) {
   return {
     queries: options.queries.map(function (queryKey) {
-      return client.createQuery(queryKey);
+      return function (params) {
+        return client.createQuery(queryKey, params);
+      };
     }),
     operations: options.operations.map(function (operationKey) {
       return function (params) {

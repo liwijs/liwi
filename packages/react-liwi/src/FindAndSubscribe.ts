@@ -36,7 +36,7 @@ export default class FindAndSubscribeComponent<
 
   private timeout: number | undefined = undefined;
 
-  private _subscribe: SubscribeResult | undefined = undefined;
+  private _subscribe: SubscribeResult<Model[]> | undefined = undefined;
 
   componentDidMount() {
     this.subscribe();

@@ -6,10 +6,13 @@ export interface QueryOptions<Model extends BaseModel> {
   sort?: Sort<Model>;
 }
 
-export interface SubscribeResult {
+export interface SubscribeResult<Value> {
   cancel: () => void;
   stop: () => void;
-  then: (cb: any) => Promise<any>;
+  then: (
+    onFulfilled: (value: Value) => any,
+    onRejected?: (error: any) => any,
+  ) => Promise<any>;
 }
 
 export type SubscribeCallback<Model> = (
@@ -20,17 +23,16 @@ export type SubscribeCallback<Model> = (
 export default abstract class AbstractQuery<Model extends BaseModel> {
   abstract fetch(onFulfilled?: (value: any) => any): Promise<any>;
 
-  fetchAndSubscribe(callback: SubscribeCallback<Model>, ...args: any[]) {
-    return this._subscribe(callback, true, args);
+  fetchAndSubscribe(callback: SubscribeCallback<Model>) {
+    return this._subscribe(callback, true);
   }
 
-  subscribe(callback: SubscribeCallback<Model>, ...args: any[]) {
-    return this._subscribe(callback, false, args);
+  subscribe(callback: SubscribeCallback<Model>) {
+    return this._subscribe(callback, false);
   }
 
   abstract _subscribe(
     callback: SubscribeCallback<Model>,
     _includeInitial: boolean,
-    args: any[],
-  ): SubscribeResult;
+  ): SubscribeResult<Model[]>;
 }

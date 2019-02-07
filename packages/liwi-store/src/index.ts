@@ -30,7 +30,7 @@ export type UpsertResult<Model extends BaseModel> = AbstractStoreUpsertResult<
   Model
 >;
 
-export type SubscribeResult = AbstractQuerySubscribeResult;
+export type SubscribeResult<Value> = AbstractQuerySubscribeResult<Value>;
 export type SubscribeCallback<
   Model extends BaseModel
 > = AbstractQuerySubscribeCallback<Model>;

@@ -1,20 +1,20 @@
 import { AbstractStoreCursor } from 'liwi-store';
 import { BaseModel } from 'liwi-types';
-import Resource from './Resource';
+import CursorResource from './CursorResource';
 
 export default class ResourceServerCursor<
   Model extends BaseModel,
   Transformed = any,
   ConnectedUser = any
 > {
-  private resource: Resource<Model, any, any, Transformed, ConnectedUser>;
+  private resource: CursorResource<Model, Transformed, ConnectedUser>;
 
   private connectedUser: any;
 
   private cursor: AbstractStoreCursor<Model, any, any>;
 
   constructor(
-    resource: Resource<Model, any, any, Transformed, ConnectedUser>,
+    resource: CursorResource<Model, Transformed, ConnectedUser>,
     cursor: AbstractStoreCursor<Model, any, any>,
     connectedUser?: ConnectedUser,
   ) {

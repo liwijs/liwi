@@ -174,7 +174,7 @@ class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
     return {
       stop: unsubscribe,
       cancel: unsubscribe,
-      then: _includeInitial ? onFulfilled => promise.then(onFulfilled) : () => Promise.resolve()
+      then: _includeInitial ? (onFulfilled, onRejected) => promise.then(onFulfilled, onRejected) : () => Promise.resolve()
     };
   }
 

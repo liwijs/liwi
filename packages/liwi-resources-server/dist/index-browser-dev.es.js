@@ -61,19 +61,30 @@ function () {
 var ResourcesServerService =
 /*#__PURE__*/
 function () {
-  function ResourcesServerService(resources) {
-    this.resources = resources;
+  function ResourcesServerService(serviceResources, cursorResources) {
+    this.serviceResources = serviceResources;
+    this.cursorResources = cursorResources;
   }
 
   var _proto = ResourcesServerService.prototype;
 
   _proto.addResource = function addResource(key, resource) {
-    this.resources.set(key, resource);
+    this.serviceResources.set(key, resource);
   };
 
-  _proto.get = function get(key) {
-    var resource = this.resources.get(key);
-    if (!resource) throw new Error("Invalid rest resource: \"" + key + "\"");
+  _proto.addCursorResource = function addCursorResource(key, cursorResource) {
+    this.cursorResources.set(key, cursorResource);
+  };
+
+  _proto.getServiceResource = function getServiceResource(key) {
+    var resource = this.serviceResources.get(key);
+    if (!resource) throw new Error("Invalid service resource: \"" + key + "\"");
+    return resource;
+  };
+
+  _proto.getCursorResource = function getCursorResource(key) {
+    var resource = this.cursorResources.get(key);
+    if (!resource) throw new Error("Invalid cursor resource: \"" + key + "\"");
     return resource;
   };
 

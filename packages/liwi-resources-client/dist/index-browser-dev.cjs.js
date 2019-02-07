@@ -21,21 +21,22 @@ var Query =
 function (_AbstractQuery) {
   _inheritsLoose(Query, _AbstractQuery);
 
-  function Query(client, key) {
+  function Query(client, key, params) {
     var _this = _AbstractQuery.call(this) || this;
 
     _this.client = client;
     _this.key = key;
+    _this.params = params;
     return _this;
   }
 
   var _proto = Query.prototype;
 
   _proto.fetch = function fetch(onFulfilled) {
-    return this.client.send('fetch', this.key).then(onFulfilled);
+    return this.client.send('fetch', [this.key, this.params, undefined]).then(onFulfilled);
   };
 
-  _proto._subscribe = function _subscribe(callback, _includeInitial, args) {
+  _proto._subscribe = function _subscribe(callback, _includeInitial) {
     var _this2 = this;
 
     if (_includeInitial === void 0) {
@@ -57,7 +58,7 @@ function (_AbstractQuery) {
 
     var _stopEmitSubscribe;
 
-    var promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, eventName, args]).then(function (stopEmitSubscribe) {
+    var promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, this.params, eventName]).then(function (stopEmitSubscribe) {
       _stopEmitSubscribe = stopEmitSubscribe;
       logger.info('subscribed');
     }).catch(function (err) {
@@ -105,8 +106,8 @@ function () {
 
   var _proto = AbstractClient.prototype;
 
-  _proto.createQuery = function createQuery(key) {
-    return new Query(this, key);
+  _proto.createQuery = function createQuery(key, params) {
+    return new Query(this, key, params);
   };
 
   // cursor(
@@ -137,7 +138,9 @@ function () {
 var createResourceClient = function createResourceClient(client, options) {
   return {
     queries: options.queries.map(function (queryKey) {
-      return client.createQuery(queryKey);
+      return function (params) {
+        return client.createQuery(queryKey, params);
+      };
     }),
     operations: options.operations.map(function (operationKey) {
       return function (params) {

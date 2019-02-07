@@ -7,7 +7,7 @@ export default abstract class AbstractClient<Model extends BaseModel, KeyPath ex
     readonly resourceName: string;
     readonly keyPath: KeyPath;
     constructor(resourceName: string, keyPath: KeyPath);
-    createQuery(key: string): ClientQuery<Model, KeyPath>;
+    createQuery(key: string, params: any): ClientQuery<Model, KeyPath>;
     abstract createCursor(options: QueryOptions<Model>): Promise<number>;
     abstract send<T>(key: ResourceOperationKey, value: any): Promise<T>;
     abstract on(event: string, listener: Function): void;

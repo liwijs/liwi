@@ -1,12 +1,18 @@
 import { BaseModel } from 'liwi-types';
-import { OperationDescription } from 'liwi-resources';
+import { QueryDescriptions, OperationDescriptions } from 'liwi-resources';
 import ClientQuery from './ClientQuery';
 import AbstractClient from './AbstractClient';
 
 export { default as AbstractClient } from './AbstractClient';
 
+export type ResourcesClientQueries<Queries extends QueryDescriptions> = {
+  [P in keyof Queries]: (
+    params: Queries[P]['params'],
+  ) => ClientQuery<Queries[P]['model'], '_id'>
+};
+
 export type ResourcesClientOperations<
-  Operations extends Record<string, OperationDescription<any, any>>
+  Operations extends OperationDescriptions
 > = {
   [P in keyof Operations]: (
     params: Operations[P]['params'],
@@ -14,12 +20,10 @@ export type ResourcesClientOperations<
 };
 
 export interface ResourcesClientService<
-  QueryKeys extends string,
-  Operations extends Record<string, OperationDescription<any, any>>,
-  Model extends BaseModel,
-  KeyPath extends string = '_id'
+  Queries extends QueryDescriptions,
+  Operations extends OperationDescriptions
 > {
-  queries: Record<QueryKeys, ClientQuery<Model, KeyPath>>;
+  queries: ResourcesClientQueries<Queries>;
   operations: ResourcesClientOperations<Operations>;
 }
 
@@ -32,18 +36,17 @@ interface CreateResourceClientOptions<
 }
 
 export const createResourceClient = <
-  QueryKeys extends string,
-  OperationKeys extends string,
-  Operations extends Record<OperationKeys, OperationDescription<any, any>>,
+  Queries extends QueryDescriptions,
+  Operations extends OperationDescriptions,
   Model extends BaseModel,
   KeyPath extends string = '_id'
 >(
   client: AbstractClient<Model, KeyPath>,
-  options: CreateResourceClientOptions<QueryKeys, OperationKeys>,
-): ResourcesClientService<QueryKeys, Operations, Model, KeyPath> => ({
-  queries: (options.queries.map((queryKey) =>
-    client.createQuery(queryKey),
-  ) as unknown) as Record<QueryKeys, ClientQuery<Model, KeyPath>>,
+  options: CreateResourceClientOptions<string, string>,
+): ResourcesClientService<Queries, Operations> => ({
+  queries: (options.queries.map((queryKey: string) => (params: any) =>
+    client.createQuery(queryKey, params),
+  ) as unknown) as ResourcesClientQueries<Queries>,
   operations: (options.operations.map((operationKey) => (params: any) =>
     client.send('do', [operationKey, params]),
   ) as unknown) as ResourcesClientOperations<Operations>,

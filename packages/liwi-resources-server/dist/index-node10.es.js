@@ -12,17 +12,28 @@ class ResourceServerCursor {
 }
 
 class ResourcesServerService {
-  constructor(resources) {
-    this.resources = resources;
+  constructor(serviceResources, cursorResources) {
+    this.serviceResources = serviceResources;
+    this.cursorResources = cursorResources;
   }
 
   addResource(key, resource) {
-    this.resources.set(key, resource);
+    this.serviceResources.set(key, resource);
   }
 
-  get(key) {
-    const resource = this.resources.get(key);
-    if (!resource) throw new Error(`Invalid rest resource: "${key}"`);
+  addCursorResource(key, cursorResource) {
+    this.cursorResources.set(key, cursorResource);
+  }
+
+  getServiceResource(key) {
+    const resource = this.serviceResources.get(key);
+    if (!resource) throw new Error(`Invalid service resource: "${key}"`);
+    return resource;
+  }
+
+  getCursorResource(key) {
+    const resource = this.cursorResources.get(key);
+    if (!resource) throw new Error(`Invalid cursor resource: "${key}"`);
     return resource;
   }
 

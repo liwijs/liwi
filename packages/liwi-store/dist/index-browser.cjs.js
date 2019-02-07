@@ -284,23 +284,11 @@ function () {
   var _proto = AbstractQuery.prototype;
 
   _proto.fetchAndSubscribe = function fetchAndSubscribe(callback) {
-    var _len, args, _key;
-
-    for (_len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    return this._subscribe(callback, true, args);
+    return this._subscribe(callback, true);
   };
 
   _proto.subscribe = function subscribe(callback) {
-    var _len2, args, _key2;
-
-    for (_len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-      args[_key2 - 1] = arguments[_key2];
-    }
-
-    return this._subscribe(callback, false, args);
+    return this._subscribe(callback, false);
   };
 
   return AbstractQuery;

@@ -35,8 +35,7 @@ export default class MongoQuery<
   _subscribe(
     callback: SubscribeCallback<Model>,
     _includeInitial: boolean,
-    args: any[],
-  ): SubscribeResult {
+  ): SubscribeResult<Model[]> {
     const store = super.getSubscribeStore();
     const mingoQuery: mingo.Query = this.createMingoQuery();
 
@@ -123,8 +122,10 @@ export default class MongoQuery<
       stop: unsubscribe,
       cancel: unsubscribe,
       then: _includeInitial
-        ? (onFulfilled: (result: Model[]) => any) =>
-            (promise as Promise<Model[]>).then(onFulfilled)
+        ? (
+            onFulfilled: (result: Model[]) => any,
+            onRejected?: (error: any) => any,
+          ) => (promise as Promise<Model[]>).then(onFulfilled, onRejected)
         : () => Promise.resolve(),
     };
   }

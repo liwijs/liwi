@@ -1,6 +1,7 @@
 import { BaseModel, Criteria, Sort } from 'liwi-types';
 import ResourceServerCursor from './ResourceServerCursor';
-import Resource from './Resource';
+import ServiceResource from './ServiceResource';
+import CursorResource from './CursorResource';
 
 export interface CreateCursorOptions<Model extends BaseModel> {
   criteria?: Criteria<Model>;
@@ -9,24 +10,43 @@ export interface CreateCursorOptions<Model extends BaseModel> {
 }
 
 export default class ResourcesServerService {
-  resources: Map<string, Resource<any, any, any, any, any>>;
+  public readonly serviceResources: Map<string, ServiceResource<any, any, any>>;
 
-  constructor(resources: Map<string, Resource<any, any, any, any, any>>) {
-    this.resources = resources;
+  public readonly cursorResources: Map<string, CursorResource<any, any, any>>;
+
+  public constructor(
+    serviceResources: Map<string, ServiceResource<any, any, any>>,
+    cursorResources: Map<string, CursorResource<any, any, any>>,
+  ) {
+    this.serviceResources = serviceResources;
+    this.cursorResources = cursorResources;
   }
 
-  addResource(key: string, resource: Resource<any, any, any, any, any>) {
-    this.resources.set(key, resource);
+  public addResource(key: string, resource: ServiceResource<any, any, any>) {
+    this.serviceResources.set(key, resource);
   }
 
-  get(key: string) {
-    const resource = this.resources.get(key);
-    if (!resource) throw new Error(`Invalid rest resource: "${key}"`);
+  public addCursorResource(
+    key: string,
+    cursorResource: CursorResource<any, any, any>,
+  ) {
+    this.cursorResources.set(key, cursorResource);
+  }
+
+  getServiceResource(key: string) {
+    const resource = this.serviceResources.get(key);
+    if (!resource) throw new Error(`Invalid service resource: "${key}"`);
+    return resource;
+  }
+
+  getCursorResource(key: string) {
+    const resource = this.cursorResources.get(key);
+    if (!resource) throw new Error(`Invalid cursor resource: "${key}"`);
     return resource;
   }
 
   async createCursor<Model extends BaseModel, Transformed, ConnectedUser>(
-    resource: Resource<Model, any, any, Transformed, ConnectedUser>,
+    resource: CursorResource<Model, Transformed, ConnectedUser>,
     connectedUser: ConnectedUser,
     { criteria, sort, limit }: CreateCursorOptions<Model>,
   ): Promise<ResourceServerCursor<Model, Transformed, ConnectedUser>> {

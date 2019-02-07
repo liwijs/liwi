@@ -16,42 +16,38 @@ function init(io, resourcesService) {
     }, callback) => {
       try {
         const value = json && decode(json);
-        const resource = resourcesService.get(resourceName);
-        logger.info('resource', {
-          type,
-          resourceName,
-          value
-        });
 
         switch (type) {
           case 'cursor toArray':
             {
-              return resourcesService.createCursor(resource, socket.user, value).then(cursor => cursor.toArray()).then(results => callback(null, encode(results))).catch(err => {
+              const resource = resourcesService.getCursorResource(resourceName);
+              resourcesService.createCursor(resource, socket.user, value).then(cursor => cursor.toArray()).then(results => callback(null, encode(results))).catch(err => {
                 logger.error(type, err);
                 callback(err.message);
               });
+              break;
             }
 
           case 'fetch':
           case 'subscribe':
           case 'fetchAndSubscribe':
             try {
-              const [key, eventName, otherArgs] = value;
+              const resource = resourcesService.getServiceResource(resourceName);
+              logger.info('resource', {
+                type,
+                resourceName,
+                value
+              });
+              const [key, params, eventName] = value;
 
               if (!key.startsWith('query')) {
                 throw new Error('Invalid query key');
               }
 
-              const queryOptions = resource.queries[key]; // TODO resource.criteria(queryOptions.criteria) & co ?
-
-              if (!queryOptions) {
-                throw new Error(`rest: ${resourceName}.${type}.${key} is not available`);
-              }
-
-              const query = resource.store.createQuery(queryOptions); // todo pass connected user
+              const query = resource.queries[key](params, socket.user);
 
               if (type === 'fetch') {
-                return query.fetch(result => callback(null, result && encode(result)), ...otherArgs).catch(err => {
+                query.fetch(result => callback(null, result && encode(result))).catch(err => {
                   logger.error(type, {
                     err
                   });
@@ -87,6 +83,12 @@ function init(io, resourcesService) {
           case 'do':
             {
               try {
+                const resource = resourcesService.getServiceResource(resourceName);
+                logger.info('resource', {
+                  type,
+                  resourceName,
+                  value
+                });
                 const [key, params] = value;
                 const operation = resource.operations[key];
 

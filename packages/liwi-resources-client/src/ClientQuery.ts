@@ -24,21 +24,26 @@ export default class Query<
 
   key: string;
 
-  constructor(client: AbstractClient<Model, KeyPath>, key: string) {
+  private readonly params: any;
+
+  constructor(
+    client: AbstractClient<Model, KeyPath>,
+    key: string,
+    params: any,
+  ) {
     super();
     this.client = client;
     this.key = key;
+    this.params = params;
   }
 
   fetch(onFulfilled?: (value: any) => any): Promise<any> {
-    return this.client.send('fetch', this.key).then(onFulfilled);
+    return this.client
+      .send('fetch', [this.key, this.params, undefined])
+      .then(onFulfilled);
   }
 
-  _subscribe(
-    callback: Callback,
-    _includeInitial = false,
-    args: any[],
-  ): SubscribeReturn {
+  _subscribe(callback: Callback, _includeInitial = false): SubscribeReturn {
     const eventName = `subscribe:${this.client.resourceName}.${this.key}`;
     const listener = (err: Error | null, result?: string) => {
       const decodedResult = result && decode(result);
@@ -52,8 +57,8 @@ export default class Query<
     let promise: Promise<void> | undefined = this.client
       .emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [
         this.key,
+        this.params,
         eventName,
-        args,
       ])
       .then((stopEmitSubscribe: UnsubscribeCallback) => {
         _stopEmitSubscribe = stopEmitSubscribe;
