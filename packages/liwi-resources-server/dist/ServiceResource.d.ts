@@ -1,6 +1,6 @@
 import { AbstractQuery } from 'liwi-store';
 import { QueryDescriptions, OperationDescriptions } from 'liwi-resources';
-export default interface ServiceResource<Queries extends QueryDescriptions, Operations extends OperationDescriptions, ConnectedUser = any> {
+export default interface ServiceResource<Queries extends QueryDescriptions, Operations extends OperationDescriptions = {}, ConnectedUser = any> {
     queries: {
         [P in keyof Queries]: (params: Queries[P]['params'], connectedUser: undefined | ConnectedUser) => AbstractQuery<Queries[P]['model']>;
     };

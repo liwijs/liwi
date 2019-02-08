@@ -3,7 +3,7 @@ import { QueryDescriptions, OperationDescriptions } from 'liwi-resources';
 
 export default interface ServiceResource<
   Queries extends QueryDescriptions,
-  Operations extends OperationDescriptions,
+  Operations extends OperationDescriptions = {},
   ConnectedUser = any
 > {
   queries: {
