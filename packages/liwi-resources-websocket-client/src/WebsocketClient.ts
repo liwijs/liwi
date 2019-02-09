@@ -51,8 +51,8 @@ export default class WebsocketClient<
     return this.websocket.emit('createCursor', options);
   }
 
-  send(type: string, ...args: any[]) {
-    logger.debug('emit', { type, args });
+  send(type: string, value: any[]) {
+    logger.debug('emit', { type, value });
     if (this.websocket.isDisconnected()) {
       throw new Error('Websocket is not connected');
     }
@@ -65,7 +65,7 @@ export default class WebsocketClient<
       .emit('resource', {
         type,
         resourceName: this.resourceName,
-        json: encode(args),
+        json: encode(value),
       })
       .then((result: any) => result && decode(result));
   }

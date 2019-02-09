@@ -83,6 +83,6 @@ export default class ClientCursor<
 
   public toArray(): Promise<Model[]> {
     if (this._idCursor) throw new Error('Cursor created, cannot call toArray');
-    return this.client.send('cursor toArray', this.options);
+    return this.client.send('cursor toArray', [this.options]);
   }
 }

@@ -14,7 +14,7 @@ export default class WebsocketClient<Model extends BaseModel, KeyPath extends st
     constructor(websocket: Websocket, resourceName: string, keyPath: KeyPath);
     emitSubscribe(type: string, args: any[]): Promise<UnsubscribeCallback>;
     createCursor(options: QueryOptions<Model>): Promise<number>;
-    send(type: string, ...args: any[]): Promise<any>;
+    send(type: string, value: any[]): Promise<any>;
     on(event: string, handler: Function): Function;
     off(event: string, handler: Function): void;
 }

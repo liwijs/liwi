@@ -53,16 +53,10 @@ function (_AbstractClient) {
     return this.websocket.emit('createCursor', options);
   };
 
-  _proto.send = function send(type) {
-    var _len, args, _key;
-
-    for (_len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
+  _proto.send = function send(type, value) {
     logger.debug('emit', {
       type: type,
-      args: args
+      value: value
     });
 
     if (this.websocket.isDisconnected()) {
@@ -76,7 +70,7 @@ function (_AbstractClient) {
     return this.websocket.emit('resource', {
       type: type,
       resourceName: this.resourceName,
-      json: encode(args)
+      json: encode(value)
     }).then(function (result) {
       return result && decode(result);
     });

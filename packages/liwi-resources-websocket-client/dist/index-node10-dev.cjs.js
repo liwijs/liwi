@@ -40,10 +40,10 @@ class WebsocketClient extends liwiResourcesClient.AbstractClient {
     return this.websocket.emit('createCursor', options);
   }
 
-  send(type, ...args) {
+  send(type, value) {
     logger.debug('emit', {
       type,
-      args
+      value
     });
 
     if (this.websocket.isDisconnected()) {
@@ -57,7 +57,7 @@ class WebsocketClient extends liwiResourcesClient.AbstractClient {
     return this.websocket.emit('resource', {
       type,
       resourceName: this.resourceName,
-      json: extendedJson.encode(args)
+      json: extendedJson.encode(value)
     }).then(result => result && extendedJson.decode(result));
   }
 

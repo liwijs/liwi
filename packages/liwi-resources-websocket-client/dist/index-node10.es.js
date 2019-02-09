@@ -34,10 +34,10 @@ class WebsocketClient extends AbstractClient {
     return this.websocket.emit('createCursor', options);
   }
 
-  send(type, ...args) {
+  send(type, value) {
     logger.debug('emit', {
       type,
-      args
+      value
     });
 
     if (this.websocket.isDisconnected()) {
@@ -51,7 +51,7 @@ class WebsocketClient extends AbstractClient {
     return this.websocket.emit('resource', {
       type,
       resourceName: this.resourceName,
-      json: encode(args)
+      json: encode(value)
     }).then(result => result && decode(result));
   }
 
