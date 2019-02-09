@@ -65,7 +65,11 @@ function () {
 var ResourcesServerService =
 /*#__PURE__*/
 function () {
-  function ResourcesServerService(serviceResources, cursorResources) {
+  function ResourcesServerService(_ref) {
+    var _ref$serviceResources = _ref.serviceResources,
+        serviceResources = _ref$serviceResources === void 0 ? new Map() : _ref$serviceResources,
+        _ref$cursorResources = _ref.cursorResources,
+        cursorResources = _ref$cursorResources === void 0 ? new Map() : _ref$cursorResources;
     this.serviceResources = serviceResources;
     this.cursorResources = cursorResources;
   }
@@ -97,13 +101,13 @@ function () {
   function () {
     var _createCursor = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee(resource, connectedUser, _ref) {
+    regeneratorRuntime.mark(function _callee(resource, connectedUser, _ref2) {
       var criteria, sort, limit, cursor;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              criteria = _ref.criteria, sort = _ref.sort, limit = _ref.limit;
+              criteria = _ref2.criteria, sort = _ref2.sort, limit = _ref2.limit;
               // TODO: resource.query(connectedUser, criteria || {}, sort).cursor()
               criteria = resource.criteria(connectedUser, criteria || {});
               sort = resource.sort(connectedUser, sort);

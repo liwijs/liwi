@@ -14,10 +14,13 @@ export default class ResourcesServerService {
 
   public readonly cursorResources: Map<string, CursorResource<any, any, any>>;
 
-  public constructor(
-    serviceResources: Map<string, ServiceResource<any, any, any>>,
-    cursorResources: Map<string, CursorResource<any, any, any>>,
-  ) {
+  public constructor({
+    serviceResources = new Map(),
+    cursorResources = new Map(),
+  }: {
+    serviceResources: Map<string, ServiceResource<any, any, any>>;
+    cursorResources: Map<string, CursorResource<any, any, any>>;
+  }) {
     this.serviceResources = serviceResources;
     this.cursorResources = cursorResources;
   }

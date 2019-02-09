@@ -16,7 +16,10 @@ class ResourceServerCursor {
 }
 
 class ResourcesServerService {
-  constructor(serviceResources, cursorResources) {
+  constructor({
+    serviceResources = new Map(),
+    cursorResources = new Map()
+  }) {
     this.serviceResources = serviceResources;
     this.cursorResources = cursorResources;
   }
