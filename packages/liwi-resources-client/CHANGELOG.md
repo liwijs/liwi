@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/liwijs/liwi/compare/liwi-resources-client@3.0.0...liwi-resources-client@3.1.0) (2019-02-09)
+
+
+### Features
+
+* allow client createQuery to not pass params ([be9e4a2](https://github.com/liwijs/liwi/commit/be9e4a2))
+
+
+
+
+
 # [3.0.0](https://github.com/liwijs/liwi/compare/liwi-resources-client@2.2.0...liwi-resources-client@3.0.0) (2019-02-09)
 
 
