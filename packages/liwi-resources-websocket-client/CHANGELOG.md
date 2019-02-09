@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.4](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-client@2.3.3...liwi-resources-websocket-client@2.3.4) (2019-02-09)
+
+
+### Bug Fixes
+
+* send value array ([7f012c2](https://github.com/liwijs/liwi/commit/7f012c2))
+
+
+
+
+
 ## [2.3.3](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-client@2.3.2...liwi-resources-websocket-client@2.3.3) (2019-02-09)
 
 **Note:** Version bump only for package liwi-resources-websocket-client
