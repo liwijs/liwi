@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/liwijs/liwi/compare/liwi-resources-client@3.1.0...liwi-resources-client@3.2.0) (2019-02-09)
+
+
+### Features
+
+* allow ResourcesClientService to have optional second generic ([c0a8d8c](https://github.com/liwijs/liwi/commit/c0a8d8c))
+
+
+
+
+
 # [3.1.0](https://github.com/liwijs/liwi/compare/liwi-resources-client@3.0.0...liwi-resources-client@3.1.0) (2019-02-09)
 
 

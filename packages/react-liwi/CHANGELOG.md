@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/liwijs/liwi/compare/react-liwi@3.0.0...react-liwi@4.0.0) (2019-02-09)
+
+
+### Features
+
+* replace query by createQuery ([1561da0](https://github.com/liwijs/liwi/commit/1561da0))
+
+
+### BREAKING CHANGES
+
+* query prop no longer exists, replaced by createQuery
+
+
+
+
+
 # [3.0.0](https://github.com/liwijs/liwi/compare/react-liwi@2.3.0...react-liwi@3.0.0) (2019-02-09)
 
 
