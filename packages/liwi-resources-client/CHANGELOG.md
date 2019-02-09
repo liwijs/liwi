@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/liwijs/liwi/compare/liwi-resources-client@3.2.0...liwi-resources-client@3.2.1) (2019-02-09)
+
+
+### Bug Fixes
+
+* queries and operations should be a record, not an array ([b0a89da](https://github.com/liwijs/liwi/commit/b0a89da))
+* rename Query to ClientQuery ([e330a62](https://github.com/liwijs/liwi/commit/e330a62))
+
+
+
+
+
 # [3.2.0](https://github.com/liwijs/liwi/compare/liwi-resources-client@3.1.0...liwi-resources-client@3.2.0) (2019-02-09)
 
 
