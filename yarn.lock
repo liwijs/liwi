@@ -5749,13 +5749,6 @@ listr@^0.14.2:
     p-map "^2.0.0"
     rxjs "^6.3.3"
 
-liwi-rest@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/liwi-rest/-/liwi-rest-2.1.0.tgz#0a3f79daea3a723dfa66d5afd4eedea6a47cfd91"
-  integrity sha512-DBvZNhCrlJtYXZGDcwhW/4unPPd3gMz1IwmjugdsBCpmqB9y3ZEJ5/0Ku9V5iOa0zshivPSPpujNxV+XxT8BzA==
-  dependencies:
-    liwi-types "^1.1.0"
-
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"
