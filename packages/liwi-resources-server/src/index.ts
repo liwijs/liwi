@@ -7,7 +7,7 @@ export { default as ResourcesServerService } from './ResourcesServerService';
 
 export type ServiceResource<
   Queries extends QueryDescriptions,
-  Operations extends OperationDescriptions,
+  Operations extends OperationDescriptions = {},
   ConnectedUser = any
 > = ServiceResourceInterface<Queries, Operations, ConnectedUser>;
 
