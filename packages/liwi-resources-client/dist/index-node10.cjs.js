@@ -9,7 +9,7 @@ var extendedJson = require('extended-json');
 var liwiStore = require('liwi-store');
 
 const logger = new Logger('liwi:resources:query');
-class Query extends liwiStore.AbstractQuery {
+class ClientQuery extends liwiStore.AbstractQuery {
   constructor(client, key, params) {
     super();
     this.client = client;
@@ -73,7 +73,7 @@ class AbstractClient {
   }
 
   createQuery(key, params) {
-    return new Query(this, key, params);
+    return new ClientQuery(this, key, params);
   }
 
   // cursor(

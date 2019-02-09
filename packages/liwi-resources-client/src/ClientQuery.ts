@@ -16,7 +16,7 @@ type Callback = (err: Error | null, result: any) => void;
 
 const logger = new Logger('liwi:resources:query');
 
-export default class Query<
+export default class ClientQuery<
   Model extends BaseModel,
   KeyPath extends string
 > extends AbstractQuery<Model> {

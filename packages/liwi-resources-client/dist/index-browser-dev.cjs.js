@@ -16,12 +16,12 @@ function _inheritsLoose(subClass, superClass) {
 
 var logger = new Logger('liwi:resources:query');
 
-var Query =
+var ClientQuery =
 /*#__PURE__*/
 function (_AbstractQuery) {
-  _inheritsLoose(Query, _AbstractQuery);
+  _inheritsLoose(ClientQuery, _AbstractQuery);
 
-  function Query(client, key, params) {
+  function ClientQuery(client, key, params) {
     var _this = _AbstractQuery.call(this) || this;
 
     _this.client = client;
@@ -30,7 +30,7 @@ function (_AbstractQuery) {
     return _this;
   }
 
-  var _proto = Query.prototype;
+  var _proto = ClientQuery.prototype;
 
   _proto.fetch = function fetch(onFulfilled) {
     return this.client.send('fetch', [this.key, this.params, undefined]).then(onFulfilled);
@@ -88,7 +88,7 @@ function (_AbstractQuery) {
     };
   };
 
-  return Query;
+  return ClientQuery;
 }(liwiStore.AbstractQuery);
 
 var AbstractClient =
@@ -107,7 +107,7 @@ function () {
   var _proto = AbstractClient.prototype;
 
   _proto.createQuery = function createQuery(key, params) {
-    return new Query(this, key, params);
+    return new ClientQuery(this, key, params);
   };
 
   // cursor(
