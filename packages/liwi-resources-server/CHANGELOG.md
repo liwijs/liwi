@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/liwijs/liwi/compare/liwi-resources-server@3.0.0...liwi-resources-server@3.0.1) (2019-02-09)
+
+
+### Bug Fixes
+
+* exported ServiceResource second arg is optional ([d6c282f](https://github.com/liwijs/liwi/commit/d6c282f))
+
+
+
+
+
 # [3.0.0](https://github.com/liwijs/liwi/compare/liwi-resources-server@2.2.0...liwi-resources-server@3.0.0) (2019-02-09)
 
 
