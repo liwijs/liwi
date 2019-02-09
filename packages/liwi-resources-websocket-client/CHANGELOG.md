@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-client@2.2.0...liwi-resources-websocket-client@2.3.0) (2019-02-09)
+
+
+### Features
+
+* resource operations ([9ddd3b7](https://github.com/liwijs/liwi/commit/9ddd3b7))
+
+
+
+
+
 # [2.2.0](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-client@2.1.2...liwi-resources-websocket-client@2.2.0) (2019-02-05)
 
 

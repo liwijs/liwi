@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/liwijs/liwi/compare/liwi-subscribe-store@1.0.2...liwi-subscribe-store@1.1.0) (2019-02-09)
+
+
+### Bug Fixes
+
+* subscribe-store param createQuery ([74f4fd7](https://github.com/liwijs/liwi/commit/74f4fd7))
+
+
+### Features
+
+* resource operations ([9ddd3b7](https://github.com/liwijs/liwi/commit/9ddd3b7))
+
+
+
+
+
 ## [1.0.2](https://github.com/liwijs/liwi/compare/liwi-subscribe-store@1.0.1...liwi-subscribe-store@1.0.2) (2019-02-05)
 
 **Note:** Version bump only for package liwi-subscribe-store

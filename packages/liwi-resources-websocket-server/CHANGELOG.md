@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-server@2.2.0...liwi-resources-websocket-server@3.0.0) (2019-02-09)
+
+
+### Bug Fixes
+
+* remove obsolete dependency ([ce61569](https://github.com/liwijs/liwi/commit/ce61569))
+
+
+### Features
+
+* add connected user ([c43685c](https://github.com/liwijs/liwi/commit/c43685c))
+* queries as fn with result ([1a1abcb](https://github.com/liwijs/liwi/commit/1a1abcb))
+* resource operations ([9ddd3b7](https://github.com/liwijs/liwi/commit/9ddd3b7))
+
+
+### BREAKING CHANGES
+
+* multiple typescript typings change
+
+
+
+
+
 # [2.2.0](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-server@2.1.2...liwi-resources-websocket-server@2.2.0) (2019-02-05)
 
 

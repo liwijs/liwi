@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/liwijs/liwi/compare/react-liwi@2.3.0...react-liwi@3.0.0) (2019-02-09)
+
+
+### Bug Fixes
+
+* missing declaration files ([aa5021f](https://github.com/liwijs/liwi/commit/aa5021f))
+
+
+### Features
+
+* queries as fn with result ([1a1abcb](https://github.com/liwijs/liwi/commit/1a1abcb))
+
+
+### BREAKING CHANGES
+
+* multiple typescript typings change
+
+
+
+
+
 # [2.3.0](https://github.com/liwijs/liwi/compare/react-liwi@2.2.2...react-liwi@2.3.0) (2019-02-05)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/liwijs/liwi/compare/liwi-types@1.3.0...liwi-types@1.4.0) (2019-02-09)
+
+
+### Features
+
+* resource operations ([9ddd3b7](https://github.com/liwijs/liwi/commit/9ddd3b7))
+
+
+
+
+
 # [1.3.0](https://github.com/liwijs/liwi/compare/liwi-types@1.2.1...liwi-types@1.3.0) (2019-02-05)
 
 
