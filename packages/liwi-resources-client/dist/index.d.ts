@@ -9,7 +9,7 @@ export declare type ResourcesClientQueries<Queries extends QueryDescriptions> = 
 export declare type ResourcesClientOperations<Operations extends OperationDescriptions> = {
     [P in keyof Operations]: (params: Operations[P]['params']) => Promise<Operations[P]['result']>;
 };
-export interface ResourcesClientService<Queries extends QueryDescriptions, Operations extends OperationDescriptions> {
+export interface ResourcesClientService<Queries extends QueryDescriptions, Operations extends OperationDescriptions = {}> {
     queries: ResourcesClientQueries<Queries>;
     operations: ResourcesClientOperations<Operations>;
 }

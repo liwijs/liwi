@@ -21,7 +21,7 @@ export type ResourcesClientOperations<
 
 export interface ResourcesClientService<
   Queries extends QueryDescriptions,
-  Operations extends OperationDescriptions
+  Operations extends OperationDescriptions = {}
 > {
   queries: ResourcesClientQueries<Queries>;
   operations: ResourcesClientOperations<Operations>;
