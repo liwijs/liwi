@@ -29,7 +29,7 @@ export default class Query<
   constructor(
     client: AbstractClient<Model, KeyPath>,
     key: string,
-    params: any,
+    params?: any,
   ) {
     super();
     this.client = client;

@@ -34,7 +34,7 @@ export default abstract class AbstractClient<
     this.keyPath = keyPath;
   }
 
-  createQuery(key: string, params: any): ClientQuery<Model, KeyPath> {
+  createQuery(key: string, params?: any): ClientQuery<Model, KeyPath> {
     return new ClientQuery(this, key, params);
   }
 

@@ -11,7 +11,7 @@ export default class Query<Model extends BaseModel, KeyPath extends string> exte
     client: AbstractClient<Model, KeyPath>;
     key: string;
     private readonly params;
-    constructor(client: AbstractClient<Model, KeyPath>, key: string, params: any);
+    constructor(client: AbstractClient<Model, KeyPath>, key: string, params?: any);
     fetch(onFulfilled?: (value: any) => any): Promise<any>;
     _subscribe(callback: Callback, _includeInitial?: boolean): SubscribeReturn;
 }
