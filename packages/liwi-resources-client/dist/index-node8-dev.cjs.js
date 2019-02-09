@@ -104,10 +104,20 @@ class AbstractClient {
 
 }
 
-const createResourceClient = (client, options) => ({
-  queries: options.queries.map(queryKey => params => client.createQuery(queryKey, params)),
-  operations: options.operations.map(operationKey => params => client.send('do', [operationKey, params]))
-});
+const createResourceClient = (client, options) => {
+  const queries = {};
+  const operations = {};
+  options.queries.forEach(queryKey => {
+    queries[queryKey] = params => client.createQuery(queryKey, params);
+  });
+  options.operations.forEach(operationKey => {
+    operations[operationKey] = params => client.send('do', [operationKey, params]);
+  });
+  return {
+    queries: queries,
+    operations: operations
+  };
+};
 
 exports.createResourceClient = createResourceClient;
 exports.AbstractClient = AbstractClient;

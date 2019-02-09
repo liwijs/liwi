@@ -5,10 +5,13 @@ import AbstractClient from './AbstractClient';
 
 export { default as AbstractClient } from './AbstractClient';
 
-export type ResourcesClientQueries<Queries extends QueryDescriptions> = {
+export type ResourcesClientQueries<
+  Queries extends QueryDescriptions,
+  KeyPath extends string = '_id'
+> = {
   [P in keyof Queries]: (
     params: Queries[P]['params'],
-  ) => ClientQuery<Queries[P]['model'], '_id'>
+  ) => ClientQuery<Queries[P]['model'], KeyPath>
 };
 
 export type ResourcesClientOperations<
@@ -43,11 +46,21 @@ export const createResourceClient = <
 >(
   client: AbstractClient<Model, KeyPath>,
   options: CreateResourceClientOptions<string, string>,
-): ResourcesClientService<Queries, Operations> => ({
-  queries: (options.queries.map((queryKey: string) => (params: any) =>
-    client.createQuery(queryKey, params),
-  ) as unknown) as ResourcesClientQueries<Queries>,
-  operations: (options.operations.map((operationKey) => (params: any) =>
-    client.send('do', [operationKey, params]),
-  ) as unknown) as ResourcesClientOperations<Operations>,
-});
+): ResourcesClientService<Queries, Operations> => {
+  const queries: Partial<ResourcesClientQueries<Queries, KeyPath>> = {};
+  const operations: Partial<ResourcesClientOperations<Operations>> = {};
+
+  options.queries.forEach((queryKey: string) => {
+    queries[queryKey] = (params: any) => client.createQuery(queryKey, params);
+  });
+
+  options.operations.forEach((operationKey: string) => {
+    operations[operationKey] = (params: any) =>
+      client.send('do', [operationKey, params]);
+  });
+
+  return {
+    queries: queries as ResourcesClientQueries<Queries>,
+    operations: operations as ResourcesClientOperations<Operations>,
+  };
+};

@@ -3,8 +3,8 @@ import { QueryDescriptions, OperationDescriptions } from 'liwi-resources';
 import ClientQuery from './ClientQuery';
 import AbstractClient from './AbstractClient';
 export { default as AbstractClient } from './AbstractClient';
-export declare type ResourcesClientQueries<Queries extends QueryDescriptions> = {
-    [P in keyof Queries]: (params: Queries[P]['params']) => ClientQuery<Queries[P]['model'], '_id'>;
+export declare type ResourcesClientQueries<Queries extends QueryDescriptions, KeyPath extends string = '_id'> = {
+    [P in keyof Queries]: (params: Queries[P]['params']) => ClientQuery<Queries[P]['model'], KeyPath>;
 };
 export declare type ResourcesClientOperations<Operations extends OperationDescriptions> = {
     [P in keyof Operations]: (params: Operations[P]['params']) => Promise<Operations[P]['result']>;

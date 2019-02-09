@@ -130,17 +130,21 @@ function () {
 }();
 
 var createResourceClient = function createResourceClient(client, options) {
+  var queries = {};
+  var operations = {};
+  options.queries.forEach(function (queryKey) {
+    queries[queryKey] = function (params) {
+      return client.createQuery(queryKey, params);
+    };
+  });
+  options.operations.forEach(function (operationKey) {
+    operations[operationKey] = function (params) {
+      return client.send('do', [operationKey, params]);
+    };
+  });
   return {
-    queries: options.queries.map(function (queryKey) {
-      return function (params) {
-        return client.createQuery(queryKey, params);
-      };
-    }),
-    operations: options.operations.map(function (operationKey) {
-      return function (params) {
-        return client.send('do', [operationKey, params]);
-      };
-    })
+    queries: queries,
+    operations: operations
   };
 };
 
