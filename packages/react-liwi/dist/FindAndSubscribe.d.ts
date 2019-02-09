@@ -9,7 +9,7 @@ interface Props<Name extends string, Model extends BaseModel> {
     }>;
     loadingComponent?: ComponentType<LoadingProps>;
     name: Name;
-    query: AbstractQuery<Model>;
+    createQuery: () => AbstractQuery<Model>;
     visibleTimeout?: number;
 }
 interface State<Result> {
@@ -26,6 +26,7 @@ export default class FindAndSubscribeComponent<Name extends string, Model extend
     };
     private timeout;
     private _subscribe;
+    private query?;
     componentDidMount(): void;
     componentWillUnmount(): void;
     private handleVisibilityChange;

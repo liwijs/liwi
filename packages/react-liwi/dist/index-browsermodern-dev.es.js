@@ -131,7 +131,7 @@ class FindAndSubscribeComponent extends Component {
             name: _this.props.name
           });
 
-          _this.subscribe();
+          _this.subscribe(_this.query);
         }
 
         return;
@@ -144,10 +144,7 @@ class FindAndSubscribeComponent extends Component {
       _this.timeout = setTimeout(_this.unsubscribe, _this.props.visibleTimeout);
     };
 
-    this.subscribe = function () {
-      const {
-        query
-      } = _this.props;
+    this.subscribe = function (query) {
       _this._subscribe = query.fetchAndSubscribe(function (err, changes) {
         if (err) {
           // eslint-disable-next-line no-alert
@@ -173,7 +170,8 @@ class FindAndSubscribeComponent extends Component {
   }
 
   componentDidMount() {
-    this.subscribe();
+    this.query = this.props.createQuery();
+    this.subscribe(this.query);
     document.addEventListener('visibilitychange', this.handleVisibilityChange, false);
   }
 

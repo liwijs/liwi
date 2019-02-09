@@ -10,7 +10,7 @@ interface Props<Name extends string, Model extends BaseModel> {
   component: ComponentType<{ [P in Name]: Model[] }>;
   loadingComponent?: ComponentType<LoadingProps>;
   name: Name;
-  query: AbstractQuery<Model>;
+  createQuery: () => AbstractQuery<Model>;
   visibleTimeout?: number;
 }
 
@@ -38,8 +38,12 @@ export default class FindAndSubscribeComponent<
 
   private _subscribe: SubscribeResult<Model[]> | undefined = undefined;
 
+  // eslint-disable-next-line react/sort-comp
+  private query?: AbstractQuery<Model>;
+
   componentDidMount() {
-    this.subscribe();
+    this.query = this.props.createQuery();
+    this.subscribe(this.query);
     document.addEventListener(
       'visibilitychange',
       this.handleVisibilityChange,
@@ -63,7 +67,7 @@ export default class FindAndSubscribeComponent<
         logger.debug('resubscribe', {
           name: this.props.name,
         });
-        this.subscribe();
+        this.subscribe(this.query as AbstractQuery<Model>);
       }
       return;
     }
@@ -76,8 +80,7 @@ export default class FindAndSubscribeComponent<
     this.timeout = setTimeout(this.unsubscribe, this.props.visibleTimeout);
   };
 
-  private subscribe = (): void => {
-    const { query } = this.props;
+  private subscribe = (query: AbstractQuery<Model>): void => {
     this._subscribe = query.fetchAndSubscribe(
       (err: Error | null, changes: Changes<Model>) => {
         if (err) {

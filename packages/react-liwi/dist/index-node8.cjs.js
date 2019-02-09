@@ -122,7 +122,7 @@ class FindAndSubscribeComponent extends React.Component {
           logger.debug('resubscribe', {
             name: this.props.name
           });
-          this.subscribe();
+          this.subscribe(this.query);
         }
 
         return;
@@ -135,10 +135,7 @@ class FindAndSubscribeComponent extends React.Component {
       this.timeout = setTimeout(this.unsubscribe, this.props.visibleTimeout);
     };
 
-    this.subscribe = () => {
-      const {
-        query
-      } = this.props;
+    this.subscribe = query => {
       this._subscribe = query.fetchAndSubscribe((err, changes) => {
         if (err) {
           // eslint-disable-next-line no-alert
@@ -164,7 +161,8 @@ class FindAndSubscribeComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.subscribe();
+    this.query = this.props.createQuery();
+    this.subscribe(this.query);
     document.addEventListener('visibilitychange', this.handleVisibilityChange, false);
   }
 

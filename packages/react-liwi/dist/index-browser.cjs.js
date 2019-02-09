@@ -164,7 +164,7 @@ function (_Component) {
             name: _this.props.name
           });
 
-          _this.subscribe();
+          _this.subscribe(_this.query);
         }
 
         return;
@@ -177,8 +177,7 @@ function (_Component) {
       _this.timeout = setTimeout(_this.unsubscribe, _this.props.visibleTimeout);
     };
 
-    _this.subscribe = function () {
-      var query = _this.props.query;
+    _this.subscribe = function (query) {
       _this._subscribe = query.fetchAndSubscribe(function (err, changes) {
         if (err) {
           // eslint-disable-next-line no-alert
@@ -208,7 +207,8 @@ function (_Component) {
   var _proto = FindAndSubscribeComponent.prototype;
 
   _proto.componentDidMount = function componentDidMount() {
-    this.subscribe();
+    this.query = this.props.createQuery();
+    this.subscribe(this.query);
     document.addEventListener('visibilitychange', this.handleVisibilityChange, false);
   };
 
