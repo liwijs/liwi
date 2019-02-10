@@ -6,11 +6,16 @@ import applyChanges from './applyChanges';
 
 interface LoadingProps {}
 
-interface Props<Name extends string, Model extends BaseModel> {
+interface Props<
+  Name extends string,
+  Model extends BaseModel,
+  CreateQueryParams
+> {
   component: ComponentType<{ [P in Name]: Model[] }>;
   loadingComponent?: ComponentType<LoadingProps>;
   name: Name;
-  createQuery: () => AbstractQuery<Model>;
+  createQuery: (params: CreateQueryParams) => AbstractQuery<Model>;
+  params: CreateQueryParams;
   visibleTimeout?: number;
 }
 
@@ -23,8 +28,9 @@ const logger = new Logger('react-liwi:FindAndSubscribe');
 
 export default class FindAndSubscribeComponent<
   Name extends string,
-  Model extends BaseModel
-> extends Component<Props<Name, Model>, State<Model[]>> {
+  Model extends BaseModel,
+  CreateQueryParams
+> extends Component<Props<Name, Model, CreateQueryParams>, State<Model[]>> {
   static defaultProps = {
     visibleTimeout: 1000 * 60 * 2, // 2 minutes
   };
@@ -42,7 +48,7 @@ export default class FindAndSubscribeComponent<
   private query?: AbstractQuery<Model>;
 
   componentDidMount() {
-    this.query = this.props.createQuery();
+    this.query = this.props.createQuery(this.props.params);
     this.subscribe(this.query);
     document.addEventListener(
       'visibilitychange',

@@ -170,7 +170,7 @@ class FindAndSubscribeComponent extends Component {
   }
 
   componentDidMount() {
-    this.query = this.props.createQuery();
+    this.query = this.props.createQuery(this.props.params);
     this.subscribe(this.query);
     document.addEventListener('visibilitychange', this.handleVisibilityChange, false);
   }
