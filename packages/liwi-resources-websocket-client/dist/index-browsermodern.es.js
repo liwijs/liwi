@@ -71,6 +71,14 @@ class WebsocketClient extends AbstractClient {
   }
 
 }
+function createMongoResourcesWebsocketClient(websocket) {
+  return class extends WebsocketClient {
+    constructor(resourceName) {
+      super(websocket, resourceName, '_id');
+    }
 
-export { WebsocketClient };
+  };
+}
+
+export { WebsocketClient, createMongoResourcesWebsocketClient };
 //# sourceMappingURL=index-browsermodern.es.js.map

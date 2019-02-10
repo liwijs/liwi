@@ -87,6 +87,20 @@ function (_AbstractClient) {
 
   return WebsocketClient;
 }(AbstractClient);
+function createMongoResourcesWebsocketClient(websocket) {
+  return (
+    /*#__PURE__*/
+    function (_WebsocketClient) {
+      _inheritsLoose(WebsocketResourcesClient, _WebsocketClient);
 
-export { WebsocketClient };
+      function WebsocketResourcesClient(resourceName) {
+        return _WebsocketClient.call(this, websocket, resourceName, '_id') || this;
+      }
+
+      return WebsocketResourcesClient;
+    }(WebsocketClient)
+  );
+}
+
+export { WebsocketClient, createMongoResourcesWebsocketClient };
 //# sourceMappingURL=index-browser.es.js.map

@@ -93,6 +93,21 @@ function (_AbstractClient) {
 
   return WebsocketClient;
 }(liwiResourcesClient.AbstractClient);
+function createMongoResourcesWebsocketClient(websocket) {
+  return (
+    /*#__PURE__*/
+    function (_WebsocketClient) {
+      _inheritsLoose(WebsocketResourcesClient, _WebsocketClient);
+
+      function WebsocketResourcesClient(resourceName) {
+        return _WebsocketClient.call(this, websocket, resourceName, '_id') || this;
+      }
+
+      return WebsocketResourcesClient;
+    }(WebsocketClient)
+  );
+}
 
 exports.WebsocketClient = WebsocketClient;
+exports.createMongoResourcesWebsocketClient = createMongoResourcesWebsocketClient;
 //# sourceMappingURL=index-browser-dev.cjs.js.map

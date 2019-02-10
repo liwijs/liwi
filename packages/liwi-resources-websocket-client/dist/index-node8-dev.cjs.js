@@ -71,6 +71,15 @@ class WebsocketClient extends liwiResourcesClient.AbstractClient {
   }
 
 }
+function createMongoResourcesWebsocketClient(websocket) {
+  return class extends WebsocketClient {
+    constructor(resourceName) {
+      super(websocket, resourceName, '_id');
+    }
+
+  };
+}
 
 exports.WebsocketClient = WebsocketClient;
+exports.createMongoResourcesWebsocketClient = createMongoResourcesWebsocketClient;
 //# sourceMappingURL=index-node8-dev.cjs.js.map
