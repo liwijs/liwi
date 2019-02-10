@@ -100,7 +100,7 @@ class AbstractClient {
 
 }
 
-const createResourceClient = (client, options) => {
+const createResourceClientService = (client, options) => {
   const queries = {};
   const operations = {};
   options.queries.forEach(queryKey => {
@@ -114,7 +114,11 @@ const createResourceClient = (client, options) => {
     operations: operations
   };
 };
+/** @deprecated use createResourceClientService instead */
 
+const createResourceClient = createResourceClientService;
+
+exports.createResourceClientService = createResourceClientService;
 exports.createResourceClient = createResourceClient;
 exports.AbstractClient = AbstractClient;
 //# sourceMappingURL=index-node8.cjs.js.map

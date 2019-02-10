@@ -38,7 +38,7 @@ interface CreateResourceClientOptions<
   operations: OperationKeys[];
 }
 
-export const createResourceClient = <
+export const createResourceClientService = <
   Queries extends QueryDescriptions,
   Operations extends OperationDescriptions,
   Model extends BaseModel,
@@ -64,3 +64,6 @@ export const createResourceClient = <
     operations: operations as ResourcesClientOperations<Operations>,
   };
 };
+
+/** @deprecated use createResourceClientService instead */
+export const createResourceClient = createResourceClientService;

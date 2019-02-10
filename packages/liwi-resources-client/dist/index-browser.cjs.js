@@ -131,7 +131,7 @@ function () {
   return AbstractClient;
 }();
 
-var createResourceClient = function createResourceClient(client, options) {
+var createResourceClientService = function createResourceClientService(client, options) {
   var queries = {};
   var operations = {};
   options.queries.forEach(function (queryKey) {
@@ -149,7 +149,11 @@ var createResourceClient = function createResourceClient(client, options) {
     operations: operations
   };
 };
+/** @deprecated use createResourceClientService instead */
 
+var createResourceClient = createResourceClientService;
+
+exports.createResourceClientService = createResourceClientService;
 exports.createResourceClient = createResourceClient;
 exports.AbstractClient = AbstractClient;
 //# sourceMappingURL=index-browser.cjs.js.map

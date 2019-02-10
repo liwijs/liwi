@@ -17,5 +17,7 @@ interface CreateResourceClientOptions<QueryKeys extends string, OperationKeys ex
     queries: QueryKeys[];
     operations: OperationKeys[];
 }
+export declare const createResourceClientService: <Queries extends QueryDescriptions, Operations extends OperationDescriptions, Model extends BaseModel, KeyPath extends string = "_id">(client: AbstractClient<Model, KeyPath>, options: CreateResourceClientOptions<string, string>) => ResourcesClientService<Queries, Operations>;
+/** @deprecated use createResourceClientService instead */
 export declare const createResourceClient: <Queries extends QueryDescriptions, Operations extends OperationDescriptions, Model extends BaseModel, KeyPath extends string = "_id">(client: AbstractClient<Model, KeyPath>, options: CreateResourceClientOptions<string, string>) => ResourcesClientService<Queries, Operations>;
 //# sourceMappingURL=index.d.ts.map

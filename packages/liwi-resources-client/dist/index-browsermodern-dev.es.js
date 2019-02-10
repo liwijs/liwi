@@ -104,7 +104,7 @@ class AbstractClient {
 
 }
 
-const createResourceClient = function createResourceClient(client, options) {
+const createResourceClientService = function createResourceClientService(client, options) {
   const queries = {};
   const operations = {};
   options.queries.forEach(function (queryKey) {
@@ -122,6 +122,9 @@ const createResourceClient = function createResourceClient(client, options) {
     operations: operations
   };
 };
+/** @deprecated use createResourceClientService instead */
 
-export { createResourceClient, AbstractClient };
+const createResourceClient = createResourceClientService;
+
+export { createResourceClientService, createResourceClient, AbstractClient };
 //# sourceMappingURL=index-browsermodern-dev.es.js.map
