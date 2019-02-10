@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 // import { PRODUCTION } from 'pob-babel';
 // eslint-disable-next-line import/no-unresolved, import/extensions
-import { Server, Socket } from 'socket.io';
+import { Namespace, Server, Socket } from 'socket.io';
 import { ResourcesServerService } from 'liwi-resources-server';
 import Logger from 'nightingale-logger';
 import { encode, decode } from 'extended-json';
@@ -25,7 +25,7 @@ interface EventResourceParams {
 }
 
 export default function init(
-  io: Server,
+  io: Server | Namespace,
   resourcesService: ResourcesServerService,
 ) {
   io.on('connection', (socket: Socket) => {
