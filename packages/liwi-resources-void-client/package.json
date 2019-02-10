@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-void-client",
-  "version": "1.0.0-pre",
+  "version": "1.0.0",
   "description": "void client implementation for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
