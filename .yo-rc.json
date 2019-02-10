@@ -13,6 +13,7 @@
         "liwi-resources",
         "liwi-resources-client",
         "liwi-resources-server",
+        "liwi-resources-void-client",
         "liwi-resources-websocket-client",
         "liwi-resources-websocket-server",
         "liwi-store",
