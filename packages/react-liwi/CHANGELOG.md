@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/liwijs/liwi/compare/react-liwi@4.0.0...react-liwi@4.1.0) (2019-02-10)
+
+
+### Features
+
+* allow params in createQuery ([d674556](https://github.com/liwijs/liwi/commit/d674556))
+
+
+
+
+
 # [4.0.0](https://github.com/liwijs/liwi/compare/react-liwi@3.0.0...react-liwi@4.0.0) (2019-02-09)
 
 
