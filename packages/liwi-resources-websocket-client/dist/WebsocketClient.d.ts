@@ -10,7 +10,7 @@ export interface Websocket {
 declare type UnsubscribeCallback = () => void;
 export default class WebsocketClient<Model extends BaseModel, KeyPath extends string> extends AbstractClient<Model, KeyPath> {
     readonly resourceName: string;
-    private readonly websocket;
+    readonly websocket: Websocket;
     constructor(websocket: Websocket, resourceName: string, keyPath: KeyPath);
     emitSubscribe(type: string, args: any[]): Promise<UnsubscribeCallback>;
     createCursor(options: QueryOptions<Model>): Promise<number>;
@@ -18,5 +18,22 @@ export default class WebsocketClient<Model extends BaseModel, KeyPath extends st
     on(event: string, handler: Function): Function;
     off(event: string, handler: Function): void;
 }
+export declare function createMongoResourcesWebsocketClient(websocket: Websocket): {
+    new <Model extends BaseModel>(resourceName: string): {
+        readonly resourceName: string;
+        readonly websocket: Websocket;
+        emitSubscribe(type: string, args: any[]): Promise<UnsubscribeCallback>;
+        createCursor(options: QueryOptions<Model>): Promise<number>;
+        send(type: string, value: any[]): Promise<any>;
+        on(event: string, handler: Function): Function;
+        off(event: string, handler: Function): void;
+        readonly keyPath: "_id";
+        createQuery(key: string, params?: any): import("../../liwi-resources-client/dist/ClientQuery").default<Model, "_id">;
+        findByKey(key: any): Promise<Model | undefined>;
+        replaceOne(object: Model): Promise<Model>;
+        partialUpdateByKey(key: any, partialUpdate: import("liwi-types").Update<Model>): Promise<Model>;
+        deleteByKey(key: any): Promise<void>;
+    };
+};
 export {};
 //# sourceMappingURL=WebsocketClient.d.ts.map

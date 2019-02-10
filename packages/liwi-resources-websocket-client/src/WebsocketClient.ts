@@ -21,7 +21,7 @@ export default class WebsocketClient<
 > extends AbstractClient<Model, KeyPath> {
   readonly resourceName: string;
 
-  private readonly websocket: Websocket;
+  readonly websocket: Websocket;
 
   // eslint-disable-next-line typescript/member-ordering
   constructor(websocket: Websocket, resourceName: string, keyPath: KeyPath) {
@@ -78,4 +78,14 @@ export default class WebsocketClient<
   off(event: string, handler: Function) {
     this.websocket.off(event, handler);
   }
+}
+
+export function createMongoResourcesWebsocketClient(websocket: Websocket) {
+  return class WebsocketResourcesClient<
+    Model extends BaseModel
+  > extends WebsocketClient<Model, '_id'> {
+    public constructor(resourceName: string) {
+      super(websocket, resourceName, '_id');
+    }
+  };
 }
