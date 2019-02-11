@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/liwijs/liwi/compare/react-liwi@4.1.0...react-liwi@4.1.1) (2019-02-11)
+
+
+### Bug Fixes
+
+* remove unused peerDependency prop-types ([2aff4f4](https://github.com/liwijs/liwi/commit/2aff4f4))
+
+
+
+
+
 # [4.1.0](https://github.com/liwijs/liwi/compare/react-liwi@4.0.0...react-liwi@4.1.0) (2019-02-10)
 
 
