@@ -37,7 +37,6 @@
     "arrowParens": "always"
   },
   "peerDependencies": {
-    "prop-types": "^15.5.10",
     "react": "^16.0.0"
   },
   "dependencies": {
