@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/liwijs/liwi/compare/liwi-store@3.0.2...liwi-store@3.0.3) (2019-02-16)
+
+**Note:** Version bump only for package liwi-store
+
+
+
+
+
 ## [3.0.2](https://github.com/liwijs/liwi/compare/liwi-store@3.0.1...liwi-store@3.0.2) (2019-02-11)
 
 **Note:** Version bump only for package liwi-store

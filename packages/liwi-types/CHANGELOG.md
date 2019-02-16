@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/liwijs/liwi/compare/liwi-types@1.4.0...liwi-types@1.4.1) (2019-02-16)
+
+
+### Bug Fixes
+
+* unsubscribe and add subscribeHook ([d6e3d5a](https://github.com/liwijs/liwi/commit/d6e3d5a))
+
+
+
+
+
 # [1.4.0](https://github.com/liwijs/liwi/compare/liwi-types@1.3.0...liwi-types@1.4.0) (2019-02-09)
 
 

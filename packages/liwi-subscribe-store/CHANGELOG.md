@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/liwijs/liwi/compare/liwi-subscribe-store@1.1.2...liwi-subscribe-store@1.1.3) (2019-02-16)
+
+**Note:** Version bump only for package liwi-subscribe-store
+
+
+
+
+
 ## [1.1.2](https://github.com/liwijs/liwi/compare/liwi-subscribe-store@1.1.1...liwi-subscribe-store@1.1.2) (2019-02-11)
 
 **Note:** Version bump only for package liwi-subscribe-store

@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "resources for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -23,7 +23,7 @@
     "arrowParens": "always"
   },
   "dependencies": {
-    "liwi-types": "^1.4.0"
+    "liwi-types": "^1.4.1"
   },
   "devDependencies": {
     "eslint": "5.13.0",

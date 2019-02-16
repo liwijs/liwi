@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.2](https://github.com/liwijs/liwi/compare/liwi-resources-client@3.3.1...liwi-resources-client@3.3.2) (2019-02-16)
+
+
+### Bug Fixes
+
+* unsubscribe and add subscribeHook ([d6e3d5a](https://github.com/liwijs/liwi/commit/d6e3d5a))
+
+
+
+
+
 ## [3.3.1](https://github.com/liwijs/liwi/compare/liwi-resources-client@3.3.0...liwi-resources-client@3.3.1) (2019-02-11)
 
 **Note:** Version bump only for package liwi-resources-client

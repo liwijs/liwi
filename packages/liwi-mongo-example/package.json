@@ -1,7 +1,7 @@
 {
   "name": "liwi-mongo-example",
   "private": true,
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -27,7 +27,7 @@
     "arrowParens": "always"
   },
   "dependencies": {
-    "liwi-mongo": "^3.0.2"
+    "liwi-mongo": "^3.0.3"
   },
   "devDependencies": {
     "@babel/core": "7.2.2",
