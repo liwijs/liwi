@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.2](https://github.com/liwijs/liwi/compare/react-liwi@4.2.1...react-liwi@4.2.2) (2019-02-16)
+
+
+### Bug Fixes
+
+* dont subscribe on initial render if document is not visible ([db507de](https://github.com/liwijs/liwi/commit/db507de))
+
+
+
+
+
 ## [4.2.1](https://github.com/liwijs/liwi/compare/react-liwi@4.2.0...react-liwi@4.2.1) (2019-02-16)
 
 
