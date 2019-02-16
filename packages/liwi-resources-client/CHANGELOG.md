@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/liwijs/liwi/compare/liwi-resources-client@3.3.2...liwi-resources-client@3.4.0) (2019-02-16)
+
+
+### Features
+
+* add more info in logger ([76bacf1](https://github.com/liwijs/liwi/commit/76bacf1))
+
+
+
+
+
 ## [3.3.2](https://github.com/liwijs/liwi/compare/liwi-resources-client@3.3.1...liwi-resources-client@3.3.2) (2019-02-16)
 
 
