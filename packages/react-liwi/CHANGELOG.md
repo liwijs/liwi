@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/liwijs/liwi/compare/react-liwi@4.2.0...react-liwi@4.2.1) (2019-02-16)
+
+
+### Bug Fixes
+
+* unsubcribe call with this ([9826048](https://github.com/liwijs/liwi/commit/9826048))
+
+
+
+
+
 # [4.2.0](https://github.com/liwijs/liwi/compare/react-liwi@4.1.2...react-liwi@4.2.0) (2019-02-16)
 
 
