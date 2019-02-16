@@ -171,6 +171,10 @@ class FindAndSubscribeComponent extends React.Component {
   }
 
   unsubscribe() {
+    logger.log('unsubscribe due to timeout visible', {
+      name: this.props.name
+    });
+
     if (this._subscribe) {
       this._subscribe.stop();
 
