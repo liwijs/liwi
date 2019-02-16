@@ -63,7 +63,10 @@ export default class ClientQuery<
       .then(
         (stopEmitSubscribe: UnsubscribeEmitOnConnectCallback) => {
           _stopEmitSubscribeOnConnect = stopEmitSubscribe;
-          logger.info('subscribed');
+          logger.info('subscribed', {
+            resourceName: this.client.resourceName,
+            key: this.key,
+          });
         },
         (err: Error) => {
           this.client.off(eventName, listener);
@@ -74,6 +77,10 @@ export default class ClientQuery<
     const stop = () => {
       if (!promise) return;
       promise.then(() => {
+        logger.info('unsubscribe', {
+          resourceName: this.client.resourceName,
+          key: this.key,
+        });
         _stopEmitSubscribeOnConnect();
         this.client.send('unsubscribe', [this.key]);
         promise = undefined;

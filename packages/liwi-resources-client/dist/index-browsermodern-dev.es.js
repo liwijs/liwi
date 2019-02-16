@@ -35,7 +35,10 @@ class ClientQuery extends AbstractQuery {
 
     let promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, this.params, eventName]).then(function (stopEmitSubscribe) {
       _stopEmitSubscribeOnConnect = stopEmitSubscribe;
-      logger.info('subscribed');
+      logger.info('subscribed', {
+        resourceName: _this.client.resourceName,
+        key: _this.key
+      });
     }, function (err) {
       _this.client.off(eventName, listener);
 
@@ -45,6 +48,11 @@ class ClientQuery extends AbstractQuery {
     const stop = function stop() {
       if (!promise) return;
       promise.then(function () {
+        logger.info('unsubscribe', {
+          resourceName: _this.client.resourceName,
+          key: _this.key
+        });
+
         _stopEmitSubscribeOnConnect();
 
         _this.client.send('unsubscribe', [_this.key]);

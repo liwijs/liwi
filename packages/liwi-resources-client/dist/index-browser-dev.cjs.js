@@ -60,7 +60,10 @@ function (_AbstractQuery) {
 
     var promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, this.params, eventName]).then(function (stopEmitSubscribe) {
       _stopEmitSubscribeOnConnect = stopEmitSubscribe;
-      logger.info('subscribed');
+      logger.info('subscribed', {
+        resourceName: _this2.client.resourceName,
+        key: _this2.key
+      });
     }, function (err) {
       _this2.client.off(eventName, listener);
 
@@ -70,6 +73,11 @@ function (_AbstractQuery) {
     var stop = function stop() {
       if (!promise) return;
       promise.then(function () {
+        logger.info('unsubscribe', {
+          resourceName: _this2.client.resourceName,
+          key: _this2.key
+        });
+
         _stopEmitSubscribeOnConnect();
 
         _this2.client.send('unsubscribe', [_this2.key]);
