@@ -154,13 +154,13 @@ function (_Component) {
     _this.handleVisibilityChange = function () {
       if (!document.hidden) {
         if (_this.timeout !== undefined) {
-          logger.log('timeout cleared', {
+          logger.info('timeout cleared', {
             name: _this.props.name
           });
           clearTimeout(_this.timeout);
           _this.timeout = undefined;
         } else {
-          logger.debug('resubscribe', {
+          logger.info('resubscribe', {
             name: _this.props.name
           });
 
@@ -220,7 +220,11 @@ function (_Component) {
 
   _proto.componentDidMount = function componentDidMount() {
     this.query = this.props.createQuery(this.props.params);
-    this.subscribe(this.query);
+
+    if (!document.hidden) {
+      this.subscribe(this.query);
+    }
+
     document.addEventListener('visibilitychange', this.handleVisibilityChange, false);
   };
 

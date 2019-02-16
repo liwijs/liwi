@@ -113,13 +113,13 @@ class FindAndSubscribeComponent extends React.Component {
     this.handleVisibilityChange = () => {
       if (!document.hidden) {
         if (this.timeout !== undefined) {
-          logger.log('timeout cleared', {
+          logger.info('timeout cleared', {
             name: this.props.name
           });
           clearTimeout(this.timeout);
           this.timeout = undefined;
         } else {
-          logger.debug('resubscribe', {
+          logger.info('resubscribe', {
             name: this.props.name
           });
           this.subscribe(this.query);
@@ -174,7 +174,11 @@ class FindAndSubscribeComponent extends React.Component {
 
   componentDidMount() {
     this.query = this.props.createQuery(this.props.params);
-    this.subscribe(this.query);
+
+    if (!document.hidden) {
+      this.subscribe(this.query);
+    }
+
     document.addEventListener('visibilitychange', this.handleVisibilityChange, false);
   }
 
