@@ -1,7 +1,7 @@
 import Logger from 'nightingale-logger';
 import { decode, encode } from 'extended-json';
 
-/* eslint-disable complexity */
+/* eslint-disable complexity, max-lines */
 const logger = new Logger('liwi:rest-websocket');
 function init(io, resourcesService) {
   io.on('connection', socket => {
