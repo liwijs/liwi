@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-server@3.0.4...liwi-resources-websocket-server@3.0.5) (2019-02-16)
+
+
+### Bug Fixes
+
+* build ([d286aff](https://github.com/liwijs/liwi/commit/d286aff))
+
+
+
+
+
 ## [3.0.4](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-server@3.0.3...liwi-resources-websocket-server@3.0.4) (2019-02-16)
 
 
