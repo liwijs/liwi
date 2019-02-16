@@ -31,22 +31,22 @@ class ClientQuery extends liwiStore.AbstractQuery {
 
     this.client.on(eventName, listener);
 
-    let _stopEmitSubscribe;
+    let _stopEmitSubscribeOnConnect;
 
     let promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, this.params, eventName]).then(stopEmitSubscribe => {
-      _stopEmitSubscribe = stopEmitSubscribe;
+      _stopEmitSubscribeOnConnect = stopEmitSubscribe;
       logger.info('subscribed');
-    }).catch(err => {
+    }, err => {
       this.client.off(eventName, listener);
       throw err;
     });
 
     const stop = () => {
       if (!promise) return;
-
-      _stopEmitSubscribe();
-
       promise.then(() => {
+        _stopEmitSubscribeOnConnect();
+
+        this.client.send('unsubscribe', [this.key]);
         promise = undefined;
         this.client.off(eventName, listener);
       });

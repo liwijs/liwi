@@ -13,7 +13,7 @@ export interface Websocket {
   off: (event: string, handler: Function) => void;
 }
 
-type UnsubscribeCallback = () => void;
+type UnsubscribeEmitOnConnectCallback = () => void;
 
 export default class WebsocketClient<
   Model extends BaseModel,
@@ -30,7 +30,10 @@ export default class WebsocketClient<
     this.resourceName = resourceName;
   }
 
-  emitSubscribe(type: string, args: any[]): Promise<UnsubscribeCallback> {
+  emitSubscribe(
+    type: string,
+    args: any[],
+  ): Promise<UnsubscribeEmitOnConnectCallback> {
     const websocket = this.websocket;
     const emit = () => this.send(type, args);
     const registerOnConnect = () => {

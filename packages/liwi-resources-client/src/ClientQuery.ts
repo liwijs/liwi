@@ -11,7 +11,7 @@ interface SubscribeReturn {
   then: (cb: any) => Promise<any>;
 }
 
-type UnsubscribeCallback = () => void;
+type UnsubscribeEmitOnConnectCallback = () => void;
 type Callback = (err: Error | null, result: any) => void;
 
 const logger = new Logger('liwi:resources:query');
@@ -53,26 +53,29 @@ export default class ClientQuery<
 
     this.client.on(eventName, listener);
 
-    let _stopEmitSubscribe: UnsubscribeCallback;
+    let _stopEmitSubscribeOnConnect: UnsubscribeEmitOnConnectCallback;
     let promise: Promise<void> | undefined = this.client
       .emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [
         this.key,
         this.params,
         eventName,
       ])
-      .then((stopEmitSubscribe: UnsubscribeCallback) => {
-        _stopEmitSubscribe = stopEmitSubscribe;
-        logger.info('subscribed');
-      })
-      .catch((err: Error) => {
-        this.client.off(eventName, listener);
-        throw err;
-      });
+      .then(
+        (stopEmitSubscribe: UnsubscribeEmitOnConnectCallback) => {
+          _stopEmitSubscribeOnConnect = stopEmitSubscribe;
+          logger.info('subscribed');
+        },
+        (err: Error) => {
+          this.client.off(eventName, listener);
+          throw err;
+        },
+      );
 
     const stop = () => {
       if (!promise) return;
-      _stopEmitSubscribe();
       promise.then(() => {
+        _stopEmitSubscribeOnConnect();
+        this.client.send('unsubscribe', [this.key]);
         promise = undefined;
         this.client.off(eventName, listener);
       });

@@ -8,7 +8,7 @@ import {
 import ClientCursor from './ClientCursor';
 import ClientQuery from './ClientQuery';
 
-type UnsubscribeCallback = () => void;
+type UnsubscribeEmitOnConnectCallback = () => void;
 
 export default abstract class AbstractClient<
   Model extends BaseModel,
@@ -40,7 +40,7 @@ export default abstract class AbstractClient<
 
   abstract createCursor(options: QueryOptions<Model>): Promise<number>;
 
-  abstract send<T>(key: ResourceOperationKey, value: any): Promise<T>;
+  abstract send<T>(key: ResourceOperationKey, value: any[]): Promise<T>;
 
   abstract on(event: string, listener: Function): void;
 
@@ -49,7 +49,7 @@ export default abstract class AbstractClient<
   abstract emitSubscribe(
     type: string,
     args: any[],
-  ): Promise<UnsubscribeCallback>;
+  ): Promise<UnsubscribeEmitOnConnectCallback>;
 
   // cursor(
   //   criteria?: Criteria<Model>,

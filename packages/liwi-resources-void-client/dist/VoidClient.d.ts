@@ -1,8 +1,8 @@
 import { BaseModel, QueryOptions } from 'liwi-types';
 import { AbstractClient } from 'liwi-resources-client';
-declare type UnsubscribeCallback = () => void;
+declare type UnsubscribeEmitOnConnectCallback = () => void;
 export declare class VoidClient<Model extends BaseModel, KeyPath extends string> extends AbstractClient<Model, KeyPath> {
-    emitSubscribe(type: string, args: any[]): Promise<UnsubscribeCallback>;
+    emitSubscribe(type: string, args: any[]): Promise<UnsubscribeEmitOnConnectCallback>;
     createCursor(options: QueryOptions<Model>): Promise<number>;
     send(type: string, value: any[]): Promise<any>;
     on(event: string, handler: Function): void;
@@ -10,7 +10,7 @@ export declare class VoidClient<Model extends BaseModel, KeyPath extends string>
 }
 export declare function createMongoResourcesVoidClient(): {
     new <Model extends BaseModel>(resourceName: string): {
-        emitSubscribe(type: string, args: any[]): Promise<UnsubscribeCallback>;
+        emitSubscribe(type: string, args: any[]): Promise<UnsubscribeEmitOnConnectCallback>;
         createCursor(options: QueryOptions<Model>): Promise<number>;
         send(type: string, value: any[]): Promise<any>;
         on(event: string, handler: Function): void;

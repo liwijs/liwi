@@ -1,10 +1,15 @@
 import { BaseModel } from 'liwi-types';
 import { OperationDescriptions, QueryDescriptions } from 'liwi-resources';
-import ServiceResourceInterface from './ServiceResource';
+import ServiceResourceInterface, {
+  SubscribeHook as SubscribeHookInterface,
+} from './ServiceResource';
 import CursorResourceInterface from './CursorResource';
 
 export { default as ResourcesServerService } from './ResourcesServerService';
 
+export type SubscribeHook<ConnectedUser = any> = SubscribeHookInterface<
+  ConnectedUser
+>;
 export type ServiceResource<
   Queries extends QueryDescriptions,
   Operations extends OperationDescriptions = {},

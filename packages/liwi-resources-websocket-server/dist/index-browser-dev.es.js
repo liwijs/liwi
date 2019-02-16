@@ -5,20 +5,30 @@ import { decode, encode } from 'extended-json';
 var logger = new Logger('liwi:rest-websocket');
 function init(io, resourcesService) {
   io.on('connection', function (socket) {
-    var openWatchers = new Set();
+    var openWatchers = new Map();
+
+    var unsubscribeWatcher = function unsubscribeWatcher(_ref) {
+      var watcher = _ref.watcher,
+          subscribeHook = _ref.subscribeHook;
+      watcher.stop();
+
+      if (subscribeHook) {
+        subscribeHook.unsubscribed(socket.user);
+      }
+    };
+
     socket.on('disconnect', function () {
-      openWatchers.forEach(function (watcher) {
-        return watcher.stop();
-      });
+      openWatchers.forEach(unsubscribeWatcher);
     });
-    socket.on('resource', function (_ref, callback) {
-      var type = _ref.type,
-          resourceName = _ref.resourceName,
-          json = _ref.json,
+    socket.on('resource', function (_ref2, callback) {
+      var type = _ref2.type,
+          resourceName = _ref2.resourceName,
+          json = _ref2.json,
           key,
           params,
           eventName,
           _key,
+          _key2,
           _params;
 
       try {
@@ -68,7 +78,18 @@ function init(io, resourcesService) {
                   callback(err.message || err);
                 });
               } else {
-                var watcher = query[type](function (err, result) {
+                var watcherKey = resourceName + "__" + key;
+
+                if (openWatchers.has(watcherKey)) {
+                  logger.warn('Already have a watcher for this key. Cannot add a new one', {
+                    watcherKey: watcherKey,
+                    key: key
+                  });
+                  callback('Already have a watcher for this key. Cannot add a new one');
+                  return;
+                }
+
+                var _watcher = query[type](function (err, result) {
                   if (err) {
                     logger.error(type, {
                       err: err
@@ -77,7 +98,8 @@ function init(io, resourcesService) {
 
                   socket.emit(eventName, err, result && encode(result));
                 });
-                watcher.then(function () {
+
+                _watcher.then(function () {
                   return callback(null);
                 }, function (err) {
                   logger.error(type, {
@@ -85,7 +107,17 @@ function init(io, resourcesService) {
                   });
                   callback(err.message);
                 });
-                openWatchers.add(watcher);
+
+                var _subscribeHook = _resource.subscribeHooks && _resource.subscribeHooks[key];
+
+                openWatchers.set(watcherKey, {
+                  watcher: _watcher,
+                  subscribeHook: _subscribeHook
+                });
+
+                if (_subscribeHook) {
+                  _subscribeHook.subscribed(socket.user);
+                }
               }
             } catch (err) {
               logger.error(type, {
@@ -95,6 +127,26 @@ function init(io, resourcesService) {
             }
 
             break;
+
+          case 'unsubscribe':
+            {
+              _key = value[0];
+
+              var _watcherKey = resourceName + "__" + _key;
+
+              var watcherAndSubscribeHook = openWatchers.get(_watcherKey);
+
+              if (!watcherAndSubscribeHook) {
+                logger.warn('tried to unsubscribe non existing watcher', {
+                  key: _key
+                });
+                return;
+              }
+
+              openWatchers.delete(_watcherKey);
+              unsubscribeWatcher(watcherAndSubscribeHook);
+              break;
+            }
 
           case 'do':
             {
@@ -106,8 +158,8 @@ function init(io, resourcesService) {
                   resourceName: resourceName,
                   value: value
                 });
-                _key = value[0], _params = value[1];
-                var operation = _resource2.operations[_key];
+                _key2 = value[0], _params = value[1];
+                var operation = _resource2.operations[_key2];
 
                 if (!operation) {
                   throw new Error('Operation not found');

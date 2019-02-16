@@ -7,12 +7,12 @@ export interface Websocket {
     on: <T extends Function>(event: string, handler: T) => T;
     off: (event: string, handler: Function) => void;
 }
-declare type UnsubscribeCallback = () => void;
+declare type UnsubscribeEmitOnConnectCallback = () => void;
 export default class WebsocketClient<Model extends BaseModel, KeyPath extends string> extends AbstractClient<Model, KeyPath> {
     readonly resourceName: string;
     readonly websocket: Websocket;
     constructor(websocket: Websocket, resourceName: string, keyPath: KeyPath);
-    emitSubscribe(type: string, args: any[]): Promise<UnsubscribeCallback>;
+    emitSubscribe(type: string, args: any[]): Promise<UnsubscribeEmitOnConnectCallback>;
     createCursor(options: QueryOptions<Model>): Promise<number>;
     send(type: string, value: any[]): Promise<any>;
     on(event: string, handler: Function): Function;
@@ -22,7 +22,7 @@ export declare function createMongoResourcesWebsocketClient(websocket: Websocket
     new <Model extends BaseModel>(resourceName: string): {
         readonly resourceName: string;
         readonly websocket: Websocket;
-        emitSubscribe(type: string, args: any[]): Promise<UnsubscribeCallback>;
+        emitSubscribe(type: string, args: any[]): Promise<UnsubscribeEmitOnConnectCallback>;
         createCursor(options: QueryOptions<Model>): Promise<number>;
         send(type: string, value: any[]): Promise<any>;
         on(event: string, handler: Function): Function;

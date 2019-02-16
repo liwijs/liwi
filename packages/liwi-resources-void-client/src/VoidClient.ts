@@ -1,13 +1,16 @@
 import { BaseModel, QueryOptions } from 'liwi-types';
 import { AbstractClient } from 'liwi-resources-client';
 
-type UnsubscribeCallback = () => void;
+type UnsubscribeEmitOnConnectCallback = () => void;
 
 export class VoidClient<
   Model extends BaseModel,
   KeyPath extends string
 > extends AbstractClient<Model, KeyPath> {
-  emitSubscribe(type: string, args: any[]): Promise<UnsubscribeCallback> {
+  emitSubscribe(
+    type: string,
+    args: any[],
+  ): Promise<UnsubscribeEmitOnConnectCallback> {
     throw new Error('Void client: emitSubscribe should not be called');
   }
 

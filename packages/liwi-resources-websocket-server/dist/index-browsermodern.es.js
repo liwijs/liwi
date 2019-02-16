@@ -5,11 +5,21 @@ import { decode, encode } from 'extended-json';
 const logger = new Logger('liwi:rest-websocket');
 function init(io, resourcesService) {
   io.on('connection', function (socket) {
-    const openWatchers = new Set();
+    const openWatchers = new Map();
+
+    const unsubscribeWatcher = function unsubscribeWatcher({
+      watcher,
+      subscribeHook
+    }) {
+      watcher.stop();
+
+      if (subscribeHook) {
+        subscribeHook.unsubscribed(socket.user);
+      }
+    };
+
     socket.on('disconnect', function () {
-      openWatchers.forEach(function (watcher) {
-        return watcher.stop();
-      });
+      openWatchers.forEach(unsubscribeWatcher);
     });
     socket.on('resource', function ({
       type,
@@ -62,6 +72,17 @@ function init(io, resourcesService) {
                   callback(err.message || err);
                 });
               } else {
+                const watcherKey = `${resourceName}__${key}`;
+
+                if (openWatchers.has(watcherKey)) {
+                  logger.warn('Already have a watcher for this key. Cannot add a new one', {
+                    watcherKey,
+                    key
+                  });
+                  callback('Already have a watcher for this key. Cannot add a new one');
+                  return;
+                }
+
                 const watcher = query[type](function (err, result) {
                   if (err) {
                     logger.error(type, {
@@ -79,7 +100,15 @@ function init(io, resourcesService) {
                   });
                   callback(err.message);
                 });
-                openWatchers.add(watcher);
+                const subscribeHook = resource.subscribeHooks && resource.subscribeHooks[key];
+                openWatchers.set(watcherKey, {
+                  watcher,
+                  subscribeHook
+                });
+
+                if (subscribeHook) {
+                  subscribeHook.subscribed(socket.user);
+                }
               }
             } catch (err) {
               logger.error(type, {
@@ -89,6 +118,24 @@ function init(io, resourcesService) {
             }
 
             break;
+
+          case 'unsubscribe':
+            {
+              const [key] = value;
+              const watcherKey = `${resourceName}__${key}`;
+              const watcherAndSubscribeHook = openWatchers.get(watcherKey);
+
+              if (!watcherAndSubscribeHook) {
+                logger.warn('tried to unsubscribe non existing watcher', {
+                  key
+                });
+                return;
+              }
+
+              openWatchers.delete(watcherKey);
+              unsubscribeWatcher(watcherAndSubscribeHook);
+              break;
+            }
 
           case 'do':
             {

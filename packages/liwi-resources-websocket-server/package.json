@@ -41,6 +41,7 @@
     "extended-json": "^2.2.3",
     "liwi-resources-server": "^3.0.3",
     "liwi-types": "^1.4.0",
+    "liwi-store": "^3.0.1",
     "nightingale-logger": "^6.0.0"
   },
   "devDependencies": {

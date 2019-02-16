@@ -1,11 +1,12 @@
-/* eslint-disable complexity */
+/* eslint-disable complexity, max-lines */
 // import { PRODUCTION } from 'pob-babel';
 // eslint-disable-next-line import/no-unresolved, import/extensions
 import { Namespace, Server, Socket } from 'socket.io';
-import { ResourcesServerService } from 'liwi-resources-server';
+import { ResourcesServerService, SubscribeHook } from 'liwi-resources-server';
 import Logger from 'nightingale-logger';
 import { encode, decode } from 'extended-json';
 import { ResourceOperationKey } from 'liwi-types';
+import { SubscribeResult } from 'liwi-store';
 
 const logger = new Logger('liwi:rest-websocket');
 
@@ -24,15 +25,30 @@ interface EventResourceParams {
   resourceName: string;
 }
 
+interface WatcherAndSubscribeHook {
+  watcher: SubscribeResult<any>;
+  subscribeHook?: SubscribeHook<any>;
+}
+
 export default function init(
   io: Server | Namespace,
   resourcesService: ResourcesServerService,
 ) {
   io.on('connection', (socket: Socket) => {
-    const openWatchers = new Set();
+    const openWatchers = new Map<string, WatcherAndSubscribeHook>();
+
+    const unsubscribeWatcher = ({
+      watcher,
+      subscribeHook,
+    }: WatcherAndSubscribeHook) => {
+      watcher.stop();
+      if (subscribeHook) {
+        subscribeHook.unsubscribed(socket.user);
+      }
+    };
 
     socket.on('disconnect', () => {
-      openWatchers.forEach((watcher) => watcher.stop());
+      openWatchers.forEach(unsubscribeWatcher);
     });
 
     socket.on(
@@ -85,6 +101,17 @@ export default function init(
                       callback(err.message || err);
                     });
                 } else {
+                  const watcherKey = `${resourceName}__${key}`;
+                  if (openWatchers.has(watcherKey)) {
+                    logger.warn(
+                      'Already have a watcher for this key. Cannot add a new one',
+                      { watcherKey, key },
+                    );
+                    callback(
+                      'Already have a watcher for this key. Cannot add a new one',
+                    );
+                    return;
+                  }
                   const watcher = query[type](
                     (err: Error | null, result: any) => {
                       if (err) {
@@ -94,6 +121,7 @@ export default function init(
                       socket.emit(eventName, err, result && encode(result));
                     },
                   );
+
                   watcher.then(
                     () => callback(null),
                     (err: Error) => {
@@ -102,13 +130,34 @@ export default function init(
                     },
                   );
 
-                  openWatchers.add(watcher);
+                  const subscribeHook =
+                    resource.subscribeHooks && resource.subscribeHooks[key];
+                  openWatchers.set(watcherKey, { watcher, subscribeHook });
+                  if (subscribeHook) {
+                    subscribeHook.subscribed(socket.user);
+                  }
                 }
               } catch (err) {
                 logger.error(type, { err });
                 callback(err.message || err);
               }
               break;
+
+            case 'unsubscribe': {
+              const [key] = value;
+              const watcherKey = `${resourceName}__${key}`;
+              const watcherAndSubscribeHook = openWatchers.get(watcherKey);
+              if (!watcherAndSubscribeHook) {
+                logger.warn('tried to unsubscribe non existing watcher', {
+                  key,
+                });
+                return;
+              }
+
+              openWatchers.delete(watcherKey);
+              unsubscribeWatcher(watcherAndSubscribeHook);
+              break;
+            }
 
             case 'do': {
               try {

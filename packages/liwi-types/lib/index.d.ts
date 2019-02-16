@@ -62,6 +62,7 @@ export type ResourceOperationKey =
   | 'fetch'
   | 'subscribe'
   | 'fetchAndSubscribe'
+  | 'unsubscribe'
   | 'cursor'
   | 'cursor toArray'
   | 'do';
