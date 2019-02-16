@@ -194,6 +194,18 @@ function (_Component) {
       });
     };
 
+    _this.unsubscribe = function () {
+      logger.log('unsubscribe due to timeout visible', {
+        name: _this.props.name
+      });
+
+      if (_this._subscribe) {
+        _this._subscribe.stop();
+
+        _this._subscribe = undefined;
+      }
+    };
+
     return _this;
   }
 
@@ -207,18 +219,6 @@ function (_Component) {
 
   _proto.componentWillUnmount = function componentWillUnmount() {
     this.unsubscribe();
-  };
-
-  _proto.unsubscribe = function unsubscribe() {
-    logger.log('unsubscribe due to timeout visible', {
-      name: this.props.name
-    });
-
-    if (this._subscribe) {
-      this._subscribe.stop();
-
-      this._subscribe = undefined;
-    }
   };
 
   _proto.render = function render() {

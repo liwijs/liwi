@@ -158,6 +158,18 @@ class FindAndSubscribeComponent extends React.Component {
         }
       });
     };
+
+    this.unsubscribe = () => {
+      logger.log('unsubscribe due to timeout visible', {
+        name: this.props.name
+      });
+
+      if (this._subscribe) {
+        this._subscribe.stop();
+
+        this._subscribe = undefined;
+      }
+    };
   }
 
   componentDidMount() {
@@ -168,18 +180,6 @@ class FindAndSubscribeComponent extends React.Component {
 
   componentWillUnmount() {
     this.unsubscribe();
-  }
-
-  unsubscribe() {
-    logger.log('unsubscribe due to timeout visible', {
-      name: this.props.name
-    });
-
-    if (this._subscribe) {
-      this._subscribe.stop();
-
-      this._subscribe = undefined;
-    }
   }
 
   render() {

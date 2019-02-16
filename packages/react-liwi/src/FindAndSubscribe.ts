@@ -110,7 +110,7 @@ export default class FindAndSubscribeComponent<
     );
   };
 
-  private unsubscribe(): void {
+  private unsubscribe = (): void => {
     logger.log('unsubscribe due to timeout visible', {
       name: this.props.name,
     });
@@ -119,7 +119,7 @@ export default class FindAndSubscribeComponent<
       this._subscribe.stop();
       this._subscribe = undefined;
     }
-  }
+  };
 
   render(): ReactNode {
     if (!this.state.fetched) {
