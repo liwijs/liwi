@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-client@2.4.5...liwi-resources-websocket-client@3.0.0) (2019-02-17)
+
+
+### Features
+
+* add transformer ([76861ae](https://github.com/liwijs/liwi/commit/76861ae))
+
+
+### BREAKING CHANGES
+
+* added Transformer, query model is now value in query description
+
+
+
+
+
 ## [2.4.5](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-client@2.4.4...liwi-resources-websocket-client@2.4.5) (2019-02-16)
 
 **Note:** Version bump only for package liwi-resources-websocket-client

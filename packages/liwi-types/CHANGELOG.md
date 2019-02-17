@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/liwijs/liwi/compare/liwi-types@1.4.1...liwi-types@2.0.0) (2019-02-17)
+
+
+### Features
+
+* add transformer ([76861ae](https://github.com/liwijs/liwi/commit/76861ae))
+
+
+### BREAKING CHANGES
+
+* added Transformer, query model is now value in query description
+
+
+
+
+
 ## [1.4.1](https://github.com/liwijs/liwi/compare/liwi-types@1.4.0...liwi-types@1.4.1) (2019-02-16)
 
 

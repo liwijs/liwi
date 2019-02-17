@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/liwijs/liwi/compare/react-liwi@4.2.2...react-liwi@5.0.0) (2019-02-17)
+
+
+### Features
+
+* add transformer ([76861ae](https://github.com/liwijs/liwi/commit/76861ae))
+
+
+### BREAKING CHANGES
+
+* added Transformer, query model is now value in query description
+
+
+
+
+
 ## [4.2.2](https://github.com/liwijs/liwi/compare/react-liwi@4.2.1...react-liwi@4.2.2) (2019-02-16)
 
 

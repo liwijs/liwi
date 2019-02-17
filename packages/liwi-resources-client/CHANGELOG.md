@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/liwijs/liwi/compare/liwi-resources-client@3.4.0...liwi-resources-client@4.0.0) (2019-02-17)
+
+
+### Features
+
+* add transformer ([76861ae](https://github.com/liwijs/liwi/commit/76861ae))
+
+
+### BREAKING CHANGES
+
+* added Transformer, query model is now value in query description
+
+
+
+
+
 # [3.4.0](https://github.com/liwijs/liwi/compare/liwi-resources-client@3.3.2...liwi-resources-client@3.4.0) (2019-02-16)
 
 
