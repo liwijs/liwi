@@ -1,6 +1,6 @@
 {
   "name": "react-liwi",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "react with liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -41,8 +41,8 @@
   },
   "dependencies": {
     "deep-equal": "^1.0.1",
-    "liwi-store": "^4.0.0",
-    "liwi-types": "^2.0.0",
+    "liwi-store": "^4.1.0",
+    "liwi-types": "^2.1.0",
     "nightingale-logger": "^6.0.0"
   },
   "devDependencies": {
