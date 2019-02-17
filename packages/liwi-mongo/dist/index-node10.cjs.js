@@ -193,6 +193,7 @@ class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
 
 }
 
+/* eslint-disable max-lines */
 class MongoStore extends liwiStore.AbstractStore {
   constructor(connection, collectionName) {
     super(connection, '_id');
@@ -218,8 +219,8 @@ class MongoStore extends liwiStore.AbstractStore {
     return Promise.resolve(this._collection);
   }
 
-  createQuery(options) {
-    return new MongoQuery(this, options);
+  createQuery(options, transformer) {
+    return new MongoQuery(this, options, transformer);
   }
 
   async insertOne(object) {

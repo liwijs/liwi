@@ -1,5 +1,5 @@
 import { Store as StoreInterface, AbstractConnection, AbstractStoreCursor, UpsertResult } from 'liwi-store';
-import { BaseModel, InsertType, Update, Criteria, Sort, QueryOptions } from 'liwi-types';
+import { BaseModel, InsertType, Update, Criteria, Sort, QueryOptions, Transformer } from 'liwi-types';
 import AbstractSubscribeQuery from './AbstractSubscribeQuery';
 export declare type Actions<Model> = {
     type: 'inserted';
@@ -13,7 +13,7 @@ export declare type Actions<Model> = {
     prev: Model[];
 };
 export declare type Listener<Model> = (action: Actions<Model>) => void;
-export default class SubscribeStore<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractStoreCursor<Model, KeyPath, any>, Store extends StoreInterface<Model, KeyPath, Connection, Cursor, any>, Query extends AbstractSubscribeQuery<Model, StoreInterface<Model, KeyPath, Connection, Cursor, any>>> implements StoreInterface<Model, KeyPath, Connection, Cursor, Query> {
+export default class SubscribeStore<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractStoreCursor<Model, KeyPath, any>, Store extends StoreInterface<Model, KeyPath, Connection, Cursor>> implements StoreInterface<Model, KeyPath, Connection, Cursor> {
     private store;
     private listeners;
     constructor(store: Store);
@@ -21,7 +21,7 @@ export default class SubscribeStore<Model extends BaseModel, KeyPath extends str
     readonly connection: Connection;
     subscribe(callback: Listener<Model>): () => boolean;
     callSubscribed(action: Actions<Model>): void;
-    createQuery(options: QueryOptions<Model>): Query;
+    createQuery<Transformed>(options: QueryOptions<Model>, transformer?: Transformer<Model, Transformed>): AbstractSubscribeQuery<Model, Store, Transformed>;
     findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
     findByKey(key: any): Promise<Model | undefined>;
     findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;

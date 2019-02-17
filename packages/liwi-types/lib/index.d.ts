@@ -66,3 +66,7 @@ export type ResourceOperationKey =
   | 'cursor'
   | 'cursor toArray'
   | 'do';
+
+type Transformer<Model extends BaseModel, Transformed = Model> = (
+  model: Model,
+) => Transformed;

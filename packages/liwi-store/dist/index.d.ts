@@ -7,7 +7,7 @@ import AbstractStoreCursor from './AbstractStoreCursor';
 import AbstractQuery, { SubscribeResult as AbstractQuerySubscribeResult, SubscribeCallback as AbstractQuerySubscribeCallback } from './AbstractQuery';
 import AbstractStore from './AbstractStore';
 export declare type InternalCommonStoreClient<Model extends BaseModel, KeyPath extends string, Cursor extends AbstractCursor<Model, KeyPath>> = InternalCommonStoreClientInterface<Model, KeyPath, Cursor>;
-export declare type Store<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractStoreCursor<Model, KeyPath, any>, Query extends AbstractQuery<any>> = StoreInterface<Model, KeyPath, Connection, Cursor, Query>;
+export declare type Store<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractStoreCursor<Model, KeyPath, any>> = StoreInterface<Model, KeyPath, Connection, Cursor>;
 export declare type UpsertResult<Model extends BaseModel> = AbstractStoreUpsertResult<Model>;
 export declare type SubscribeResult<Value> = AbstractQuerySubscribeResult<Value>;
 export declare type SubscribeCallback<Value> = AbstractQuerySubscribeCallback<Value>;

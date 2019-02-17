@@ -4,6 +4,7 @@ import {
   InsertType,
   QueryOptions,
   Sort,
+  Transformer,
   Update,
 } from 'liwi-types';
 import AbstractConnection from './AbstractConnection';
@@ -19,14 +20,16 @@ export default interface Store<
   Model extends BaseModel,
   KeyPath extends string,
   Connection extends AbstractConnection,
-  Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
-  Query extends AbstractQuery<any>
+  Cursor extends AbstractStoreCursor<Model, KeyPath, any>
 > extends InternalCommonStoreClient<Model, KeyPath, Cursor> {
   readonly keyPath: KeyPath;
 
   readonly connection: Connection;
 
-  createQuery(options: QueryOptions<Model>): Query;
+  createQuery<Transformed>(
+    options: QueryOptions<Model>,
+    transformer?: Transformer<Model, Transformed>,
+  ): AbstractQuery<Transformed>;
 
   findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<any[]>;
 

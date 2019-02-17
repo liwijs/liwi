@@ -11,6 +11,7 @@ import {
   Criteria,
   Sort,
   QueryOptions,
+  Transformer,
 } from 'liwi-types';
 import AbstractSubscribeQuery from './AbstractSubscribeQuery';
 
@@ -26,12 +27,8 @@ export default class SubscribeStore<
   KeyPath extends string,
   Connection extends AbstractConnection,
   Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
-  Store extends StoreInterface<Model, KeyPath, Connection, Cursor, any>,
-  Query extends AbstractSubscribeQuery<
-    Model,
-    StoreInterface<Model, KeyPath, Connection, Cursor, any>
-  >
-> implements StoreInterface<Model, KeyPath, Connection, Cursor, Query> {
+  Store extends StoreInterface<Model, KeyPath, Connection, Cursor>
+> implements StoreInterface<Model, KeyPath, Connection, Cursor> {
   private store: Store;
 
   private listeners: Set<Listener<Model>> = new Set();
@@ -57,8 +54,19 @@ export default class SubscribeStore<
     this.listeners.forEach((listener) => listener(action));
   }
 
-  createQuery(options: QueryOptions<Model>): Query {
-    const query: Query = this.store.createQuery(options);
+  createQuery<Transformed>(
+    options: QueryOptions<Model>,
+    transformer?: Transformer<Model, Transformed>,
+  ): AbstractSubscribeQuery<Model, Store, Transformed> {
+    const query: AbstractSubscribeQuery<
+      Model,
+      Store,
+      Transformed
+    > = this.store.createQuery(options, transformer) as AbstractSubscribeQuery<
+      Model,
+      Store,
+      Transformed
+    >;
     query.setSubscribeStore(this);
     return query;
   }

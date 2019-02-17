@@ -187,6 +187,7 @@ class MongoQuery extends AbstractSubscribeQuery {
 
 }
 
+/* eslint-disable max-lines */
 class MongoStore extends AbstractStore {
   constructor(connection, collectionName) {
     super(connection, '_id');
@@ -212,8 +213,8 @@ class MongoStore extends AbstractStore {
     return Promise.resolve(this._collection);
   }
 
-  createQuery(options) {
-    return new MongoQuery(this, options);
+  createQuery(options, transformer) {
+    return new MongoQuery(this, options, transformer);
   }
 
   async insertOne(object) {

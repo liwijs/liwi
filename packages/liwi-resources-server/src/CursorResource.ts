@@ -6,7 +6,7 @@ export default interface Resource<
   Transformed = any,
   ConnectedUser = any
 > {
-  store: Store<Model, any, any, any, any>;
+  store: Store<Model, any, any, any>;
 
   criteria(
     connectedUser: undefined | ConnectedUser,

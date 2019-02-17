@@ -6,6 +6,7 @@ import {
   Criteria,
   Sort,
   QueryOptions,
+  Transformer,
 } from 'liwi-types';
 import Store, { UpsertResult } from './Store';
 import AbstractConnection from './AbstractConnection';
@@ -16,9 +17,8 @@ export default abstract class AbstractStore<
   Model extends BaseModel,
   KeyPath extends string,
   Connection extends AbstractConnection,
-  Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
-  Query extends AbstractQuery<any>
-> implements Store<Model, KeyPath, Connection, Cursor, Query> {
+  Cursor extends AbstractStoreCursor<Model, KeyPath, any>
+> implements Store<Model, KeyPath, Connection, Cursor> {
   private readonly _connection: Connection;
 
   public readonly keyPath: KeyPath;
@@ -33,7 +33,10 @@ export default abstract class AbstractStore<
     return this._connection;
   }
 
-  abstract createQuery(options: QueryOptions<Model>): Query;
+  abstract createQuery<Transformed>(
+    options: QueryOptions<Model>,
+    transformer?: Transformer<Model, Transformed>,
+  ): AbstractQuery<Transformed>;
 
   findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]> {
     return this.cursor(criteria, sort).then((cursor: Cursor) =>

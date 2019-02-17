@@ -12,7 +12,7 @@
   },
   "workspaces": ["packages/*"],
   "scripts": {
-    "build": "lerna run --stream --concurrency=1 build",
+    "build": "lerna run --stream build",
     "build:definitions": "lerna run --stream build:definitions",
     "clean": "rm -Rf docs dist test/node6 coverage",
     "generate:docs": "lerna run --parallel --ignore \"*-example\" generate:docs",

@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { ObjectID, Collection, Db } from 'mongodb';
 import { AbstractStore, UpsertResult } from 'liwi-store';
 import {
@@ -7,6 +8,7 @@ import {
   Sort,
   Update,
   QueryOptions,
+  Transformer,
 } from 'liwi-types';
 import MongoConnection from './MongoConnection';
 import MongoCursor from './MongoCursor';
@@ -34,8 +36,7 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
   Model,
   MongoKeyPath,
   MongoConnection,
-  MongoCursor<Model>,
-  MongoQuery<Model>
+  MongoCursor<Model>
 > {
   private _collection: Collection | Promise<Collection>;
 
@@ -66,8 +67,11 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     return Promise.resolve(this._collection);
   }
 
-  createQuery(options: QueryOptions<Model>): MongoQuery<Model> {
-    return new MongoQuery(this, options);
+  createQuery<Transformed>(
+    options: QueryOptions<Model>,
+    transformer?: Transformer<Model, Transformed>,
+  ): MongoQuery<Model, Transformed> {
+    return new MongoQuery(this, options, transformer);
   }
 
   async insertOne(object: MongoInsertType<Model>): Promise<Model> {

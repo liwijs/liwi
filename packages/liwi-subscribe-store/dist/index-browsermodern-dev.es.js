@@ -29,8 +29,8 @@ class SubscribeStore {
     });
   }
 
-  createQuery(options) {
-    const query = this.store.createQuery(options);
+  createQuery(options, transformer) {
+    const query = this.store.createQuery(options, transformer);
     query.setSubscribeStore(this);
     return query;
   }

@@ -22,9 +22,8 @@ export type Store<
   Model extends BaseModel,
   KeyPath extends string,
   Connection extends AbstractConnection,
-  Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
-  Query extends AbstractQuery<any>
-> = StoreInterface<Model, KeyPath, Connection, Cursor, Query>;
+  Cursor extends AbstractStoreCursor<Model, KeyPath, any>
+> = StoreInterface<Model, KeyPath, Connection, Cursor>;
 
 export type UpsertResult<Model extends BaseModel> = AbstractStoreUpsertResult<
   Model

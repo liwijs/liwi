@@ -1,12 +1,8 @@
 import mingo from 'mingo';
 import { SubscribeResult, SubscribeCallback } from 'liwi-store';
-import { Changes, QueryOptions } from 'liwi-types';
+import { Changes, QueryOptions, Transformer } from 'liwi-types';
 import { AbstractSubscribeQuery, Actions } from 'liwi-subscribe-store';
 import MongoStore, { MongoModel } from './MongoStore';
-
-type Transformer<Model extends MongoModel, Transformed = Model> = (
-  model: Model,
-) => Transformed;
 
 const identityTransformer = <Model extends MongoModel, Transformed = Model>(
   model: Model,
