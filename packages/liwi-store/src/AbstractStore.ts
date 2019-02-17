@@ -17,7 +17,7 @@ export default abstract class AbstractStore<
   KeyPath extends string,
   Connection extends AbstractConnection,
   Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
-  Query extends AbstractQuery<Model>
+  Query extends AbstractQuery<any>
 > implements Store<Model, KeyPath, Connection, Cursor, Query> {
   private readonly _connection: Connection;
 

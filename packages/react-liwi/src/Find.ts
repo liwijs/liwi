@@ -6,11 +6,11 @@ interface LoadingProps {}
 
 type Record<K extends string, T> = { [P in K]: T };
 
-interface Props<Name extends string, Model extends BaseModel> {
-  component: ComponentType<Record<Name, Model[]>>;
+interface Props<Name extends string, Value> {
+  component: ComponentType<Record<Name, Value[]>>;
   loadingComponent?: ComponentType<LoadingProps>;
   name: Name;
-  query: AbstractQuery<Model>;
+  query: AbstractQuery<Value>;
 }
 
 interface State<Result> {

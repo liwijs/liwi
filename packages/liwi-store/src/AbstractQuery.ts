@@ -15,24 +15,24 @@ export interface SubscribeResult<Value> {
   ) => Promise<any>;
 }
 
-export type SubscribeCallback<Model> = (
+export type SubscribeCallback<Value> = (
   err: Error | null,
-  changes: Changes<Model>,
+  changes: Changes<Value>,
 ) => void;
 
-export default abstract class AbstractQuery<Model extends BaseModel> {
-  abstract fetch(onFulfilled?: (value: any) => any): Promise<any>;
+export default abstract class AbstractQuery<Value> {
+  abstract fetch(onFulfilled?: (value: Value[]) => any): Promise<any>;
 
-  fetchAndSubscribe(callback: SubscribeCallback<Model>) {
+  fetchAndSubscribe(callback: SubscribeCallback<Value>) {
     return this._subscribe(callback, true);
   }
 
-  subscribe(callback: SubscribeCallback<Model>) {
+  subscribe(callback: SubscribeCallback<Value>) {
     return this._subscribe(callback, false);
   }
 
   abstract _subscribe(
-    callback: SubscribeCallback<Model>,
+    callback: SubscribeCallback<Value>,
     _includeInitial: boolean,
-  ): SubscribeResult<Model[]>;
+  ): SubscribeResult<Value[]>;
 }

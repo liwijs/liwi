@@ -17,7 +17,7 @@ export declare function createMongoResourcesVoidClient(): {
         off(event: string, handler: Function): void;
         readonly resourceName: string;
         readonly keyPath: "_id";
-        createQuery(key: string, params?: any): import("../../liwi-resources-client/dist/ClientQuery").default<Model, "_id">;
+        createQuery(key: string, params?: any): import("../../liwi-resources-client/dist/ClientQuery").default<Model, "_id", Model>;
         findByKey(key: any): Promise<Model | undefined>;
         replaceOne(object: Model): Promise<Model>;
         partialUpdateByKey(key: any, partialUpdate: import("liwi-types").Update<Model>): Promise<Model>;

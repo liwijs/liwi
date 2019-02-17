@@ -20,7 +20,7 @@ export default interface Store<
   KeyPath extends string,
   Connection extends AbstractConnection,
   Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
-  Query extends AbstractQuery<Model>
+  Query extends AbstractQuery<any>
 > extends InternalCommonStoreClient<Model, KeyPath, Cursor> {
   readonly keyPath: KeyPath;
 

@@ -15,7 +15,7 @@ export default interface ServiceResource<
     [P in keyof Queries]: (
       params: Queries[P]['params'],
       connectedUser: undefined | ConnectedUser,
-    ) => AbstractQuery<Queries[P]['model']>
+    ) => AbstractQuery<Queries[P]['value']>
   };
   subscribeHooks?: { [P in keyof Queries]?: SubscribeHook<ConnectedUser> };
   operations: {

@@ -1,15 +1,14 @@
 import { Component, ReactNode, ComponentType } from 'react';
-import { BaseModel } from 'liwi-types';
 import { AbstractQuery } from 'liwi-store';
 interface LoadingProps {
 }
-interface Props<Name extends string, Model extends BaseModel, CreateQueryParams> {
+interface Props<Name extends string, Value, CreateQueryParams> {
     component: ComponentType<{
-        [P in Name]: Model[];
+        [P in Name]: Value[];
     }>;
     loadingComponent?: ComponentType<LoadingProps>;
     name: Name;
-    createQuery: (params: CreateQueryParams) => AbstractQuery<Model>;
+    createQuery: (params: CreateQueryParams) => AbstractQuery<Value>;
     params: CreateQueryParams;
     visibleTimeout?: number;
 }
@@ -17,7 +16,7 @@ interface State<Result> {
     fetched: boolean;
     result: Result | undefined;
 }
-export default class FindAndSubscribeComponent<Name extends string, Model extends BaseModel, CreateQueryParams> extends Component<Props<Name, Model, CreateQueryParams>, State<Model[]>> {
+export default class FindAndSubscribeComponent<Name extends string, Value, CreateQueryParams> extends Component<Props<Name, Value, CreateQueryParams>, State<Value[]>> {
     static defaultProps: {
         visibleTimeout: number;
     };

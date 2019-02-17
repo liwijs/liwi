@@ -4,8 +4,9 @@ import SubscribeStore from './SubscribeStore';
 
 export default abstract class AbstractSubscribeQuery<
   Model extends BaseModel,
-  Store extends StoreInterface<Model, any, any, any, any>
-> extends AbstractQuery<Model> {
+  Store extends StoreInterface<Model, any, any, any, any>,
+  Transformed = Model
+> extends AbstractQuery<Transformed> {
   private _subscribeStore?: SubscribeStore<Model, any, any, any, any, any>;
 
   setSubscribeStore(store: SubscribeStore<Model, any, any, any, any, any>) {

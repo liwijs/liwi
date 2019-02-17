@@ -1,20 +1,16 @@
 import React, { Component, ReactNode, ComponentType } from 'react';
 import Logger from 'nightingale-logger';
-import { BaseModel, Changes } from 'liwi-types';
+import { Changes } from 'liwi-types';
 import { AbstractQuery, SubscribeResult } from 'liwi-store';
 import applyChanges from './applyChanges';
 
 interface LoadingProps {}
 
-interface Props<
-  Name extends string,
-  Model extends BaseModel,
-  CreateQueryParams
-> {
-  component: ComponentType<{ [P in Name]: Model[] }>;
+interface Props<Name extends string, Value, CreateQueryParams> {
+  component: ComponentType<{ [P in Name]: Value[] }>;
   loadingComponent?: ComponentType<LoadingProps>;
   name: Name;
-  createQuery: (params: CreateQueryParams) => AbstractQuery<Model>;
+  createQuery: (params: CreateQueryParams) => AbstractQuery<Value>;
   params: CreateQueryParams;
   visibleTimeout?: number;
 }
@@ -28,9 +24,9 @@ const logger = new Logger('react-liwi:FindAndSubscribe');
 
 export default class FindAndSubscribeComponent<
   Name extends string,
-  Model extends BaseModel,
+  Value,
   CreateQueryParams
-> extends Component<Props<Name, Model, CreateQueryParams>, State<Model[]>> {
+> extends Component<Props<Name, Value, CreateQueryParams>, State<Value[]>> {
   static defaultProps = {
     visibleTimeout: 1000 * 60 * 2, // 2 minutes
   };
@@ -42,10 +38,10 @@ export default class FindAndSubscribeComponent<
 
   private timeout: number | undefined = undefined;
 
-  private _subscribe: SubscribeResult<Model[]> | undefined = undefined;
+  private _subscribe: SubscribeResult<Value[]> | undefined = undefined;
 
   // eslint-disable-next-line react/sort-comp
-  private query?: AbstractQuery<Model>;
+  private query?: AbstractQuery<Value>;
 
   componentDidMount() {
     this.query = this.props.createQuery(this.props.params);
@@ -75,7 +71,7 @@ export default class FindAndSubscribeComponent<
         logger.info('resubscribe', {
           name: this.props.name,
         });
-        this.subscribe(this.query as AbstractQuery<Model>);
+        this.subscribe(this.query as AbstractQuery<Value>);
       }
       return;
     }
@@ -88,9 +84,9 @@ export default class FindAndSubscribeComponent<
     this.timeout = setTimeout(this.unsubscribe, this.props.visibleTimeout);
   };
 
-  private subscribe = (query: AbstractQuery<Model>): void => {
+  private subscribe = (query: AbstractQuery<Value>): void => {
     this._subscribe = query.fetchAndSubscribe(
-      (err: Error | null, changes: Changes<Model>) => {
+      (err: Error | null, changes: Changes<Value>) => {
         if (err) {
           // eslint-disable-next-line no-alert
           alert(`Unexpected error: ${err}`);

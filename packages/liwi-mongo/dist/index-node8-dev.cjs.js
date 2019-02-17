@@ -57,11 +57,14 @@ class MongoCursor extends liwiStore.AbstractStoreCursor {
 
 }
 
+const identityTransformer = model => model;
+
 class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
-  constructor(store, options) {
+  constructor(store, options, transformer = identityTransformer) {
     super();
     this.store = store;
     this.options = options;
+    this.transformer = transformer;
   }
 
   createMingoQuery() {
@@ -74,7 +77,7 @@ class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
 
   async fetch(onFulfilled) {
     const cursor = await this.createMongoCursor();
-    return cursor.toArray().then(onFulfilled);
+    return cursor.toArray().then(result => result.map(this.transformer)).then(onFulfilled);
   }
 
   _subscribe(callback, _includeInitial) {
@@ -97,7 +100,7 @@ class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
         case 'inserted':
           changes.push({
             type: 'inserted',
-            objects: filtered
+            objects: filtered.map(this.transformer)
           });
           break;
 
@@ -119,7 +122,7 @@ class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
               if (!mingoQuery.test(nextObject)) {
                 acc.deleted.push(object[this.store.keyPath]);
               } else {
-                acc.updated.push(nextObject);
+                acc.updated.push(this.transformer(nextObject));
               }
 
               return acc;

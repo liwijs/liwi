@@ -7,7 +7,7 @@ interface SubscribeReturn {
     then: (cb: any) => Promise<any>;
 }
 declare type Callback = (err: Error | null, result: any) => void;
-export default class ClientQuery<Model extends BaseModel, KeyPath extends string> extends AbstractQuery<Model> {
+export default class ClientQuery<Model extends BaseModel, KeyPath extends string, Value = Model> extends AbstractQuery<Value> {
     client: AbstractClient<Model, KeyPath>;
     key: string;
     private readonly params;

@@ -3,7 +3,7 @@ import Store, { UpsertResult } from './Store';
 import AbstractConnection from './AbstractConnection';
 import AbstractStoreCursor from './AbstractStoreCursor';
 import AbstractQuery from './AbstractQuery';
-export default abstract class AbstractStore<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractStoreCursor<Model, KeyPath, any>, Query extends AbstractQuery<Model>> implements Store<Model, KeyPath, Connection, Cursor, Query> {
+export default abstract class AbstractStore<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractStoreCursor<Model, KeyPath, any>, Query extends AbstractQuery<any>> implements Store<Model, KeyPath, Connection, Cursor, Query> {
     private readonly _connection;
     readonly keyPath: KeyPath;
     constructor(connection: Connection, keyPath: KeyPath);

@@ -11,7 +11,7 @@ export type ResourcesClientQueries<
 > = {
   [P in keyof Queries]: (
     params: Queries[P]['params'],
-  ) => ClientQuery<Queries[P]['model'], KeyPath>
+  ) => ClientQuery<Queries[P]['value'], KeyPath>
 };
 
 export type ResourcesClientOperations<

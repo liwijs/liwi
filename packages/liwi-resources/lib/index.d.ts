@@ -2,7 +2,7 @@ import { BaseModel } from 'liwi-types';
 
 export interface QueryDescription<Params extends Record<string, any>, Model extends BaseModel> {
   params: Params;
-  model: Model;
+  value: Model;
 }
 
 

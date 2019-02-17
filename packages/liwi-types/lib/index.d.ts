@@ -44,13 +44,13 @@ export type Criteria<Model extends BaseModel> = { [P in keyof Model]?: any } & {
 
 export type Sort<Model extends BaseModel> = { [P in keyof Model]?: -1 | 1 } & { [key: string]: -1 | 1; }
 
-export type Change<Model> =
-  | { type: 'initial'; initial: Array<Model> }
-  | { type: 'inserted'; objects: Array<Model> }
-  | { type: 'updated'; objects: Array<Model> }
+export type Change<Value> =
+  | { type: 'initial'; initial: Array<Value> }
+  | { type: 'inserted'; objects: Array<Value> }
+  | { type: 'updated'; objects: Array<Value> }
   | { type: 'deleted'; keys: Array<string> };
 
-export type Changes<Model> = Array<Change<Model>>;
+export type Changes<Value> = Array<Change<Value>>;
 
 export interface QueryOptions<Model extends BaseModel> {
   criteria?: Criteria<Model>;

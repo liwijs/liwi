@@ -23,7 +23,7 @@ export type Store<
   KeyPath extends string,
   Connection extends AbstractConnection,
   Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
-  Query extends AbstractQuery<Model>
+  Query extends AbstractQuery<any>
 > = StoreInterface<Model, KeyPath, Connection, Cursor, Query>;
 
 export type UpsertResult<Model extends BaseModel> = AbstractStoreUpsertResult<
@@ -31,9 +31,7 @@ export type UpsertResult<Model extends BaseModel> = AbstractStoreUpsertResult<
 >;
 
 export type SubscribeResult<Value> = AbstractQuerySubscribeResult<Value>;
-export type SubscribeCallback<
-  Model extends BaseModel
-> = AbstractQuerySubscribeCallback<Model>;
+export type SubscribeCallback<Value> = AbstractQuerySubscribeCallback<Value>;
 
 export type Update<Model extends BaseModel> = UpdateType<Model>;
 

@@ -4,19 +4,35 @@ import { Changes, QueryOptions } from 'liwi-types';
 import { AbstractSubscribeQuery, Actions } from 'liwi-subscribe-store';
 import MongoStore, { MongoModel } from './MongoStore';
 
+type Transformer<Model extends MongoModel, Transformed = Model> = (
+  model: Model,
+) => Transformed;
+
+const identityTransformer = <Model extends MongoModel, Transformed = Model>(
+  model: Model,
+): Transformed => (model as unknown) as Transformed;
+
 export default class MongoQuery<
-  Model extends MongoModel
-> extends AbstractSubscribeQuery<Model, MongoStore<Model>> {
+  Model extends MongoModel,
+  Transformed = Model
+> extends AbstractSubscribeQuery<Model, MongoStore<Model>, Transformed> {
   private readonly store: MongoStore<Model>;
 
   private readonly options: QueryOptions<Model>;
 
   private mingoQuery?: mingo.Query;
 
-  constructor(store: MongoStore<Model>, options: QueryOptions<Model>) {
+  private readonly transformer: Transformer<Model, Transformed>;
+
+  constructor(
+    store: MongoStore<Model>,
+    options: QueryOptions<Model>,
+    transformer: Transformer<Model, Transformed> = identityTransformer,
+  ) {
     super();
     this.store = store;
     this.options = options;
+    this.transformer = transformer;
   }
 
   createMingoQuery(): mingo.Query {
@@ -27,21 +43,24 @@ export default class MongoQuery<
     return this.mingoQuery;
   }
 
-  async fetch<T>(onFulfilled: (result: Model[]) => T): Promise<T> {
+  async fetch<T>(onFulfilled: (result: Transformed[]) => T): Promise<T> {
     const cursor = await this.createMongoCursor();
-    return cursor.toArray().then(onFulfilled);
+    return cursor
+      .toArray()
+      .then((result: Model[]) => result.map(this.transformer))
+      .then(onFulfilled);
   }
 
   _subscribe(
-    callback: SubscribeCallback<Model>,
+    callback: SubscribeCallback<Transformed>,
     _includeInitial: boolean,
-  ): SubscribeResult<Model[]> {
+  ): SubscribeResult<Transformed[]> {
     const store = super.getSubscribeStore();
     const mingoQuery: mingo.Query = this.createMingoQuery();
 
     const promise =
       _includeInitial &&
-      this.fetch((result: Model[]) => {
+      this.fetch((result: Transformed[]) => {
         callback(null, [{ type: 'initial', initial: result }]);
         return result;
       });
@@ -51,10 +70,13 @@ export default class MongoQuery<
         ? action.next
         : action.prev
       ).filter((object: Model) => mingoQuery.test(object));
-      const changes: Changes<Model> = [];
+      const changes: Changes<Transformed> = [];
       switch (action.type) {
         case 'inserted':
-          changes.push({ type: 'inserted', objects: filtered });
+          changes.push({
+            type: 'inserted',
+            objects: filtered.map(this.transformer),
+          });
           break;
         case 'deleted':
           changes.push({
@@ -65,7 +87,7 @@ export default class MongoQuery<
         case 'updated': {
           const { deleted, updated } = filtered.reduce(
             (
-              acc: { deleted: string[]; updated: Model[] },
+              acc: { deleted: string[]; updated: Transformed[] },
               object: Model,
               index: number,
             ) => {
@@ -73,7 +95,7 @@ export default class MongoQuery<
               if (!mingoQuery.test(nextObject)) {
                 acc.deleted.push(object[this.store.keyPath]);
               } else {
-                acc.updated.push(nextObject);
+                acc.updated.push(this.transformer(nextObject));
               }
 
               return acc;
@@ -123,9 +145,9 @@ export default class MongoQuery<
       cancel: unsubscribe,
       then: _includeInitial
         ? (
-            onFulfilled: (result: Model[]) => any,
+            onFulfilled: (result: Transformed[]) => any,
             onRejected?: (error: any) => any,
-          ) => (promise as Promise<Model[]>).then(onFulfilled, onRejected)
+          ) => (promise as Promise<Transformed[]>).then(onFulfilled, onRejected)
         : () => Promise.resolve(),
     };
   }

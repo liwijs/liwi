@@ -7,7 +7,7 @@ export interface UpsertResult<Model extends BaseModel> {
     object: Model;
     inserted: boolean;
 }
-export default interface Store<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractStoreCursor<Model, KeyPath, any>, Query extends AbstractQuery<Model>> extends InternalCommonStoreClient<Model, KeyPath, Cursor> {
+export default interface Store<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractStoreCursor<Model, KeyPath, any>, Query extends AbstractQuery<any>> extends InternalCommonStoreClient<Model, KeyPath, Cursor> {
     readonly keyPath: KeyPath;
     readonly connection: Connection;
     createQuery(options: QueryOptions<Model>): Query;

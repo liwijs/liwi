@@ -9,11 +9,11 @@ export interface SubscribeResult<Value> {
     stop: () => void;
     then: (onFulfilled: (value: Value) => any, onRejected?: (error: any) => any) => Promise<any>;
 }
-export declare type SubscribeCallback<Model> = (err: Error | null, changes: Changes<Model>) => void;
-export default abstract class AbstractQuery<Model extends BaseModel> {
-    abstract fetch(onFulfilled?: (value: any) => any): Promise<any>;
-    fetchAndSubscribe(callback: SubscribeCallback<Model>): SubscribeResult<Model[]>;
-    subscribe(callback: SubscribeCallback<Model>): SubscribeResult<Model[]>;
-    abstract _subscribe(callback: SubscribeCallback<Model>, _includeInitial: boolean): SubscribeResult<Model[]>;
+export declare type SubscribeCallback<Value> = (err: Error | null, changes: Changes<Value>) => void;
+export default abstract class AbstractQuery<Value> {
+    abstract fetch(onFulfilled?: (value: Value[]) => any): Promise<any>;
+    fetchAndSubscribe(callback: SubscribeCallback<Value>): SubscribeResult<Value[]>;
+    subscribe(callback: SubscribeCallback<Value>): SubscribeResult<Value[]>;
+    abstract _subscribe(callback: SubscribeCallback<Value>, _includeInitial: boolean): SubscribeResult<Value[]>;
 }
 //# sourceMappingURL=AbstractQuery.d.ts.map

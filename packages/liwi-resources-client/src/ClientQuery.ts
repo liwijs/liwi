@@ -18,8 +18,9 @@ const logger = new Logger('liwi:resources:query');
 
 export default class ClientQuery<
   Model extends BaseModel,
-  KeyPath extends string
-> extends AbstractQuery<Model> {
+  KeyPath extends string,
+  Value = Model
+> extends AbstractQuery<Value> {
   client: AbstractClient<Model, KeyPath>;
 
   key: string;
