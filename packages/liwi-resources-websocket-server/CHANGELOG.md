@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.8](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-server@3.0.7...liwi-resources-websocket-server@3.0.8) (2019-02-20)
+
+
+### Bug Fixes
+
+* missing callback in unsubscribe ([8ff0fb3](https://github.com/liwijs/liwi/commit/8ff0fb3))
+
+
+
+
+
 ## [3.0.7](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-server@3.0.6...liwi-resources-websocket-server@3.0.7) (2019-02-17)
 
 **Note:** Version bump only for package liwi-resources-websocket-server
