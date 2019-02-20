@@ -151,11 +151,12 @@ export default function init(
                 logger.warn('tried to unsubscribe non existing watcher', {
                   key,
                 });
-                return;
+                return callback(null);
               }
 
               openWatchers.delete(watcherKey);
               unsubscribeWatcher(watcherAndSubscribeHook);
+              callback(null);
               break;
             }
 

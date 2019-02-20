@@ -129,11 +129,12 @@ function init(io, resourcesService) {
                 logger.warn('tried to unsubscribe non existing watcher', {
                   key
                 });
-                return;
+                return callback(null);
               }
 
               openWatchers.delete(watcherKey);
               unsubscribeWatcher(watcherAndSubscribeHook);
+              callback(null);
               break;
             }
 
