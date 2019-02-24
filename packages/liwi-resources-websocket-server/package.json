@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-websocket-server",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "description": "liwi resources client implementation for websocket",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
