@@ -178,6 +178,10 @@ class FindAndSubscribeComponent extends Component {
   }
 
   componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
     this.unsubscribe();
   }
 

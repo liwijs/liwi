@@ -231,6 +231,10 @@ function (_Component) {
   };
 
   _proto.componentWillUnmount = function componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
     this.unsubscribe();
   };
 
