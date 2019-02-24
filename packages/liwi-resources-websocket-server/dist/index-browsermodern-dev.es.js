@@ -155,7 +155,7 @@ function init(io, resourcesService) {
                 }
 
                 operation(params, socket.user).then(function (result) {
-                  return callback(null, result);
+                  return callback(null, result && encode(result));
                 }, function (err) {
                   logger.error(type, {
                     err

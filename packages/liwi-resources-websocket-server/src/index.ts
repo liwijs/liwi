@@ -176,7 +176,7 @@ export default function init(
                 }
 
                 operation(params, socket.user).then(
-                  (result) => callback(null, result),
+                  (result) => callback(null, result && encode(result)),
                   (err: Error) => {
                     logger.error(type, { err });
                     callback(err.message);
