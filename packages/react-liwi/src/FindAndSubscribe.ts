@@ -56,6 +56,10 @@ export default class FindAndSubscribeComponent<
   }
 
   componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
     this.unsubscribe();
   }
 
@@ -112,6 +116,9 @@ export default class FindAndSubscribeComponent<
     logger.log('unsubscribe due to timeout visible', {
       name: this.props.name,
     });
+
+    // reset timeout to allow resubscribing
+    this.timeout = undefined;
 
     if (this._subscribe) {
       this._subscribe.stop();

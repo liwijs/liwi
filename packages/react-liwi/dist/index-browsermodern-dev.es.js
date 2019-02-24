@@ -171,7 +171,9 @@ class FindAndSubscribeComponent extends Component {
     this.unsubscribe = function () {
       logger.log('unsubscribe due to timeout visible', {
         name: _this.props.name
-      });
+      }); // reset timeout to allow resubscribing
+
+      _this.timeout = undefined;
 
       if (_this._subscribe) {
         _this._subscribe.stop();
