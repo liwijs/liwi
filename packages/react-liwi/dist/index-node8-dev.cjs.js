@@ -208,6 +208,17 @@ FindAndSubscribeComponent.defaultProps = {
 
 };
 
+/* eslint-disable import/export */
+function useResources(createQueries, queriesToSubscribe) {
+  return [true, []];
+}
+
+function useResource(createQuery, subscribe) {
+  return [true, undefined];
+}
+
 exports.Find = FindComponent;
 exports.FindAndSubscribe = FindAndSubscribeComponent;
+exports.useResources = useResources;
+exports.useResource = useResource;
 //# sourceMappingURL=index-node8-dev.cjs.js.map

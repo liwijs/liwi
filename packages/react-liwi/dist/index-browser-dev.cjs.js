@@ -256,6 +256,170 @@ FindAndSubscribeComponent.defaultProps = {
 
 };
 
+function initReducer(initializer) {
+  return {
+    fetched: false,
+    promise: initializer()
+  };
+}
+function reducer(state, action) {
+  switch (action.type) {
+    case 'resolve':
+      return {
+        fetched: true,
+        result: action.result
+      };
+
+    default:
+      throw new Error('Invalid action');
+  }
+}
+
+function useRetrieveResource(createQuery) {
+  var _useReducer = React.useReducer(reducer, function () {
+    return createQuery().fetch(function (result) {
+      state.resolve();
+      dispatch({
+        type: 'resolve',
+        result: result
+      });
+    });
+  }, initReducer),
+      state = _useReducer[0],
+      dispatch = _useReducer[1];
+
+  return state;
+}
+
+var defaultOptions = {
+  visibleTimeout: 120000 // 2 minutes
+
+};
+var logger$1 = new Logger('react-liwi:useResourceAndSubscribe');
+function useRetrieveResourceAndSubscribe(createQuery, _temp) {
+  var _ref = _temp === void 0 ? defaultOptions : _temp,
+      visibleTimeout = _ref.visibleTimeout;
+
+  var subscribeResultRef = React.useRef(undefined);
+  var timeoutRef = React.useRef(undefined);
+
+  var unsubscribe = function unsubscribe() {
+    logger$1.log('unsubscribe'); // reset timeout to allow resubscribing
+
+    timeoutRef.current = undefined;
+
+    if (subscribeResultRef.current) {
+      subscribeResultRef.current.stop();
+      subscribeResultRef.current = undefined;
+    }
+  };
+
+  var _useReducer = React.useReducer(reducer, function () {
+    return new Promise(function () {
+      var query = createQuery();
+      logger$1.log('init', {
+        resourceName: query.client.resourceName,
+        key: query.key
+      });
+
+      var subscribe = function subscribe() {
+        logger$1.log('subscribing', {
+          subscribeResultRef: subscribeResultRef.current,
+          timeoutRef: timeoutRef.current
+        });
+        subscribeResultRef.current = query.fetchAndSubscribe(function (err, changes) {
+          if (err) {
+            // eslint-disable-next-line no-alert
+            alert("Unexpected error: " + err);
+            return;
+          }
+
+          var newResult = applyChanges(state.fetched ? state.result : undefined, changes, '_id' // TODO get keyPath from client(/store)
+          );
+
+          if (newResult && (!state.fetched || newResult !== state.result)) {
+            dispatch({
+              type: 'resolve',
+              result: newResult
+            });
+          }
+        });
+      };
+
+      document.addEventListener('visibilitychange', function handleVisibilityChange() {
+        if (!document.hidden) {
+          if (timeoutRef.current !== undefined) {
+            logger$1.info('timeout cleared');
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = undefined;
+          } else if (!subscribeResultRef.current) {
+            logger$1.info('resubscribe');
+            subscribe();
+          }
+
+          return;
+        }
+
+        if (subscribeResultRef.current === undefined) return;
+        logger$1.log('timeout visible');
+        timeoutRef.current = setTimeout(unsubscribe, visibleTimeout);
+      }, false);
+
+      if (!document.hidden) {
+        subscribe();
+      }
+    });
+  }, initReducer),
+      state = _useReducer[0],
+      dispatch = _useReducer[1];
+
+  React.useEffect(function () {
+    return function () {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = undefined;
+      }
+
+      unsubscribe();
+    };
+  }, []);
+  return state;
+}
+
+/* eslint-disable import/export */
+function useResources(createQueries, queriesToSubscribe) {
+  var states = createQueries.map(function (createQuery, index) {
+    return queriesToSubscribe[index] ? // eslint-disable-next-line react-hooks/rules-of-hooks
+    useRetrieveResourceAndSubscribe(createQuery) : // eslint-disable-next-line react-hooks/rules-of-hooks
+    useRetrieveResource(createQuery);
+  });
+  var nonFetchedStates = states.filter(function (state) {
+    return !state.fetched;
+  });
+
+  if (nonFetchedStates.length !== 0) {
+    return [true, []];
+  }
+
+  return [false, states.map(function (state) {
+    return state.result;
+  })];
+}
+
+function useResource(createQuery, subscribe) {
+  var state = subscribe ? // eslint-disable-next-line react-hooks/rules-of-hooks
+  useRetrieveResourceAndSubscribe(createQuery) : // eslint-disable-next-line react-hooks/rules-of-hooks
+  useRetrieveResource(createQuery);
+
+  if (!state.fetched) {
+    return [true, undefined];
+  }
+
+  return [false, state.result];
+}
+
 exports.Find = FindComponent;
 exports.FindAndSubscribe = FindAndSubscribeComponent;
+exports.useResources = useResources;
+exports.useResource = useResource;
 //# sourceMappingURL=index-browser-dev.cjs.js.map

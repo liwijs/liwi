@@ -201,5 +201,14 @@ FindAndSubscribeComponent.defaultProps = {
 
 };
 
-export { FindComponent as Find, FindAndSubscribeComponent as FindAndSubscribe };
+/* eslint-disable import/export */
+function useResources(createQueries, queriesToSubscribe) {
+  return [true, []];
+}
+
+function useResource(createQuery, subscribe) {
+  return [true, undefined];
+}
+
+export { FindComponent as Find, FindAndSubscribeComponent as FindAndSubscribe, useResources, useResource };
 //# sourceMappingURL=index-node10-dev.es.js.map
