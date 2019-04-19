@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/liwijs/liwi/compare/react-liwi@5.1.0...react-liwi@5.1.1) (2019-04-19)
+
+
+### Bug Fixes
+
+* debug log init ([fc28efb](https://github.com/liwijs/liwi/commit/fc28efb))
+
+
+
+
+
 # [5.1.0](https://github.com/liwijs/liwi/compare/react-liwi@5.0.3...react-liwi@5.1.0) (2019-04-15)
 
 
