@@ -274,7 +274,7 @@ function useRetrieveResourceAndSubscribe(createQuery, {
   const [state, dispatch] = useReducer(reducer, function () {
     return new Promise(function () {
       const query = createQuery();
-      logger$1.log('init', {
+      logger$1.debug('init', {
         resourceName: query.client.resourceName,
         key: query.key
       });
