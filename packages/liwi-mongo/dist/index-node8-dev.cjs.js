@@ -284,10 +284,11 @@ class MongoStore extends liwiStore.AbstractStore {
     return Promise.all(objects.map(object => this.replaceOne(object)));
   }
 
-  async partialUpdateByKey(key, partialUpdate) {
+  async partialUpdateByKey(key, partialUpdate, criteria) {
     const collection = await this.collection;
     const commandResult = await collection.updateOne({
-      _id: key
+      _id: key,
+      ...criteria
     }, partialUpdate);
 
     if (!commandResult.result.ok) {

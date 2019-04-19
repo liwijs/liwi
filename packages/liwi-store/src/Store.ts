@@ -54,7 +54,11 @@ export default interface Store<
     object: InsertType<Model, KeyPath>,
   ): Promise<UpsertResult<Model>>;
 
-  partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model>;
+  partialUpdateByKey(
+    key: any,
+    partialUpdate: Update<Model>,
+    criteria?: Criteria<Model>,
+  ): Promise<Model>;
 
   partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
 

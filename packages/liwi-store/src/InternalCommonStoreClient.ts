@@ -1,4 +1,4 @@
-import { BaseModel, Update } from 'liwi-types';
+import { BaseModel, Criteria, Update } from 'liwi-types';
 import AbstractCursor from './AbstractCursor';
 
 export default interface InternalCommonStoreClient<
@@ -12,7 +12,11 @@ export default interface InternalCommonStoreClient<
 
   replaceOne(object: Model): Promise<Model>;
 
-  partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model>;
+  partialUpdateByKey(
+    key: any,
+    partialUpdate: Update<Model>,
+    criteria?: Criteria<Model>,
+  ): Promise<Model>;
 
   deleteByKey(key: any): Promise<void>;
 }

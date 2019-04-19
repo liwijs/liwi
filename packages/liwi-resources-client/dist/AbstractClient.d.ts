@@ -1,5 +1,5 @@
 import { InternalCommonStoreClient } from 'liwi-store';
-import { BaseModel, Update, QueryOptions, ResourceOperationKey } from 'liwi-types';
+import { BaseModel, Update, QueryOptions, ResourceOperationKey, Criteria } from 'liwi-types';
 import ClientCursor from './ClientCursor';
 import ClientQuery from './ClientQuery';
 declare type UnsubscribeEmitOnConnectCallback = () => void;
@@ -15,7 +15,7 @@ export default abstract class AbstractClient<Model extends BaseModel, KeyPath ex
     abstract emitSubscribe(type: string, args: any[]): Promise<UnsubscribeEmitOnConnectCallback>;
     findByKey(key: any): Promise<Model | undefined>;
     replaceOne(object: Model): Promise<Model>;
-    partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model>;
+    partialUpdateByKey(key: any, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     deleteByKey(key: any): Promise<void>;
 }
 export {};

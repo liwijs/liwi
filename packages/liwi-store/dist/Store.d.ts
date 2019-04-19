@@ -20,7 +20,7 @@ export default interface Store<Model extends BaseModel, KeyPath extends string, 
     replaceSeveral(objects: Model[]): Promise<Model[]>;
     upsertOne(object: InsertType<Model, KeyPath>): Promise<Model>;
     upsertOneWithInfo(object: InsertType<Model, KeyPath>): Promise<UpsertResult<Model>>;
-    partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model>;
+    partialUpdateByKey(key: any, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateMany(criteria: Criteria<Model>, partialUpdate: Update<Model>): Promise<void>;
     deleteByKey(key: any): Promise<void>;

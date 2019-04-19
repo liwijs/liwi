@@ -4,6 +4,7 @@ import {
   Update,
   QueryOptions,
   ResourceOperationKey,
+  Criteria,
 } from 'liwi-types';
 import ClientCursor from './ClientCursor';
 import ClientQuery from './ClientQuery';
@@ -66,7 +67,11 @@ export default abstract class AbstractClient<
     throw new Error('Use operations instead');
   }
 
-  partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model> {
+  partialUpdateByKey(
+    key: any,
+    partialUpdate: Update<Model>,
+    criteria?: Criteria<Model>,
+  ): Promise<Model> {
     throw new Error('Use operations instead');
   }
 

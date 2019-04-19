@@ -133,10 +133,11 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
   async partialUpdateByKey(
     key: any,
     partialUpdate: Update<Model>,
+    criteria?: Criteria<Model>,
   ): Promise<Model> {
     const collection = await this.collection;
     const commandResult = await collection.updateOne(
-      { _id: key },
+      { _id: key, ...criteria },
       partialUpdate,
     );
     if (!commandResult.result.ok) {

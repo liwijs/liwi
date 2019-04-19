@@ -74,6 +74,7 @@ export default abstract class AbstractStore<
   abstract partialUpdateByKey(
     key: any,
     partialUpdate: Update<Model>,
+    criteria?: Criteria<Model>,
   ): Promise<Model>;
 
   abstract partialUpdateOne(

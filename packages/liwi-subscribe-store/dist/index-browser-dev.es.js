@@ -52,6 +52,24 @@ function _createClass(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
   subClass.prototype.constructor = subClass;
@@ -292,14 +310,16 @@ function () {
   function () {
     var _partialUpdateByKey = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee6(key, partialUpdate) {
+    regeneratorRuntime.mark(function _callee6(key, partialUpdate, criteria) {
+      var _extends2;
+
       return regeneratorRuntime.wrap(function _callee6$(_context6) {
         while (1) {
           switch (_context6.prev = _context6.next) {
             case 0:
               _context6.t0 = this;
               _context6.next = 3;
-              return this.findByKey(key);
+              return this.findOne(_extends((_extends2 = {}, _extends2[this.store.keyPath] = key, _extends2), criteria));
 
             case 3:
               _context6.t1 = _context6.sent;

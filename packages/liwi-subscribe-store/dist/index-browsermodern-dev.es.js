@@ -96,8 +96,10 @@ class SubscribeStore {
     return upsertedWithInfo;
   }
 
-  async partialUpdateByKey(key, partialUpdate) {
-    return this.partialUpdateOne((await this.findByKey(key)), partialUpdate);
+  async partialUpdateByKey(key, partialUpdate, criteria) {
+    return this.partialUpdateOne((await this.findOne(Object.assign({
+      [this.store.keyPath]: key
+    }, criteria))), partialUpdate);
   }
 
   async partialUpdateOne(object, partialUpdate) {

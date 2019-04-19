@@ -23,7 +23,7 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     replaceOne(object: Model): Promise<Model>;
     upsertOneWithInfo(object: MongoInsertType<Model>): Promise<MongoUpsertResult<Model>>;
     replaceSeveral(objects: Model[]): Promise<Model[]>;
-    partialUpdateByKey(key: any, partialUpdate: Update<Model>): Promise<Model>;
+    partialUpdateByKey(key: any, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateMany(criteria: Criteria<Model>, partialUpdate: Update<Model>): Promise<void>;
     deleteByKey(key: any): Promise<void>;

@@ -131,9 +131,10 @@ export default class SubscribeStore<
   async partialUpdateByKey(
     key: any,
     partialUpdate: Update<Model>,
+    criteria?: Criteria<Model>,
   ): Promise<Model> {
     return this.partialUpdateOne(
-      (await this.findByKey(key)) as Model,
+      (await this.findOne({ [this.store.keyPath]: key, ...criteria })) as Model,
       partialUpdate,
     );
   }
