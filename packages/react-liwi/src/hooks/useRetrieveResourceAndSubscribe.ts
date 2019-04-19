@@ -27,12 +27,14 @@ export default function useRetrieveResourceAndSubscribe<
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   );
+  const resultRef = useRef<Model[] | undefined>(undefined);
 
   const unsubscribe = (): void => {
     logger.log('unsubscribe');
 
     // reset timeout to allow resubscribing
     timeoutRef.current = undefined;
+    resultRef.current = undefined;
 
     if (subscribeResultRef.current) {
       subscribeResultRef.current.stop();
@@ -68,13 +70,15 @@ export default function useRetrieveResourceAndSubscribe<
                 return;
               }
 
+              const currentResult = resultRef.current;
               const newResult = applyChanges(
-                state.fetched ? state.result : undefined,
+                currentResult,
                 changes,
                 '_id', // TODO get keyPath from client(/store)
               );
 
-              if (newResult && (!state.fetched || newResult !== state.result)) {
+              if (newResult && newResult !== currentResult) {
+                resultRef.current = newResult;
                 dispatch({ type: 'resolve', result: newResult });
               }
             },

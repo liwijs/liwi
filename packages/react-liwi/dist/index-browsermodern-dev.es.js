@@ -259,11 +259,13 @@ function useRetrieveResourceAndSubscribe(createQuery, {
 } = defaultOptions) {
   const subscribeResultRef = useRef(undefined);
   const timeoutRef = useRef(undefined);
+  const resultRef = useRef(undefined);
 
   const unsubscribe = function unsubscribe() {
     logger$1.log('unsubscribe'); // reset timeout to allow resubscribing
 
     timeoutRef.current = undefined;
+    resultRef.current = undefined;
 
     if (subscribeResultRef.current) {
       subscribeResultRef.current.stop();
@@ -297,10 +299,12 @@ function useRetrieveResourceAndSubscribe(createQuery, {
             return;
           }
 
-          const newResult = applyChanges(state.fetched ? state.result : undefined, changes, '_id' // TODO get keyPath from client(/store)
+          const currentResult = resultRef.current;
+          const newResult = applyChanges(currentResult, changes, '_id' // TODO get keyPath from client(/store)
           );
 
-          if (newResult && (!state.fetched || newResult !== state.result)) {
+          if (newResult && newResult !== currentResult) {
+            resultRef.current = newResult;
             dispatch({
               type: 'resolve',
               result: newResult
