@@ -45,18 +45,23 @@ export default function useRetrieveResourceAndSubscribe<
     () =>
       new Promise((resolve, reject) => {
         const query = createQuery();
-        logger.debug('init', {
+        const queryLogger = logger.context({
           resourceName: (query as any).client.resourceName,
           key: (query as any).key,
         });
+        queryLogger.debug('init');
 
         const subscribe = (): void => {
-          logger.log('subscribing', {
+          queryLogger.debug('subscribing', {
             subscribeResultRef: subscribeResultRef.current,
             timeoutRef: timeoutRef.current,
           });
           subscribeResultRef.current = query.fetchAndSubscribe(
             (err: Error | null, changes: Changes<Model>) => {
+              queryLogger.debug('received changes', {
+                err,
+                changes,
+              });
               if (err) {
                 // eslint-disable-next-line no-alert
                 alert(`Unexpected error: ${err}`);
@@ -79,11 +84,11 @@ export default function useRetrieveResourceAndSubscribe<
         const handleVisibilityChange = () => {
           if (!document.hidden) {
             if (timeoutRef.current !== undefined) {
-              logger.info('timeout cleared');
+              queryLogger.debug('timeout cleared');
               clearTimeout(timeoutRef.current);
               timeoutRef.current = undefined;
             } else if (!subscribeResultRef.current) {
-              logger.info('resubscribe');
+              queryLogger.info('resubscribe');
               subscribe();
             }
             return;
@@ -91,7 +96,7 @@ export default function useRetrieveResourceAndSubscribe<
 
           if (subscribeResultRef.current === undefined) return;
 
-          logger.log('timeout visible');
+          queryLogger.debug('timeout visible');
           timeoutRef.current = setTimeout(unsubscribe, visibleTimeout);
         };
 

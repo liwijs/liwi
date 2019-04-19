@@ -18,11 +18,18 @@ class ClientQuery extends liwiStore.AbstractQuery {
   }
 
   fetch(onFulfilled) {
+    logger.debug('fetch', {
+      resourceName: this.client.resourceName,
+      key: this.key
+    });
     return this.client.send('fetch', [this.key, this.params, undefined]).then(onFulfilled);
   }
 
   _subscribe(callback, _includeInitial = false) {
     const eventName = `subscribe:${this.client.resourceName}.${this.key}`;
+    logger.debug('subscribe', {
+      eventName
+    });
 
     const listener = (err, result) => {
       const decodedResult = result && extendedJson.decode(result);
@@ -39,7 +46,7 @@ class ClientQuery extends liwiStore.AbstractQuery {
 
     let promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, this.params, eventName]).then(stopEmitSubscribe => {
       _stopEmitSubscribeOnConnect = stopEmitSubscribe;
-      logger.info('subscribed', {
+      logger.debug('subscribed', {
         resourceName: this.client.resourceName,
         key: this.key
       });
@@ -51,7 +58,7 @@ class ClientQuery extends liwiStore.AbstractQuery {
     const stop = () => {
       if (!promise) return;
       promise.then(() => {
-        logger.info('unsubscribe', {
+        logger.debug('unsubscribe', {
           resourceName: this.client.resourceName,
           key: this.key
         });

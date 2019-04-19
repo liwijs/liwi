@@ -27,6 +27,10 @@ function (_AbstractQuery) {
   var _proto = ClientQuery.prototype;
 
   _proto.fetch = function fetch(onFulfilled) {
+    logger.debug('fetch', {
+      resourceName: this.client.resourceName,
+      key: this.key
+    });
     return this.client.send('fetch', [this.key, this.params, undefined]).then(onFulfilled);
   };
 
@@ -38,6 +42,9 @@ function (_AbstractQuery) {
     }
 
     var eventName = "subscribe:" + this.client.resourceName + "." + this.key;
+    logger.debug('subscribe', {
+      eventName: eventName
+    });
 
     var listener = function listener(err, result) {
       var decodedResult = result && decode(result);
@@ -54,7 +61,7 @@ function (_AbstractQuery) {
 
     var promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, this.params, eventName]).then(function (stopEmitSubscribe) {
       _stopEmitSubscribeOnConnect = stopEmitSubscribe;
-      logger.info('subscribed', {
+      logger.debug('subscribed', {
         resourceName: _this2.client.resourceName,
         key: _this2.key
       });
@@ -67,7 +74,7 @@ function (_AbstractQuery) {
     var stop = function stop() {
       if (!promise) return;
       promise.then(function () {
-        logger.info('unsubscribe', {
+        logger.debug('unsubscribe', {
           resourceName: _this2.client.resourceName,
           key: _this2.key
         });

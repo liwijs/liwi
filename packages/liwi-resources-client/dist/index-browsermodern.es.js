@@ -12,6 +12,10 @@ class ClientQuery extends AbstractQuery {
   }
 
   fetch(onFulfilled) {
+    logger.debug('fetch', {
+      resourceName: this.client.resourceName,
+      key: this.key
+    });
     return this.client.send('fetch', [this.key, this.params, undefined]).then(onFulfilled);
   }
 
@@ -19,6 +23,9 @@ class ClientQuery extends AbstractQuery {
     var _this = this;
 
     const eventName = `subscribe:${this.client.resourceName}.${this.key}`;
+    logger.debug('subscribe', {
+      eventName
+    });
 
     const listener = function listener(err, result) {
       const decodedResult = result && decode(result);
@@ -31,7 +38,7 @@ class ClientQuery extends AbstractQuery {
 
     let promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, this.params, eventName]).then(function (stopEmitSubscribe) {
       _stopEmitSubscribeOnConnect = stopEmitSubscribe;
-      logger.info('subscribed', {
+      logger.debug('subscribed', {
         resourceName: _this.client.resourceName,
         key: _this.key
       });
@@ -44,7 +51,7 @@ class ClientQuery extends AbstractQuery {
     const stop = function stop() {
       if (!promise) return;
       promise.then(function () {
-        logger.info('unsubscribe', {
+        logger.debug('unsubscribe', {
           resourceName: _this.client.resourceName,
           key: _this.key
         });

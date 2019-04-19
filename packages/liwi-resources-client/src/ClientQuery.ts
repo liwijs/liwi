@@ -39,6 +39,10 @@ export default class ClientQuery<
   }
 
   fetch(onFulfilled?: (value: any) => any): Promise<any> {
+    logger.debug('fetch', {
+      resourceName: this.client.resourceName,
+      key: this.key,
+    });
     return this.client
       .send('fetch', [this.key, this.params, undefined])
       .then(onFulfilled);
@@ -46,6 +50,7 @@ export default class ClientQuery<
 
   _subscribe(callback: Callback, _includeInitial = false): SubscribeReturn {
     const eventName = `subscribe:${this.client.resourceName}.${this.key}`;
+    logger.debug('subscribe', { eventName });
     const listener = (err: Error | null, result?: string) => {
       const decodedResult = result && decode(result);
       if (!PRODUCTION) logger.debug(eventName, { result, decodedResult });
@@ -64,7 +69,7 @@ export default class ClientQuery<
       .then(
         (stopEmitSubscribe: UnsubscribeEmitOnConnectCallback) => {
           _stopEmitSubscribeOnConnect = stopEmitSubscribe;
-          logger.info('subscribed', {
+          logger.debug('subscribed', {
             resourceName: this.client.resourceName,
             key: this.key,
           });
@@ -78,7 +83,7 @@ export default class ClientQuery<
     const stop = () => {
       if (!promise) return;
       promise.then(() => {
-        logger.info('unsubscribe', {
+        logger.debug('unsubscribe', {
           resourceName: this.client.resourceName,
           key: this.key,
         });
