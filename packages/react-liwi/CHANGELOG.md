@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.2](https://github.com/liwijs/liwi/compare/react-liwi@5.1.1...react-liwi@5.1.2) (2019-04-19)
+
+
+### Bug Fixes
+
+* add resultRef, state is always initial ([e91b291](https://github.com/liwijs/liwi/commit/e91b291))
+
+
+
+
+
 ## [5.1.1](https://github.com/liwijs/liwi/compare/react-liwi@5.1.0...react-liwi@5.1.1) (2019-04-19)
 
 

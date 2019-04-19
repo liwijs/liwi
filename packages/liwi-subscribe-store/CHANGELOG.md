@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/liwijs/liwi/compare/liwi-subscribe-store@2.1.0...liwi-subscribe-store@2.2.0) (2019-04-19)
+
+
+### Features
+
+* add optional critieria in partialUpdateByKey ([6bd5578](https://github.com/liwijs/liwi/commit/6bd5578))
+
+
+
+
+
 # [2.1.0](https://github.com/liwijs/liwi/compare/liwi-subscribe-store@2.0.0...liwi-subscribe-store@2.1.0) (2019-02-17)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/liwijs/liwi/compare/liwi-store@4.1.0...liwi-store@4.2.0) (2019-04-19)
+
+
+### Features
+
+* add optional critieria in partialUpdateByKey ([6bd5578](https://github.com/liwijs/liwi/commit/6bd5578))
+
+
+
+
+
 # [4.1.0](https://github.com/liwijs/liwi/compare/liwi-store@4.0.0...liwi-store@4.1.0) (2019-02-17)
 
 

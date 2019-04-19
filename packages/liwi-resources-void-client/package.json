@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-void-client",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "void client implementation for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -38,8 +38,8 @@
   },
   "dependencies": {
     "extended-json": "^2.2.3",
-    "liwi-resources-client": "^4.0.1",
-    "liwi-store": "^4.1.0",
+    "liwi-resources-client": "^4.1.0",
+    "liwi-store": "^4.2.0",
     "liwi-types": "^2.1.0",
     "nightingale-logger": "^6.0.0"
   },

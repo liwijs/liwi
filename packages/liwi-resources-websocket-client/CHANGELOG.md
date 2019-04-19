@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-client@3.0.1...liwi-resources-websocket-client@3.1.0) (2019-04-19)
+
+
+### Features
+
+* add optional critieria in partialUpdateByKey ([6bd5578](https://github.com/liwijs/liwi/commit/6bd5578))
+
+
+
+
+
 ## [3.0.1](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-client@3.0.0...liwi-resources-websocket-client@3.0.1) (2019-02-17)
 
 **Note:** Version bump only for package liwi-resources-websocket-client

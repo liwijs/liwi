@@ -1,6 +1,6 @@
 {
   "name": "liwi-store",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "abstract store used by liwi implementations",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",

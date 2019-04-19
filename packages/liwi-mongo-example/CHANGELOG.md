@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.7](https://github.com/liwijs/liwi/compare/liwi-mongo-example@1.3.6...liwi-mongo-example@1.3.7) (2019-04-19)
+
+**Note:** Version bump only for package liwi-mongo-example
+
+
+
+
+
 ## [1.3.6](https://github.com/liwijs/liwi/compare/liwi-mongo-example@1.3.5...liwi-mongo-example@1.3.6) (2019-02-17)
 
 **Note:** Version bump only for package liwi-mongo-example
