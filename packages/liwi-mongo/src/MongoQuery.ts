@@ -8,6 +8,10 @@ const identityTransformer = <Model extends MongoModel, Transformed = Model>(
   model: Model,
 ): Transformed => (model as unknown) as Transformed;
 
+interface TestCriteria {
+  test(obj: any): boolean;
+}
+
 export default class MongoQuery<
   Model extends MongoModel,
   Transformed = Model
@@ -16,7 +20,7 @@ export default class MongoQuery<
 
   private readonly options: QueryOptions<Model>;
 
-  private mingoQuery?: mingo.Query;
+  private mingoQuery?: TestCriteria;
 
   private readonly transformer: Transformer<Model, Transformed>;
 
@@ -31,8 +35,12 @@ export default class MongoQuery<
     this.transformer = transformer;
   }
 
-  createMingoQuery(): mingo.Query {
+  createMingoQuery(): TestCriteria {
     if (!this.mingoQuery) {
+      if (!this.options.criteria) {
+        return { test: () => true };
+      }
+
       this.mingoQuery = new mingo.Query(this.options.criteria);
     }
 
@@ -52,7 +60,7 @@ export default class MongoQuery<
     _includeInitial: boolean,
   ): SubscribeResult<Transformed[]> {
     const store = super.getSubscribeStore();
-    const mingoQuery: mingo.Query = this.createMingoQuery();
+    const mingoQuery: TestCriteria = this.createMingoQuery();
 
     const promise =
       _includeInitial &&

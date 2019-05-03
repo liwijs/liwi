@@ -63,6 +63,12 @@ class MongoQuery extends AbstractSubscribeQuery {
 
   createMingoQuery() {
     if (!this.mingoQuery) {
+      if (!this.options.criteria) {
+        return {
+          test: () => true
+        };
+      }
+
       this.mingoQuery = new mingo.Query(this.options.criteria);
     }
 
