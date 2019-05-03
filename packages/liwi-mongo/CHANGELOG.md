@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/liwijs/liwi/compare/liwi-mongo@4.2.0...liwi-mongo@4.2.1) (2019-05-03)
+
+
+### Bug Fixes
+
+* mingoQuery without criteria ([fe78dd2](https://github.com/liwijs/liwi/commit/fe78dd2))
+
+
+
+
+
 # [4.2.0](https://github.com/liwijs/liwi/compare/liwi-mongo@4.1.0...liwi-mongo@4.2.0) (2019-04-19)
 
 
