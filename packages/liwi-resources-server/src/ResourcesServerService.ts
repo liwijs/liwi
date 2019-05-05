@@ -10,11 +10,11 @@ export interface CreateCursorOptions<Model extends BaseModel> {
 }
 
 export default class ResourcesServerService {
-  public readonly serviceResources: Map<string, ServiceResource<any, any, any>>;
+  readonly serviceResources: Map<string, ServiceResource<any, any, any>>;
 
-  public readonly cursorResources: Map<string, CursorResource<any, any, any>>;
+  readonly cursorResources: Map<string, CursorResource<any, any, any>>;
 
-  public constructor({
+  constructor({
     serviceResources = new Map(),
     cursorResources = new Map(),
   }: {
@@ -25,11 +25,11 @@ export default class ResourcesServerService {
     this.cursorResources = cursorResources;
   }
 
-  public addResource(key: string, resource: ServiceResource<any, any, any>) {
+  addResource(key: string, resource: ServiceResource<any, any, any>) {
     this.serviceResources.set(key, resource);
   }
 
-  public addCursorResource(
+  addCursorResource(
     key: string,
     cursorResource: CursorResource<any, any, any>,
   ) {

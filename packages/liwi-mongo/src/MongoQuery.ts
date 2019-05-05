@@ -66,7 +66,14 @@ export default class MongoQuery<
       _includeInitial &&
       this.fetch((result: Transformed[]) => {
         callback(null, [
-          { type: 'initial', initial: result, limit: this.options.limit },
+          {
+            type: 'initial',
+            initial: result,
+            queryInfo: {
+              limit: this.options.limit,
+              keyPath: this.store.keyPath,
+            },
+          },
         ]);
         return result;
       });

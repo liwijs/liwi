@@ -35,7 +35,7 @@ export function createMongoResourcesVoidClient() {
   return class WebsocketResourcesClient<
     Model extends BaseModel
   > extends VoidClient<Model, '_id'> {
-    public constructor(resourceName: string) {
+    constructor(resourceName: string) {
       super(resourceName, '_id');
     }
   };

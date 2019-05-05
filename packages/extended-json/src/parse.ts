@@ -28,10 +28,11 @@ const internalReviver: JsonReviver = (key: string, value: any) => {
  * @param  {function} [reviver] If a function, prescribes how the value originally produced by parsing is transformed, before being returned
  * @return {*}
  */
-export default (text: string, reviver?: JsonReviver) =>
-  JSON.parse(
+export default function parse(text: string, reviver?: JsonReviver): any {
+  return JSON.parse(
     text,
     reviver == null
       ? internalReviver
       : (key, value) => reviver(key, internalReviver(key, value)),
   );
+}

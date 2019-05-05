@@ -87,7 +87,7 @@ export function createMongoResourcesWebsocketClient(websocket: Websocket) {
   return class WebsocketResourcesClient<
     Model extends BaseModel
   > extends WebsocketClient<Model, '_id'> {
-    public constructor(resourceName: string) {
+    constructor(resourceName: string) {
       super(websocket, resourceName, '_id');
     }
   };

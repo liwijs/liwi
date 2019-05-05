@@ -13,14 +13,15 @@ type JsonReplacer = (
  * @param {string|number} [space]
  * @return {string}
  */
-export default (
+export default function stringify(
   value: any,
   replacer?: JsonReplacer,
   space?: string | number,
-): string =>
-  JSON.stringify(
+): string {
+  return JSON.stringify(
     value,
     // replacer == null ? internalReplacer : (key, value) => replacer(key, internalReplacer(value)),
     replacer,
     space,
   );
+}

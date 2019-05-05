@@ -21,9 +21,9 @@ export default abstract class AbstractStore<
 > implements Store<Model, KeyPath, Connection, Cursor> {
   private readonly _connection: Connection;
 
-  public readonly keyPath: KeyPath;
+  readonly keyPath: KeyPath;
 
-  public constructor(connection: Connection, keyPath: KeyPath) {
+  constructor(connection: Connection, keyPath: KeyPath) {
     assert(connection);
     this._connection = connection;
     this.keyPath = keyPath;

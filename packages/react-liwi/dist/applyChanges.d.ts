@@ -1,4 +1,3 @@
-import { Change } from 'liwi-types';
-declare const _default: <Value>(state: Value[] | undefined, changes: Change<Value>[], keyPath: string) => Value[] | undefined;
-export default _default;
+import { Changes, QueryInfo } from 'liwi-types';
+export default function applyChanges<Value>(state: undefined | Value[], changes: Changes<Value>, queryInfo: QueryInfo): undefined | Value[];
 //# sourceMappingURL=applyChanges.d.ts.map

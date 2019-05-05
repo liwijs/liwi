@@ -37,8 +37,8 @@
   },
   "references": [
     { "path": "../extended-json" },
-    { "path": "../liwi-resources-server" },
-    { "path": "../liwi-store" }
+    { "path": "../liwi-store" },
+    { "path": "../liwi-resources-server" }
   ]
 
 }

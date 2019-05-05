@@ -38,18 +38,19 @@ const copy = function copy(state) {
   return state.slice();
 };
 
-const applyChange = function applyChange(state, change, keyPath) {
+const applyChange = function applyChange(state, change, queryInfo) {
   switch (change.type) {
     case 'initial':
       return change.initial;
 
     case 'inserted':
       {
-        return [...change.objects, ...state.slice(0, -change.objects.length)];
+        return [...change.objects, ...(!queryInfo.limit ? state : state.slice(0, -queryInfo.limit))];
       }
 
     case 'deleted':
       {
+        const keyPath = queryInfo.keyPath;
         const deletedKeys = change.keys;
         return state.filter(function (value) {
           return !deletedKeys.includes(value[keyPath]);
@@ -58,6 +59,7 @@ const applyChange = function applyChange(state, change, keyPath) {
 
     case 'updated':
       {
+        const keyPath = queryInfo.keyPath;
         const newState = copy(state);
         change.objects.forEach(function (newObject) {
           const index = newState.findIndex(function (o) {
@@ -75,20 +77,12 @@ const applyChange = function applyChange(state, change, keyPath) {
 }; // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 
 
-const applyChanges = (function (state, changes, keyPath) {
-  if (changes.length === 1) {
-    const firstChange = changes[0];
-
-    if (firstChange.type === 'initial') {
-      return firstChange.initial;
-    }
-  }
-
+function applyChanges(state, changes, queryInfo) {
   if (state === undefined) return state;
   return changes.reduce(function (stateValue, change) {
-    return applyChange(stateValue, change, keyPath);
+    return applyChange(stateValue, change, queryInfo);
   }, state);
-});
+}
 
 const defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
@@ -101,6 +95,7 @@ function useRetrieveResourceAndSubscribe(createQuery, {
   const subscribeResultRef = useRef(undefined);
   const timeoutRef = useRef(undefined);
   const resultRef = useRef(undefined);
+  const queryInfoRef = useRef(undefined);
 
   const unsubscribe = function unsubscribe() {
     logger.log('unsubscribe'); // reset timeout to allow resubscribing
@@ -141,15 +136,28 @@ function useRetrieveResourceAndSubscribe(createQuery, {
           }
 
           const currentResult = resultRef.current;
-          const newResult = applyChanges(currentResult, changes, '_id' // TODO get keyPath from client(/store)
-          );
 
-          if (newResult && newResult !== currentResult) {
-            resultRef.current = newResult;
+          if (!currentResult && changes.length === 1 && changes[0].type === 'initial') {
+            const initialChange = changes[0];
+            resultRef.current = initialChange.initial;
+            queryInfoRef.current = initialChange.queryInfo || {
+              limit: undefined,
+              keyPath: '_id'
+            };
             dispatch({
               type: 'resolve',
-              result: newResult
+              result: initialChange.initial
             });
+          } else {
+            const newResult = applyChanges(currentResult, changes, queryInfoRef.current);
+
+            if (newResult && newResult !== currentResult) {
+              resultRef.current = newResult;
+              dispatch({
+                type: 'resolve',
+                result: newResult
+              });
+            }
           }
         });
       };

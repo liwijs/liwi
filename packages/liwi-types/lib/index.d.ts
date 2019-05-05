@@ -44,8 +44,15 @@ export type Criteria<Model extends BaseModel> = { [P in keyof Model]?: any } & {
 
 export type Sort<Model extends BaseModel> = { [P in keyof Model]?: -1 | 1 } & { [key: string]: -1 | 1; }
 
-export type Change<Value> =
-  | { type: 'initial'; initial: Array<Value>, limit?: number }
+export interface QueryInfo {
+  limit?: number;
+  keyPath: string;
+}
+
+export type InitialChange<Value = any> = { type: 'initial'; initial: Array<Value>, queryInfo?: QueryInfo };
+
+export type Change<Value = any> =
+  | InitialChange<Value>
   | { type: 'inserted'; objects: Array<Value> }
   | { type: 'updated'; objects: Array<Value> }
   | { type: 'deleted'; keys: Array<string> };

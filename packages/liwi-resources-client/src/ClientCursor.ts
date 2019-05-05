@@ -17,7 +17,7 @@ export default class ClientCursor<
 
   private _result?: Model;
 
-  public constructor(client: Client, options: QueryOptions<Model>) {
+  constructor(client: Client, options: QueryOptions<Model>) {
     super();
     this.client = client;
     this.options = options;
@@ -25,7 +25,7 @@ export default class ClientCursor<
 
   /* options */
 
-  public limit(newLimit: number): Promise<this> {
+  limit(newLimit: number): Promise<this> {
     if (this._idCursor) throw new Error('Cursor already created');
     this.options.limit = newLimit;
     return Promise.resolve(this);
@@ -33,7 +33,7 @@ export default class ClientCursor<
 
   /* results */
 
-  _create() {
+  private _create() {
     if (this._idCursor) throw new Error('Cursor already created');
     return this.client.createCursor(this.options).then((idCursor: number) => {
       if (!idCursor) return;
@@ -49,28 +49,28 @@ export default class ClientCursor<
     return this.client.send('cursor', [type, this._idCursor, value]);
   }
 
-  public advance(count: number) {
+  advance(count: number) {
     this.emit('advance', count);
     return this;
   }
 
-  public async next(): Promise<any> {
+  async next(): Promise<any> {
     const result = await this.emit('next');
     this._result = result;
     this.key = result && result[this.client.keyPath];
     return this.key;
   }
 
-  public result(): Promise<Model> {
+  result(): Promise<Model> {
     if (!this._result) throw new Error('Cannot call result() before next()');
     return Promise.resolve(this._result);
   }
 
-  public count(applyLimit: boolean = false) {
+  count(applyLimit: boolean = false) {
     return this.emit('count', applyLimit);
   }
 
-  public close(): Promise<void> {
+  close(): Promise<void> {
     if (!this.client) return Promise.resolve();
 
     const closedPromise = this._idCursor
@@ -81,7 +81,7 @@ export default class ClientCursor<
     return closedPromise;
   }
 
-  public toArray(): Promise<Model[]> {
+  toArray(): Promise<Model[]> {
     if (this._idCursor) throw new Error('Cursor created, cannot call toArray');
     return this.client.send('cursor toArray', [this.options]);
   }

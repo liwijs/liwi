@@ -41,18 +41,19 @@ var copy = function copy(state) {
   return state.slice();
 };
 
-var applyChange = function applyChange(state, change, keyPath) {
+var applyChange = function applyChange(state, change, queryInfo) {
   switch (change.type) {
     case 'initial':
       return change.initial;
 
     case 'inserted':
       {
-        return [].concat(change.objects, state.slice(0, -change.objects.length));
+        return [].concat(change.objects, !queryInfo.limit ? state : state.slice(0, -queryInfo.limit));
       }
 
     case 'deleted':
       {
+        var keyPath = queryInfo.keyPath;
         var deletedKeys = change.keys;
         return state.filter(function (value) {
           return !deletedKeys.includes(value[keyPath]);
@@ -61,10 +62,11 @@ var applyChange = function applyChange(state, change, keyPath) {
 
     case 'updated':
       {
+        var _keyPath = queryInfo.keyPath;
         var newState = copy(state);
         change.objects.forEach(function (newObject) {
           var index = newState.findIndex(function (o) {
-            return o[keyPath] === newObject[keyPath];
+            return o[_keyPath] === newObject[_keyPath];
           });
           if (index === -1) return;
           newState[index] = newObject;
@@ -78,20 +80,12 @@ var applyChange = function applyChange(state, change, keyPath) {
 }; // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 
 
-var applyChanges = (function (state, changes, keyPath) {
-  if (changes.length === 1) {
-    var firstChange = changes[0];
-
-    if (firstChange.type === 'initial') {
-      return firstChange.initial;
-    }
-  }
-
+function applyChanges(state, changes, queryInfo) {
   if (state === undefined) return state;
   return changes.reduce(function (stateValue, change) {
-    return applyChange(stateValue, change, keyPath);
+    return applyChange(stateValue, change, queryInfo);
   }, state);
-});
+}
 
 var defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
@@ -105,6 +99,7 @@ function useRetrieveResourceAndSubscribe(createQuery, _temp) {
   var subscribeResultRef = useRef(undefined);
   var timeoutRef = useRef(undefined);
   var resultRef = useRef(undefined);
+  var queryInfoRef = useRef(undefined);
 
   var unsubscribe = function unsubscribe() {
     logger.log('unsubscribe'); // reset timeout to allow resubscribing
@@ -145,15 +140,28 @@ function useRetrieveResourceAndSubscribe(createQuery, _temp) {
           }
 
           var currentResult = resultRef.current;
-          var newResult = applyChanges(currentResult, changes, '_id' // TODO get keyPath from client(/store)
-          );
 
-          if (newResult && newResult !== currentResult) {
-            resultRef.current = newResult;
+          if (!currentResult && changes.length === 1 && changes[0].type === 'initial') {
+            var initialChange = changes[0];
+            resultRef.current = initialChange.initial;
+            queryInfoRef.current = initialChange.queryInfo || {
+              limit: undefined,
+              keyPath: '_id'
+            };
             dispatch({
               type: 'resolve',
-              result: newResult
+              result: initialChange.initial
             });
+          } else {
+            var newResult = applyChanges(currentResult, changes, queryInfoRef.current);
+
+            if (newResult && newResult !== currentResult) {
+              resultRef.current = newResult;
+              dispatch({
+                type: 'resolve',
+                result: newResult
+              });
+            }
           }
         });
       };

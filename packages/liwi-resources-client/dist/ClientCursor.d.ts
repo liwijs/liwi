@@ -9,7 +9,7 @@ export default class ClientCursor<Model extends BaseModel, KeyPath extends strin
     private _result?;
     constructor(client: Client, options: QueryOptions<Model>);
     limit(newLimit: number): Promise<this>;
-    _create(): Promise<void>;
+    private _create;
     private emit;
     advance(count: number): this;
     next(): Promise<any>;

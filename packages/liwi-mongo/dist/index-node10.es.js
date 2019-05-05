@@ -88,7 +88,10 @@ class MongoQuery extends AbstractSubscribeQuery {
       callback(null, [{
         type: 'initial',
         initial: result,
-        limit: this.options.limit
+        queryInfo: {
+          limit: this.options.limit,
+          keyPath: this.store.keyPath
+        }
       }]);
       return result;
     });

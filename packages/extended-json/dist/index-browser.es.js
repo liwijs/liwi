@@ -8,10 +8,10 @@
  * @param {string|number} [space]
  * @return {string}
  */
-var stringify = (function (value, replacer, space) {
+function stringify(value, replacer, space) {
   return JSON.stringify(value, // replacer == null ? internalReplacer : (key, value) => replacer(key, internalReplacer(value)),
   replacer, space);
-});
+}
 
 // eslint-disable-next-line unicorn/no-unsafe-regex
 var regexpStringDate = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
@@ -34,11 +34,11 @@ var internalReviver = function internalReviver(key, value) {
  */
 
 
-var parse = (function (text, reviver) {
+function parse(text, reviver) {
   return JSON.parse(text, reviver == null ? internalReviver : function (key, value) {
     return reviver(key, internalReviver(key, value));
   });
-});
+}
 
 export { parse as decode, stringify as encode, parse, stringify };
 //# sourceMappingURL=index-browser.es.js.map

@@ -8,8 +8,10 @@
  * @param {string|number} [space]
  * @return {string}
  */
-const stringify = ((value, replacer, space) => JSON.stringify(value, // replacer == null ? internalReplacer : (key, value) => replacer(key, internalReplacer(value)),
-replacer, space));
+function stringify(value, replacer, space) {
+  return JSON.stringify(value, // replacer == null ? internalReplacer : (key, value) => replacer(key, internalReplacer(value)),
+  replacer, space);
+}
 
 // eslint-disable-next-line unicorn/no-unsafe-regex
 const regexpStringDate = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
@@ -32,7 +34,9 @@ const internalReviver = (key, value) => {
  */
 
 
-const parse = ((text, reviver) => JSON.parse(text, reviver == null ? internalReviver : (key, value) => reviver(key, internalReviver(key, value))));
+function parse(text, reviver) {
+  return JSON.parse(text, reviver == null ? internalReviver : (key, value) => reviver(key, internalReviver(key, value)));
+}
 
 export { parse as decode, stringify as encode, parse, stringify };
 //# sourceMappingURL=index-node10-dev.es.js.map

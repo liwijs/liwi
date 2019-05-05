@@ -1,30 +1,32 @@
 /* eslint-disable camelcase, complexity */
-import { Change, Changes } from 'liwi-types';
+import { Change, Changes, QueryInfo } from 'liwi-types';
 
 const copy = <Value>(state: Value[]): Value[] => state.slice();
 
-const applyChange = <
-  KeyPath extends string,
-  Value extends { [K in KeyPath]: any }
->(
+const applyChange = <Value extends any>(
   state: Value[],
   change: Change<Value>,
-  keyPath: KeyPath,
+  queryInfo: QueryInfo,
 ): Value[] => {
   switch (change.type) {
     case 'initial':
       return change.initial;
 
     case 'inserted': {
-      return [...change.objects, ...state.slice(0, -change.objects.length)];
+      return [
+        ...change.objects,
+        ...(!queryInfo.limit ? state : state.slice(0, -queryInfo.limit)),
+      ];
     }
 
     case 'deleted': {
+      const keyPath = queryInfo.keyPath;
       const deletedKeys = change.keys;
       return state.filter((value) => !deletedKeys.includes(value[keyPath]));
     }
 
     case 'updated': {
+      const keyPath = queryInfo.keyPath;
       const newState = copy(state);
       change.objects.forEach((newObject) => {
         const index = newState.findIndex(
@@ -42,23 +44,16 @@ const applyChange = <
 };
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
-export default <Value>(
+export default function applyChanges<Value>(
   state: undefined | Value[],
   changes: Changes<Value>,
-  keyPath: string,
-): undefined | Value[] => {
-  if (changes.length === 1) {
-    const firstChange = changes[0];
-    if (firstChange.type === 'initial') {
-      return firstChange.initial;
-    }
-  }
-
+  queryInfo: QueryInfo,
+): undefined | Value[] {
   if (state === undefined) return state;
 
   return changes.reduce(
     (stateValue: Value[], change: Change<Value>) =>
-      applyChange(stateValue, change, keyPath),
+      applyChange(stateValue, change, queryInfo),
     state,
   );
-};
+}

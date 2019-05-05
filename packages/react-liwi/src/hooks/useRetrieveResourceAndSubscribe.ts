@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useRef } from 'react';
-import { BaseModel, Changes } from 'liwi-types';
+import { BaseModel, Changes, InitialChange, QueryInfo } from 'liwi-types';
 import { AbstractQuery, SubscribeResult } from 'liwi-store';
 import Logger from 'nightingale-logger';
 import applyChanges from '../applyChanges';
@@ -28,6 +28,8 @@ export default function useRetrieveResourceAndSubscribe<
     undefined,
   );
   const resultRef = useRef<Model[] | undefined>(undefined);
+
+  const queryInfoRef = useRef<QueryInfo | undefined>(undefined);
 
   const unsubscribe = (): void => {
     logger.log('unsubscribe');
@@ -71,15 +73,35 @@ export default function useRetrieveResourceAndSubscribe<
               }
 
               const currentResult = resultRef.current;
-              const newResult = applyChanges(
-                currentResult,
-                changes,
-                '_id', // TODO get keyPath from client(/store)
-              );
 
-              if (newResult && newResult !== currentResult) {
-                resultRef.current = newResult;
-                dispatch({ type: 'resolve', result: newResult });
+              if (
+                !currentResult &&
+                changes.length === 1 &&
+                changes[0].type === 'initial'
+              ) {
+                const initialChange: InitialChange = changes[0] as InitialChange;
+                resultRef.current = initialChange.initial;
+                queryInfoRef.current = initialChange.queryInfo || {
+                  limit: undefined,
+                  keyPath: '_id',
+                };
+                dispatch({
+                  type: 'resolve',
+                  result: initialChange.initial,
+                });
+              } else {
+                const newResult = applyChanges(
+                  currentResult,
+                  changes,
+                  queryInfoRef.current as NonNullable<
+                    typeof queryInfoRef.current
+                  >,
+                );
+
+                if (newResult && newResult !== currentResult) {
+                  resultRef.current = newResult;
+                  dispatch({ type: 'resolve', result: newResult });
+                }
               }
             },
           );
