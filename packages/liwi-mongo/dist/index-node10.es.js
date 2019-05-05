@@ -249,7 +249,7 @@ class MongoStore extends AbstractStore {
   async replaceOne(object) {
     if (!object.updated) object.updated = new Date();
     const collection = await this.collection;
-    await collection.updateOne({
+    await collection.replaceOne({
       _id: object._id
     }, object);
     return object;

@@ -95,7 +95,7 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     if (!object.updated) object.updated = new Date();
 
     const collection = await this.collection;
-    await collection.updateOne({ _id: object._id }, object);
+    await collection.replaceOne({ _id: object._id }, object);
     return object as Model;
   }
 
