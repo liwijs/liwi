@@ -5,7 +5,11 @@
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
-  "repository": "git@github.com:liwijs/liwi.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com:liwijs/liwi.git",
+    "directory": "packages/liwi-resources"
+  },
   "homepage": "https://github.com/liwijs/liwi",
   "engines": {
     "node": ">=8.3.0"
@@ -15,7 +19,7 @@
   "sideEffects": false,
   "scripts": {
     "build:definitions": "tsc --lib esnext --noEmit ./lib/index.d.ts",
-    "lint": "eslint lib/"
+    "lint": "eslint --quiet lib/"
   },
   "prettier": {
     "trailingComma": "es5",
@@ -26,10 +30,9 @@
     "liwi-types": "^2.1.0"
   },
   "devDependencies": {
-    "eslint": "5.13.0",
-    "eslint-config-pob": "28.0.0",
-    "eslint-plugin-import": "2.16.0",
-    "eslint-plugin-node": "8.0.1",
-    "prettier": "1.16.4"
+    "@pob/eslint-config": "31.0.0",
+    "@pob/eslint-config-node": "31.0.0",
+    "eslint": "5.16.0",
+    "prettier": "1.17.0"
   }
 }

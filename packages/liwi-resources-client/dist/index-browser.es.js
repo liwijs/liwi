@@ -1,12 +1,7 @@
+import _inheritsLoose from '@babel/runtime/helpers/esm/inheritsLoose';
 import Logger from 'nightingale-logger';
 import { decode } from 'extended-json';
 import { AbstractQuery } from 'liwi-store';
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
 
 var logger = new Logger('liwi:resources:query');
 
@@ -163,5 +158,5 @@ var createResourceClientService = function createResourceClientService(client, o
 
 var createResourceClient = createResourceClientService;
 
-export { createResourceClientService, createResourceClient, AbstractClient };
+export { AbstractClient, createResourceClient, createResourceClientService };
 //# sourceMappingURL=index-browser.es.js.map

@@ -95,19 +95,19 @@ class AbstractClient {
   // ): Promise<ClientCursor<Model, KeyPath>> {
   //   return Promise.resolve(new ClientCursor(this, { criteria, sort }));
   // }
-  findByKey() {
+  findByKey(key) {
     throw new Error('Use operations instead');
   }
 
-  replaceOne() {
+  replaceOne(object) {
     throw new Error('Use operations instead');
   }
 
-  partialUpdateByKey() {
+  partialUpdateByKey(key, partialUpdate, criteria) {
     throw new Error('Use operations instead');
   }
 
-  deleteByKey() {
+  deleteByKey(key) {
     throw new Error('Use operations instead');
   }
 
@@ -131,5 +131,5 @@ const createResourceClientService = (client, options) => {
 
 const createResourceClient = createResourceClientService;
 
-export { createResourceClientService, createResourceClient, AbstractClient };
+export { AbstractClient, createResourceClient, createResourceClientService };
 //# sourceMappingURL=index-node10-dev.es.js.map

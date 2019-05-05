@@ -41,7 +41,13 @@
             "es"
           ]
         }
-      ]
+      ],
+      "withReact": true
+    }
+  },
+  "react-liwi": {
+    "type": {
+      "type": "lib"
     }
   }
 }

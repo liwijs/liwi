@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="https://david-dm.org/liwijs/liwi?path=packages/liwi-mongo-example"><img src="https://david-dm.org/liwijs/liwi?path=packages/liwi-mongo-example.svg?style=flat-square"></a>
+  <a href="https://david-dm.org/liwijs/liwi?path=packages/liwi-mongo-example"><img src="https://david-dm.org/liwijs/liwi.svg?path=packages/liwi-mongo-example?style=flat-square"></a>
 </p>
 
 ## Install

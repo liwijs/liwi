@@ -2,41 +2,10 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
+var _regeneratorRuntime = _interopDefault(require('@babel/runtime/regenerator'));
+var _asyncToGenerator = _interopDefault(require('@babel/runtime/helpers/esm/asyncToGenerator'));
 
 var ResourceServerCursor =
 /*#__PURE__*/
@@ -101,9 +70,9 @@ function () {
   function () {
     var _createCursor = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee(resource, connectedUser, _ref2) {
+    _regeneratorRuntime.mark(function _callee(resource, connectedUser, _ref2) {
       var criteria, sort, limit, cursor;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
@@ -125,7 +94,7 @@ function () {
               return _context.stop();
           }
         }
-      }, _callee, this);
+      }, _callee);
     }));
 
     return function createCursor() {

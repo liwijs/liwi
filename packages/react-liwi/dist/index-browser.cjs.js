@@ -4,15 +4,10 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var _inheritsLoose = _interopDefault(require('@babel/runtime/helpers/esm/inheritsLoose'));
 var React = require('react');
 var React__default = _interopDefault(React);
 var Logger = _interopDefault(require('nightingale-logger'));
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
 
 var FindComponent =
 /*#__PURE__*/
@@ -430,6 +425,6 @@ function useResource(createQuery, subscribe) {
 
 exports.Find = FindComponent;
 exports.FindAndSubscribe = FindAndSubscribeComponent;
-exports.useResources = useResources;
 exports.useResource = useResource;
+exports.useResources = useResources;
 //# sourceMappingURL=index-browser.cjs.js.map

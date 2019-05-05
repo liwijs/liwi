@@ -41,7 +41,13 @@
             "es"
           ]
         }
-      ]
+      ],
+      "withReact": false
+    }
+  },
+  "liwi-subscribe-store": {
+    "type": {
+      "type": "lib"
     }
   }
 }

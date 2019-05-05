@@ -5,23 +5,26 @@
       "testing": true,
       "codecov": true,
       "documentation": false,
+      "typescript": true,
       "packageNames": [
         "extended-json",
+        "liwi-types",
         "liwi",
-        "liwi-mongo",
-        "liwi-mongo-example",
         "liwi-resources",
+        "liwi-store",
         "liwi-resources-client",
         "liwi-resources-server",
+        "liwi-subscribe-store",
+        "react-liwi",
+        "liwi-mongo",
         "liwi-resources-void-client",
         "liwi-resources-websocket-client",
         "liwi-resources-websocket-server",
-        "liwi-store",
-        "liwi-subscribe-store",
-        "liwi-types",
-        "react-liwi"
-      ],
-      "typescript": false
+        "liwi-mongo-example"
+      ]
+    },
+    "renovate": {
+      "enable": true
     }
   }
 }

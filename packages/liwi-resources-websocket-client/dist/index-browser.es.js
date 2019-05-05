@@ -1,12 +1,7 @@
+import _inheritsLoose from '@babel/runtime/helpers/esm/inheritsLoose';
 import Logger from 'nightingale-logger';
 import { encode, decode } from 'extended-json';
 import { AbstractClient } from 'liwi-resources-client';
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
 
 var logger = new Logger('liwi:resources-websocket-client');
 

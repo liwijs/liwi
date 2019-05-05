@@ -325,7 +325,7 @@ class MongoStore extends AbstractStore {
   findByKey(key) {
     return this.collection.then(collection => collection.findOne({
       _id: key
-    }));
+    })).then(result => result || undefined);
   }
 
   findOne(criteria, sort) {
@@ -441,5 +441,5 @@ class MongoConnection extends AbstractConnection {
 
 /* eslint-disable typescript/no-use-before-define */
 
-export { MongoStore, MongoConnection };
+export { MongoConnection, MongoStore };
 //# sourceMappingURL=index-node10-dev.es.js.map

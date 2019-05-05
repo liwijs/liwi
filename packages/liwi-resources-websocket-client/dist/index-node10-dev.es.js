@@ -66,7 +66,7 @@ class WebsocketClient extends AbstractClient {
 
 }
 function createMongoResourcesWebsocketClient(websocket) {
-  return class extends WebsocketClient {
+  return class WebsocketResourcesClient extends WebsocketClient {
     constructor(resourceName) {
       super(websocket, resourceName, '_id');
     }

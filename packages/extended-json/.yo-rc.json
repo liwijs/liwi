@@ -44,7 +44,13 @@
             "es"
           ]
         }
-      ]
+      ],
+      "withReact": false
+    }
+  },
+  "extended-json": {
+    "type": {
+      "type": "lib"
     }
   }
 }

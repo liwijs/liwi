@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var assert = _interopDefault(require('assert'));
+const assert = _interopDefault(require('assert'));
 
 class AbstractConnection {}
 
@@ -122,7 +122,7 @@ class AbstractStore {
 
 exports.AbstractConnection = AbstractConnection;
 exports.AbstractCursor = AbstractCursor;
-exports.AbstractStoreCursor = AbstractStoreCursor;
 exports.AbstractQuery = AbstractQuery;
 exports.AbstractStore = AbstractStore;
+exports.AbstractStoreCursor = AbstractStoreCursor;
 //# sourceMappingURL=index-node10-dev.cjs.js.map

@@ -107,7 +107,7 @@ class SubscribeStore {
     return updated;
   }
 
-  partialUpdateMany() {
+  partialUpdateMany(criteria, partialUpdate) {
     throw new Error('partialUpdateMany cannot be used in SubscribeStore'); // return this.store.partialUpdateMany(criteria, partialUpdate);
   }
 
@@ -123,7 +123,7 @@ class SubscribeStore {
     });
   }
 
-  deleteMany() {
+  deleteMany(criteria) {
     throw new Error('deleteMany cannot be used in SubscribeStore');
   }
 
@@ -150,5 +150,5 @@ class AbstractSubscribeQuery extends AbstractQuery {
 
 }
 
-export { SubscribeStore, AbstractSubscribeQuery };
+export { AbstractSubscribeQuery, SubscribeStore };
 //# sourceMappingURL=index-node10-dev.es.js.map

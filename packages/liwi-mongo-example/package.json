@@ -2,11 +2,13 @@
   "name": "liwi-mongo-example",
   "private": true,
   "version": "1.3.8",
-  "description": "",
-  "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
-  "repository": "git@github.com:liwijs/liwi.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com:liwijs/liwi.git",
+    "directory": "packages/liwi-mongo-example"
+  },
   "homepage": "https://github.com/liwijs/liwi",
   "engines": {
     "node": ">=10.0.0"
@@ -17,8 +19,7 @@
   "scripts": {
     "build": "pob-build",
     "build:definitions": "tsc -p tsconfig.build.json",
-    "lint": "npm run typescript-check && eslint --ext .ts src/",
-    "typescript-check": "tsc --noEmit",
+    "lint": "eslint --ext .ts --quiet src/",
     "watch": "pob-watch"
   },
   "prettier": {
@@ -30,18 +31,13 @@
     "liwi-mongo": "^4.2.1"
   },
   "devDependencies": {
-    "@babel/core": "7.2.2",
-    "@typescript-eslint/eslint-plugin": "1.3.0",
-    "@typescript-eslint/parser": "1.3.0",
-    "babel-eslint": "10.0.1",
-    "babel-preset-latest-node": "3.0.1",
-    "eslint": "5.13.0",
-    "eslint-config-pob": "28.0.0",
-    "eslint-plugin-babel": "5.3.0",
-    "eslint-plugin-import": "2.16.0",
-    "eslint-plugin-node": "8.0.1",
-    "pob-babel": "23.6.2",
-    "prettier": "1.16.4",
-    "typescript": "3.3.3"
+    "@babel/core": "7.4.4",
+    "@pob/eslint-config-babel": "31.0.0",
+    "@pob/eslint-config-babel-node": "31.0.0",
+    "@pob/eslint-config-typescript": "31.1.0",
+    "babel-preset-latest-node": "3.1.1",
+    "eslint": "5.16.0",
+    "pob-babel": "23.16.0",
+    "prettier": "1.17.0"
   }
 }

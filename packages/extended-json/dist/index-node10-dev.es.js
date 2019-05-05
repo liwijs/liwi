@@ -8,7 +8,7 @@
  * @param {string|number} [space]
  * @return {string}
  */
-var stringify = ((value, replacer, space) => JSON.stringify(value, // replacer == null ? internalReplacer : (key, value) => replacer(key, internalReplacer(value)),
+const stringify = ((value, replacer, space) => JSON.stringify(value, // replacer == null ? internalReplacer : (key, value) => replacer(key, internalReplacer(value)),
 replacer, space));
 
 // eslint-disable-next-line unicorn/no-unsafe-regex
@@ -32,7 +32,7 @@ const internalReviver = (key, value) => {
  */
 
 
-var parse = ((text, reviver) => JSON.parse(text, reviver == null ? internalReviver : (key, value) => reviver(key, internalReviver(key, value))));
+const parse = ((text, reviver) => JSON.parse(text, reviver == null ? internalReviver : (key, value) => reviver(key, internalReviver(key, value))));
 
-export { stringify, stringify as encode, parse, parse as decode };
+export { parse as decode, stringify as encode, parse, stringify };
 //# sourceMappingURL=index-node10-dev.es.js.map

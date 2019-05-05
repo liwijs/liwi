@@ -4,11 +4,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var mongodb = require('mongodb');
-var liwiStore = require('liwi-store');
-var mingo = _interopDefault(require('mingo'));
-var liwiSubscribeStore = require('liwi-subscribe-store');
-var Logger = _interopDefault(require('nightingale-logger'));
+const mongodb = require('mongodb');
+const liwiStore = require('liwi-store');
+const mingo = _interopDefault(require('mingo'));
+const liwiSubscribeStore = require('liwi-subscribe-store');
+const Logger = _interopDefault(require('nightingale-logger'));
 
 class MongoCursor extends liwiStore.AbstractStoreCursor {
   // key in AbstractCursor
@@ -331,7 +331,7 @@ class MongoStore extends liwiStore.AbstractStore {
   findByKey(key) {
     return this.collection.then(collection => collection.findOne({
       _id: key
-    }));
+    })).then(result => result || undefined);
   }
 
   findOne(criteria, sort) {
@@ -447,6 +447,6 @@ class MongoConnection extends liwiStore.AbstractConnection {
 
 /* eslint-disable typescript/no-use-before-define */
 
-exports.MongoStore = MongoStore;
 exports.MongoConnection = MongoConnection;
+exports.MongoStore = MongoStore;
 //# sourceMappingURL=index-node10-dev.cjs.js.map

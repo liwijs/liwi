@@ -1,7 +1,15 @@
 {
+  "root": true,
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "plugins": ["@typescript-eslint"],
-  "extends": ["pob/babel-node", "pob/typescript"],
+  "extends": [
+    "@pob/eslint-config-babel",
+    "@pob/eslint-config-babel-node",
+    "@pob/eslint-config-typescript"
+  ],
   "rules": {
     "import/no-cycle": "off"
   }

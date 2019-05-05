@@ -4,15 +4,10 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var _inheritsLoose = _interopDefault(require('@babel/runtime/helpers/esm/inheritsLoose'));
 var Logger = _interopDefault(require('nightingale-logger'));
 var extendedJson = require('extended-json');
 var liwiResourcesClient = require('liwi-resources-client');
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
 
 var logger = new Logger('liwi:resources-websocket-client');
 

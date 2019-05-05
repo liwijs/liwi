@@ -27,7 +27,13 @@
             "cjs"
           ]
         }
-      ]
+      ],
+      "withReact": false
+    }
+  },
+  "liwi-mongo": {
+    "type": {
+      "type": "lib"
     }
   }
 }

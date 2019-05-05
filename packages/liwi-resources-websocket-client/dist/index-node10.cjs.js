@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var Logger = _interopDefault(require('nightingale-logger'));
-var extendedJson = require('extended-json');
-var liwiResourcesClient = require('liwi-resources-client');
+const Logger = _interopDefault(require('nightingale-logger'));
+const extendedJson = require('extended-json');
+const liwiResourcesClient = require('liwi-resources-client');
 
 const logger = new Logger('liwi:resources-websocket-client');
 class WebsocketClient extends liwiResourcesClient.AbstractClient {
@@ -72,7 +72,7 @@ class WebsocketClient extends liwiResourcesClient.AbstractClient {
 
 }
 function createMongoResourcesWebsocketClient(websocket) {
-  return class extends WebsocketClient {
+  return class WebsocketResourcesClient extends WebsocketClient {
     constructor(resourceName) {
       super(websocket, resourceName, '_id');
     }

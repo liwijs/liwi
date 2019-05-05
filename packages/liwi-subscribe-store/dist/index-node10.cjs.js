@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var liwiStore = require('liwi-store');
+const liwiStore = require('liwi-store');
 
 class SubscribeStore {
   constructor(store) {
@@ -111,7 +111,7 @@ class SubscribeStore {
     return updated;
   }
 
-  partialUpdateMany() {
+  partialUpdateMany(criteria, partialUpdate) {
     throw new Error('partialUpdateMany cannot be used in SubscribeStore'); // return this.store.partialUpdateMany(criteria, partialUpdate);
   }
 
@@ -127,7 +127,7 @@ class SubscribeStore {
     });
   }
 
-  deleteMany() {
+  deleteMany(criteria) {
     throw new Error('deleteMany cannot be used in SubscribeStore');
   }
 
@@ -154,6 +154,6 @@ class AbstractSubscribeQuery extends liwiStore.AbstractQuery {
 
 }
 
-exports.SubscribeStore = SubscribeStore;
 exports.AbstractSubscribeQuery = AbstractSubscribeQuery;
+exports.SubscribeStore = SubscribeStore;
 //# sourceMappingURL=index-node10.cjs.js.map

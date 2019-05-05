@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://npmjs.org/package/liwi-resources-websocket-server"><img src="https://img.shields.io/npm/v/liwi-resources-websocket-server.svg?style=flat-square"></a>
-  <a href="https://david-dm.org/liwijs/liwi?path=packages/liwi-resources-websocket-server"><img src="https://david-dm.org/liwijs/liwi?path=packages/liwi-resources-websocket-server.svg?style=flat-square"></a>
+  <a href="https://david-dm.org/liwijs/liwi?path=packages/liwi-resources-websocket-server"><img src="https://david-dm.org/liwijs/liwi.svg?path=packages/liwi-resources-websocket-server?style=flat-square"></a>
 </p>
 
 ## Install

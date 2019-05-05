@@ -11,7 +11,13 @@
       ],
       "documentation": false,
       "testing": false,
-      "envs": []
+      "envs": [],
+      "withReact": false
+    }
+  },
+  "liwi-resources": {
+    "type": {
+      "type": "lib"
     }
   }
 }

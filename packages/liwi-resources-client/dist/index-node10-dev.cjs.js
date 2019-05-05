@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var Logger = _interopDefault(require('nightingale-logger'));
-var extendedJson = require('extended-json');
-var liwiStore = require('liwi-store');
+const Logger = _interopDefault(require('nightingale-logger'));
+const extendedJson = require('extended-json');
+const liwiStore = require('liwi-store');
 
 const logger = new Logger('liwi:resources:query');
 class ClientQuery extends liwiStore.AbstractQuery {
@@ -101,19 +101,19 @@ class AbstractClient {
   // ): Promise<ClientCursor<Model, KeyPath>> {
   //   return Promise.resolve(new ClientCursor(this, { criteria, sort }));
   // }
-  findByKey() {
+  findByKey(key) {
     throw new Error('Use operations instead');
   }
 
-  replaceOne() {
+  replaceOne(object) {
     throw new Error('Use operations instead');
   }
 
-  partialUpdateByKey() {
+  partialUpdateByKey(key, partialUpdate, criteria) {
     throw new Error('Use operations instead');
   }
 
-  deleteByKey() {
+  deleteByKey(key) {
     throw new Error('Use operations instead');
   }
 
@@ -137,7 +137,7 @@ const createResourceClientService = (client, options) => {
 
 const createResourceClient = createResourceClientService;
 
-exports.createResourceClientService = createResourceClientService;
-exports.createResourceClient = createResourceClient;
 exports.AbstractClient = AbstractClient;
+exports.createResourceClient = createResourceClient;
+exports.createResourceClientService = createResourceClientService;
 //# sourceMappingURL=index-node10-dev.cjs.js.map

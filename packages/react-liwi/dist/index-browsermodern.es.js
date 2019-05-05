@@ -89,7 +89,7 @@ const applyChange = function applyChange(state, change, keyPath) {
 }; // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 
 
-var applyChanges = (function (state, changes, keyPath) {
+const applyChanges = (function (state, changes, keyPath) {
   if (changes.length === 1) {
     const firstChange = changes[0];
 
@@ -382,5 +382,5 @@ function useResource(createQuery, subscribe) {
   return [false, state.result];
 }
 
-export { FindComponent as Find, FindAndSubscribeComponent as FindAndSubscribe, useResources, useResource };
+export { FindComponent as Find, FindAndSubscribeComponent as FindAndSubscribe, useResource, useResources };
 //# sourceMappingURL=index-browsermodern.es.js.map

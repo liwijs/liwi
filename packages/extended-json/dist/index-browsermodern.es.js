@@ -8,7 +8,7 @@
  * @param {string|number} [space]
  * @return {string}
  */
-var stringify = (function (value, replacer, space) {
+const stringify = (function (value, replacer, space) {
   return JSON.stringify(value, // replacer == null ? internalReplacer : (key, value) => replacer(key, internalReplacer(value)),
   replacer, space);
 });
@@ -34,11 +34,11 @@ const internalReviver = function internalReviver(key, value) {
  */
 
 
-var parse = (function (text, reviver) {
+const parse = (function (text, reviver) {
   return JSON.parse(text, reviver == null ? internalReviver : function (key, value) {
     return reviver(key, internalReviver(key, value));
   });
 });
 
-export { stringify, stringify as encode, parse, parse as decode };
+export { parse as decode, stringify as encode, parse, stringify };
 //# sourceMappingURL=index-browsermodern.es.js.map

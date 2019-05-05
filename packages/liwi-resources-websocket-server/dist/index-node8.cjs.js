@@ -4,8 +4,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var Logger = _interopDefault(require('nightingale-logger'));
-var extendedJson = require('extended-json');
+const Logger = _interopDefault(require('nightingale-logger'));
+const extendedJson = require('extended-json');
 
 /* eslint-disable complexity, max-lines */
 const logger = new Logger('liwi:rest-websocket');

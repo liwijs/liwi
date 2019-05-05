@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var React = require('react');
-var React__default = _interopDefault(React);
-var Logger = _interopDefault(require('nightingale-logger'));
+const React = require('react');
+const React__default = _interopDefault(React);
+const Logger = _interopDefault(require('nightingale-logger'));
 
 class FindComponent extends React.Component {
   constructor(...args) {
@@ -86,7 +86,7 @@ const applyChange = (state, change, keyPath) => {
 }; // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 
 
-var applyChanges = ((state, changes, keyPath) => {
+const applyChanges = ((state, changes, keyPath) => {
   if (changes.length === 1) {
     const firstChange = changes[0];
 
@@ -219,6 +219,6 @@ function useResource(createQuery, subscribe) {
 
 exports.Find = FindComponent;
 exports.FindAndSubscribe = FindAndSubscribeComponent;
-exports.useResources = useResources;
 exports.useResource = useResource;
+exports.useResources = useResources;
 //# sourceMappingURL=index-node10.cjs.js.map

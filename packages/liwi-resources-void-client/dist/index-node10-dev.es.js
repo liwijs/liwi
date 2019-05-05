@@ -1,23 +1,23 @@
 import { AbstractClient } from 'liwi-resources-client';
 
 class VoidClient extends AbstractClient {
-  emitSubscribe() {
+  emitSubscribe(type, args) {
     throw new Error('Void client: emitSubscribe should not be called');
   }
 
-  createCursor() {
+  createCursor(options) {
     throw new Error('Void client: createCursor should not be called');
   }
 
-  send() {
+  send(type, value) {
     throw new Error('Void client: send should not be called');
   }
 
-  on() {
+  on(event, handler) {
     throw new Error('Void client: on should not be called');
   }
 
-  off() {
+  off(event, handler) {
     throw new Error('Void client: off should not be called');
   }
 

@@ -2,13 +2,10 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var liwiResourcesClient = require('liwi-resources-client');
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
+var _inheritsLoose = _interopDefault(require('@babel/runtime/helpers/esm/inheritsLoose'));
+var liwiResourcesClient = require('liwi-resources-client');
 
 var VoidClient =
 /*#__PURE__*/

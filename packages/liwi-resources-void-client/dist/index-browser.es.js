@@ -1,10 +1,5 @@
+import _inheritsLoose from '@babel/runtime/helpers/esm/inheritsLoose';
 import { AbstractClient } from 'liwi-resources-client';
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
 
 var VoidClient =
 /*#__PURE__*/

@@ -41,7 +41,13 @@
             "es"
           ]
         }
-      ]
+      ],
+      "withReact": false
+    }
+  },
+  "liwi-resources-websocket-server": {
+    "type": {
+      "type": "lib"
     }
   }
 }

@@ -187,9 +187,9 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
   }
 
   findByKey(key: any): Promise<Model | undefined> {
-    return this.collection.then((collection) =>
-      collection.findOne({ _id: key }),
-    );
+    return this.collection
+      .then((collection) => collection.findOne({ _id: key }))
+      .then((result) => result || undefined);
   }
 
   findOne(

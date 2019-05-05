@@ -2,8 +2,8 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var assert = _interopDefault(require('assert'));
-var liwiMongo = require('liwi-mongo');
+const assert = _interopDefault(require('assert'));
+const liwiMongo = require('liwi-mongo');
 
 const connection = new liwiMongo.MongoConnection(new Map([['database', 'liwi-mongo-example']]));
 const users = new liwiMongo.MongoStore(connection, 'users');

@@ -95,7 +95,7 @@ function init(io, resourcesService) {
                   return;
                 }
 
-                var _watcher = query[type](function (err, result) {
+                var watcher = query[type](function (err, result) {
                   if (err) {
                     logger.error(type, {
                       err: err
@@ -104,8 +104,7 @@ function init(io, resourcesService) {
 
                   socket.emit(eventName, err, result && extendedJson.encode(result));
                 });
-
-                _watcher.then(function () {
+                watcher.then(function () {
                   return callback(null);
                 }, function (err) {
                   logger.error(type, {
@@ -113,16 +112,14 @@ function init(io, resourcesService) {
                   });
                   callback(err.message);
                 });
-
-                var _subscribeHook = _resource.subscribeHooks && _resource.subscribeHooks[key];
-
+                var subscribeHook = _resource.subscribeHooks && _resource.subscribeHooks[key];
                 openWatchers.set(watcherKey, {
-                  watcher: _watcher,
-                  subscribeHook: _subscribeHook
+                  watcher: watcher,
+                  subscribeHook: subscribeHook
                 });
 
-                if (_subscribeHook) {
-                  _subscribeHook.subscribed(socket.user);
+                if (subscribeHook) {
+                  subscribeHook.subscribed(socket.user);
                 }
               }
             } catch (err) {

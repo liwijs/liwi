@@ -44,8 +44,8 @@ var parse = (function (text, reviver) {
   });
 });
 
-exports.stringify = stringify;
+exports.decode = parse;
 exports.encode = stringify;
 exports.parse = parse;
-exports.decode = parse;
+exports.stringify = stringify;
 //# sourceMappingURL=index-browser-dev.cjs.js.map

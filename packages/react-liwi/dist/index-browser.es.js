@@ -1,11 +1,6 @@
+import _inheritsLoose from '@babel/runtime/helpers/esm/inheritsLoose';
 import React, { Component, useReducer, useRef, useEffect } from 'react';
 import Logger from 'nightingale-logger';
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
 
 var FindComponent =
 /*#__PURE__*/
@@ -421,5 +416,5 @@ function useResource(createQuery, subscribe) {
   return [false, state.result];
 }
 
-export { FindComponent as Find, FindAndSubscribeComponent as FindAndSubscribe, useResources, useResource };
+export { FindComponent as Find, FindAndSubscribeComponent as FindAndSubscribe, useResource, useResources };
 //# sourceMappingURL=index-browser.es.js.map

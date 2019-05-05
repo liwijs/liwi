@@ -2,83 +2,13 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var _regeneratorRuntime = _interopDefault(require('@babel/runtime/regenerator'));
+var _asyncToGenerator = _interopDefault(require('@babel/runtime/helpers/esm/asyncToGenerator'));
+var _createClass = _interopDefault(require('@babel/runtime/helpers/esm/createClass'));
+var _inheritsLoose = _interopDefault(require('@babel/runtime/helpers/esm/inheritsLoose'));
 var liwiStore = require('liwi-store');
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
 
 var SubscribeStore =
 /*#__PURE__*/
@@ -128,9 +58,9 @@ function () {
   function () {
     var _insertOne = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee(object) {
+    _regeneratorRuntime.mark(function _callee(object) {
       var inserted;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
@@ -163,9 +93,9 @@ function () {
   function () {
     var _replaceOne = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee2(object) {
+    _regeneratorRuntime.mark(function _callee2(object) {
       var replaced;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      return _regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
@@ -199,9 +129,9 @@ function () {
   function () {
     var _replaceSeveral = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee3(objects) {
+    _regeneratorRuntime.mark(function _callee3(objects) {
       var replacedObjects;
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      return _regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
@@ -235,9 +165,9 @@ function () {
   function () {
     var _upsertOne = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee4(object) {
+    _regeneratorRuntime.mark(function _callee4(object) {
       var result;
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      return _regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
@@ -266,9 +196,9 @@ function () {
   function () {
     var _upsertOneWithInfo = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee5(object) {
+    _regeneratorRuntime.mark(function _callee5(object) {
       var upsertedWithInfo;
-      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      return _regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) {
           switch (_context5.prev = _context5.next) {
             case 0:
@@ -314,16 +244,16 @@ function () {
   function () {
     var _partialUpdateByKey = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee6(key, partialUpdate, criteria) {
-      var _extends2;
+    _regeneratorRuntime.mark(function _callee6(key, partialUpdate, criteria) {
+      var _Object$assign;
 
-      return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      return _regeneratorRuntime.wrap(function _callee6$(_context6) {
         while (1) {
           switch (_context6.prev = _context6.next) {
             case 0:
               _context6.t0 = this;
               _context6.next = 3;
-              return this.findOne(_extends((_extends2 = {}, _extends2[this.store.keyPath] = key, _extends2), criteria));
+              return this.findOne(Object.assign((_Object$assign = {}, _Object$assign[this.store.keyPath] = key, _Object$assign), criteria));
 
             case 3:
               _context6.t1 = _context6.sent;
@@ -348,9 +278,9 @@ function () {
   function () {
     var _partialUpdateOne = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee7(object, partialUpdate) {
+    _regeneratorRuntime.mark(function _callee7(object, partialUpdate) {
       var updated;
-      return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      return _regeneratorRuntime.wrap(function _callee7$(_context7) {
         while (1) {
           switch (_context7.prev = _context7.next) {
             case 0:
@@ -388,8 +318,8 @@ function () {
   function () {
     var _deleteByKey = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee8(key) {
-      return regeneratorRuntime.wrap(function _callee8$(_context8) {
+    _regeneratorRuntime.mark(function _callee8(key) {
+      return _regeneratorRuntime.wrap(function _callee8$(_context8) {
         while (1) {
           switch (_context8.prev = _context8.next) {
             case 0:
@@ -419,8 +349,8 @@ function () {
   function () {
     var _deleteOne = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee9(object) {
-      return regeneratorRuntime.wrap(function _callee9$(_context9) {
+    _regeneratorRuntime.mark(function _callee9(object) {
+      return _regeneratorRuntime.wrap(function _callee9$(_context9) {
         while (1) {
           switch (_context9.prev = _context9.next) {
             case 0:
@@ -455,9 +385,9 @@ function () {
   function () {
     var _cursor = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee10(criteria, sort) {
+    _regeneratorRuntime.mark(function _callee10(criteria, sort) {
       var cursor;
-      return regeneratorRuntime.wrap(function _callee10$(_context10) {
+      return _regeneratorRuntime.wrap(function _callee10$(_context10) {
         while (1) {
           switch (_context10.prev = _context10.next) {
             case 0:
@@ -523,6 +453,6 @@ function (_AbstractQuery) {
   return AbstractSubscribeQuery;
 }(liwiStore.AbstractQuery);
 
-exports.SubscribeStore = SubscribeStore;
 exports.AbstractSubscribeQuery = AbstractSubscribeQuery;
+exports.SubscribeStore = SubscribeStore;
 //# sourceMappingURL=index-browser.cjs.js.map

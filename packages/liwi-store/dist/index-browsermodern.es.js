@@ -130,5 +130,5 @@ class AbstractStore {
 
 }
 
-export { AbstractConnection, AbstractCursor, AbstractStoreCursor, AbstractQuery, AbstractStore };
+export { AbstractConnection, AbstractCursor, AbstractQuery, AbstractStore, AbstractStoreCursor };
 //# sourceMappingURL=index-browsermodern.es.js.map
