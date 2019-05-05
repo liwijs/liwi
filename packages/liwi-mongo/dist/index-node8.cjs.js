@@ -93,7 +93,8 @@ class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
     const promise = _includeInitial && this.fetch(result => {
       callback(null, [{
         type: 'initial',
-        initial: result
+        initial: result,
+        limit: this.options.limit
       }]);
       return result;
     });

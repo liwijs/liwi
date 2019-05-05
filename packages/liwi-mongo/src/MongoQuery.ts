@@ -65,7 +65,9 @@ export default class MongoQuery<
     const promise =
       _includeInitial &&
       this.fetch((result: Transformed[]) => {
-        callback(null, [{ type: 'initial', initial: result }]);
+        callback(null, [
+          { type: 'initial', initial: result, limit: this.options.limit },
+        ]);
         return result;
       });
 
