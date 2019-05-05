@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/liwijs/liwi/compare/liwi-mongo@5.0.0...liwi-mongo@5.0.1) (2019-05-05)
+
+
+### Bug Fixes
+
+* **liwi-mongo:** replaceone ([eea4324](https://github.com/liwijs/liwi/commit/eea4324))
+
+
+
+
+
 # [5.0.0](https://github.com/liwijs/liwi/compare/liwi-mongo@4.2.1...liwi-mongo@5.0.0) (2019-05-05)
 
 
