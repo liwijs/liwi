@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { ObjectID, Collection, Db } from 'mongodb';
+import { ObjectID, Collection, MongoClient } from 'mongodb';
 import { AbstractStore, UpsertResult } from 'liwi-store';
 import {
   BaseModel,
@@ -48,8 +48,8 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     }
 
     this._collection = connection.getConnection().then(
-      (db: Db) => {
-        this._collection = db.collection(collectionName);
+      (client: MongoClient) => {
+        this._collection = client.db().collection(collectionName);
         return this._collection;
       },
       (err: any) => {

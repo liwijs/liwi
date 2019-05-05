@@ -31,12 +31,12 @@
     "arrowParens": "always"
   },
   "dependencies": {
-    "@types/mongodb": "^2.0.0",
+    "@types/mongodb": "^3.1.26",
     "liwi-store": "^4.2.0",
     "liwi-subscribe-store": "^2.2.0",
     "liwi-types": "^2.1.0",
     "mingo": "^2.3.5",
-    "mongodb": "^2.2.33",
+    "mongodb": "^3.2.3",
     "nightingale-logger": "^6.2.2"
   },
   "devDependencies": {

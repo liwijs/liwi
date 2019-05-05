@@ -202,8 +202,8 @@ class MongoStore extends AbstractStore {
       throw new Error(`Invalid collectionName: "${collectionName}"`);
     }
 
-    this._collection = connection.getConnection().then(db => {
-      this._collection = db.collection(collectionName);
+    this._collection = connection.getConnection().then(client => {
+      this._collection = client.db().collection(collectionName);
       return this._collection;
     }, err => {
       this._collection = Promise.reject(err);
@@ -359,7 +359,9 @@ class MongoConnection extends AbstractConnection {
     logger.info('connecting', {
       connectionString
     });
-    const connectPromise = MongoClient.connect(connectionString).then(connection => {
+    const connectPromise = MongoClient.connect(connectionString, {
+      useNewUrlParser: true
+    }).then(connection => {
       logger.info('connected', {
         connectionString
       });

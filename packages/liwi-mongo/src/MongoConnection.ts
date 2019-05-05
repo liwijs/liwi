@@ -1,13 +1,13 @@
 import Logger from 'nightingale-logger';
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient } from 'mongodb';
 import { AbstractConnection } from 'liwi-store';
 
 const logger = new Logger('liwi:mongo:MongoConnection');
 
 export default class MongoConnection extends AbstractConnection {
-  _connection?: Db;
+  _connection?: MongoClient;
 
-  _connecting?: Promise<Db>;
+  _connecting?: Promise<MongoClient>;
 
   connectionFailed?: boolean;
 
@@ -38,7 +38,9 @@ export default class MongoConnection extends AbstractConnection {
   connect(connectionString: string) {
     logger.info('connecting', { connectionString });
 
-    const connectPromise = MongoClient.connect(connectionString)
+    const connectPromise = MongoClient.connect(connectionString, {
+      useNewUrlParser: true,
+    })
       .then((connection) => {
         logger.info('connected', { connectionString });
         connection.on('close', () => {
@@ -58,7 +60,8 @@ export default class MongoConnection extends AbstractConnection {
         connection.on('reconnect', () => {
           logger.warn('reconnect', { connectionString });
           this.connectionFailed = false;
-          this.getConnection = () => Promise.resolve(this._connection as Db);
+          this.getConnection = () =>
+            Promise.resolve(this._connection as MongoClient);
         });
         connection.on('error', (err) => {
           logger.warn('error', { connectionString, err });
@@ -66,7 +69,8 @@ export default class MongoConnection extends AbstractConnection {
 
         this._connection = connection;
         this._connecting = undefined;
-        this.getConnection = () => Promise.resolve(this._connection as Db);
+        this.getConnection = () =>
+          Promise.resolve(this._connection as MongoClient);
         return connection;
       })
       .catch((err) => {
@@ -85,7 +89,7 @@ export default class MongoConnection extends AbstractConnection {
     this._connecting = this.getConnection();
   }
 
-  getConnection(): Promise<Db> {
+  getConnection(): Promise<MongoClient> {
     throw new Error('call connect()');
   }
 
