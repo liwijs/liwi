@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-server@3.0.11...liwi-resources-websocket-server@3.1.0) (2019-05-05)
+
+
+### Features
+
+* queryInfo in applyChanges and liwi-mongo ([ecfdc3f](https://github.com/liwijs/liwi/commit/ecfdc3f))
+
+
+
+
+
 ## [3.0.11](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-server@3.0.10...liwi-resources-websocket-server@3.0.11) (2019-04-19)
 
 **Note:** Version bump only for package liwi-resources-websocket-server

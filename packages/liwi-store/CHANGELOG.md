@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/liwijs/liwi/compare/liwi-store@4.2.0...liwi-store@4.3.0) (2019-05-05)
+
+
+### Features
+
+* queryInfo in applyChanges and liwi-mongo ([ecfdc3f](https://github.com/liwijs/liwi/commit/ecfdc3f))
+
+
+
+
+
 # [4.2.0](https://github.com/liwijs/liwi/compare/liwi-store@4.1.0...liwi-store@4.2.0) (2019-04-19)
 
 

@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/liwijs/liwi/compare/react-liwi@5.1.2...react-liwi@6.0.0) (2019-05-05)
+
+
+### Code Refactoring
+
+* **react-liwi:** remove react components ([6ece729](https://github.com/liwijs/liwi/commit/6ece729))
+
+
+### Features
+
+* queryInfo in applyChanges and liwi-mongo ([ecfdc3f](https://github.com/liwijs/liwi/commit/ecfdc3f))
+
+
+### BREAKING CHANGES
+
+* **react-liwi:** use hooks instead of react components
+
+
+
+
+
 ## [5.1.2](https://github.com/liwijs/liwi/compare/react-liwi@5.1.1...react-liwi@5.1.2) (2019-04-19)
 
 
