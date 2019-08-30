@@ -15,12 +15,13 @@ function init(io, resourcesService) {
 
     const unsubscribeWatcher = ({
       watcher,
-      subscribeHook
+      subscribeHook,
+      params
     }) => {
       watcher.stop();
 
       if (subscribeHook) {
-        subscribeHook.unsubscribed(socket.user);
+        subscribeHook.unsubscribed(socket.user, params);
       }
     };
 
@@ -101,11 +102,12 @@ function init(io, resourcesService) {
                 const subscribeHook = resource.subscribeHooks && resource.subscribeHooks[key];
                 openWatchers.set(watcherKey, {
                   watcher,
-                  subscribeHook
+                  subscribeHook,
+                  params: subscribeHook ? params : undefined
                 });
 
                 if (subscribeHook) {
-                  subscribeHook.subscribed(socket.user);
+                  subscribeHook.subscribed(socket.user, params);
                 }
               }
             } catch (err) {

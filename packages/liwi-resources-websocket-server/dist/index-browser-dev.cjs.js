@@ -15,11 +15,12 @@ function init(io, resourcesService) {
 
     var unsubscribeWatcher = function unsubscribeWatcher(_ref) {
       var watcher = _ref.watcher,
-          subscribeHook = _ref.subscribeHook;
+          subscribeHook = _ref.subscribeHook,
+          params = _ref.params;
       watcher.stop();
 
       if (subscribeHook) {
-        subscribeHook.unsubscribed(socket.user);
+        subscribeHook.unsubscribed(socket.user, params);
       }
     };
 
@@ -115,11 +116,12 @@ function init(io, resourcesService) {
                 var subscribeHook = _resource.subscribeHooks && _resource.subscribeHooks[key];
                 openWatchers.set(watcherKey, {
                   watcher: watcher,
-                  subscribeHook: subscribeHook
+                  subscribeHook: subscribeHook,
+                  params: subscribeHook ? params : undefined
                 });
 
                 if (subscribeHook) {
-                  subscribeHook.subscribed(socket.user);
+                  subscribeHook.subscribed(socket.user, params);
                 }
               }
             } catch (err) {

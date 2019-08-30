@@ -28,6 +28,7 @@ interface EventResourceParams {
 interface WatcherAndSubscribeHook {
   watcher: SubscribeResult<any>;
   subscribeHook?: SubscribeHook<any>;
+  params?: any;
 }
 
 export default function init(
@@ -40,10 +41,11 @@ export default function init(
     const unsubscribeWatcher = ({
       watcher,
       subscribeHook,
+      params,
     }: WatcherAndSubscribeHook) => {
       watcher.stop();
       if (subscribeHook) {
-        subscribeHook.unsubscribed(socket.user);
+        subscribeHook.unsubscribed(socket.user, params);
       }
     };
 
@@ -132,9 +134,13 @@ export default function init(
 
                   const subscribeHook =
                     resource.subscribeHooks && resource.subscribeHooks[key];
-                  openWatchers.set(watcherKey, { watcher, subscribeHook });
+                  openWatchers.set(watcherKey, {
+                    watcher,
+                    subscribeHook,
+                    params: subscribeHook ? params : undefined,
+                  });
                   if (subscribeHook) {
-                    subscribeHook.subscribed(socket.user);
+                    subscribeHook.subscribed(socket.user, params);
                   }
                 }
               } catch (err) {

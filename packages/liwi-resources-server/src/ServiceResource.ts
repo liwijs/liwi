@@ -1,9 +1,9 @@
 import { AbstractQuery } from 'liwi-store';
 import { QueryDescriptions, OperationDescriptions } from 'liwi-resources';
 
-export interface SubscribeHook<ConnectedUser = any> {
-  subscribed: (connectedUser: undefined | ConnectedUser) => void;
-  unsubscribed: (connectedUser: undefined | ConnectedUser) => void;
+export interface SubscribeHook<ConnectedUser = any, P = any> {
+  subscribed: (connectedUser: undefined | ConnectedUser, params: P) => void;
+  unsubscribed: (connectedUser: undefined | ConnectedUser, params: P) => void;
 }
 
 export default interface ServiceResource<
@@ -17,7 +17,9 @@ export default interface ServiceResource<
       connectedUser: undefined | ConnectedUser,
     ) => AbstractQuery<Queries[P]['value']>
   };
-  subscribeHooks?: { [P in keyof Queries]?: SubscribeHook<ConnectedUser> };
+  subscribeHooks?: {
+    [P in keyof Queries]?: SubscribeHook<ConnectedUser, Queries[P]['params']>
+  };
   operations: {
     [P in keyof Operations]: (
       params: Operations[P]['params'],
