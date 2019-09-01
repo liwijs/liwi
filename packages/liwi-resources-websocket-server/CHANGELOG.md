@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-server@3.2.0...liwi-resources-websocket-server@3.3.0) (2019-09-01)
+
+
+### Features
+
+* allow query to be returned with a promise ([902944c](https://github.com/liwijs/liwi/commit/902944c))
+
+
+
+
+
 # [3.2.0](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-server@3.1.0...liwi-resources-websocket-server@3.2.0) (2019-08-30)
 
 
