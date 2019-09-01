@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.1](https://github.com/liwijs/liwi/compare/liwi-resources-server@4.3.0...liwi-resources-server@4.3.1) (2019-09-01)
+
+
+### Bug Fixes
+
+* typescript def queries allow Promise ([60a893e](https://github.com/liwijs/liwi/commit/60a893e))
+
+
+
+
+
 # [4.3.0](https://github.com/liwijs/liwi/compare/liwi-resources-server@4.2.0...liwi-resources-server@4.3.0) (2019-08-30)
 
 
