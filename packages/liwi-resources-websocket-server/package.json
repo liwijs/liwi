@@ -40,6 +40,7 @@
     "arrowParens": "always"
   },
   "dependencies": {
+    "@babel/runtime": "^7.4.4",
     "@types/socket.io": "^2.1.2",
     "extended-json": "^2.3.0",
     "liwi-resources-server": "^4.3.0",

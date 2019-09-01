@@ -55,10 +55,10 @@ export default function init(
 
     socket.on(
       'resource',
-      (
+      async (
         { type, resourceName, json }: EventResourceParams,
         callback: Callback,
-      ): void => {
+      ): Promise<void> => {
         try {
           const value = json && decode(json);
 
@@ -91,7 +91,7 @@ export default function init(
                   throw new Error('Invalid query key');
                 }
 
-                const query = resource.queries[key](params, socket.user);
+                const query = await resource.queries[key](params, socket.user);
 
                 if (type === 'fetch') {
                   query

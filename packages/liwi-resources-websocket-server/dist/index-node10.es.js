@@ -22,7 +22,7 @@ function init(io, resourcesService) {
     socket.on('disconnect', () => {
       openWatchers.forEach(unsubscribeWatcher);
     });
-    socket.on('resource', ({
+    socket.on('resource', async ({
       type,
       resourceName,
       json
@@ -57,7 +57,7 @@ function init(io, resourcesService) {
                 throw new Error('Invalid query key');
               }
 
-              const query = resource.queries[key](params, socket.user);
+              const query = await resource.queries[key](params, socket.user);
 
               if (type === 'fetch') {
                 query.fetch(result => callback(null, result && encode(result))).catch(err => {
