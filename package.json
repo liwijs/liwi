@@ -28,7 +28,6 @@
   "devDependencies": {
     "@pob/repo-config": "1.0.1",
     "@pob/version": "4.33.1",
-    "dts-jest": "^23.0.0",
     "husky": "3.0.5",
     "lerna": "3.16.4",
     "repository-check-dirty": "1.0.2",

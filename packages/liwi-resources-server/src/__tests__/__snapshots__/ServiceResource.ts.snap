@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should transpile without error on simple queries 1`] = `
+Object {
+  "diagnostics": Array [],
+  "outputText": "\\"use strict\\";
+Object.defineProperty(exports, \\"__esModule\\", { value: true });
+exports.postsResource1 = {
+    queries: {
+        queryAll: function (params, connectedUser) {
+            return {};
+        },
+        queryDetailedPost: function (params, connectedUser) {
+            return {};
+        },
+    },
+    operations: {},
+};
+",
+  "sourceMapText": undefined,
+}
+`;
