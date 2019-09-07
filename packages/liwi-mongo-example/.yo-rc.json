@@ -6,21 +6,8 @@
       "authorUrl": "https://christophe.hurpeau.com"
     },
     "pob-config": {
-      "entries": [
-        "users"
-      ],
       "documentation": false,
-      "testing": false,
-      "envs": [
-        {
-          "target": "node",
-          "version": "10",
-          "formats": [
-            "cjs"
-          ]
-        }
-      ],
-      "withReact": false
+      "testing": false
     }
   },
   "liwi-mongo-example": {

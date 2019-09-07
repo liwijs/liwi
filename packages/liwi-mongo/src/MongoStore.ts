@@ -108,7 +108,7 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
 
     if (!object.updated) object.updated = new Date();
 
-    const $set = Object.assign({}, object);
+    const $set = { ...object };
     delete $set.created;
 
     const collection = await this.collection;

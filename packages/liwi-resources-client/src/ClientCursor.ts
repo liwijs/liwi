@@ -11,9 +11,9 @@ export default class ClientCursor<
 
   private _idCursor?: number;
 
-  private client: Client;
+  private readonly client: Client;
 
-  private options: QueryOptions<Model>;
+  private readonly options: QueryOptions<Model>;
 
   private _result?: Model;
 
@@ -66,7 +66,7 @@ export default class ClientCursor<
     return Promise.resolve(this._result);
   }
 
-  count(applyLimit: boolean = false) {
+  count(applyLimit = false) {
     return this.emit('count', applyLimit);
   }
 

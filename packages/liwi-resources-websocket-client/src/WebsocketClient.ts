@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import Logger from 'nightingale-logger';
 import { encode, decode } from 'extended-json';
 import { BaseModel, QueryOptions } from 'liwi-types';
@@ -23,7 +24,6 @@ export default class WebsocketClient<
 
   readonly websocket: Websocket;
 
-  // eslint-disable-next-line typescript/member-ordering
   constructor(websocket: Websocket, resourceName: string, keyPath: KeyPath) {
     super(resourceName, keyPath);
     this.websocket = websocket;

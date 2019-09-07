@@ -17,49 +17,21 @@
     "lint": "lerna run --stream lint",
     "postbuild": "yarn run build:definitions",
     "preversion": "yarn run lint --since && yarn run build --since -- -- --no-clean && repository-check-dirty",
-    "release": "GH_TOKEN=$POB_GITHUB_TOKEN lerna version --conventional-commits --github-release -m 'chore: release' && lerna publish from-git",
+    "release": "cross-env GH_TOKEN=$POB_GITHUB_TOKEN lerna version --conventional-commits --conventional-graduate --create-release=github -m 'chore: release' && lerna publish from-git",
     "test": "lerna run --stream test",
     "typescript-check": "lerna run --parallel typescript-check",
     "watch": "lerna run --parallel --ignore \"*-example\" watch"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
-      "post-checkout": "yarnhook",
-      "post-merge": "yarnhook",
-      "post-rewrite": "yarnhook",
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "yarn.lock": ["yarn-update-lock", "git add"],
-    "{package.json,packages/*/package.json,.eslintrc.json}": [
-      "prettier --parser json --write",
-      "git add"
-    ],
-    "{packages/*}/lib/**/*.json": ["prettier --parser json --write", "git add"],
-    "{packages/*}/lib/**/*.{js,ts}": ["eslint --fix --quiet", "git add"]
-  },
   "commitlint": {
     "extends": ["@commitlint/config-conventional"]
   },
-  "jest": {
-    "cacheDirectory": "./node_modules/.cache/jest",
-    "testMatch": [
-      "**/src/**/?(*.)test.js?(x)",
-      "**/__tests__/**/*.test.js?(x)"
-    ],
-    "collectCoverageFrom": ["src/**/*.js?(x)"]
-  },
   "devDependencies": {
-    "@commitlint/cli": "7.5.2",
-    "@commitlint/config-conventional": "7.5.0",
-    "husky": "2.2.0",
-    "lerna": "3.13.4",
-    "lint-staged": "8.1.6",
+    "@pob/repo-config": "1.0.1",
+    "@pob/version": "4.33.1",
+    "dts-jest": "^23.0.0",
+    "husky": "3.0.5",
+    "lerna": "3.16.4",
     "repository-check-dirty": "1.0.2",
-    "typescript": "3.4.5",
-    "yarn-update-lock": "1.0.0",
-    "yarnhook": "0.4.0"
+    "typescript": "3.6.2"
   }
 }

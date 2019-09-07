@@ -7,8 +7,8 @@ export interface SubscribeHook<ConnectedUser = any, P = any> {
 }
 
 export default interface ServiceResource<
-  Queries extends QueryDescriptions,
-  Operations extends OperationDescriptions = {},
+  Queries extends QueryDescriptions<keyof Queries>,
+  Operations extends OperationDescriptions<keyof Operations> = {},
   ConnectedUser = any
 > {
   queries: {
@@ -17,15 +17,15 @@ export default interface ServiceResource<
       connectedUser: undefined | ConnectedUser,
     ) =>
       | AbstractQuery<Queries[P]['value']>
-      | Promise<AbstractQuery<Queries[P]['value']>>
+      | Promise<AbstractQuery<Queries[P]['value']>>;
   };
   subscribeHooks?: {
-    [P in keyof Queries]?: SubscribeHook<ConnectedUser, Queries[P]['params']>
+    [P in keyof Queries]?: SubscribeHook<ConnectedUser, Queries[P]['params']>;
   };
   operations: {
     [P in keyof Operations]: (
       params: Operations[P]['params'],
       connectedUser: undefined | ConnectedUser,
-    ) => Promise<Operations[P]['result']>
+    ) => Promise<Operations[P]['result']>;
   };
 }

@@ -14,8 +14,8 @@ export declare type Actions<Model> = {
 };
 export declare type Listener<Model> = (action: Actions<Model>) => void;
 export default class SubscribeStore<Model extends BaseModel, KeyPath extends string, Connection extends AbstractConnection, Cursor extends AbstractStoreCursor<Model, KeyPath, any>, Store extends StoreInterface<Model, KeyPath, Connection, Cursor>> implements StoreInterface<Model, KeyPath, Connection, Cursor> {
-    private store;
-    private listeners;
+    private readonly store;
+    private readonly listeners;
     constructor(store: Store);
     readonly keyPath: KeyPath;
     readonly connection: Connection;

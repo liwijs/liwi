@@ -11,7 +11,7 @@ export type ResourcesClientQueries<
 > = {
   [P in keyof Queries]: (
     params: Queries[P]['params'],
-  ) => ClientQuery<Queries[P]['value'], KeyPath>
+  ) => ClientQuery<Queries[P]['value'], KeyPath>;
 };
 
 export type ResourcesClientOperations<
@@ -19,7 +19,7 @@ export type ResourcesClientOperations<
 > = {
   [P in keyof Operations]: (
     params: Operations[P]['params'],
-  ) => Promise<Operations[P]['result']>
+  ) => Promise<Operations[P]['result']>;
 };
 
 export interface ResourcesClientService<
@@ -30,31 +30,29 @@ export interface ResourcesClientService<
   operations: ResourcesClientOperations<Operations>;
 }
 
-interface CreateResourceClientOptions<
-  QueryKeys extends string,
-  OperationKeys extends string
-> {
+interface CreateResourceClientOptions<QueryKeys, OperationKeys> {
   queries: QueryKeys[];
   operations: OperationKeys[];
 }
 
 export const createResourceClientService = <
-  Queries extends QueryDescriptions,
-  Operations extends OperationDescriptions,
+  Queries extends QueryDescriptions<keyof Queries>,
+  Operations extends OperationDescriptions<keyof Operations>,
   Model extends BaseModel,
   KeyPath extends string = '_id'
 >(
   client: AbstractClient<Model, KeyPath>,
-  options: CreateResourceClientOptions<string, string>,
+  options: CreateResourceClientOptions<keyof Queries, keyof Operations>,
 ): ResourcesClientService<Queries, Operations> => {
   const queries: Partial<ResourcesClientQueries<Queries, KeyPath>> = {};
   const operations: Partial<ResourcesClientOperations<Operations>> = {};
 
-  options.queries.forEach((queryKey: string) => {
-    queries[queryKey] = (params: any) => client.createQuery(queryKey, params);
+  options.queries.forEach((queryKey) => {
+    queries[queryKey] = (params: any) =>
+      client.createQuery(queryKey as string, params);
   });
 
-  options.operations.forEach((operationKey: string) => {
+  options.operations.forEach((operationKey: keyof Operations) => {
     operations[operationKey] = (params: any) =>
       client.send('do', [operationKey, params]);
   });

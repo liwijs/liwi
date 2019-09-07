@@ -12,7 +12,7 @@
   },
   "homepage": "https://github.com/liwijs/liwi",
   "engines": {
-    "node": ">=8.3.0"
+    "node": ">=8.6.0"
   },
   "main": "./index.js",
   "types": "./dist/index.d.ts",
@@ -30,6 +30,21 @@
     "singleQuote": true,
     "arrowParens": "always"
   },
+  "pob": {
+    "babelEnvs": [
+      {
+        "target": "node",
+        "version": "10",
+        "formats": ["cjs", "es"]
+      },
+      {
+        "target": "node",
+        "version": "8",
+        "formats": ["cjs"]
+      }
+    ],
+    "entries": ["index"]
+  },
   "dependencies": {
     "@types/mongodb": "^3.1.26",
     "liwi-store": "^4.3.0",
@@ -40,13 +55,12 @@
     "nightingale-logger": "^6.2.2"
   },
   "devDependencies": {
-    "@babel/core": "7.4.4",
-    "@pob/eslint-config-babel": "31.0.0",
-    "@pob/eslint-config-babel-node": "31.0.0",
-    "@pob/eslint-config-typescript": "31.1.0",
-    "babel-preset-latest-node": "3.1.1",
-    "eslint": "5.16.0",
-    "pob-babel": "23.16.0",
-    "prettier": "1.17.0"
+    "@babel/core": "7.5.5",
+    "@pob/eslint-config-babel-node": "32.0.13",
+    "@pob/eslint-config-typescript": "32.0.13",
+    "babel-preset-latest-node": "3.2.1",
+    "eslint": "6.3.0",
+    "pob-babel": "23.20.0",
+    "prettier": "1.18.2"
   }
 }

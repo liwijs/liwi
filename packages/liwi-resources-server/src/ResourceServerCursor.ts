@@ -7,11 +7,11 @@ export default class ResourceServerCursor<
   Transformed = any,
   ConnectedUser = any
 > {
-  private resource: CursorResource<Model, Transformed, ConnectedUser>;
+  private readonly resource: CursorResource<Model, Transformed, ConnectedUser>;
 
-  private connectedUser: any;
+  private readonly connectedUser?: ConnectedUser;
 
-  private cursor: AbstractStoreCursor<Model, any, any>;
+  private readonly cursor: AbstractStoreCursor<Model, any, any>;
 
   constructor(
     resource: CursorResource<Model, Transformed, ConnectedUser>,

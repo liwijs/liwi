@@ -1,4 +1,3 @@
-/* eslint-disable typescript/no-use-before-define */
 import * as MongoStoreExports from './MongoStore';
 
 export { default as MongoStore } from './MongoStore';

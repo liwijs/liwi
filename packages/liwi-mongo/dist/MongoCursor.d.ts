@@ -2,7 +2,7 @@ import { Cursor } from 'mongodb';
 import { AbstractStoreCursor } from 'liwi-store';
 import MongoStore, { MongoModel, MongoKeyPath } from './MongoStore';
 export default class MongoCursor<Model extends MongoModel> extends AbstractStoreCursor<Model, MongoKeyPath, MongoStore<Model>> {
-    private cursor;
+    private readonly cursor;
     private _result?;
     constructor(store: MongoStore<Model>, cursor: Cursor);
     advance(count: number): void;

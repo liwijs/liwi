@@ -1,5 +1,6 @@
 import { AbstractClient } from 'liwi-resources-client';
 
+/* eslint-disable max-classes-per-file */
 class VoidClient extends AbstractClient {
   emitSubscribe(type, args) {
     throw new Error('Void client: emitSubscribe should not be called');

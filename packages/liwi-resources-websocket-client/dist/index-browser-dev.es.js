@@ -10,7 +10,6 @@ var WebsocketClient =
 function (_AbstractClient) {
   _inheritsLoose(WebsocketClient, _AbstractClient);
 
-  // eslint-disable-next-line typescript/member-ordering
   function WebsocketClient(websocket, resourceName, keyPath) {
     var _this = _AbstractClient.call(this, resourceName, keyPath) || this;
 

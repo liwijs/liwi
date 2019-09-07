@@ -4,7 +4,7 @@ export interface SubscribeHook<ConnectedUser = any, P = any> {
     subscribed: (connectedUser: undefined | ConnectedUser, params: P) => void;
     unsubscribed: (connectedUser: undefined | ConnectedUser, params: P) => void;
 }
-export default interface ServiceResource<Queries extends QueryDescriptions, Operations extends OperationDescriptions = {}, ConnectedUser = any> {
+export default interface ServiceResource<Queries extends QueryDescriptions<keyof Queries>, Operations extends OperationDescriptions<keyof Operations> = {}, ConnectedUser = any> {
     queries: {
         [P in keyof Queries]: (params: Queries[P]['params'], connectedUser: undefined | ConnectedUser) => AbstractQuery<Queries[P]['value']> | Promise<AbstractQuery<Queries[P]['value']>>;
     };

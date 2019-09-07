@@ -39,7 +39,7 @@ export default function useResources<
     CreateQuery<T1>,
     CreateQuery<T2>,
     CreateQuery<T3>,
-    CreateQuery<T4>
+    CreateQuery<T4>,
   ],
   queriesToSubscribe: [boolean, boolean, boolean, boolean],
 ): UseResourceResult<[T1[], T2[], T3[], T4[]]>;
@@ -55,7 +55,7 @@ export default function useResources<
     CreateQuery<T2>,
     CreateQuery<T3>,
     CreateQuery<T4>,
-    CreateQuery<T5>
+    CreateQuery<T5>,
   ],
   queriesToSubscribe: [boolean, boolean, boolean, boolean, boolean],
 ): UseResourceResult<[T1[], T2[], T3[], T4[], T5[]]>;

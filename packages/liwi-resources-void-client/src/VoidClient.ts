@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { BaseModel, QueryOptions } from 'liwi-types';
 import { AbstractClient } from 'liwi-resources-client';
 

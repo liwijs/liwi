@@ -9,7 +9,7 @@ export default abstract class AbstractCursor<Model extends BaseModel, KeyPath ex
     abstract result(): Promise<Model>;
     forEachKeys(callback: (key: any) => any): Promise<void>;
     forEach(callback: (result: Model) => any): Promise<void>;
-    keysIterator(): IterableIterator<Promise<any>>;
-    [Symbol.iterator](): IterableIterator<Promise<Model>>;
+    keysIterator(): Generator<Promise<any>, void, unknown>;
+    [Symbol.iterator](): Generator<Promise<Model>, void, unknown>;
 }
 //# sourceMappingURL=AbstractCursor.d.ts.map

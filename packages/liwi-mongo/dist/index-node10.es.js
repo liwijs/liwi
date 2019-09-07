@@ -260,7 +260,8 @@ class MongoStore extends AbstractStore {
       created: object.created || new Date()
     };
     if (!object.updated) object.updated = new Date();
-    const $set = Object.assign({}, object);
+    const $set = { ...object
+    };
     delete $set.created;
     const collection = await this.collection;
     const {
@@ -444,8 +445,6 @@ class MongoConnection extends AbstractConnection {
   }
 
 }
-
-/* eslint-disable typescript/no-use-before-define */
 
 export { MongoConnection, MongoStore };
 //# sourceMappingURL=index-node10.es.js.map

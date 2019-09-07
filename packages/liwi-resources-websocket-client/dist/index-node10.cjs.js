@@ -8,9 +8,9 @@ const Logger = _interopDefault(require('nightingale-logger'));
 const extendedJson = require('extended-json');
 const liwiResourcesClient = require('liwi-resources-client');
 
+/* eslint-disable max-classes-per-file */
 const logger = new Logger('liwi:resources-websocket-client');
 class WebsocketClient extends liwiResourcesClient.AbstractClient {
-  // eslint-disable-next-line typescript/member-ordering
   constructor(websocket, resourceName, keyPath) {
     super(resourceName, keyPath);
     this.websocket = websocket;

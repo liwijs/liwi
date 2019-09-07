@@ -7,7 +7,7 @@ export default class MongoCursor<
 > extends AbstractStoreCursor<Model, MongoKeyPath, MongoStore<Model>> {
   // key in AbstractCursor
 
-  private cursor: Cursor;
+  private readonly cursor: Cursor;
 
   private _result?: Model;
 
@@ -33,7 +33,7 @@ export default class MongoCursor<
     return Promise.resolve(this);
   }
 
-  count(applyLimit: boolean = false) {
+  count(applyLimit = false) {
     return this.cursor.count(applyLimit);
   }
 

@@ -29,9 +29,9 @@ export default class SubscribeStore<
   Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
   Store extends StoreInterface<Model, KeyPath, Connection, Cursor>
 > implements StoreInterface<Model, KeyPath, Connection, Cursor> {
-  private store: Store;
+  private readonly store: Store;
 
-  private listeners: Set<Listener<Model>> = new Set();
+  private readonly listeners: Set<Listener<Model>> = new Set();
 
   constructor(store: Store) {
     this.store = store;

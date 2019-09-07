@@ -11,5 +11,5 @@ export interface OperationDescription<Params extends Record<string, any>, Result
   result: Result;
 }
 
-export interface QueryDescriptions { [key: string]: QueryDescription<any, any> }
-export interface OperationDescriptions { [key: string]: OperationDescription<any, any> }
+export type QueryDescriptions<Keys  = string> = Record<Keys, QueryDescription<any, any>>
+export type OperationDescriptions<Keys  = string> = Record<Keys, OperationDescription<any, any>>;
