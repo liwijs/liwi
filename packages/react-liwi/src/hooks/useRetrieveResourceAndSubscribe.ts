@@ -6,7 +6,7 @@ import Logger from 'nightingale-logger';
 import applyChanges from '../applyChanges';
 import reducer, { Reducer, initReducer } from '../reducer';
 
-interface UseResourceAndSubscribeOptions {
+export interface UseResourceAndSubscribeOptions {
   visibleTimeout: number;
 }
 

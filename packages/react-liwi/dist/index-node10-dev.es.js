@@ -3,7 +3,7 @@ function useResources(createQueries, queriesToSubscribe) {
   return [true, []];
 }
 
-function useResource(createQuery, subscribe) {
+function useResource(createQuery, subscribe, subscribeOptions) {
   return [true, undefined];
 }
 

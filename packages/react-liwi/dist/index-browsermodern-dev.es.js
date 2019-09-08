@@ -228,9 +228,9 @@ function useResources(createQueries, queriesToSubscribe) {
   })];
 }
 
-function useResource(createQuery, subscribe) {
+function useResource(createQuery, subscribe, subscribeOptions) {
   const state = subscribe ? // eslint-disable-next-line react-hooks/rules-of-hooks
-  useRetrieveResourceAndSubscribe(createQuery) : // eslint-disable-next-line react-hooks/rules-of-hooks
+  useRetrieveResourceAndSubscribe(createQuery, subscribeOptions) : // eslint-disable-next-line react-hooks/rules-of-hooks
   useRetrieveResource(createQuery);
 
   if (!state.fetched) {
