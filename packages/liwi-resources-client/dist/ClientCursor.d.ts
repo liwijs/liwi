@@ -4,8 +4,8 @@ import AbstractClient from './AbstractClient';
 export default class ClientCursor<Model extends BaseModel, KeyPath extends string, Client extends AbstractClient<Model, KeyPath>> extends AbstractCursor<Model, KeyPath> {
     key: any;
     private _idCursor?;
-    private client;
-    private options;
+    private readonly client;
+    private readonly options;
     private _result?;
     constructor(client: Client, options: QueryOptions<Model>);
     limit(newLimit: number): Promise<this>;

@@ -87,6 +87,7 @@ function applyChanges(state, changes, queryInfo) {
   }, state);
 }
 
+/* eslint-disable @typescript-eslint/no-misused-promises */
 var defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
 
@@ -100,6 +101,7 @@ function useRetrieveResourceAndSubscribe(createQuery, _temp) {
   var timeoutRef = useRef(undefined);
   var resultRef = useRef(undefined);
   var queryInfoRef = useRef(undefined);
+  var handleVisibilityChangeRef = useRef(undefined);
 
   var unsubscribe = function unsubscribe() {
     logger.log('unsubscribe'); // reset timeout to allow resubscribing
@@ -166,7 +168,7 @@ function useRetrieveResourceAndSubscribe(createQuery, _temp) {
         });
       };
 
-      document.addEventListener('visibilitychange', function handleVisibilityChange() {
+      var handleVisibilityChange = function handleVisibilityChange() {
         if (!document.hidden) {
           if (timeoutRef.current !== undefined) {
             queryLogger.debug('timeout cleared');
@@ -183,7 +185,10 @@ function useRetrieveResourceAndSubscribe(createQuery, _temp) {
         if (subscribeResultRef.current === undefined) return;
         queryLogger.debug('timeout visible');
         timeoutRef.current = setTimeout(unsubscribe, visibleTimeout);
-      }, false);
+      };
+
+      handleVisibilityChangeRef.current = handleVisibilityChange;
+      document.addEventListener('visibilitychange', handleVisibilityChange, false);
 
       if (!document.hidden) {
         subscribe();
@@ -195,6 +200,10 @@ function useRetrieveResourceAndSubscribe(createQuery, _temp) {
 
   useEffect(function () {
     return function () {
+      if (handleVisibilityChangeRef.current) {
+        document.removeEventListener('visibilitychange', handleVisibilityChangeRef.current);
+      }
+
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = undefined;

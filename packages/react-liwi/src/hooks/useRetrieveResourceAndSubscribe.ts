@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useEffect, useReducer, useRef } from 'react';
 import { BaseModel, Changes, InitialChange, QueryInfo } from 'liwi-types';
 import { AbstractQuery, SubscribeResult } from 'liwi-store';
@@ -30,6 +31,8 @@ export default function useRetrieveResourceAndSubscribe<
   const resultRef = useRef<Model[] | undefined>(undefined);
 
   const queryInfoRef = useRef<QueryInfo | undefined>(undefined);
+
+  const handleVisibilityChangeRef = useRef<any>(undefined);
 
   const unsubscribe = (): void => {
     logger.log('unsubscribe');
@@ -126,6 +129,8 @@ export default function useRetrieveResourceAndSubscribe<
           timeoutRef.current = setTimeout(unsubscribe, visibleTimeout);
         };
 
+        handleVisibilityChangeRef.current = handleVisibilityChange;
+
         document.addEventListener(
           'visibilitychange',
           handleVisibilityChange,
@@ -141,6 +146,12 @@ export default function useRetrieveResourceAndSubscribe<
 
   useEffect(() => {
     return () => {
+      if (handleVisibilityChangeRef.current) {
+        document.removeEventListener(
+          'visibilitychange',
+          handleVisibilityChangeRef.current,
+        );
+      }
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = undefined;

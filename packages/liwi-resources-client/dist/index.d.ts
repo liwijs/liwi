@@ -13,11 +13,11 @@ export interface ResourcesClientService<Queries extends QueryDescriptions, Opera
     queries: ResourcesClientQueries<Queries>;
     operations: ResourcesClientOperations<Operations>;
 }
-interface CreateResourceClientOptions<QueryKeys extends string, OperationKeys extends string> {
+interface CreateResourceClientOptions<QueryKeys, OperationKeys> {
     queries: QueryKeys[];
     operations: OperationKeys[];
 }
-export declare const createResourceClientService: <Queries extends Record<string, import("../../liwi-resources/lib").QueryDescription<any, any>>, Operations extends OperationDescriptions, Model extends BaseModel, KeyPath extends string = "_id">(client: AbstractClient<Model, KeyPath>, options: CreateResourceClientOptions<string, string>) => ResourcesClientService<Queries, Operations>;
+export declare const createResourceClientService: <Queries extends Record<keyof Queries, import("liwi-resources").QueryDescription<any, any>>, Operations extends Record<keyof Operations, import("liwi-resources").OperationDescription<any, any>>, Model extends BaseModel, KeyPath extends string = "_id">(client: AbstractClient<Model, KeyPath>, options: CreateResourceClientOptions<keyof Queries, keyof Operations>) => ResourcesClientService<Queries, Operations>;
 /** @deprecated use createResourceClientService instead */
-export declare const createResourceClient: <Queries extends Record<string, import("../../liwi-resources/lib").QueryDescription<any, any>>, Operations extends OperationDescriptions, Model extends BaseModel, KeyPath extends string = "_id">(client: AbstractClient<Model, KeyPath>, options: CreateResourceClientOptions<string, string>) => ResourcesClientService<Queries, Operations>;
+export declare const createResourceClient: <Queries extends Record<keyof Queries, import("liwi-resources").QueryDescription<any, any>>, Operations extends Record<keyof Operations, import("liwi-resources").OperationDescription<any, any>>, Model extends BaseModel, KeyPath extends string = "_id">(client: AbstractClient<Model, KeyPath>, options: CreateResourceClientOptions<keyof Queries, keyof Operations>) => ResourcesClientService<Queries, Operations>;
 //# sourceMappingURL=index.d.ts.map
