@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/liwijs/liwi/compare/react-liwi@6.0.1...react-liwi@6.1.0) (2019-09-08)
+
+
+### Features
+
+* **react-liwi:** add subscribeOptions in useResource ([187fdda](https://github.com/liwijs/liwi/commit/187fdda))
+
+
+
+
+
 ## [6.0.1](https://github.com/liwijs/liwi/compare/react-liwi@6.0.0...react-liwi@6.0.1) (2019-09-08)
 
 
