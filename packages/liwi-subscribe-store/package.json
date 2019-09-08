@@ -1,6 +1,6 @@
 {
   "name": "liwi-subscribe-store",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "subscribe store proxy",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -65,8 +65,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "liwi-store": "^4.3.0",
-    "liwi-types": "^3.0.0"
+    "liwi-store": "^4.3.1",
+    "liwi-types": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "7.5.5",

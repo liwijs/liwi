@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.11](https://github.com/liwijs/liwi/compare/liwi-mongo-example@1.3.10...liwi-mongo-example@1.3.11) (2019-09-08)
+
+
+### Bug Fixes
+
+* improve ServiceResource definitions ([92a1c3b](https://github.com/liwijs/liwi/commit/92a1c3b))
+
+
+
+
+
 ## [1.3.10](https://github.com/liwijs/liwi/compare/liwi-mongo-example@1.3.9...liwi-mongo-example@1.3.10) (2019-05-05)
 
 **Note:** Version bump only for package liwi-mongo-example

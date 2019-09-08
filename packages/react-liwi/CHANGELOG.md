@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/liwijs/liwi/compare/react-liwi@6.0.0...react-liwi@6.0.1) (2019-09-08)
+
+
+### Bug Fixes
+
+* add missing document.removeEventListener for visibilitychange ([3277950](https://github.com/liwijs/liwi/commit/3277950))
+* improve ServiceResource definitions ([92a1c3b](https://github.com/liwijs/liwi/commit/92a1c3b))
+
+
+
+
+
 # [6.0.0](https://github.com/liwijs/liwi/compare/react-liwi@5.1.2...react-liwi@6.0.0) (2019-05-05)
 
 

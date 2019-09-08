@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-websocket-server",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "liwi resources client implementation for websocket",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -66,10 +66,10 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "@types/socket.io": "^2.1.2",
-    "extended-json": "^2.3.0",
-    "liwi-resources-server": "^4.3.1",
-    "liwi-store": "^4.3.0",
-    "liwi-types": "^3.0.0",
+    "extended-json": "^2.3.1",
+    "liwi-resources-server": "^4.3.2",
+    "liwi-store": "^4.3.1",
+    "liwi-types": "^3.0.1",
     "nightingale-logger": "^6.2.2"
   },
   "devDependencies": {

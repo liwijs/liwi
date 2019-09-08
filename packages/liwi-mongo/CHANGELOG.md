@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.2](https://github.com/liwijs/liwi/compare/liwi-mongo@5.0.1...liwi-mongo@5.0.2) (2019-09-08)
+
+
+### Bug Fixes
+
+* improve ServiceResource definitions ([92a1c3b](https://github.com/liwijs/liwi/commit/92a1c3b))
+
+
+
+
+
 ## [5.0.1](https://github.com/liwijs/liwi/compare/liwi-mongo@5.0.0...liwi-mongo@5.0.1) (2019-05-05)
 
 
