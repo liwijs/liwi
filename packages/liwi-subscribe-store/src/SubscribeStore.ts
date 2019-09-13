@@ -148,12 +148,24 @@ export default class SubscribeStore<
     return updated;
   }
 
-  partialUpdateMany(
+  async partialUpdateMany(
     criteria: Criteria<Model>,
     partialUpdate: Update<Model>,
   ): Promise<void> {
-    throw new Error('partialUpdateMany cannot be used in SubscribeStore');
-    // return this.store.partialUpdateMany(criteria, partialUpdate);
+    const cursor = await this.store.cursor(criteria);
+    const prev: Model[] = [];
+    const next: Model[] = [];
+    await cursor.forEach(async (model) => {
+      const key = model[this.store.keyPath];
+      const updated = await this.store.partialUpdateByKey(
+        key,
+        partialUpdate,
+        criteria,
+      );
+      prev.push(model);
+      next.push(updated);
+    });
+    this.callSubscribed({ type: 'updated', prev, next });
   }
 
   async deleteByKey(key: any): Promise<void> {

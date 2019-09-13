@@ -303,34 +303,104 @@ function () {
     };
   }();
 
-  _proto.partialUpdateMany = function partialUpdateMany() {
-    throw new Error('partialUpdateMany cannot be used in SubscribeStore'); // return this.store.partialUpdateMany(criteria, partialUpdate);
-  };
+  _proto.partialUpdateMany =
+  /*#__PURE__*/
+  function () {
+    var _partialUpdateMany = _asyncToGenerator(
+    /*#__PURE__*/
+    _regeneratorRuntime.mark(function _callee9(criteria, partialUpdate) {
+      var _this2 = this;
+
+      var cursor, prev, next;
+      return _regeneratorRuntime.wrap(function _callee9$(_context9) {
+        while (1) {
+          switch (_context9.prev = _context9.next) {
+            case 0:
+              _context9.next = 2;
+              return this.store.cursor(criteria);
+
+            case 2:
+              cursor = _context9.sent;
+              prev = [];
+              next = [];
+              _context9.next = 7;
+              return cursor.forEach(
+              /*#__PURE__*/
+              function () {
+                var _ref = _asyncToGenerator(
+                /*#__PURE__*/
+                _regeneratorRuntime.mark(function _callee8(model) {
+                  var key, updated;
+                  return _regeneratorRuntime.wrap(function _callee8$(_context8) {
+                    while (1) {
+                      switch (_context8.prev = _context8.next) {
+                        case 0:
+                          key = model[_this2.store.keyPath];
+                          _context8.next = 3;
+                          return _this2.store.partialUpdateByKey(key, partialUpdate, criteria);
+
+                        case 3:
+                          updated = _context8.sent;
+                          prev.push(model);
+                          next.push(updated);
+
+                        case 6:
+                        case "end":
+                          return _context8.stop();
+                      }
+                    }
+                  }, _callee8);
+                }));
+
+                return function () {
+                  return _ref.apply(this, arguments);
+                };
+              }());
+
+            case 7:
+              this.callSubscribed({
+                type: 'updated',
+                prev: prev,
+                next: next
+              });
+
+            case 8:
+            case "end":
+              return _context9.stop();
+          }
+        }
+      }, _callee9, this);
+    }));
+
+    return function partialUpdateMany() {
+      return _partialUpdateMany.apply(this, arguments);
+    };
+  }();
 
   _proto.deleteByKey =
   /*#__PURE__*/
   function () {
     var _deleteByKey = _asyncToGenerator(
     /*#__PURE__*/
-    _regeneratorRuntime.mark(function _callee8(key) {
-      return _regeneratorRuntime.wrap(function _callee8$(_context8) {
+    _regeneratorRuntime.mark(function _callee10(key) {
+      return _regeneratorRuntime.wrap(function _callee10$(_context10) {
         while (1) {
-          switch (_context8.prev = _context8.next) {
+          switch (_context10.prev = _context10.next) {
             case 0:
-              _context8.t0 = this;
-              _context8.next = 3;
+              _context10.t0 = this;
+              _context10.next = 3;
               return this.findByKey(key);
 
             case 3:
-              _context8.t1 = _context8.sent;
-              return _context8.abrupt("return", _context8.t0.deleteOne.call(_context8.t0, _context8.t1));
+              _context10.t1 = _context10.sent;
+              return _context10.abrupt("return", _context10.t0.deleteOne.call(_context10.t0, _context10.t1));
 
             case 5:
             case "end":
-              return _context8.stop();
+              return _context10.stop();
           }
         }
-      }, _callee8, this);
+      }, _callee10, this);
     }));
 
     return function deleteByKey() {
@@ -343,12 +413,12 @@ function () {
   function () {
     var _deleteOne = _asyncToGenerator(
     /*#__PURE__*/
-    _regeneratorRuntime.mark(function _callee9(object) {
-      return _regeneratorRuntime.wrap(function _callee9$(_context9) {
+    _regeneratorRuntime.mark(function _callee11(object) {
+      return _regeneratorRuntime.wrap(function _callee11$(_context11) {
         while (1) {
-          switch (_context9.prev = _context9.next) {
+          switch (_context11.prev = _context11.next) {
             case 0:
-              _context9.next = 2;
+              _context11.next = 2;
               return this.store.deleteOne(object);
 
             case 2:
@@ -359,10 +429,10 @@ function () {
 
             case 3:
             case "end":
-              return _context9.stop();
+              return _context11.stop();
           }
         }
-      }, _callee9, this);
+      }, _callee11, this);
     }));
 
     return function deleteOne() {
@@ -379,26 +449,26 @@ function () {
   function () {
     var _cursor = _asyncToGenerator(
     /*#__PURE__*/
-    _regeneratorRuntime.mark(function _callee10(criteria, sort) {
+    _regeneratorRuntime.mark(function _callee12(criteria, sort) {
       var cursor;
-      return _regeneratorRuntime.wrap(function _callee10$(_context10) {
+      return _regeneratorRuntime.wrap(function _callee12$(_context12) {
         while (1) {
-          switch (_context10.prev = _context10.next) {
+          switch (_context12.prev = _context12.next) {
             case 0:
-              _context10.next = 2;
+              _context12.next = 2;
               return this.store.cursor(criteria, sort);
 
             case 2:
-              cursor = _context10.sent;
+              cursor = _context12.sent;
               cursor.overrideStore(this);
-              return _context10.abrupt("return", cursor);
+              return _context12.abrupt("return", cursor);
 
             case 5:
             case "end":
-              return _context10.stop();
+              return _context12.stop();
           }
         }
-      }, _callee10, this);
+      }, _callee12, this);
     }));
 
     return function cursor() {

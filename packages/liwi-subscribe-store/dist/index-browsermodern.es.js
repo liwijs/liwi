@@ -112,8 +112,23 @@ class SubscribeStore {
     return updated;
   }
 
-  partialUpdateMany(criteria, partialUpdate) {
-    throw new Error('partialUpdateMany cannot be used in SubscribeStore'); // return this.store.partialUpdateMany(criteria, partialUpdate);
+  async partialUpdateMany(criteria, partialUpdate) {
+    var _this2 = this;
+
+    const cursor = await this.store.cursor(criteria);
+    const prev = [];
+    const next = [];
+    await cursor.forEach(async function (model) {
+      const key = model[_this2.store.keyPath];
+      const updated = await _this2.store.partialUpdateByKey(key, partialUpdate, criteria);
+      prev.push(model);
+      next.push(updated);
+    });
+    this.callSubscribed({
+      type: 'updated',
+      prev,
+      next
+    });
   }
 
   async deleteByKey(key) {
