@@ -4,13 +4,14 @@ import { BaseModel } from 'liwi-types';
 
 export default abstract class AbstractCursor<
   Model extends BaseModel,
-  KeyPath extends string
+  KeyPath extends string,
+  Result extends Partial<Model> = Model
 > {
   abstract close(): Promise<void> | void;
 
   abstract next(): Promise<any>;
 
-  nextResult(): Promise<Model> {
+  nextResult(): Promise<Result> {
     return this.next().then(() => this.result());
   }
 
@@ -18,11 +19,13 @@ export default abstract class AbstractCursor<
 
   abstract count(applyLimit: boolean /*  = false */): Promise<number>;
 
-  abstract toArray(): Promise<Model[]>;
+  abstract toArray(): Promise<Result[]>;
 
-  abstract result(): Promise<Model>;
+  abstract result(): Promise<Result>;
 
-  async forEachKeys(callback: (key: any) => any): Promise<void> {
+  async forEachKeys(
+    callback: (key: any) => Promise<void> | void,
+  ): Promise<void> {
     while (true) {
       const key = await this.next();
       if (!key) return;
@@ -31,7 +34,7 @@ export default abstract class AbstractCursor<
     }
   }
 
-  forEach(callback: (result: Model) => any): Promise<void> {
+  forEach(callback: (result: Result) => Promise<void> | void): Promise<void> {
     return this.forEachKeys(() =>
       this.result().then((result) => callback(result)),
     );

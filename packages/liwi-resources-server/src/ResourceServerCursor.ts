@@ -15,7 +15,7 @@ export default class ResourceServerCursor<
 
   constructor(
     resource: CursorResource<Model, Transformed, ConnectedUser>,
-    cursor: AbstractStoreCursor<Model, any, any>,
+    cursor: AbstractStoreCursor<Model, any, any, Model>,
     connectedUser?: ConnectedUser,
   ) {
     this.resource = resource;

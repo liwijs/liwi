@@ -7,8 +7,9 @@ import InternalCommonStoreClient from './InternalCommonStoreClient';
 export default abstract class AbstractStoreCursor<
   Model extends BaseModel,
   KeyPath extends string,
-  Store extends InternalCommonStoreClient<Model, KeyPath, any>
-> extends AbstractCursor<Model, KeyPath> {
+  Store extends InternalCommonStoreClient<Model, KeyPath, any>,
+  Result extends Partial<Model> = Model
+> extends AbstractCursor<Model, KeyPath, Result> {
   key: any;
 
   protected _store: Store;
@@ -26,9 +27,9 @@ export default abstract class AbstractStoreCursor<
     this._store = store;
   }
 
-  result(): Promise<Model> {
+  result(): Promise<Result> {
     if (!this.key) throw new Error('Cannot call result() before next()');
-    return this.store.findByKey(this.key) as Promise<Model>;
+    return (this.store.findByKey(this.key) as unknown) as Promise<Result>;
   }
 
   delete(): Promise<void> {

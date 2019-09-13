@@ -3,13 +3,14 @@ import { AbstractStoreCursor } from 'liwi-store';
 import MongoStore, { MongoModel, MongoKeyPath } from './MongoStore';
 
 export default class MongoCursor<
-  Model extends MongoModel
-> extends AbstractStoreCursor<Model, MongoKeyPath, MongoStore<Model>> {
+  Model extends MongoModel,
+  Result extends Partial<Model> = Model
+> extends AbstractStoreCursor<Model, MongoKeyPath, MongoStore<Model>, Result> {
   // key in AbstractCursor
 
   private readonly cursor: Cursor;
 
-  private _result?: Model;
+  private _result?: Result;
 
   constructor(store: MongoStore<Model>, cursor: Cursor) {
     super(store);
@@ -37,9 +38,9 @@ export default class MongoCursor<
     return this.cursor.count(applyLimit);
   }
 
-  result(): Promise<Model> {
+  result(): Promise<Result> {
     if (!this._result) throw new Error('Cannot call result() before next()');
-    return Promise.resolve(this._result as Model);
+    return Promise.resolve(this._result as Result);
   }
 
   close() {
@@ -50,7 +51,7 @@ export default class MongoCursor<
     return Promise.resolve();
   }
 
-  toArray(): Promise<Model[]> {
+  toArray(): Promise<Result[]> {
     return this.cursor.toArray();
   }
 }

@@ -5,7 +5,7 @@ export default class ResourceServerCursor<Model extends BaseModel, Transformed =
     private readonly resource;
     private readonly connectedUser?;
     private readonly cursor;
-    constructor(resource: CursorResource<Model, Transformed, ConnectedUser>, cursor: AbstractStoreCursor<Model, any, any>, connectedUser?: ConnectedUser);
+    constructor(resource: CursorResource<Model, Transformed, ConnectedUser>, cursor: AbstractStoreCursor<Model, any, any, Model>, connectedUser?: ConnectedUser);
     toArray(): Promise<Transformed[]>;
 }
 //# sourceMappingURL=ResourceServerCursor.d.ts.map

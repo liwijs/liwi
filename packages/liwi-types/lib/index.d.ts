@@ -38,7 +38,10 @@ export interface Update<Model extends BaseModel> {
   $pullAll?: { [P in keyof Model]?: Array<any> } & { [field: string]: Array<any> },
 }
 
-export type Fields<Model extends BaseModel> = { [P in keyof Model]?: 0 | 1 } & { [key: string]: 0 | 1; }
+
+export type ExcludeOnlyFields<Model extends BaseModel> = { [P in keyof Model]?: 0 } & { [key: string]: 0; };
+export type IncludeOnlyFields<Model extends BaseModel> = { [P in keyof Model]?: 1 } & { [key: string]: 1; };
+export type Fields<Model extends BaseModel> = ExcludeOnlyFields<Model> | IncludeOnlyFields<Model>;
 
 export type Criteria<Model extends BaseModel> = { [P in keyof Model]?: any } & { [key: string]: any }
 
