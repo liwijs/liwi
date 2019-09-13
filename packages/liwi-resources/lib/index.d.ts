@@ -1,6 +1,6 @@
 import { BaseModel } from 'liwi-types';
 
-export interface QueryDescription<Params extends Record<string, any>, Model extends BaseModel> {
+export interface QueryDescription<Params extends Record<string, any> | void, Model extends BaseModel> {
   params: Params;
   value: Model;
 }
@@ -11,5 +11,5 @@ export interface OperationDescription<Params extends Record<string, any>, Result
   result: Result;
 }
 
-export type QueryDescriptions<Keys  = string> = Record<Keys, QueryDescription<any, any>>
-export type OperationDescriptions<Keys  = string> = Record<Keys, OperationDescription<any, any>>;
+export type QueryDescriptions<Keys extends keyof any = string> = Record<Keys, QueryDescription<any, any>>
+export type OperationDescriptions<Keys extends keyof any = string> = Record<Keys, OperationDescription<any, any>>;
