@@ -440,35 +440,74 @@ function () {
     };
   }();
 
-  _proto.deleteMany = function deleteMany() {
-    throw new Error('deleteMany cannot be used in SubscribeStore');
-  };
+  _proto.deleteMany =
+  /*#__PURE__*/
+  function () {
+    var _deleteMany = _asyncToGenerator(
+    /*#__PURE__*/
+    _regeneratorRuntime.mark(function _callee12(criteria) {
+      var cursor, prev;
+      return _regeneratorRuntime.wrap(function _callee12$(_context12) {
+        while (1) {
+          switch (_context12.prev = _context12.next) {
+            case 0:
+              _context12.next = 2;
+              return this.store.cursor(criteria);
+
+            case 2:
+              cursor = _context12.sent;
+              _context12.next = 5;
+              return cursor.toArray();
+
+            case 5:
+              prev = _context12.sent;
+              _context12.next = 8;
+              return this.store.deleteMany(criteria);
+
+            case 8:
+              this.callSubscribed({
+                type: 'deleted',
+                prev: prev
+              });
+
+            case 9:
+            case "end":
+              return _context12.stop();
+          }
+        }
+      }, _callee12, this);
+    }));
+
+    return function deleteMany() {
+      return _deleteMany.apply(this, arguments);
+    };
+  }();
 
   _proto.cursor =
   /*#__PURE__*/
   function () {
     var _cursor = _asyncToGenerator(
     /*#__PURE__*/
-    _regeneratorRuntime.mark(function _callee12(criteria, sort) {
+    _regeneratorRuntime.mark(function _callee13(criteria, sort) {
       var cursor;
-      return _regeneratorRuntime.wrap(function _callee12$(_context12) {
+      return _regeneratorRuntime.wrap(function _callee13$(_context13) {
         while (1) {
-          switch (_context12.prev = _context12.next) {
+          switch (_context13.prev = _context13.next) {
             case 0:
-              _context12.next = 2;
+              _context13.next = 2;
               return this.store.cursor(criteria, sort);
 
             case 2:
-              cursor = _context12.sent;
+              cursor = _context13.sent;
               cursor.overrideStore(this);
-              return _context12.abrupt("return", cursor);
+              return _context13.abrupt("return", cursor);
 
             case 5:
             case "end":
-              return _context12.stop();
+              return _context13.stop();
           }
         }
-      }, _callee12, this);
+      }, _callee13, this);
     }));
 
     return function cursor() {

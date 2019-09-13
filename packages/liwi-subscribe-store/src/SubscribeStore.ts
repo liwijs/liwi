@@ -177,8 +177,11 @@ export default class SubscribeStore<
     this.callSubscribed({ type: 'deleted', prev: [object] });
   }
 
-  deleteMany(criteria: Criteria<Model>): Promise<void> {
-    throw new Error('deleteMany cannot be used in SubscribeStore');
+  async deleteMany(criteria: Criteria<Model>): Promise<void> {
+    const cursor = await this.store.cursor(criteria);
+    const prev: Model[] = await cursor.toArray();
+    await this.store.deleteMany(criteria);
+    this.callSubscribed({ type: 'deleted', prev });
   }
 
   async cursor(

@@ -140,8 +140,14 @@ class SubscribeStore {
     });
   }
 
-  deleteMany(criteria) {
-    throw new Error('deleteMany cannot be used in SubscribeStore');
+  async deleteMany(criteria) {
+    const cursor = await this.store.cursor(criteria);
+    const prev = await cursor.toArray();
+    await this.store.deleteMany(criteria);
+    this.callSubscribed({
+      type: 'deleted',
+      prev
+    });
   }
 
   async cursor(criteria, sort) {
