@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/liwijs/liwi/compare/liwi-store@4.3.2...liwi-store@4.4.0) (2019-10-12)
+
+
+### Features
+
+* add criteria un findByKey and deleteByKey ([2adfaba](https://github.com/liwijs/liwi/commit/2adfaba))
+
+
+
+
+
 ## [4.3.2](https://github.com/liwijs/liwi/compare/liwi-store@4.3.1...liwi-store@4.3.2) (2019-09-13)
 
 **Note:** Version bump only for package liwi-store

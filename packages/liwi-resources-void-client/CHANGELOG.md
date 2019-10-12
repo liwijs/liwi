@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/liwijs/liwi/compare/liwi-resources-void-client@2.2.3...liwi-resources-void-client@2.3.0) (2019-10-12)
+
+
+### Features
+
+* add criteria un findByKey and deleteByKey ([2adfaba](https://github.com/liwijs/liwi/commit/2adfaba))
+
+
+
+
+
 ## [2.2.3](https://github.com/liwijs/liwi/compare/liwi-resources-void-client@2.2.2...liwi-resources-void-client@2.2.3) (2019-09-13)
 
 **Note:** Version bump only for package liwi-resources-void-client

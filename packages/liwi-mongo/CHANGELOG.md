@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/liwijs/liwi/compare/liwi-mongo@5.0.4...liwi-mongo@5.1.0) (2019-10-12)
+
+
+### Features
+
+* add criteria un findByKey and deleteByKey ([2adfaba](https://github.com/liwijs/liwi/commit/2adfaba))
+
+
+
+
+
 ## [5.0.4](https://github.com/liwijs/liwi/compare/liwi-mongo@5.0.3...liwi-mongo@5.0.4) (2019-09-13)
 
 **Note:** Version bump only for package liwi-mongo
