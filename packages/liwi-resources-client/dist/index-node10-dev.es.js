@@ -95,7 +95,7 @@ class AbstractClient {
   // ): Promise<ClientCursor<Model, KeyPath>> {
   //   return Promise.resolve(new ClientCursor(this, { criteria, sort }));
   // }
-  findByKey(key) {
+  findByKey(key, criteria) {
     throw new Error('Use operations instead');
   }
 
@@ -107,7 +107,7 @@ class AbstractClient {
     throw new Error('Use operations instead');
   }
 
-  deleteByKey(key) {
+  deleteByKey(key, criteria) {
     throw new Error('Use operations instead');
   }
 

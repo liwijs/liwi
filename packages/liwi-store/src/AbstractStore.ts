@@ -44,7 +44,10 @@ export default abstract class AbstractStore<
     );
   }
 
-  abstract findByKey(key: any): Promise<Model | undefined>;
+  abstract findByKey(
+    key: any,
+    criteria?: Criteria<Model>,
+  ): Promise<Model | undefined>;
 
   abstract findOne(
     criteria: Criteria<Model>,
@@ -87,7 +90,7 @@ export default abstract class AbstractStore<
     partialUpdate: Update<Model>,
   ): Promise<void>;
 
-  abstract deleteByKey(key: any): Promise<void>;
+  abstract deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void>;
 
   deleteOne(object: Model): Promise<void> {
     return this.deleteByKey(object[this.keyPath]);

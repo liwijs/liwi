@@ -33,7 +33,7 @@ export default interface Store<
 
   findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<any[]>;
 
-  findByKey(key: any): Promise<Model | undefined>;
+  findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined>;
 
   findOne(
     criteria: Criteria<Model>,
@@ -67,7 +67,7 @@ export default interface Store<
     partialUpdate: Update<Model>,
   ): Promise<void>;
 
-  deleteByKey(key: any): Promise<void>;
+  deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void>;
 
   deleteOne(object: Model): Promise<void>;
 

@@ -8,7 +8,7 @@ export default interface InternalCommonStoreClient<
 > {
   readonly keyPath: KeyPath;
 
-  findByKey(key: any): Promise<Model | undefined>;
+  findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined>;
 
   replaceOne(object: Model): Promise<Model>;
 
@@ -18,5 +18,5 @@ export default interface InternalCommonStoreClient<
     criteria?: Criteria<Model>,
   ): Promise<Model>;
 
-  deleteByKey(key: any): Promise<void>;
+  deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void>;
 }

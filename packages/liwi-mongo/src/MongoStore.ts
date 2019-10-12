@@ -164,9 +164,9 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
       .then((res) => undefined); // TODO return updated object
   }
 
-  deleteByKey(key: any): Promise<void> {
+  deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void> {
     return this.collection
-      .then((collection) => collection.deleteOne({ _id: key }))
+      .then((collection) => collection.deleteOne({ _id: key, ...criteria }))
       .then(() => undefined);
   }
 
@@ -186,9 +186,9 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
       .then((cursor) => new MongoCursor(this, cursor));
   }
 
-  findByKey(key: any): Promise<Model | undefined> {
+  findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined> {
     return this.collection
-      .then((collection) => collection.findOne({ _id: key }))
+      .then((collection) => collection.findOne({ _id: key, ...criteria }))
       .then((result) => result || undefined);
   }
 

@@ -23,7 +23,7 @@ export default class SubscribeStore<Model extends BaseModel, KeyPath extends str
     callSubscribed(action: Actions<Model>): void;
     createQuery<Transformed>(options: QueryOptions<Model>, transformer?: Transformer<Model, Transformed>): AbstractSubscribeQuery<Model, Store, Transformed>;
     findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
-    findByKey(key: any): Promise<Model | undefined>;
+    findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined>;
     findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;
     insertOne(object: InsertType<Model, KeyPath>): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
@@ -33,7 +33,7 @@ export default class SubscribeStore<Model extends BaseModel, KeyPath extends str
     partialUpdateByKey(key: any, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateMany(criteria: Criteria<Model>, partialUpdate: Update<Model>): Promise<void>;
-    deleteByKey(key: any): Promise<void>;
+    deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void>;
     deleteOne(object: Model): Promise<void>;
     deleteMany(criteria: Criteria<Model>): Promise<void>;
     cursor(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Cursor>;

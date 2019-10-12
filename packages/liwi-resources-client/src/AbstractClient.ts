@@ -59,7 +59,7 @@ export default abstract class AbstractClient<
   //   return Promise.resolve(new ClientCursor(this, { criteria, sort }));
   // }
 
-  findByKey(key: any): Promise<Model | undefined> {
+  findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined> {
     throw new Error('Use operations instead');
   }
 
@@ -75,7 +75,7 @@ export default abstract class AbstractClient<
     throw new Error('Use operations instead');
   }
 
-  deleteByKey(key: any): Promise<void> {
+  deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void> {
     throw new Error('Use operations instead');
   }
 }

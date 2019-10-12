@@ -12,7 +12,7 @@ export default interface Store<Model extends BaseModel, KeyPath extends string, 
     readonly connection: Connection;
     createQuery<Transformed>(options: QueryOptions<Model>, transformer?: Transformer<Model, Transformed>): AbstractQuery<Transformed>;
     findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<any[]>;
-    findByKey(key: any): Promise<Model | undefined>;
+    findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined>;
     findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;
     cursor(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Cursor>;
     insertOne(object: InsertType<Model, KeyPath>): Promise<Model>;
@@ -23,7 +23,7 @@ export default interface Store<Model extends BaseModel, KeyPath extends string, 
     partialUpdateByKey(key: any, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateMany(criteria: Criteria<Model>, partialUpdate: Update<Model>): Promise<void>;
-    deleteByKey(key: any): Promise<void>;
+    deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void>;
     deleteOne(object: Model): Promise<void>;
     deleteMany(selector: Criteria<Model>): Promise<void>;
 }

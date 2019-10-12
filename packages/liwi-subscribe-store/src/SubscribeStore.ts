@@ -75,8 +75,8 @@ export default class SubscribeStore<
     return this.store.findAll(criteria, sort);
   }
 
-  findByKey(key: any): Promise<Model | undefined> {
-    return this.store.findByKey(key);
+  findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined> {
+    return this.store.findByKey(key, criteria);
   }
 
   findOne(
@@ -168,8 +168,8 @@ export default class SubscribeStore<
     this.callSubscribed({ type: 'updated', prev, next });
   }
 
-  async deleteByKey(key: any): Promise<void> {
-    return this.deleteOne((await this.findByKey(key)) as Model);
+  async deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void> {
+    return this.deleteOne((await this.findByKey(key, criteria)) as Model);
   }
 
   async deleteOne(object: Model): Promise<void> {

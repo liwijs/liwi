@@ -45,8 +45,8 @@ function () {
     return this.store.findAll(criteria, sort);
   };
 
-  _proto.findByKey = function findByKey(key) {
-    return this.store.findByKey(key);
+  _proto.findByKey = function findByKey(key, criteria) {
+    return this.store.findByKey(key, criteria);
   };
 
   _proto.findOne = function findOne(criteria, sort) {
@@ -388,14 +388,14 @@ function () {
   function () {
     var _deleteByKey = _asyncToGenerator(
     /*#__PURE__*/
-    _regeneratorRuntime.mark(function _callee10(key) {
+    _regeneratorRuntime.mark(function _callee10(key, criteria) {
       return _regeneratorRuntime.wrap(function _callee10$(_context10) {
         while (1) {
           switch (_context10.prev = _context10.next) {
             case 0:
               _context10.t0 = this;
               _context10.next = 3;
-              return this.findByKey(key);
+              return this.findByKey(key, criteria);
 
             case 3:
               _context10.t1 = _context10.sent;

@@ -319,9 +319,10 @@ class MongoStore extends liwiStore.AbstractStore {
     return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(() => undefined); // TODO return updated object
   }
 
-  deleteByKey(key) {
+  deleteByKey(key, criteria) {
     return this.collection.then(collection => collection.deleteOne({
-      _id: key
+      _id: key,
+      ...criteria
     })).then(() => undefined);
   }
 
@@ -333,9 +334,10 @@ class MongoStore extends liwiStore.AbstractStore {
     return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => new MongoCursor(this, cursor));
   }
 
-  findByKey(key) {
+  findByKey(key, criteria) {
     return this.collection.then(collection => collection.findOne({
-      _id: key
+      _id: key,
+      ...criteria
     })).then(result => result || undefined);
   }
 

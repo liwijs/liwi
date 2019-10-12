@@ -37,8 +37,8 @@ class SubscribeStore {
     return this.store.findAll(criteria, sort);
   }
 
-  findByKey(key) {
-    return this.store.findByKey(key);
+  findByKey(key, criteria) {
+    return this.store.findByKey(key, criteria);
   }
 
   findOne(criteria, sort) {
@@ -128,8 +128,8 @@ class SubscribeStore {
     });
   }
 
-  async deleteByKey(key) {
-    return this.deleteOne((await this.findByKey(key)));
+  async deleteByKey(key, criteria) {
+    return this.deleteOne((await this.findByKey(key, criteria)));
   }
 
   async deleteOne(object) {

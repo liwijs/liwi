@@ -10,7 +10,7 @@ export default abstract class AbstractStore<Model extends BaseModel, KeyPath ext
     readonly connection: Connection;
     abstract createQuery<Transformed>(options: QueryOptions<Model>, transformer?: Transformer<Model, Transformed>): AbstractQuery<Transformed>;
     findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
-    abstract findByKey(key: any): Promise<Model | undefined>;
+    abstract findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined>;
     abstract findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;
     abstract cursor(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Cursor>;
     abstract insertOne(object: InsertType<Model, KeyPath>): Promise<Model>;
@@ -21,7 +21,7 @@ export default abstract class AbstractStore<Model extends BaseModel, KeyPath ext
     abstract partialUpdateByKey(key: any, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     abstract partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
     abstract partialUpdateMany(criteria: Criteria<Model>, partialUpdate: Update<Model>): Promise<void>;
-    abstract deleteByKey(key: any): Promise<void>;
+    abstract deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void>;
     deleteOne(object: Model): Promise<void>;
     abstract deleteMany(selector: Criteria<Model>): Promise<void>;
 }

@@ -13,10 +13,10 @@ export default abstract class AbstractClient<Model extends BaseModel, KeyPath ex
     abstract on(event: string, listener: Function): void;
     abstract off(event: string, listener: Function): void;
     abstract emitSubscribe(type: string, args: any[]): Promise<UnsubscribeEmitOnConnectCallback>;
-    findByKey(key: any): Promise<Model | undefined>;
+    findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined>;
     replaceOne(object: Model): Promise<Model>;
     partialUpdateByKey(key: any, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
-    deleteByKey(key: any): Promise<void>;
+    deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void>;
 }
 export {};
 //# sourceMappingURL=AbstractClient.d.ts.map
