@@ -29,7 +29,6 @@ function reducer(state, action) {
 function useRetrieveResource(createQuery) {
   var _useReducer = react.useReducer(reducer, function () {
     return createQuery().fetch(function (result) {
-      state.resolve();
       dispatch({
         type: 'resolve',
         result: result
