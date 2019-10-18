@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.3](https://github.com/liwijs/liwi/compare/react-liwi@6.1.2...react-liwi@6.1.3) (2019-10-18)
+
+
+### Bug Fixes
+
+* useResource without subscribing ([645421d](https://github.com/liwijs/liwi/commit/645421d))
+
+
+
+
+
 ## [6.1.2](https://github.com/liwijs/liwi/compare/react-liwi@6.1.1...react-liwi@6.1.2) (2019-10-12)
 
 **Note:** Version bump only for package react-liwi
