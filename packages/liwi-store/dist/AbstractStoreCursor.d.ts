@@ -5,7 +5,7 @@ export default abstract class AbstractStoreCursor<Model extends BaseModel, KeyPa
     key: any;
     protected _store: Store;
     constructor(store: Store);
-    readonly store: Store;
+    get store(): Store;
     overrideStore(store: Store): void;
     result(): Promise<Result>;
     delete(): Promise<void>;

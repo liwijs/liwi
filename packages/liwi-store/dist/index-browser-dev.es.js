@@ -1,5 +1,4 @@
 import _regeneratorRuntime from '@babel/runtime/regenerator';
-import _asyncToGenerator from '@babel/runtime/helpers/esm/asyncToGenerator';
 import _createClass from '@babel/runtime/helpers/esm/createClass';
 import _inheritsLoose from '@babel/runtime/helpers/esm/inheritsLoose';
 import assert from 'assert';
@@ -22,51 +21,41 @@ function () {
     });
   };
 
-  _proto.forEachKeys =
-  /*#__PURE__*/
-  function () {
-    var _forEachKeys = _asyncToGenerator(
-    /*#__PURE__*/
-    _regeneratorRuntime.mark(function _callee(callback) {
-      var _key;
+  _proto.forEachKeys = function forEachKeys(callback) {
+    var _key;
 
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 3;
-              return this.next();
+    return _regeneratorRuntime.async(function forEachKeys$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 3;
+            return _regeneratorRuntime.awrap(this.next());
 
-            case 3:
-              _key = _context.sent;
+          case 3:
+            _key = _context.sent;
 
-              if (_key) {
-                _context.next = 6;
-                break;
-              }
-
-              return _context.abrupt("return");
-
-            case 6:
-              _context.next = 8;
-              return callback(_key);
-
-            case 8:
-              _context.next = 0;
+            if (_key) {
+              _context.next = 6;
               break;
+            }
 
-            case 10:
-            case "end":
-              return _context.stop();
-          }
+            return _context.abrupt("return");
+
+          case 6:
+            _context.next = 8;
+            return _regeneratorRuntime.awrap(callback(_key));
+
+          case 8:
+            _context.next = 0;
+            break;
+
+          case 10:
+          case "end":
+            return _context.stop();
         }
-      }, _callee, this);
-    }));
-
-    return function forEachKeys() {
-      return _forEachKeys.apply(this, arguments);
-    };
-  }();
+      }
+    }, null, this);
+  };
 
   _proto.forEach = function forEach(callback) {
     var _this2 = this;
@@ -101,12 +90,12 @@ function () {
   });
   _proto[Symbol.iterator] =
   /*#__PURE__*/
-  _regeneratorRuntime.mark(function _callee2() {
+  _regeneratorRuntime.mark(function _callee() {
     var _this3 = this;
 
     var _iterator, _isArray, _i, _ref, keyPromise;
 
-    return _regeneratorRuntime.wrap(function _callee2$(_context3) {
+    return _regeneratorRuntime.wrap(function _callee$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
@@ -159,7 +148,7 @@ function () {
             return _context3.stop();
         }
       }
-    }, _callee2, this);
+    }, _callee, this);
   }) // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
 
   /*
@@ -252,36 +241,26 @@ function () {
     });
   };
 
-  _proto.upsertOne =
-  /*#__PURE__*/
-  function () {
-    var _upsertOne = _asyncToGenerator(
-    /*#__PURE__*/
-    _regeneratorRuntime.mark(function _callee(object) {
-      var result;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return this.upsertOneWithInfo(object);
+  _proto.upsertOne = function upsertOne(object) {
+    var result;
+    return _regeneratorRuntime.async(function upsertOne$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return _regeneratorRuntime.awrap(this.upsertOneWithInfo(object));
 
-            case 2:
-              result = _context.sent;
-              return _context.abrupt("return", result.object);
+          case 2:
+            result = _context.sent;
+            return _context.abrupt("return", result.object);
 
-            case 4:
-            case "end":
-              return _context.stop();
-          }
+          case 4:
+          case "end":
+            return _context.stop();
         }
-      }, _callee, this);
-    }));
-
-    return function upsertOne() {
-      return _upsertOne.apply(this, arguments);
-    };
-  }();
+      }
+    }, null, this);
+  };
 
   _proto.deleteOne = function deleteOne(object) {
     return this.deleteByKey(object[this.keyPath]);

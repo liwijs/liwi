@@ -17,8 +17,8 @@ export default class SubscribeStore<Model extends BaseModel, KeyPath extends str
     private readonly store;
     private readonly listeners;
     constructor(store: Store);
-    readonly keyPath: KeyPath;
-    readonly connection: Connection;
+    get keyPath(): KeyPath;
+    get connection(): Connection;
     subscribe(callback: Listener<Model>): () => boolean;
     callSubscribed(action: Actions<Model>): void;
     createQuery<Transformed>(options: QueryOptions<Model>, transformer?: Transformer<Model, Transformed>): AbstractSubscribeQuery<Model, Store, Transformed>;

@@ -12,7 +12,7 @@
   },
   "homepage": "https://github.com/liwijs/liwi",
   "engines": {
-    "node": ">=8.6.0"
+    "node": ">=8.9.0"
   },
   "browserslist": ["> 0.1%", "Firefox ESR", "not ie < 9", "not dead"],
   "main": "./index.js",
@@ -32,7 +32,7 @@
     "build": "pob-build",
     "build:definitions": "tsc -p tsconfig.build.json",
     "generate:test-coverage": "rm -Rf docs/coverage/ ; NODE_ENV=production BABEL_ENV=test jest --coverage --coverageReporters=pob-lcov-reporter --coverageDirectory=docs/coverage/",
-    "lint": "eslint --ext .ts --quiet src/",
+    "lint": "eslint --ext .js,.ts --quiet src",
     "test": "jest",
     "test:watch": "jest",
     "watch": "pob-watch"
@@ -80,17 +80,17 @@
     "entries": ["index"]
   },
   "devDependencies": {
-    "@babel/core": "7.5.5",
-    "@babel/preset-env": "7.5.5",
-    "@pob/eslint-config-typescript": "32.0.13",
-    "@types/jest": "24.0.18",
+    "@babel/core": "7.7.2",
+    "@babel/preset-env": "7.7.1",
+    "@pob/eslint-config-typescript": "32.1.0",
+    "@types/jest": "24.0.22",
     "babel-jest": "24.9.0",
     "babel-preset-latest-node": "3.2.1",
     "babel-preset-modern-browsers": "14.0.0",
-    "eslint": "6.3.0",
+    "eslint": "6.4.0",
     "jest": "24.9.0",
-    "pob-babel": "23.20.0",
-    "pob-lcov-reporter": "1.2.2",
+    "pob-babel": "23.22.2",
+    "pob-lcov-reporter": "1.2.3",
     "prettier": "1.18.2"
   }
 }

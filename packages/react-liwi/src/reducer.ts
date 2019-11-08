@@ -21,7 +21,7 @@ export interface ResolveAction<Result> {
 
 export type Action<Result> = ResolveAction<Result>;
 export type State<Result> = InitialState | FetchedState<Result>;
-export type Reducer<Result> = Reducer<State<Result>, Action<Result>>;
+export type ResourceReducer<Result> = Reducer<State<Result>, Action<Result>>;
 
 export function initReducer(initializer: () => Promise<void>): InitialState {
   return {

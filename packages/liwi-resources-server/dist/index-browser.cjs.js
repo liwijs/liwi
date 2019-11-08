@@ -5,7 +5,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var _regeneratorRuntime = _interopDefault(require('@babel/runtime/regenerator'));
-var _asyncToGenerator = _interopDefault(require('@babel/runtime/helpers/esm/asyncToGenerator'));
 
 var ResourceServerCursor =
 /*#__PURE__*/
@@ -65,42 +64,32 @@ function () {
     return resource;
   };
 
-  _proto.createCursor =
-  /*#__PURE__*/
-  function () {
-    var _createCursor = _asyncToGenerator(
-    /*#__PURE__*/
-    _regeneratorRuntime.mark(function _callee(resource, connectedUser, _ref2) {
-      var criteria, sort, limit, cursor;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              criteria = _ref2.criteria, sort = _ref2.sort, limit = _ref2.limit;
-              // TODO: resource.query(connectedUser, criteria || {}, sort).cursor()
-              criteria = resource.criteria(connectedUser, criteria || {});
-              sort = resource.sort(connectedUser, sort);
-              _context.next = 5;
-              return resource.store.cursor(criteria, sort);
+  _proto.createCursor = function createCursor(resource, connectedUser, _ref2) {
+    var criteria, sort, limit, cursor;
+    return _regeneratorRuntime.async(function createCursor$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            criteria = _ref2.criteria, sort = _ref2.sort, limit = _ref2.limit;
+            // TODO: resource.query(connectedUser, criteria || {}, sort).cursor()
+            criteria = resource.criteria(connectedUser, criteria || {});
+            sort = resource.sort(connectedUser, sort);
+            _context.next = 5;
+            return _regeneratorRuntime.awrap(resource.store.cursor(criteria, sort));
 
-            case 5:
-              cursor = _context.sent;
-              limit = resource.limit(limit);
-              if (limit) cursor.limit(connectedUser, limit);
-              return _context.abrupt("return", new ResourceServerCursor(resource, cursor, connectedUser));
+          case 5:
+            cursor = _context.sent;
+            limit = resource.limit(limit);
+            if (limit) cursor.limit(connectedUser, limit);
+            return _context.abrupt("return", new ResourceServerCursor(resource, cursor, connectedUser));
 
-            case 9:
-            case "end":
-              return _context.stop();
-          }
+          case 9:
+          case "end":
+            return _context.stop();
         }
-      }, _callee);
-    }));
-
-    return function createCursor() {
-      return _createCursor.apply(this, arguments);
-    };
-  }();
+      }
+    });
+  };
 
   return ResourcesServerService;
 }();

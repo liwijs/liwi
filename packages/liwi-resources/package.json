@@ -12,14 +12,14 @@
   },
   "homepage": "https://github.com/liwijs/liwi",
   "engines": {
-    "node": ">=8.6.0"
+    "node": ">=8.9.0"
   },
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "build:definitions": "tsc --lib esnext --noEmit ./lib/index.d.ts",
-    "lint": "eslint --quiet lib/"
+    "lint": "eslint --quiet lib"
   },
   "prettier": {
     "trailingComma": "es5",
@@ -31,9 +31,9 @@
     "liwi-types": "^3.0.2"
   },
   "devDependencies": {
-    "@pob/eslint-config": "32.0.2",
-    "@pob/eslint-config-node": "32.0.13",
-    "eslint": "6.3.0",
+    "@pob/eslint-config": "32.1.0",
+    "@pob/eslint-config-node": "32.1.0",
+    "eslint": "6.4.0",
     "prettier": "1.18.2"
   }
 }

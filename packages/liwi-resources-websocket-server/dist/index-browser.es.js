@@ -1,7 +1,6 @@
 import _regeneratorRuntime from '@babel/runtime/regenerator';
-import _asyncToGenerator from '@babel/runtime/helpers/esm/asyncToGenerator';
 import Logger from 'nightingale-logger';
-import { decode, encode } from 'extended-json';
+import { encode, decode } from 'extended-json';
 
 var logger = new Logger('liwi:rest-websocket');
 function init(io, resourcesService) {
@@ -27,12 +26,10 @@ function init(io, resourcesService) {
           resourceName = _ref2.resourceName,
           json = _ref2.json;
 
-      _asyncToGenerator(
-      /*#__PURE__*/
-      _regeneratorRuntime.mark(function _callee() {
+      (function _callee() {
         var value, resource, _resource, key, params, eventName, query, watcherKey, watcher, subscribeHook, _key, _watcherKey, watcherAndSubscribeHook, _resource2, _key2, _params, operation;
 
-        return _regeneratorRuntime.wrap(function _callee$(_context) {
+        return _regeneratorRuntime.async(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -73,7 +70,7 @@ function init(io, resourcesService) {
 
               case 14:
                 _context.next = 16;
-                return _resource.queries[key](params, socket.user);
+                return _regeneratorRuntime.awrap(_resource.queries[key](params, socket.user));
 
               case 16:
                 query = _context.sent;
@@ -245,8 +242,8 @@ function init(io, resourcesService) {
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 66], [8, 33], [48, 58]]);
-      }))();
+        }, null, null, [[0, 66], [8, 33], [48, 58]]);
+      })();
     });
   });
 }
