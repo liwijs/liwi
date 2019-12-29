@@ -60,7 +60,9 @@ export default class ClientQuery<
     this.client.on(eventName, listener);
 
     let _stopEmitSubscribeOnConnect: UnsubscribeEmitOnConnectCallback;
-    let promise: Promise<void> | undefined = this.client
+    let promise:
+      | Promise<void>
+      | undefined = this.client
       .emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [
         this.key,
         this.params,
@@ -81,7 +83,7 @@ export default class ClientQuery<
       );
 
     const stop = () => {
-      if (!promise) return;
+      if (promise === undefined) return;
       promise.then(() => {
         logger.debug('unsubscribe', {
           resourceName: this.client.resourceName,

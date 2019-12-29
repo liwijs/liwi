@@ -7,7 +7,7 @@
   "repository": "https://github.com:liwijs/liwi.git",
   "homepage": "https://github.com/liwijs/liwi",
   "engines": {
-    "node": ">=6.5.0"
+    "node": ">=10.13.0"
   },
   "workspaces": ["packages/*"],
   "scripts": {
@@ -19,18 +19,18 @@
     "preversion": "yarn run lint --since && yarn run build --since -- -- --no-clean && repository-check-dirty",
     "release": "cross-env GH_TOKEN=$POB_GITHUB_TOKEN lerna version --conventional-commits --conventional-graduate --create-release=github -m 'chore: release' && lerna publish from-git",
     "test": "lerna run --stream test",
-    "typescript-check": "lerna run --parallel typescript-check",
+    "tsc": "tsc -b",
     "watch": "lerna run --parallel --ignore \"*-example\" watch"
   },
   "commitlint": {
     "extends": ["@commitlint/config-conventional"]
   },
   "devDependencies": {
-    "@pob/repo-config": "1.0.2",
-    "@pob/version": "4.33.4",
-    "husky": "3.0.9",
-    "lerna": "3.18.4",
-    "repository-check-dirty": "1.0.2",
-    "typescript": "3.7.2"
+    "@pob/repo-config": "1.0.3",
+    "@pob/version": "5.0.1",
+    "husky": "3.1.0",
+    "lerna": "3.20.0",
+    "repository-check-dirty": "1.0.3",
+    "typescript": "3.7.4"
   }
 }

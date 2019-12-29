@@ -24,7 +24,7 @@ export default class MongoCursor<
   next(): Promise<any> {
     return this.cursor.next().then((value) => {
       this._result = value;
-      this.key = value && value._id;
+      this.key = value?._id;
       return this.key;
     });
   }

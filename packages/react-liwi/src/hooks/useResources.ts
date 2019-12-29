@@ -60,7 +60,7 @@ export default function useResources<
   queriesToSubscribe: [boolean, boolean, boolean, boolean, boolean],
 ): UseResourceResult<[T1[], T2[], T3[], T4[], T5[]]>;
 export default function useResources<T extends BaseModel>(
-  createQueries: (CreateQuery<T>)[],
+  createQueries: CreateQuery<T>[],
   queriesToSubscribe: boolean[],
 ): UseResourceResult<T[][]> {
   if (POB_TARGET === 'node') return [true, []];

@@ -57,7 +57,7 @@ export default class ClientCursor<
   async next(): Promise<any> {
     const result = await this.emit('next');
     this._result = result;
-    this.key = result && result[this.client.keyPath];
+    this.key = result?.[this.client.keyPath];
     return this.key;
   }
 
