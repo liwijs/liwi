@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-classes-per-file
 import { config } from 'alp-node';
 import { MongoStore, MongoConnection, MongoBaseModel } from 'liwi-mongo';
 
