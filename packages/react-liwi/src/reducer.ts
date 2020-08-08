@@ -2,7 +2,10 @@ import type { Query, QueryParams } from 'liwi-resources-client';
 import type { QueryMeta, QueryInfo } from 'liwi-types';
 import type { Reducer } from 'react';
 
-export interface InitialState<Result, Params extends QueryParams<Params>> {
+export interface InitialState<
+  Result,
+  Params extends QueryParams<Params> | undefined
+> {
   fetched: false;
   fetching: true;
   query: Query<Result, Params>;
@@ -13,7 +16,10 @@ export interface InitialState<Result, Params extends QueryParams<Params>> {
   error: undefined;
 }
 
-export interface InitialErrorState<Result, Params extends QueryParams<Params>> {
+export interface InitialErrorState<
+  Result,
+  Params extends QueryParams<Params> | undefined
+> {
   fetched: false;
   fetching: boolean;
   query: Query<Result, Params>;
@@ -24,7 +30,10 @@ export interface InitialErrorState<Result, Params extends QueryParams<Params>> {
   error: Error;
 }
 
-export interface FetchedState<Result, Params extends QueryParams<Params>> {
+export interface FetchedState<
+  Result,
+  Params extends QueryParams<Params> | undefined
+> {
   fetched: true;
   fetching: boolean;
   query: Query<Result, Params>;
@@ -64,23 +73,26 @@ export type Action<Result> =
   | RefetchAction
   | FetchingAction
   | ErrorAction;
-export type State<Result, Params extends QueryParams<Params>> =
+export type State<Result, Params extends QueryParams<Params> | undefined> =
   | InitialState<Result, Params>
   | InitialErrorState<Result, Params>
   | FetchedState<Result, Params>;
 export type ResourceReducer<
   Result,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params> | undefined
 > = Reducer<State<Result, Params>, Action<Result>>;
 export interface ResourceReducerInitializerReturn<
   Result,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params> | undefined
 > {
   query: Query<Result, Params>;
   promise?: Promise<void>;
 }
 
-export function initReducer<Result, Params extends QueryParams<Params>>(
+export function initReducer<
+  Result,
+  Params extends QueryParams<Params> | undefined
+>(
   initializer: () => ResourceReducerInitializerReturn<Result, Params>,
 ): InitialState<Result, Params> {
   const init = initializer();
@@ -97,10 +109,10 @@ export function initReducer<Result, Params extends QueryParams<Params>>(
   };
 }
 
-export default function reducer<Result, Params extends QueryParams<Params>>(
-  state: State<Result, Params>,
-  action: Action<Result>,
-): State<Result, Params> {
+export default function reducer<
+  Result,
+  Params extends QueryParams<Params> | undefined
+>(state: State<Result, Params>, action: Action<Result>): State<Result, Params> {
   switch (action.type) {
     case 'resolve':
       return {

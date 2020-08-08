@@ -13,7 +13,7 @@ const logger = new Logger('liwi:resources:query');
 
 export default class ClientQuery<
   Result,
-  Params extends QueryParams<Params> = undefined
+  Params extends QueryParams<Params> | undefined = undefined
 > implements Query<Result, Params> {
   private readonly resourceName: string;
 
@@ -35,7 +35,13 @@ export default class ClientQuery<
     this.params = params;
   }
 
-  changePartialParams(params: Partial<Params>): void {
+  changeParams(params: Params): void {
+    this.params = params;
+  }
+
+  changePartialParams(
+    params: Params extends undefined ? never : Partial<Params>,
+  ): void {
     this.params = { ...this.params, ...params };
   }
 

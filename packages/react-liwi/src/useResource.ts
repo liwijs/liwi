@@ -8,7 +8,9 @@ import {
   UseResourceAndSubscribeOptions,
 } from './useRetrieveResourceAndSubscribe';
 
-interface UseResourceOptionsRequiredParams<Params extends QueryParams<Params>> {
+interface UseResourceOptionsRequiredParams<
+  Params extends QueryParams<Params> | undefined
+> {
   params: Params;
   subscribe?: boolean;
   subscribeOptions?: UseResourceAndSubscribeOptions;
@@ -20,7 +22,10 @@ export type UseResourceOptions<
   ? SetOptional<UseResourceOptionsRequiredParams<Params>, 'params'>
   : UseResourceOptionsRequiredParams<Params>;
 
-export function useResource<Result, Params extends QueryParams<Params>>(
+export function useResource<
+  Result,
+  Params extends QueryParams<Params> | undefined
+>(
   createQuery: (initialParams: Params) => Query<Result, Params>,
   { params, subscribe, subscribeOptions }: UseResourceOptions<Params>,
   deps: any[],

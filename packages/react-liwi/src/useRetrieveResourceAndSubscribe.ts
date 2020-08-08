@@ -33,7 +33,7 @@ const isInitial = <Result>(
 
 export function useRetrieveResourceAndSubscribe<
   Result,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params> | undefined
 >(
   createQuery: (initialParams: Params) => Query<Result, Params>,
   params: Params,
@@ -157,7 +157,7 @@ export function useRetrieveResourceAndSubscribe<
               querySubscriptionRef.current.stop();
             }
 
-            query.changePartialParams(params);
+            query.changeParams(params);
 
             if (!document.hidden) {
               dispatch({

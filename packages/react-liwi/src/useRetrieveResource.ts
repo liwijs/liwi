@@ -11,7 +11,10 @@ import reducer, {
   ResourceReducerInitializerReturn,
 } from './reducer';
 
-export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
+export function useRetrieveResource<
+  Result,
+  Params extends QueryParams<Params> | undefined
+>(
   createQuery: (initialParams: Params) => Query<Result, Params>,
   params: Params,
   deps: any[],
@@ -79,7 +82,7 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
       return;
     }
 
-    state.query.changePartialParams(params);
+    state.query.changeParams(params);
 
     if (!wasReady.current) return;
     dispatch({

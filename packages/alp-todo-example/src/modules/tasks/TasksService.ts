@@ -22,6 +22,7 @@ interface PatchParams {
 export interface TasksService {
   queries: {
     queryAll: ServiceQuery<Task[], QueryAllParams>;
+    queryWithoutParams: ServiceQuery<Task[], undefined>;
   };
   operations: {
     create: (params: CreateParams) => Promise<Task>;
@@ -33,6 +34,6 @@ export interface TasksService {
 export const createTasksServiceClient = createResourceClientService<
   TasksService
 >('tasks', {
-  queries: { queryAll: null },
+  queries: { queryAll: null, queryWithoutParams: null },
   operations: { create: null, patch: null, clearCompleted: null },
 });

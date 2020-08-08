@@ -2,6 +2,7 @@ import { Query, SubscribeCallback, QuerySubscription, QueryResult } from 'liwi-s
 import { BaseModel, InsertType, AllowedKeyValue } from 'liwi-types';
 import SubscribeStore from './SubscribeStore';
 export default abstract class AbstractSubscribableStoreQuery<KeyPath extends string, KeyValue extends AllowedKeyValue, Model extends BaseModel & Record<KeyPath, KeyValue>, ModelInsertType extends InsertType<Model, KeyPath>, Result = Model> implements Query<Result, never, KeyValue> {
+    changeParams(params: never): never;
     changePartialParams(params: never): never;
     private _subscribeStore?;
     setSubscribeStore(store: SubscribeStore<KeyPath, KeyValue, Model, ModelInsertType, any, any>): void;

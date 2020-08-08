@@ -3,6 +3,10 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 class AbstractSubscribableStoreQuery {
+  changeParams() {
+    throw new Error('Method not supported. Please create a new query.');
+  }
+
   changePartialParams() {
     throw new Error('Method not supported. Please create a new query.');
   }

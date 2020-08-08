@@ -187,7 +187,7 @@ function useRetrieveResource(createQuery, params, deps) {
       return;
     }
 
-    state.query.changePartialParams(params);
+    state.query.changeParams(params);
     if (!wasReady.current) return;
     dispatch({
       type: 'refetch',
@@ -440,7 +440,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, deps, _temp) {
             querySubscriptionRef.current.stop();
           }
 
-          query.changePartialParams(params);
+          query.changeParams(params);
 
           if (!document.hidden) {
             dispatch({

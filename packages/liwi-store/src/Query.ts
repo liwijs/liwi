@@ -36,9 +36,7 @@ export type AllowedParamValue =
   | Date
   | AllowedParamValue[];
 
-export type QueryParams<Params> =
-  | Record<keyof Params, AllowedParamValue>
-  | undefined;
+export type QueryParams<Params> = Record<keyof Params, AllowedParamValue>;
 
 export interface QueryResult<Result> {
   result: Result;
@@ -48,10 +46,14 @@ export interface QueryResult<Result> {
 
 export interface Query<
   Result,
-  Params extends QueryParams<Params>,
+  Params extends QueryParams<Params> | undefined,
   KeyValue extends AllowedKeyValue = AllowedKeyValue
 > {
-  changePartialParams(params: Partial<Params>): void;
+  changeParams(params: Params): void;
+
+  changePartialParams(
+    params: Params extends undefined ? never : Partial<Params>,
+  ): void;
 
   fetch<T>(onFulfilled: (result: QueryResult<Result>) => T): Promise<T>;
 

@@ -10,6 +10,10 @@ class ClientQuery {
     this.params = params;
   }
 
+  changeParams(params) {
+    this.params = params;
+  }
+
   changePartialParams(params) {
     this.params = Object.assign({}, this.params, params);
   }

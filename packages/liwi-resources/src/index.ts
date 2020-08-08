@@ -21,7 +21,7 @@ export interface ServiceInterface<
   OperationKeys extends keyof any
 > {
   queries: {
-    [key in QueryKeys]: <Params extends QueryParams<Params>>(
+    [key in QueryKeys]: <Params extends QueryParams<Params> | undefined>(
       params: Params,
     ) => Query<any, Params>;
   };

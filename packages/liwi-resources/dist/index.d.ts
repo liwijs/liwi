@@ -8,7 +8,7 @@ export interface ResourceSubscribePayload<Options> {
 }
 export interface ServiceInterface<QueryKeys extends keyof any, OperationKeys extends keyof any> {
     queries: {
-        [key in QueryKeys]: <Params extends QueryParams<Params>>(params: Params) => Query<any, Params>;
+        [key in QueryKeys]: <Params extends QueryParams<Params> | undefined>(params: Params) => Query<any, Params>;
     };
     operations: {
         [key in OperationKeys]: (params: any) => Promise<any>;

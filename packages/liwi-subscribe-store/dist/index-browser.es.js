@@ -7,6 +7,10 @@ var AbstractSubscribableStoreQuery = /*#__PURE__*/function () {
 
   var _proto = AbstractSubscribableStoreQuery.prototype;
 
+  _proto.changeParams = function changeParams() {
+    throw new Error('Method not supported. Please create a new query.');
+  };
+
   _proto.changePartialParams = function changePartialParams() {
     throw new Error('Method not supported. Please create a new query.');
   };

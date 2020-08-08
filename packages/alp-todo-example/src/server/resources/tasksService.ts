@@ -1,9 +1,10 @@
 import { Update } from 'liwi-mongo';
+import { ServiceResource } from 'liwi-resources-server';
 import { Task } from 'modules/tasks/Task';
 import { TasksService } from 'modules/tasks/TasksService';
 import { tasksStore } from 'server/stores/tasksStores';
 
-export const tasksService: TasksService = {
+export const tasksService: ServiceResource<TasksService> = {
   queries: {
     queryAll: ({ completed, limit, page }) => {
       const securedLimit = Math.min(200, limit);
@@ -12,6 +13,13 @@ export const tasksService: TasksService = {
         sort: { created: 1 },
         limit: securedLimit,
         skip: (page - 1) * securedLimit,
+      });
+    },
+
+    queryWithoutParams: () => {
+      return tasksStore.createQueryCollection({
+        sort: { created: 1 },
+        limit: 100,
       });
     },
   },

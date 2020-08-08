@@ -13,6 +13,10 @@ var ClientQuery = /*#__PURE__*/function () {
 
   var _proto = ClientQuery.prototype;
 
+  _proto.changeParams = function changeParams(params) {
+    this.params = params;
+  };
+
   _proto.changePartialParams = function changePartialParams(params) {
     this.params = Object.assign({}, this.params, params);
   };
