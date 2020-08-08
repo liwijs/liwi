@@ -303,9 +303,16 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
 
   var handleUpgrade = function handleUpgrade(request, socket, upgradeHead) {
     if (request.url !== path) return;
-    var authenticatedUser = getAuthenticatedUser(request);
+    var authenticatedUserPromise = Promise.resolve(getAuthenticatedUser(request));
     wss.handleUpgrade(request, socket, upgradeHead, function (ws) {
-      wss.emit('connection', ws, authenticatedUser);
+      authenticatedUserPromise.catch(function (err) {
+        logger.warn('getAuthenticatedUser threw an error, return null instead.', {
+          err: err
+        });
+        return null;
+      }).then(function (authenticatedUser) {
+        wss.emit('connection', ws, authenticatedUser);
+      });
     });
   };
 

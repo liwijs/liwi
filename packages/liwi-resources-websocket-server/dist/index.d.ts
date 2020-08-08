@@ -3,7 +3,7 @@ import http from 'http';
 import { ResourcesServerService } from 'liwi-resources-server';
 import WebSocket from 'ws';
 export declare type WebsocketServer = WebSocket.Server;
-declare type GetAuthenticatedUser<AuthenticatedUser> = (request: http.IncomingMessage) => AuthenticatedUser | null;
+declare type GetAuthenticatedUser<AuthenticatedUser> = (request: http.IncomingMessage) => AuthenticatedUser | null | Promise<AuthenticatedUser | null>;
 export interface ResourcesWebsocketServer {
     wss: WebSocket.Server;
     close(): void;

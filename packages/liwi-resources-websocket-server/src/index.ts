@@ -23,7 +23,7 @@ export type WebsocketServer = WebSocket.Server;
 
 type GetAuthenticatedUser<AuthenticatedUser> = (
   request: http.IncomingMessage,
-) => AuthenticatedUser | null;
+) => AuthenticatedUser | null | Promise<AuthenticatedUser | null>;
 
 interface ExtendedWebSocket extends WebSocket {
   isAlive: boolean;
@@ -357,11 +357,21 @@ export const createWsServer = <AuthenticatedUser>(
   ): void => {
     if (request.url !== path) return;
 
-    const authenticatedUser: AuthenticatedUser | null = getAuthenticatedUser(
-      request,
+    const authenticatedUserPromise: Promise<AuthenticatedUser | null> = Promise.resolve(
+      getAuthenticatedUser(request),
     );
     wss.handleUpgrade(request, socket, upgradeHead, (ws) => {
-      wss.emit('connection', ws, authenticatedUser);
+      authenticatedUserPromise
+        .catch((err) => {
+          logger.warn(
+            'getAuthenticatedUser threw an error, return null instead.',
+            { err },
+          );
+          return null;
+        })
+        .then((authenticatedUser) => {
+          wss.emit('connection', ws, authenticatedUser);
+        });
     });
   };
 
