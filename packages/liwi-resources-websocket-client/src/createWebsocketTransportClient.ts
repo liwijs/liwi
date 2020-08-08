@@ -37,8 +37,9 @@ interface Subscription<
 
 export type WebsocketTransportClientOptions = Omit<
   SimpleWebsocketClientOptions,
-  'onMessage'
->;
+  'onMessage' | 'url'
+> &
+  Partial<Pick<SimpleWebsocketClientOptions, 'url'>>;
 
 type PromiseExecutor<T> = (
   resolve: (value?: T | PromiseLike<T>) => void,
@@ -115,15 +116,21 @@ const createSafeError = (error: AckError): ResourcesServerError => {
   return new ResourcesServerError(error.code, error.message);
 };
 
-export default function createResourcesWebsocketClient(
-  options: WebsocketTransportClientOptions,
-): TransportClient {
+export default function createResourcesWebsocketClient({
+  url,
+  ...options
+}: WebsocketTransportClientOptions): TransportClient {
   let currentId = 1;
   let currentSubscriptionId = 1;
   const acks = new Map<number, Ack<any>>(); // TODO in progress / unsent / sending => find better name
   const subscriptions = new Map<number, Subscription<any, any>>();
 
-  logger.info('create', { url: options.url });
+  if (!url) {
+    url = `ws${window.location.protocol === 'https' ? 's' : ''}://${
+      window.location.host
+    }/ws`;
+  }
+  logger.info('create', { url });
 
   const handlers: Record<ToClientMessage[0], Handler<any>> = {
     ack: (id, error, result) => {
@@ -156,6 +163,7 @@ export default function createResourcesWebsocketClient(
 
   const wsClient = createSimpleWebsocketClient({
     ...options,
+    url,
     onMessage: (event) => {
       logger.info('message', { data: event.data });
       const [type, id, error, result] = decode<ToClientMessage>(event.data);

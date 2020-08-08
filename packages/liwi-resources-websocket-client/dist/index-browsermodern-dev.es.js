@@ -1,3 +1,4 @@
+import _objectWithoutPropertiesLoose from '@babel/runtime/helpers/esm/objectWithoutPropertiesLoose';
 import { decode, encode } from 'extended-json';
 import { ResourcesServerError } from 'liwi-resources-client';
 import Logger from 'nightingale-logger';
@@ -144,7 +145,6 @@ function createSimpleWebsocketClient({
   };
 }
 
-/* eslint-disable max-lines */
 const logger = new Logger('liwi:resources-websocket-client');
 
 class SubscribeResultPromise {
@@ -180,14 +180,24 @@ const createSafeError = function createSafeError(error) {
   return new ResourcesServerError(error.code, error.message);
 };
 
-function createResourcesWebsocketClient(options) {
+function createResourcesWebsocketClient(_ref) {
+  let {
+    url
+  } = _ref,
+      options = _objectWithoutPropertiesLoose(_ref, ["url"]);
+
   let currentId = 1;
   let currentSubscriptionId = 1;
   const acks = new Map(); // TODO in progress / unsent / sending => find better name
 
   const subscriptions = new Map();
+
+  if (!url) {
+    url = `ws${window.location.protocol === 'https' ? 's' : ''}://${window.location.host}/ws`;
+  }
+
   logger.info('create', {
-    url: options.url
+    url
   });
   const handlers = {
     ack: function ack(id, error, result) {
@@ -230,6 +240,7 @@ function createResourcesWebsocketClient(options) {
     }
   };
   const wsClient = createSimpleWebsocketClient(Object.assign({}, options, {
+    url,
     onMessage: function onMessage(event) {
       logger.info('message', {
         data: event.data

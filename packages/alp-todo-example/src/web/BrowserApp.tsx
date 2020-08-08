@@ -10,7 +10,6 @@ export default function BrowserApp(): ReactElement {
   return (
     <TransportClientProvider<WebsocketTransportClientOptions>
       createFn={createWebsocketTransportClient}
-      url={`ws://${window.location.host}/ws`}
       onError={console.error}
     >
       <App />
