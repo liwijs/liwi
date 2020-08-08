@@ -10,7 +10,7 @@ export interface ServiceResource<
     keyof ClientService['queries'],
     keyof ClientService['operations']
   >,
-  ConnectedUser = any
+  ConnectedUser = unknown
 > {
   queries: {
     [P in keyof ClientService['queries']]: (
