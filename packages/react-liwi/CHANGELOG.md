@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.2.3](https://github.com/liwijs/liwi/compare/v7.2.2...v7.2.3) (2020-08-08)
+
+
+### Bug Fixes
+
+* better type ServiceInterface ([34b57b1](https://github.com/liwijs/liwi/commit/34b57b1))
+
+
+
+
+
 ## [7.2.2](https://github.com/liwijs/liwi/compare/v7.2.1...v7.2.2) (2020-08-08)
 
 **Note:** Version bump only for package react-liwi

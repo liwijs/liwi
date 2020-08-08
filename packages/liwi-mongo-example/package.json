@@ -1,7 +1,7 @@
 {
   "name": "liwi-mongo-example",
   "private": true,
-  "version": "7.2.1",
+  "version": "7.2.3",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "repository": {
@@ -42,7 +42,7 @@
     ]
   },
   "dependencies": {
-    "liwi-mongo": "^7.2.1"
+    "liwi-mongo": "^7.2.3"
   },
   "devDependencies": {
     "@babel/core": "7.10.5",
