@@ -131,7 +131,7 @@ const createWsServer = (server, path = '/ws', resourcesServerService, getAuthent
       }
     };
 
-    const handleDecodedMessage = async message => {
+    const handleDecodedMessage = async (message) => {
       switch (message.type) {
         case 'fetch':
           {

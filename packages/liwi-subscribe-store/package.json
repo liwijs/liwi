@@ -74,15 +74,15 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.3",
+    "@babel/runtime": "^7.10.5",
     "liwi-store": "^4.4.0",
     "liwi-types": "^3.0.2"
   },
   "devDependencies": {
-    "@babel/core": "7.10.3",
-    "@babel/preset-env": "7.10.3",
+    "@babel/core": "7.10.5",
+    "@babel/preset-env": "7.10.4",
     "babel-preset-latest-node": "4.1.0",
     "babel-preset-modern-browsers": "14.2.1",
-    "pob-babel": "24.13.0"
+    "pob-babel": "24.14.0"
   }
 }

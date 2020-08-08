@@ -78,9 +78,9 @@ function useOperation(operationCall) {
   return [operationCallWrapper, state];
 }
 
-const TransportClientContext = React.createContext(undefined);
-const TransportClientStateContext = React.createContext('opening');
-const TransportClientReadyContext = React.createContext(false);
+const TransportClientContext = /*#__PURE__*/React.createContext(undefined);
+const TransportClientStateContext = /*#__PURE__*/React.createContext('opening');
+const TransportClientReadyContext = /*#__PURE__*/React.createContext(false);
 function TransportClientProvider({
   createFn,
   children,

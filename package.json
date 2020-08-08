@@ -17,7 +17,7 @@
     "build:definitions": "tsc -b tsconfig.build.json",
     "clean": "rm -Rf docs dist test/node6 coverage",
     "lint": "eslint --ext js,ts,tsx .",
-    "postbuild": "yarn run build:definitions ",
+    "postbuild": "yarn run build:definitions",
     "preversion": "yarn run lint && yarn run build --since -- -- --no-clean && repository-check-dirty",
     "release": "cross-env GH_TOKEN=$POB_GITHUB_TOKEN lerna version --conventional-commits --conventional-graduate --create-release=github -m 'chore: release' && lerna publish from-git",
     "test": "lerna run --stream test",

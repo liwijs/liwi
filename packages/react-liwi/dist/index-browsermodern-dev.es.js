@@ -4,9 +4,9 @@ import Logger from 'nightingale-logger';
 import { Lazy } from 'mingo/lazy';
 import { $sort } from 'mingo/operators/pipeline';
 
-const TransportClientContext = createContext(undefined);
-const TransportClientStateContext = createContext('opening');
-const TransportClientReadyContext = createContext(false);
+const TransportClientContext = /*#__PURE__*/createContext(undefined);
+const TransportClientStateContext = /*#__PURE__*/createContext('opening');
+const TransportClientReadyContext = /*#__PURE__*/createContext(false);
 function TransportClientProvider(_ref) {
   let {
     createFn,

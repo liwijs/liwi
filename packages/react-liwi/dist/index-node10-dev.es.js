@@ -71,9 +71,9 @@ function useOperation(operationCall) {
   return [operationCallWrapper, state];
 }
 
-const TransportClientContext = createContext(undefined);
-const TransportClientStateContext = createContext('opening');
-const TransportClientReadyContext = createContext(false);
+const TransportClientContext = /*#__PURE__*/createContext(undefined);
+const TransportClientStateContext = /*#__PURE__*/createContext('opening');
+const TransportClientReadyContext = /*#__PURE__*/createContext(false);
 function TransportClientProvider({
   createFn,
   children,

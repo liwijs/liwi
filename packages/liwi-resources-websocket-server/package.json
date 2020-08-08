@@ -74,7 +74,7 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.3",
+    "@babel/runtime": "^7.10.5",
     "@types/socket.io": "^2.1.8",
     "extended-json": "^2.3.1",
     "liwi-resources-server": "^4.3.5",
@@ -84,12 +84,12 @@
     "ws": "^7.3.0"
   },
   "devDependencies": {
-    "@babel/core": "7.10.3",
-    "@babel/preset-env": "7.10.3",
+    "@babel/core": "7.10.5",
+    "@babel/preset-env": "7.10.4",
     "@types/ws": "^7.2.4",
     "babel-preset-latest-node": "4.1.0",
     "babel-preset-modern-browsers": "14.2.1",
-    "pob-babel": "24.13.0"
+    "pob-babel": "24.14.0"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.1",

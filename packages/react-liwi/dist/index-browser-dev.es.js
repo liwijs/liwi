@@ -4,9 +4,9 @@ import Logger from 'nightingale-logger';
 import { Lazy } from 'mingo/lazy';
 import { $sort } from 'mingo/operators/pipeline';
 
-var TransportClientContext = createContext(undefined);
-var TransportClientStateContext = createContext('opening');
-var TransportClientReadyContext = createContext(false);
+var TransportClientContext = /*#__PURE__*/createContext(undefined);
+var TransportClientStateContext = /*#__PURE__*/createContext('opening');
+var TransportClientReadyContext = /*#__PURE__*/createContext(false);
 function TransportClientProvider(_ref) {
   var createFn = _ref.createFn,
       children = _ref.children,

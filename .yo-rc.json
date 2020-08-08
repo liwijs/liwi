@@ -3,7 +3,7 @@
     "monorepo": {
       "ci": true,
       "testing": true,
-      "codecov": true,
+      "codecov": false,
       "documentation": false,
       "eslint": true,
       "typescript": true,
@@ -17,10 +17,10 @@
         "liwi-mongo",
         "liwi-resources-client",
         "liwi-resources-server",
-        "react-liwi",
         "liwi-mongo-example",
         "liwi-resources-websocket-client",
         "liwi-resources-websocket-server",
+        "react-liwi",
         "alp-todo-example"
       ]
     },

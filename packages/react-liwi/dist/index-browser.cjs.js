@@ -11,9 +11,9 @@ var Logger = _interopDefault(require('nightingale-logger'));
 var lazy = require('mingo/lazy');
 var pipeline = require('mingo/operators/pipeline');
 
-var TransportClientContext = React.createContext(undefined);
-var TransportClientStateContext = React.createContext('opening');
-var TransportClientReadyContext = React.createContext(false);
+var TransportClientContext = /*#__PURE__*/React.createContext(undefined);
+var TransportClientStateContext = /*#__PURE__*/React.createContext('opening');
+var TransportClientReadyContext = /*#__PURE__*/React.createContext(false);
 function TransportClientProvider(_ref) {
   var createFn = _ref.createFn,
       children = _ref.children,

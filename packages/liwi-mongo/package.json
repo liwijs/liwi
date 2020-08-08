@@ -55,8 +55,8 @@
     "nightingale-logger": "^10.0.1"
   },
   "devDependencies": {
-    "@babel/core": "7.10.3",
+    "@babel/core": "7.10.5",
     "babel-preset-latest-node": "4.1.0",
-    "pob-babel": "24.13.0"
+    "pob-babel": "24.14.0"
   }
 }

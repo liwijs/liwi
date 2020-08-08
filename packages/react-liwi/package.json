@@ -78,7 +78,7 @@
     "react": "^16.8.6"
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.3",
+    "@babel/runtime": "^7.10.5",
     "deep-equal": "^1.0.1",
     "liwi-resources-client": "^4.3.0",
     "liwi-types": "^3.0.2",
@@ -86,13 +86,13 @@
     "nightingale-logger": "^10.0.1"
   },
   "devDependencies": {
-    "@babel/core": "7.10.3",
-    "@babel/preset-env": "7.10.3",
-    "@babel/preset-react": "7.10.1",
+    "@babel/core": "7.10.5",
+    "@babel/preset-env": "7.10.4",
+    "@babel/preset-react": "7.10.4",
     "@types/react": "^16.8.16",
     "babel-preset-latest-node": "4.1.0",
     "babel-preset-modern-browsers": "14.2.1",
-    "pob-babel": "24.13.0",
+    "pob-babel": "24.14.0",
     "react": "^16.8.6"
   }
 }

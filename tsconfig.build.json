@@ -8,9 +8,9 @@
     { "path": "packages/liwi-mongo/tsconfig.build.json" },
     { "path": "packages/liwi-resources-client/tsconfig.build.json" },
     { "path": "packages/liwi-resources-server/tsconfig.build.json" },
-    { "path": "packages/react-liwi/tsconfig.build.json" },
     { "path": "packages/liwi-mongo-example/tsconfig.build.json" },
     { "path": "packages/liwi-resources-websocket-client/tsconfig.build.json" },
-    { "path": "packages/liwi-resources-websocket-server/tsconfig.build.json" }
+    { "path": "packages/liwi-resources-websocket-server/tsconfig.build.json" },
+    { "path": "packages/react-liwi/tsconfig.build.json" }
   ]
 }
