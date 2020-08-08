@@ -3,7 +3,7 @@ export interface SubscribeHook<ConnectedUser = any, P = any> {
     subscribed: (connectedUser: undefined | ConnectedUser, params: P) => void;
     unsubscribed: (connectedUser: undefined | ConnectedUser, params: P) => void;
 }
-export interface ServiceResource<ClientService extends ServiceInterface<keyof ClientService['queries'], keyof ClientService['operations']>, ConnectedUser = any> {
+export interface ServiceResource<ClientService extends ServiceInterface<keyof ClientService['queries'], keyof ClientService['operations']>, ConnectedUser = unknown> {
     queries: {
         [P in keyof ClientService['queries']]: (params: Parameters<ClientService['queries'][P]>[0], connectedUser: undefined | ConnectedUser) => ReturnType<ClientService['queries'][P]>;
     };

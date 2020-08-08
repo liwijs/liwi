@@ -1,5 +1,6 @@
 import { POB_TARGET } from 'pob-babel';
 import { Query, QueryParams } from 'liwi-resources-client';
+import { SetOptional } from 'type-fest';
 import { ResourceResult } from './createResourceResultFromState';
 import { useRetrieveResource } from './useRetrieveResource';
 import {
@@ -7,11 +8,17 @@ import {
   UseResourceAndSubscribeOptions,
 } from './useRetrieveResourceAndSubscribe';
 
-export interface UseResourceOptions<Params extends QueryParams<Params>> {
+interface UseResourceOptionsRequiredParams<Params extends QueryParams<Params>> {
   params: Params;
   subscribe?: boolean;
   subscribeOptions?: UseResourceAndSubscribeOptions;
 }
+
+export type UseResourceOptions<
+  Params extends QueryParams<Params> | undefined
+> = Params extends undefined
+  ? SetOptional<UseResourceOptionsRequiredParams<Params>, 'params'>
+  : UseResourceOptionsRequiredParams<Params>;
 
 export function useResource<Result, Params extends QueryParams<Params>>(
   createQuery: (initialParams: Params) => Query<Result, Params>,
@@ -36,12 +43,12 @@ export function useResource<Result, Params extends QueryParams<Params>>(
     ? // eslint-disable-next-line react-hooks/rules-of-hooks
       useRetrieveResourceAndSubscribe<Result, Params>(
         createQuery,
-        params,
+        params as Params,
         deps,
         subscribeOptions,
       )
     : // eslint-disable-next-line react-hooks/rules-of-hooks
-      useRetrieveResource<Result, Params>(createQuery, params, deps);
+      useRetrieveResource<Result, Params>(createQuery, params as Params, deps);
 
   return result;
 }

@@ -33,6 +33,33 @@ export function TestDataNotUndefinedWhenLoadingTrueWhenDestructuring(): void {
   console.log(tests[0]);
 }
 
+export function TestParamsUndefined(): void {
+  const { initialLoading, data: tests } = useResource(
+    ((() => {}) as unknown) as (params: undefined) => Query<Test[], undefined>,
+    {},
+    [],
+  );
+
+  if (initialLoading) return;
+
+  // @ts-expect-error
+  console.log(tests[0]);
+}
+
+export function TestParamsShouldBeRequired(): void {
+  const { initialLoading, data: tests } = useResource(
+    ((() => {}) as unknown) as (params: {}) => Query<Test[], {}>,
+    // @ts-expect-error
+    {},
+    [],
+  );
+
+  if (initialLoading) return;
+
+  // @ts-expect-error
+  console.log(tests[0]);
+}
+
 /* Alternatives
 
 const tests = useResource();
