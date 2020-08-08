@@ -1,0 +1,10 @@
+include:
+  - router/translations.yml
+common:
+  applicationName: 'TODO'
+  availableLanguages: [en, fr]
+server:
+  db:
+    mongodb:
+      database: todo-example
+      port: 27017

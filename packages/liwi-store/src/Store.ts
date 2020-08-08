@@ -6,56 +6,73 @@ import {
   Sort,
   Transformer,
   Update,
+  AllowedKeyValue,
 } from 'liwi-types';
 import AbstractConnection from './AbstractConnection';
 import AbstractStoreCursor from './AbstractStoreCursor';
-import AbstractQuery from './AbstractQuery';
-import InternalCommonStoreClient from './InternalCommonStoreClient';
+import { InternalCommonStoreClient } from './InternalCommonStoreClient';
+import { Query, QueryParams } from './Query';
 
 export interface UpsertResult<Model extends BaseModel> {
   object: Model;
   inserted: boolean;
 }
-export default interface Store<
-  Model extends BaseModel,
+export interface Store<
   KeyPath extends string,
-  Connection extends AbstractConnection,
-  Cursor extends AbstractStoreCursor<Model, KeyPath, any>
-> extends InternalCommonStoreClient<Model, KeyPath, Cursor> {
-  readonly keyPath: KeyPath;
-
+  KeyValue extends AllowedKeyValue,
+  Model extends BaseModel & Record<KeyPath, KeyValue>,
+  ModelInsertType extends InsertType<Model, KeyPath>,
+  Connection extends AbstractConnection
+> extends InternalCommonStoreClient<Model> {
   readonly connection: Connection;
 
-  createQuery<Transformed>(
+  readonly keyPath: KeyPath;
+
+  createQuerySingleItem<
+    Result extends Record<KeyPath, KeyValue>,
+    Params extends QueryParams<Params>
+  >(
     options: QueryOptions<Model>,
-    transformer?: Transformer<Model, Transformed>,
-  ): AbstractQuery<Transformed>;
+    transformer?: Transformer<Model, Result>,
+  ): Query<Result, Params, KeyValue>;
 
-  findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<any[]>;
+  createQueryCollection<
+    Item extends Record<KeyPath, KeyValue>,
+    Params extends QueryParams<Params>
+  >(
+    options: QueryOptions<Model>,
+    transformer?: Transformer<Model, Item>,
+  ): Query<Item[], Params, KeyValue>;
 
-  findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined>;
+  findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
+
+  findByKey(
+    key: KeyValue,
+    criteria?: Criteria<Model>,
+  ): Promise<Model | undefined>;
 
   findOne(
     criteria: Criteria<Model>,
     sort?: Sort<Model>,
   ): Promise<Model | undefined>;
 
-  cursor(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Cursor>;
+  cursor<Result = Model>(
+    criteria?: Criteria<Model>,
+    sort?: Sort<Model>,
+  ): Promise<AbstractStoreCursor<any, KeyValue, Model, Result>>;
 
-  insertOne(object: InsertType<Model, KeyPath>): Promise<Model>;
+  insertOne(object: ModelInsertType): Promise<Model>;
 
   replaceOne(object: Model): Promise<Model>;
 
   replaceSeveral(objects: Model[]): Promise<Model[]>;
 
-  upsertOne(object: InsertType<Model, KeyPath>): Promise<Model>;
+  upsertOne(object: ModelInsertType): Promise<Model>;
 
-  upsertOneWithInfo(
-    object: InsertType<Model, KeyPath>,
-  ): Promise<UpsertResult<Model>>;
+  upsertOneWithInfo(object: ModelInsertType): Promise<UpsertResult<Model>>;
 
   partialUpdateByKey(
-    key: any,
+    key: KeyValue,
     partialUpdate: Update<Model>,
     criteria?: Criteria<Model>,
   ): Promise<Model>;
@@ -67,7 +84,7 @@ export default interface Store<
     partialUpdate: Update<Model>,
   ): Promise<void>;
 
-  deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void>;
+  deleteByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<void>;
 
   deleteOne(object: Model): Promise<void>;
 

@@ -4,14 +4,15 @@
     { "path": "packages/extended-json/tsconfig.json" },
     { "path": "packages/liwi-types/tsconfig.json" },
     { "path": "packages/liwi-store/tsconfig.json" },
+    { "path": "packages/liwi-resources/tsconfig.json" },
+    { "path": "packages/liwi-subscribe-store/tsconfig.json" },
+    { "path": "packages/liwi-mongo/tsconfig.json" },
     { "path": "packages/liwi-resources-client/tsconfig.json" },
     { "path": "packages/liwi-resources-server/tsconfig.json" },
-    { "path": "packages/liwi-subscribe-store/tsconfig.json" },
     { "path": "packages/react-liwi/tsconfig.json" },
-    { "path": "packages/liwi-mongo/tsconfig.json" },
-    { "path": "packages/liwi-resources-void-client/tsconfig.json" },
+    { "path": "packages/liwi-mongo-example/tsconfig.json" },
     { "path": "packages/liwi-resources-websocket-client/tsconfig.json" },
     { "path": "packages/liwi-resources-websocket-server/tsconfig.json" },
-    { "path": "packages/liwi-mongo-example/tsconfig.json" }
+    { "path": "packages/alp-todo-example/tsconfig.json" }
   ]
 }

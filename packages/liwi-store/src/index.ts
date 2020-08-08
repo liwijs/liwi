@@ -1,43 +1,22 @@
-import { BaseModel, Update as UpdateType } from 'liwi-types';
-import InternalCommonStoreClientInterface from './InternalCommonStoreClient';
-import StoreInterface, {
-  UpsertResult as AbstractStoreUpsertResult,
-} from './Store';
-import AbstractConnection from './AbstractConnection';
-import AbstractCursor from './AbstractCursor';
-import AbstractStoreCursor from './AbstractStoreCursor';
-import AbstractQuery, {
-  SubscribeResult as AbstractQuerySubscribeResult,
-  SubscribeCallback as AbstractQuerySubscribeCallback,
-} from './AbstractQuery';
-import AbstractStore from './AbstractStore';
+export { default as AbstractConnection } from './AbstractConnection';
+export { default as AbstractCursor } from './AbstractCursor';
+export { default as AbstractStoreCursor } from './AbstractStoreCursor';
 
-export type InternalCommonStoreClient<
-  Model extends BaseModel,
-  KeyPath extends string,
-  Cursor extends AbstractCursor<Model, KeyPath>
-> = InternalCommonStoreClientInterface<Model, KeyPath, Cursor>;
+export type { Update } from 'liwi-types';
 
-export type Store<
-  Model extends BaseModel,
-  KeyPath extends string,
-  Connection extends AbstractConnection,
-  Cursor extends AbstractStoreCursor<Model, KeyPath, any>
-> = StoreInterface<Model, KeyPath, Connection, Cursor>;
+export type { InternalCommonStoreClient } from './InternalCommonStoreClient';
 
-export type UpsertResult<Model extends BaseModel> = AbstractStoreUpsertResult<
-  Model
->;
+export type { SubscribableStore } from './SubscribableStore';
+export type { SubscribableStoreQuery } from './SubscribableStoreQuery';
 
-export type SubscribeResult<Value> = AbstractQuerySubscribeResult<Value>;
-export type SubscribeCallback<Value> = AbstractQuerySubscribeCallback<Value>;
+export type { Store, UpsertResult } from './Store';
 
-export type Update<Model extends BaseModel> = UpdateType<Model>;
-
-export {
-  AbstractConnection,
-  AbstractCursor,
-  AbstractStoreCursor,
-  AbstractQuery,
-  AbstractStore,
-};
+export type {
+  Query,
+  QuerySubscription,
+  QueryParams,
+  QueryResult,
+  QueryMeta,
+  QueryInfo,
+  SubscribeCallback,
+} from './Query';

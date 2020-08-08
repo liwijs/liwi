@@ -11,10 +11,8 @@
         "circleci": true,
         "codecov": true
       }
-    }
-  },
-  "extended-json": {
-    "type": {
+    },
+    "project": {
       "type": "lib"
     }
   }

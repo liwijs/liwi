@@ -11,10 +11,8 @@
         "circleci": true,
         "codecov": false
       }
-    }
-  },
-  "liwi-resources-server": {
-    "type": {
+    },
+    "project": {
       "type": "lib"
     }
   }

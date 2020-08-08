@@ -1,23 +1,21 @@
-import { BaseModel } from 'liwi-types';
-import { QueryDescriptions, OperationDescriptions } from 'liwi-resources';
-import ClientQuery from './ClientQuery';
-import AbstractClient from './AbstractClient';
-export { default as AbstractClient } from './AbstractClient';
-export declare type ResourcesClientQueries<Queries extends QueryDescriptions, KeyPath extends string = '_id'> = {
-    [P in keyof Queries]: (params: Queries[P]['params']) => ClientQuery<Queries[P]['value'], KeyPath>;
-};
-export declare type ResourcesClientOperations<Operations extends OperationDescriptions> = {
-    [P in keyof Operations]: (params: Operations[P]['params']) => Promise<Operations[P]['result']>;
-};
-export interface ResourcesClientService<Queries extends QueryDescriptions, Operations extends OperationDescriptions = {}> {
-    queries: ResourcesClientQueries<Queries>;
-    operations: ResourcesClientOperations<Operations>;
+import type { ServiceInterface, Query, QueryParams } from 'liwi-resources';
+import type { TransportClient } from './TransportClient';
+export { ResourcesServerError } from 'liwi-resources';
+export type { AckError, ToClientMessage, ToServerMessages, ToServerSubscribeMessages, ToServerQueryPayload, ToServerSubscribeQueryPayload, QuerySubscription, Query, QueryParams, QueryResult, QueryMeta, SubscribeCallback, } from 'liwi-resources';
+export type { default as ClientQuery } from './ClientQuery';
+export type { TransportClient, TransportClientSubscribeCallback, TransportClientSubscribeResult, ConnectionStateChangeListener, ConnectionStateChangeListenerCreator, ConnectionStates, } from './TransportClient';
+interface CreateResourceClientOptions<QueryKeys extends keyof any, OperationKeys extends keyof any> {
+    queries: Record<QueryKeys, null>;
+    operations: Record<OperationKeys, null>;
 }
-interface CreateResourceClientOptions<QueryKeys, OperationKeys> {
-    queries: QueryKeys[];
-    operations: OperationKeys[];
+export declare type ServiceQuery<Result, Params extends QueryParams<Params>> = (params: Params) => Query<Result, Params>;
+export interface ClientServiceInterface<QueryKeys extends keyof any, OperationKeys extends keyof any> extends ServiceInterface<QueryKeys, OperationKeys> {
+    queries: {
+        [key in QueryKeys]: ServiceQuery<any, any>;
+    };
+    operations: {
+        [key in OperationKeys]: (params: any) => Promise<any>;
+    };
 }
-export declare const createResourceClientService: <Queries extends Record<keyof Queries, import("liwi-resources").QueryDescription<any, any>>, Operations extends Record<keyof Operations, import("liwi-resources").OperationDescription<any, any>>, Model extends BaseModel, KeyPath extends string = "_id">(client: AbstractClient<Model, KeyPath>, options: CreateResourceClientOptions<keyof Queries, keyof Operations>) => ResourcesClientService<Queries, Operations>;
-/** @deprecated use createResourceClientService instead */
-export declare const createResourceClient: <Queries extends Record<keyof Queries, import("liwi-resources").QueryDescription<any, any>>, Operations extends Record<keyof Operations, import("liwi-resources").OperationDescription<any, any>>, Model extends BaseModel, KeyPath extends string = "_id">(client: AbstractClient<Model, KeyPath>, options: CreateResourceClientOptions<keyof Queries, keyof Operations>) => ResourcesClientService<Queries, Operations>;
+export declare const createResourceClientService: <Service extends ClientServiceInterface<keyof Service["queries"], keyof Service["operations"]>>(resourceName: string, options: CreateResourceClientOptions<keyof Service["queries"], keyof Service["operations"]>) => (transportClient: TransportClient) => Service;
 //# sourceMappingURL=index.d.ts.map

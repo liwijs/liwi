@@ -1,0 +1,12 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "packages/liwi-store/tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["@pob/eslint-config-typescript"],
+  "rules": {
+    "import/no-cycle": "off"
+  }
+}

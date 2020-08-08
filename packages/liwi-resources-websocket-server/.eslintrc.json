@@ -1,13 +1,4 @@
 {
   "root": true,
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json",
-    "createDefaultProgram": true
-  },
-  "plugins": ["@typescript-eslint"],
-  "extends": ["@pob/eslint-config-typescript"],
-  "rules": {
-    "import/no-cycle": "off"
-  }
+  "extends": ["@pob/eslint-config", "@pob/eslint-config-node"]
 }

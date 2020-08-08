@@ -1,142 +1,81 @@
 import Logger from 'nightingale-logger';
-import { decode } from 'extended-json';
-import { AbstractQuery } from 'liwi-store';
+export { ResourcesServerError } from 'liwi-resources';
 
 const logger = new Logger('liwi:resources:query');
-class ClientQuery extends AbstractQuery {
-  constructor(client, key, params) {
-    super();
-    this.client = client;
+class ClientQuery {
+  constructor(resourceName, transportClient, key, params) {
+    this.resourceName = resourceName;
+    this.transportClient = transportClient;
     this.key = key;
     this.params = params;
   }
 
+  changePartialParams(params) {
+    this.params = Object.assign({}, this.params, params);
+  }
+
+  getTransportPayload() {
+    return {
+      resourceName: this.resourceName,
+      key: this.key,
+      params: this.params
+    };
+  }
+
   fetch(onFulfilled) {
     logger.debug('fetch', {
-      resourceName: this.client.resourceName,
+      resourceName: this.resourceName,
       key: this.key
     });
-    return this.client.send('fetch', [this.key, this.params, undefined]).then(onFulfilled);
+    return this.transportClient.send('fetch', this.getTransportPayload()).then(onFulfilled);
   }
 
-  _subscribe(callback, _includeInitial = false) {
-    var _this = this;
+  fetchAndSubscribe(callback) {
+    logger.debug('fetchAndSubscribe', {
+      resourceName: this.resourceName,
+      key: this.key
+    });
+    return this.transportClient.subscribe('fetchAndSubscribe', this.getTransportPayload(), callback);
+  }
 
-    const eventName = `subscribe:${this.client.resourceName}.${this.key}`;
+  subscribe(callback) {
     logger.debug('subscribe', {
-      eventName
+      resourceName: this.resourceName,
+      key: this.key
     });
+    return this.transportClient.subscribe('subscribe', this.getTransportPayload(), callback);
+  }
 
-    const listener = function listener(err, result) {
-      const decodedResult = result && decode(result);
-      callback(err, decodedResult);
-    };
+}
 
-    this.client.on(eventName, listener);
+const getKeys = function getKeys(o) {
+  return Object.keys(o);
+};
 
-    let _stopEmitSubscribeOnConnect;
-
-    let promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, this.params, eventName]).then(function (stopEmitSubscribe) {
-      _stopEmitSubscribeOnConnect = stopEmitSubscribe;
-      logger.debug('subscribed', {
-        resourceName: _this.client.resourceName,
-        key: _this.key
-      });
-    }, function (err) {
-      _this.client.off(eventName, listener);
-
-      throw err;
+const createResourceClientService = function createResourceClientService(resourceName, options) {
+  return function (transportClient) {
+    const queries = {};
+    const operations = {};
+    getKeys(options.queries).forEach(function (queryKey) {
+      queries[queryKey] = function (params) {
+        return new ClientQuery(resourceName, transportClient, queryKey, params);
+      };
     });
-
-    const stop = function stop() {
-      if (!promise) return;
-      promise.then(function () {
-        logger.debug('unsubscribe', {
-          resourceName: _this.client.resourceName,
-          key: _this.key
+    getKeys(options.operations).forEach(function (operationKey) {
+      operations[operationKey] = function (params) {
+        return transportClient.send('do', {
+          resourceName,
+          operationKey: operationKey,
+          params
         });
-
-        _stopEmitSubscribeOnConnect();
-
-        _this.client.send('unsubscribe', [_this.key]);
-
-        promise = undefined;
-
-        _this.client.off(eventName, listener);
-      });
-    };
-
+      };
+    });
     return {
-      cancel: stop,
-      stop,
-      then: function then(cb) {
-        return Promise.resolve(promise).then(cb);
-      }
+      queries,
+      operations
     };
-  }
-
-}
-
-class AbstractClient {
-  constructor(resourceName, keyPath) {
-    this.resourceName = resourceName;
-
-    if (!resourceName) {
-      throw new Error(`Invalid resourceName: "${resourceName}"`);
-    }
-
-    this.keyPath = keyPath;
-  }
-
-  createQuery(key, params) {
-    return new ClientQuery(this, key, params);
-  }
-
-  // cursor(
-  //   criteria?: Criteria<Model>,
-  //   sort?: Sort<Model>,
-  // ): Promise<ClientCursor<Model, KeyPath>> {
-  //   return Promise.resolve(new ClientCursor(this, { criteria, sort }));
-  // }
-  findByKey(key, criteria) {
-    throw new Error('Use operations instead');
-  }
-
-  replaceOne(object) {
-    throw new Error('Use operations instead');
-  }
-
-  partialUpdateByKey(key, partialUpdate, criteria) {
-    throw new Error('Use operations instead');
-  }
-
-  deleteByKey(key, criteria) {
-    throw new Error('Use operations instead');
-  }
-
-}
-
-const createResourceClientService = function createResourceClientService(client, options) {
-  const queries = {};
-  const operations = {};
-  options.queries.forEach(function (queryKey) {
-    queries[queryKey] = function (params) {
-      return client.createQuery(queryKey, params);
-    };
-  });
-  options.operations.forEach(function (operationKey) {
-    operations[operationKey] = function (params) {
-      return client.send('do', [operationKey, params]);
-    };
-  });
-  return {
-    queries: queries,
-    operations: operations
   };
 };
-/** @deprecated use createResourceClientService instead */
 
-const createResourceClient = createResourceClientService;
-
-export { AbstractClient, createResourceClient, createResourceClientService };
+export { createResourceClientService };
 //# sourceMappingURL=index-browsermodern.es.js.map

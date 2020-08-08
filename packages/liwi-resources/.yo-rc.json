@@ -1,17 +1,10 @@
 {
   "pob": {
-    "promptValues": {
-      "authorName": "Christophe Hurpeau",
-      "authorEmail": "christophe@hurpeau.com",
-      "authorUrl": "https://christophe.hurpeau.com"
-    },
     "pob-config": {
       "documentation": false,
       "testing": false
-    }
-  },
-  "liwi-resources": {
-    "type": {
+    },
+    "project": {
       "type": "lib"
     }
   }

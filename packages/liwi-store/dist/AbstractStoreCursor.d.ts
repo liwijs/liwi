@@ -1,8 +1,8 @@
-import { BaseModel } from 'liwi-types';
+import { BaseModel, AllowedKeyValue } from 'liwi-types';
 import AbstractCursor from './AbstractCursor';
-import InternalCommonStoreClient from './InternalCommonStoreClient';
-export default abstract class AbstractStoreCursor<Model extends BaseModel, KeyPath extends string, Store extends InternalCommonStoreClient<Model, KeyPath, any>, Result extends Partial<Model> = Model> extends AbstractCursor<Model, KeyPath, Result> {
-    key: any;
+import { InternalCommonStoreClient } from './InternalCommonStoreClient';
+export default abstract class AbstractStoreCursor<Store extends InternalCommonStoreClient<Model>, KeyValue extends AllowedKeyValue, Model extends BaseModel, Result extends Partial<Model> = Model> extends AbstractCursor<Model, Result> {
+    key: KeyValue | undefined;
     protected _store: Store;
     constructor(store: Store);
     get store(): Store;

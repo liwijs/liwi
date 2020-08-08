@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 class AbstractConnection {}
 
 /* eslint-disable no-await-in-loop */
@@ -91,44 +89,5 @@ class AbstractStoreCursor extends AbstractCursor {
 
 }
 
-class AbstractQuery {
-  fetchAndSubscribe(callback) {
-    return this._subscribe(callback, true);
-  }
-
-  subscribe(callback) {
-    return this._subscribe(callback, false);
-  }
-
-}
-
-class AbstractStore {
-  constructor(connection, keyPath) {
-    assert(connection);
-    this._connection = connection;
-    this.keyPath = keyPath;
-  }
-
-  get connection() {
-    return this._connection;
-  }
-
-  findAll(criteria, sort) {
-    return this.cursor(criteria, sort).then(function (cursor) {
-      return cursor.toArray();
-    });
-  }
-
-  async upsertOne(object) {
-    const result = await this.upsertOneWithInfo(object);
-    return result.object;
-  }
-
-  deleteOne(object) {
-    return this.deleteByKey(object[this.keyPath]);
-  }
-
-}
-
-export { AbstractConnection, AbstractCursor, AbstractQuery, AbstractStore, AbstractStoreCursor };
+export { AbstractConnection, AbstractCursor, AbstractStoreCursor };
 //# sourceMappingURL=index-browsermodern.es.js.map

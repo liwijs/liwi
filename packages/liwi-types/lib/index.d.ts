@@ -1,8 +1,9 @@
 export interface BaseModel {
   created: Date;
   updated: Date;
-  [key: string]: any;
 }
+
+export type AllowedKeyValue = string | number;
 
 export type InsertType<T extends BaseModel, IdKey extends string>
   = Pick<T, Exclude<keyof T, IdKey | 'created' | 'updated'>> & Partial<Pick<T, IdKey | 'created' | 'updated'>>;
@@ -47,25 +48,31 @@ export type Criteria<Model extends BaseModel> = { [P in keyof Model]?: any } & {
 
 export type Sort<Model extends BaseModel> = { [P in keyof Model]?: -1 | 1 } & { [key: string]: -1 | 1; }
 
-export interface QueryInfo {
-  limit?: number;
-  keyPath: string;
+export interface QueryMeta {
+  total: number;
 }
 
-export type InitialChange<Value = any> = { type: 'initial'; initial: Array<Value>, queryInfo?: QueryInfo };
+export interface QueryInfo<Item extends Record<keyof Item, unknown>> {
+  limit?: number;
+  sort?: Sort<any>;
+  keyPath: keyof Item;
+}
 
-export type Change<Value = any> =
-  | InitialChange<Value>
-  | { type: 'inserted'; objects: Array<Value> }
-  | { type: 'updated'; objects: Array<Value> }
-  | { type: 'deleted'; keys: Array<string> };
+export type InitialChange<Value = any> = { type: 'initial'; initial: Value, meta: QueryMeta; queryInfo: QueryInfo<any> };
 
-export type Changes<Value> = Array<Change<Value>>;
+export type Change<KeyValue, Result> =
+  | InitialChange<Result>
+  | { type: 'inserted'; result: Result }
+  | { type: 'updated'; result: Result }
+  | { type: 'deleted'; keys: Array<KeyValue> };
+
+export type Changes<KeyValue, Result> = Array<Change<KeyValue, Result>>;
 
 export interface QueryOptions<Model extends BaseModel> {
   criteria?: Criteria<Model>;
   sort?: Sort<Model>;
   limit?: number;
+  skip?: number;
 }
 
 export type ResourceOperationKey =

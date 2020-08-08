@@ -1,9 +1,13 @@
-import { Namespace, Server } from 'socket.io';
+/// <reference types="node" />
+import http from 'http';
 import { ResourcesServerService } from 'liwi-resources-server';
-declare module 'socket.io' {
-    interface Socket {
-        user?: any;
-    }
+import WebSocket from 'ws';
+export declare type WebsocketServer = WebSocket.Server;
+declare type GetAuthenticatedUser<AuthenticatedUser> = (request: http.IncomingMessage) => AuthenticatedUser | null;
+export interface ResourcesWebsocketServer {
+    wss: WebSocket.Server;
+    close(): void;
 }
-export default function init(io: Server | Namespace, resourcesService: ResourcesServerService): void;
+export declare const createWsServer: <AuthenticatedUser>(server: http.Server, path: string | undefined, resourcesServerService: ResourcesServerService, getAuthenticatedUser: GetAuthenticatedUser<AuthenticatedUser>) => ResourcesWebsocketServer;
+export {};
 //# sourceMappingURL=index.d.ts.map

@@ -5,254 +5,320 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var _regeneratorRuntime = _interopDefault(require('@babel/runtime/regenerator'));
-var Logger = _interopDefault(require('nightingale-logger'));
+var _asyncToGenerator = _interopDefault(require('@babel/runtime/helpers/esm/asyncToGenerator'));
 var extendedJson = require('extended-json');
+var liwiResourcesServer = require('liwi-resources-server');
+var Logger = _interopDefault(require('nightingale-logger'));
+var WebSocket = _interopDefault(require('ws'));
 
-var logger = new Logger('liwi:rest-websocket');
-function init(io, resourcesService) {
-  io.on('connection', function (socket) {
-    var openWatchers = new Map();
+var logger = new Logger('liwi:resources-websocket-client');
+var createWsServer = function createWsServer(server, path, resourcesServerService, getAuthenticatedUser) {
+  if (path === void 0) {
+    path = '/ws';
+  }
 
-    var unsubscribeWatcher = function unsubscribeWatcher(_ref) {
-      var watcher = _ref.watcher,
-          subscribeHook = _ref.subscribeHook,
-          params = _ref.params;
-      watcher.stop();
+  var wss = new WebSocket.Server({
+    noServer: true
+  });
+
+  var getResource = function getResource(payload) {
+    logger.debug('resource', {
+      resourceName: payload.resourceName
+    });
+    var resource = resourcesServerService.getServiceResource(payload.resourceName);
+    return resource;
+  };
+
+  var createQuery = function createQuery(payload, resource, authenticatedUser) {
+    if (!payload.key.startsWith('query')) {
+      throw new Error('Invalid query key');
+    }
+
+    return resource.queries[payload.key](payload.params, authenticatedUser);
+  };
+
+  wss.on('connection', function (ws, authenticatedUser) {
+    ws.isAlive = true;
+    var openSubscriptions = new Map();
+
+    var sendMessage = function sendMessage(type, id, error, result) {
+      if (!id) throw new Error('Invalid id');
+      logger.debug('sendMessage', {
+        type: type,
+        id: id,
+        error: error,
+        result: result
+      });
+      ws.send(extendedJson.encode([type, id, error, result]));
+    };
+
+    var createSafeError = function createSafeError(error) {
+      if (error instanceof liwiResourcesServer.ResourcesServerError) {
+        return {
+          code: error.code,
+          message: error.message
+        };
+      }
+
+      return {
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Internal Server Error'
+      };
+    };
+
+    var sendAck = function sendAck(id, error, result) {
+      sendMessage('ack', id, error && createSafeError(error), result);
+    };
+
+    var logUnexpectedError = function logUnexpectedError(error, message, payload) {
+      logger.error(message, {
+        error: error,
+        payload: payload
+      });
+    };
+
+    var logUnexpectedErrorAndSendAck = function logUnexpectedErrorAndSendAck(message, error) {
+      logUnexpectedError(error, message.type, message.payload);
+      sendAck(message.id, error);
+    };
+
+    var sendSubscriptionMessage = function sendSubscriptionMessage(subscriptionId, error, result) {
+      sendMessage('subscription', subscriptionId, error && createSafeError(error), result);
+    };
+
+    var createSubscription = function createSubscription(type, id, payload, resource, query) {
+      var subscriptionId = payload.subscriptionId;
+
+      if (openSubscriptions.has(subscriptionId)) {
+        logger.warn("Already have a watcher for this id. Cannot add a new one", {
+          subscriptionId: subscriptionId,
+          key: payload.key
+        });
+        throw new liwiResourcesServer.ResourcesServerError('ALREADY_HAVE_WATCHER', "Already have a watcher for this id. Cannot add a new one");
+      }
+
+      var subscription = query[type](function (error, result) {
+        if (error) {
+          logUnexpectedError(error, type, payload);
+        }
+
+        sendSubscriptionMessage(subscriptionId, error, result);
+      });
+      subscription.then(function () {
+        return sendAck(id, null);
+      }, function (err) {
+        logger.error(type, {
+          err: err
+        });
+        sendAck(id, err);
+      });
+      var subscribeHook = resource.subscribeHooks && resource.subscribeHooks[payload.key];
+      openSubscriptions.set(subscriptionId, {
+        subscription: subscription,
+        subscribeHook: subscribeHook,
+        params: subscribeHook ? payload.params : undefined
+      });
 
       if (subscribeHook) {
-        subscribeHook.unsubscribed(socket.user, params);
+        subscribeHook.subscribed(authenticatedUser, payload.params);
       }
     };
 
-    socket.on('disconnect', function () {
-      openWatchers.forEach(unsubscribeWatcher);
-    });
-    socket.on('resource', function (_ref2, callback) {
-      var type = _ref2.type,
-          resourceName = _ref2.resourceName,
-          json = _ref2.json;
+    var unsubscribeSubscription = function unsubscribeSubscription(_ref) {
+      var subscription = _ref.subscription,
+          subscribeHook = _ref.subscribeHook,
+          params = _ref.params;
+      subscription.stop();
 
-      (function _callee() {
-        var value, resource, _resource, key, params, eventName, query, watcherKey, watcher, subscribeHook, _key, _watcherKey, watcherAndSubscribeHook, _resource2, _key2, _params, operation;
+      if (subscribeHook) {
+        subscribeHook.unsubscribed(authenticatedUser, params);
+      }
+    };
 
-        return _regeneratorRuntime.async(function _callee$(_context) {
+    var handleDecodedMessage = /*#__PURE__*/function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(message) {
+        var resource, query, _resource, _query, _resource2, _query2, subscriptionId, _SubscriptionAndSubscribeHook, _resource3, _message$payload, operationKey, params, operation;
+
+        return _regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                value = json && extendedJson.decode(json);
-                _context.t0 = type;
-                _context.next = _context.t0 === 'cursor toArray' ? 5 : _context.t0 === 'fetch' ? 8 : _context.t0 === 'subscribe' ? 8 : _context.t0 === 'fetchAndSubscribe' ? 8 : _context.t0 === 'unsubscribe' ? 38 : _context.t0 === 'do' ? 48 : 63;
+                _context.t0 = message.type;
+                _context.next = _context.t0 === 'fetch' ? 3 : _context.t0 === 'fetchAndSubscribe' ? 14 : _context.t0 === 'subscribe' ? 16 : _context.t0 === 'subscribe:close' ? 18 : _context.t0 === 'do' ? 20 : 33;
                 break;
 
-              case 5:
-                resource = resourcesService.getCursorResource(resourceName);
-                resourcesService.createCursor(resource, socket.user, value).then(function (cursor) {
-                  return cursor.toArray();
-                }).then(function (results) {
-                  return callback(null, extendedJson.encode(results));
-                }).catch(function (err) {
-                  logger.error(type, err);
-                  callback(err.message);
+              case 3:
+                _context.prev = 3;
+                resource = getResource(message.payload);
+                query = createQuery(message.payload, resource, authenticatedUser);
+                _context.next = 8;
+                return query.fetch(function (result) {
+                  return sendAck(message.id, null, result);
                 });
-                return _context.abrupt("break", 64);
 
               case 8:
-                _context.prev = 8;
-                _resource = resourcesService.getServiceResource(resourceName);
-                logger.info('resource', {
-                  type: type,
-                  resourceName: resourceName,
-                  value: value
-                });
-                key = value[0], params = value[1], eventName = value[2];
-
-                if (key.startsWith('query')) {
-                  _context.next = 14;
-                  break;
-                }
-
-                throw new Error('Invalid query key');
-
-              case 14:
-                _context.next = 16;
-                return _regeneratorRuntime.awrap(_resource.queries[key](params, socket.user));
-
-              case 16:
-                query = _context.sent;
-
-                if (!(type === 'fetch')) {
-                  _context.next = 21;
-                  break;
-                }
-
-                query.fetch(function (result) {
-                  return callback(null, result && extendedJson.encode(result));
-                }).catch(function (err) {
-                  logger.error(type, {
-                    err: err
-                  });
-                  callback(err.message || err);
-                });
-                _context.next = 31;
+                _context.next = 13;
                 break;
 
-              case 21:
-                watcherKey = resourceName + "__" + key;
+              case 10:
+                _context.prev = 10;
+                _context.t1 = _context["catch"](3);
+                logUnexpectedErrorAndSendAck(message, _context.t1);
 
-                if (!openWatchers.has(watcherKey)) {
+              case 13:
+                return _context.abrupt("break", 33);
+
+              case 14:
+                try {
+                  _resource = getResource(message.payload);
+                  _query = createQuery(message.payload, _resource, authenticatedUser);
+                  createSubscription('fetchAndSubscribe', message.id, message.payload, _resource, _query);
+                } catch (err) {
+                  logUnexpectedErrorAndSendAck(message, err);
+                }
+
+                return _context.abrupt("break", 33);
+
+              case 16:
+                try {
+                  _resource2 = getResource(message.payload);
+                  _query2 = createQuery(message.payload, _resource2, authenticatedUser);
+                  createSubscription('subscribe', message.id, message.payload, _resource2, _query2);
+                } catch (err) {
+                  logUnexpectedErrorAndSendAck(message, err);
+                }
+
+                return _context.abrupt("break", 33);
+
+              case 18:
+                try {
+                  subscriptionId = message.payload.subscriptionId;
+                  _SubscriptionAndSubscribeHook = openSubscriptions.get(subscriptionId);
+
+                  if (!_SubscriptionAndSubscribeHook) {
+                    logger.warn('tried to unsubscribe non existing watcher', {
+                      subscriptionId: subscriptionId
+                    });
+                  } else {
+                    openSubscriptions.delete(subscriptionId);
+                    unsubscribeSubscription(_SubscriptionAndSubscribeHook);
+                  }
+                } catch (err) {
+                  logUnexpectedError(err, message.type, message.payload);
+                }
+
+                return _context.abrupt("break", 33);
+
+              case 20:
+                _context.prev = 20;
+                _resource3 = getResource(message.payload);
+                _message$payload = message.payload, operationKey = _message$payload.operationKey, params = _message$payload.params;
+                operation = _resource3.operations[operationKey];
+
+                if (operation) {
                   _context.next = 26;
                   break;
                 }
 
-                logger.warn('Already have a watcher for this key. Cannot add a new one', {
-                  watcherKey: watcherKey,
-                  key: key
-                });
-                callback('Already have a watcher for this key. Cannot add a new one');
-                return _context.abrupt("return");
+                throw new liwiResourcesServer.ResourcesServerError('OPERATION_NOT_FOUND', "Operation not found: " + operationKey);
 
               case 26:
-                watcher = query[type](function (err, result) {
-                  if (err) {
-                    logger.error(type, {
-                      err: err
-                    });
-                  }
-
-                  socket.emit(eventName, err, result && extendedJson.encode(result));
-                });
-                watcher.then(function () {
-                  return callback(null);
+                operation(params, authenticatedUser).then(function (result) {
+                  return sendAck(message.id, null, result);
                 }, function (err) {
-                  logger.error(type, {
-                    err: err
-                  });
-                  callback(err.message);
+                  logUnexpectedErrorAndSendAck(message, err);
                 });
-                subscribeHook = _resource.subscribeHooks && _resource.subscribeHooks[key];
-                openWatchers.set(watcherKey, {
-                  watcher: watcher,
-                  subscribeHook: subscribeHook,
-                  params: subscribeHook ? params : undefined
-                });
-
-                if (subscribeHook) {
-                  subscribeHook.subscribed(socket.user, params);
-                }
-
-              case 31:
-                _context.next = 37;
+                _context.next = 32;
                 break;
+
+              case 29:
+                _context.prev = 29;
+                _context.t2 = _context["catch"](20);
+                logUnexpectedErrorAndSendAck(message, _context.t2);
+
+              case 32:
+                return _context.abrupt("break", 33);
 
               case 33:
-                _context.prev = 33;
-                _context.t1 = _context["catch"](8);
-                logger.error(type, {
-                  err: _context.t1
-                });
-                callback(_context.t1.message || _context.t1);
-
-              case 37:
-                return _context.abrupt("break", 64);
-
-              case 38:
-                _key = value[0];
-                _watcherKey = resourceName + "__" + _key;
-                watcherAndSubscribeHook = openWatchers.get(_watcherKey);
-
-                if (watcherAndSubscribeHook) {
-                  _context.next = 44;
-                  break;
-                }
-
-                logger.warn('tried to unsubscribe non existing watcher', {
-                  key: _key
-                });
-                return _context.abrupt("return", callback(null));
-
-              case 44:
-                openWatchers.delete(_watcherKey);
-                unsubscribeWatcher(watcherAndSubscribeHook);
-                callback(null);
-                return _context.abrupt("break", 64);
-
-              case 48:
-                _context.prev = 48;
-                _resource2 = resourcesService.getServiceResource(resourceName);
-                logger.info('resource', {
-                  type: type,
-                  resourceName: resourceName,
-                  value: value
-                });
-                _key2 = value[0], _params = value[1];
-                operation = _resource2.operations[_key2];
-
-                if (operation) {
-                  _context.next = 55;
-                  break;
-                }
-
-                throw new Error('Operation not found');
-
-              case 55:
-                operation(_params, socket.user).then(function (result) {
-                  return callback(null, result && extendedJson.encode(result));
-                }, function (err) {
-                  logger.error(type, {
-                    err: err
-                  });
-                  callback(err.message);
-                });
-                _context.next = 62;
-                break;
-
-              case 58:
-                _context.prev = 58;
-                _context.t2 = _context["catch"](48);
-                logger.error(type, {
-                  err: _context.t2
-                });
-                callback(_context.t2.message || _context.t2);
-
-              case 62:
-                return _context.abrupt("break", 64);
-
-              case 63:
-                try {
-                  logger.warn('Unknown command', {
-                    type: type
-                  });
-                  callback("rest: unknown command \"" + type + "\"");
-                } catch (err) {
-                  logger.error(type, {
-                    err: err
-                  });
-                  callback(err.message || err);
-                }
-
-              case 64:
-                _context.next = 70;
-                break;
-
-              case 66:
-                _context.prev = 66;
-                _context.t3 = _context["catch"](0);
-                logger.warn('rest error', {
-                  err: _context.t3
-                });
-                callback(_context.t3.message || _context.t3);
-
-              case 70:
               case "end":
                 return _context.stop();
             }
           }
-        }, null, null, [[0, 66], [8, 33], [48, 58]]);
-      })();
-    });
-  });
-}
+        }, _callee, null, [[3, 10], [20, 29]]);
+      }));
 
-exports.default = init;
+      return function handleDecodedMessage() {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
+    ws.on('pong', function () {
+      ws.isAlive = true;
+    });
+    ws.on('close', function () {
+      openSubscriptions.forEach(unsubscribeSubscription);
+    });
+    ws.on('message', function (message) {
+      if (message === 'close') return;
+
+      if (typeof message !== 'string') {
+        logger.warn('got non string message');
+        return;
+      }
+
+      var decoded = extendedJson.decode(message),
+          type,
+          id,
+          payload;
+
+      try {
+        type = decoded[0], id = decoded[1], payload = decoded[2];
+        logger.debug('received', {
+          type: type,
+          id: id,
+          payload: payload
+        });
+        handleDecodedMessage({
+          type: type,
+          id: id,
+          payload: payload
+        });
+      } catch (err) {
+        logger.notice('invalid message', {
+          decoded: decoded
+        });
+      }
+    });
+    ws.send('connection-ack');
+  }); // https://www.npmjs.com/package/ws#how-to-detect-and-close-broken-connections
+
+  var interval = setInterval(function () {
+    wss.clients.forEach(function (ws) {
+      var extWs = ws;
+      if (!extWs.isAlive) return ws.terminate();
+      extWs.isAlive = false;
+      ws.ping(null, undefined);
+    });
+  }, 60000);
+
+  var handleUpgrade = function handleUpgrade(request, socket, upgradeHead) {
+    if (request.url !== path) return;
+    var authenticatedUser = getAuthenticatedUser(request);
+    wss.handleUpgrade(request, socket, upgradeHead, function (ws) {
+      wss.emit('connection', ws, authenticatedUser);
+    });
+  };
+
+  server.on('upgrade', handleUpgrade);
+  return {
+    wss: wss,
+    close: function close() {
+      wss.close();
+      server.removeListener('upgrade', handleUpgrade);
+      clearInterval(interval);
+    }
+  };
+};
+
+exports.createWsServer = createWsServer;
 //# sourceMappingURL=index-browser-dev.cjs.js.map

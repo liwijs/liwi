@@ -1,7 +1,4 @@
 {
   "root": true,
-  "extends": ["@pob/eslint-config", "@pob/eslint-config-node"],
-  "rules": {
-    "import/no-cycle": "off"
-  }
+  "extends": ["@pob/eslint-config", "@pob/eslint-config-node"]
 }

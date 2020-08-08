@@ -1,0 +1,9 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "packages/liwi-subscribe-store/tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["@pob/eslint-config-typescript"]
+}

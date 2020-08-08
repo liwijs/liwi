@@ -1,5 +1,5 @@
-import { MongoClient } from 'mongodb';
 import { AbstractConnection } from 'liwi-store';
+import { MongoClient } from 'mongodb';
 export default class MongoConnection extends AbstractConnection {
     _connection?: MongoClient;
     _connecting?: Promise<MongoClient>;

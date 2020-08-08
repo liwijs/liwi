@@ -1,8 +1,5 @@
-import * as types from 'liwi-types';
-import SubscribeStore, { Actions as SubscribeStoreActions, Listener as SubscribeStoreListener } from './SubscribeStore';
-import AbstractSubscribeQuery from './AbstractSubscribeQuery';
-export declare type BaseModel = types.BaseModel;
-export declare type Actions<Model> = SubscribeStoreActions<Model>;
-export declare type Listener<Model> = SubscribeStoreListener<Model>;
-export { SubscribeStore, AbstractSubscribeQuery };
+import AbstractSubscribableStoreQuery from './AbstractSubscribableStoreQuery';
+import SubscribeStore from './SubscribeStore';
+export type { Actions, Listener } from './SubscribeStore';
+export { SubscribeStore, AbstractSubscribableStoreQuery };
 //# sourceMappingURL=index.d.ts.map

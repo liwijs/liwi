@@ -8,10 +8,8 @@
     "pob-config": {
       "documentation": false,
       "testing": false
-    }
-  },
-  "liwi-resources-client": {
-    "type": {
+    },
+    "project": {
       "type": "lib"
     }
   }
