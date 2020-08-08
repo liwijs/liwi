@@ -30,7 +30,7 @@ export interface Store<
 
   createQuerySingleItem<
     Result extends Record<KeyPath, KeyValue>,
-    Params extends QueryParams<Params> | undefined
+    Params extends QueryParams<Params>
   >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Result>,
@@ -38,7 +38,7 @@ export interface Store<
 
   createQueryCollection<
     Item extends Record<KeyPath, KeyValue>,
-    Params extends QueryParams<Params> | undefined
+    Params extends QueryParams<Params>
   >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Item>,

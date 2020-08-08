@@ -4,8 +4,8 @@ import {
 } from 'liwi-resources-client';
 import { DraftTask, Task } from './Task';
 
-interface QueryAllParams {
-  completed: boolean | null;
+export interface QueryAllParams {
+  completed?: boolean;
   limit: number;
   page: number;
 }
@@ -22,7 +22,7 @@ interface PatchParams {
 export interface TasksService {
   queries: {
     queryAll: ServiceQuery<Task[], QueryAllParams>;
-    queryWithoutParams: ServiceQuery<Task[], undefined>;
+    queryWithoutParams: ServiceQuery<Task[], {}>;
   };
   operations: {
     create: (params: CreateParams) => Promise<Task>;

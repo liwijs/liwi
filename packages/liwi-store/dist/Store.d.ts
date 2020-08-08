@@ -10,8 +10,8 @@ export interface UpsertResult<Model extends BaseModel> {
 export interface Store<KeyPath extends string, KeyValue extends AllowedKeyValue, Model extends BaseModel & Record<KeyPath, KeyValue>, ModelInsertType extends InsertType<Model, KeyPath>, Connection extends AbstractConnection> extends InternalCommonStoreClient<Model> {
     readonly connection: Connection;
     readonly keyPath: KeyPath;
-    createQuerySingleItem<Result extends Record<KeyPath, KeyValue>, Params extends QueryParams<Params> | undefined>(options: QueryOptions<Model>, transformer?: Transformer<Model, Result>): Query<Result, Params, KeyValue>;
-    createQueryCollection<Item extends Record<KeyPath, KeyValue>, Params extends QueryParams<Params> | undefined>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): Query<Item[], Params, KeyValue>;
+    createQuerySingleItem<Result extends Record<KeyPath, KeyValue>, Params extends QueryParams<Params>>(options: QueryOptions<Model>, transformer?: Transformer<Model, Result>): Query<Result, Params, KeyValue>;
+    createQueryCollection<Item extends Record<KeyPath, KeyValue>, Params extends QueryParams<Params>>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): Query<Item[], Params, KeyValue>;
     findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
     findByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<Model | undefined>;
     findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;

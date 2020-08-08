@@ -8,24 +8,19 @@ import {
   UseResourceAndSubscribeOptions,
 } from './useRetrieveResourceAndSubscribe';
 
-interface UseResourceOptionsRequiredParams<
-  Params extends QueryParams<Params> | undefined
-> {
+interface UseResourceOptionsRequiredParams<Params extends QueryParams<Params>> {
   params: Params;
   subscribe?: boolean;
   subscribeOptions?: UseResourceAndSubscribeOptions;
 }
 
 export type UseResourceOptions<
-  Params extends QueryParams<Params> | undefined
-> = Params extends undefined
+  Params extends QueryParams<Params>
+> = Params extends { [key: string]: never }
   ? SetOptional<UseResourceOptionsRequiredParams<Params>, 'params'>
   : UseResourceOptionsRequiredParams<Params>;
 
-export function useResource<
-  Result,
-  Params extends QueryParams<Params> | undefined
->(
+export function useResource<Result, Params extends QueryParams<Params>>(
   createQuery: (initialParams: Params) => Query<Result, Params>,
   { params, subscribe, subscribeOptions }: UseResourceOptions<Params>,
   deps: any[],

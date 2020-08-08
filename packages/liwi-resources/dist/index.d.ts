@@ -6,13 +6,18 @@ export interface ResourceSubscribePayload<Options> {
     type: string;
     args: Options;
 }
-export interface ServiceInterface<QueryKeys extends keyof any, OperationKeys extends keyof any> {
-    queries: {
-        [key in QueryKeys]: <Params extends QueryParams<Params> | undefined>(params: Params) => Query<any, Params>;
-    };
-    operations: {
-        [key in OperationKeys]: (params: any) => Promise<any>;
-    };
+export declare type ServiceQuery<Result, Params extends QueryParams<Params>> = (params: Params) => Query<Result, Params>;
+export declare type ServiceOperation<Result extends Promise<any>, Params extends QueryParams<Params>> = (params: Params) => Result;
+declare type InferQueryResult<T> = T extends Query<infer R, any> ? R : never;
+declare type ServiceInterfaceQueries<Queries extends Record<keyof Queries, ServiceQuery<any, any>>> = {
+    [key in keyof Queries]: (params: QueryParams<Parameters<Queries[key]>[0]>) => Query<InferQueryResult<ReturnType<Queries[key]>>, QueryParams<Parameters<Queries[key]>[0]>>;
+};
+declare type ServiceInterfaceOperations<Operations extends Record<keyof Operations, ServiceOperation<any, any>>> = {
+    [key in keyof Operations]: (params: QueryParams<Parameters<Operations[key]>[0]>) => ReturnType<Operations[key]>;
+};
+export interface ServiceInterface<Queries extends ServiceInterfaceQueries<Queries>, Operations extends ServiceInterfaceOperations<Operations>> {
+    queries: ServiceInterfaceQueries<Queries>;
+    operations: ServiceInterfaceOperations<Operations>;
 }
 export declare type AckError = {
     code: string;

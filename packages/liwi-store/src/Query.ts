@@ -36,7 +36,9 @@ export type AllowedParamValue =
   | Date
   | AllowedParamValue[];
 
-export type QueryParams<Params> = Record<keyof Params, AllowedParamValue>;
+export type QueryParams<Params extends {}> = {
+  [P in keyof Params]: Extract<Params[P], AllowedParamValue>;
+};
 
 export interface QueryResult<Result> {
   result: Result;
@@ -46,7 +48,7 @@ export interface QueryResult<Result> {
 
 export interface Query<
   Result,
-  Params extends QueryParams<Params> | undefined,
+  Params extends QueryParams<Params>,
   KeyValue extends AllowedKeyValue = AllowedKeyValue
 > {
   changeParams(params: Params): void;

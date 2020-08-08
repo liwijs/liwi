@@ -11,10 +11,8 @@ import { TransportClient } from './TransportClient';
 
 const logger = new Logger('liwi:resources:query');
 
-export default class ClientQuery<
-  Result,
-  Params extends QueryParams<Params> | undefined = undefined
-> implements Query<Result, Params> {
+export default class ClientQuery<Result, Params extends QueryParams<Params>>
+  implements Query<Result, Params> {
   private readonly resourceName: string;
 
   private readonly transportClient: TransportClient;

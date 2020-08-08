@@ -10,7 +10,6 @@ export default function Main(): ReactElement | null {
     todoServices.tasksService.queries.queryAll,
     {
       params: {
-        completed: null,
         limit: 200,
         page: 1,
       },

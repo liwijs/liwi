@@ -7,8 +7,8 @@ export interface SubscribeHook<ConnectedUser = any, P = any> {
 
 export interface ServiceResource<
   ClientService extends ServiceInterface<
-    keyof ClientService['queries'],
-    keyof ClientService['operations']
+    ClientService['queries'],
+    ClientService['operations']
   >,
   ConnectedUser = unknown
 > {

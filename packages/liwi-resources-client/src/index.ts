@@ -1,4 +1,4 @@
-import type { ServiceInterface, Query, QueryParams } from 'liwi-resources';
+import type { ServiceInterface as ClientServiceInterface } from 'liwi-resources';
 import ClientQuery from './ClientQuery';
 import type { TransportClient } from './TransportClient';
 
@@ -16,6 +16,7 @@ export type {
   QueryResult,
   QueryMeta,
   SubscribeCallback,
+  ServiceQuery,
 } from 'liwi-resources';
 export type { default as ClientQuery } from './ClientQuery';
 export type {
@@ -38,27 +39,12 @@ interface CreateResourceClientOptions<
   operations: Record<OperationKeys, null>;
 }
 
-export type ServiceQuery<
-  Result,
-  Params extends QueryParams<Params> | undefined
-> = (params: Params) => Query<Result, Params>;
-
-export interface ClientServiceInterface<
-  QueryKeys extends keyof any,
-  OperationKeys extends keyof any
-> extends ServiceInterface<QueryKeys, OperationKeys> {
-  queries: {
-    [key in QueryKeys]: ServiceQuery<any, any>;
-  };
-  operations: {
-    [key in OperationKeys]: (params: any) => Promise<any>;
-  };
-}
+export type { ClientServiceInterface };
 
 export const createResourceClientService = <
   Service extends ClientServiceInterface<
-    keyof Service['queries'],
-    keyof Service['operations']
+    Service['queries'],
+    Service['operations']
   >
 >(
   resourceName: string,

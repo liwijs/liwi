@@ -9,7 +9,7 @@ export const tasksService: ServiceResource<TasksService> = {
     queryAll: ({ completed, limit, page }) => {
       const securedLimit = Math.min(200, limit);
       return tasksStore.createQueryCollection({
-        criteria: completed === null ? {} : { completed },
+        criteria: completed == null ? {} : { completed },
         sort: { created: 1 },
         limit: securedLimit,
         skip: (page - 1) * securedLimit,

@@ -35,7 +35,7 @@ export function TestDataNotUndefinedWhenLoadingTrueWhenDestructuring(): void {
 
 export function TestParamsUndefined(): void {
   const { initialLoading, data: tests } = useResource(
-    ((() => {}) as unknown) as (params: undefined) => Query<Test[], undefined>,
+    ((() => {}) as unknown) as (params: {}) => Query<Test[], {}>,
     {},
     [],
   );
@@ -48,7 +48,9 @@ export function TestParamsUndefined(): void {
 
 export function TestParamsShouldBeRequired(): void {
   const { initialLoading, data: tests } = useResource(
-    ((() => {}) as unknown) as (params: {}) => Query<Test[], {}>,
+    ((() => {}) as unknown) as (params: {
+      page: number;
+    }) => Query<Test[], { page: number }>,
     // @ts-expect-error
     {},
     [],

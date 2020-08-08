@@ -11,10 +11,7 @@ import reducer, {
   ResourceReducerInitializerReturn,
 } from './reducer';
 
-export function useRetrieveResource<
-  Result,
-  Params extends QueryParams<Params> | undefined
->(
+export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
   createQuery: (initialParams: Params) => Query<Result, Params>,
   params: Params,
   deps: any[],

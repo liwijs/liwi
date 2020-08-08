@@ -16,18 +16,42 @@ export interface ResourceSubscribePayload<Options> {
   args: Options;
 }
 
+export type ServiceQuery<Result, Params extends QueryParams<Params>> = (
+  params: Params,
+) => Query<Result, Params>;
+
+export type ServiceOperation<
+  Result extends Promise<any>,
+  Params extends QueryParams<Params>
+> = (params: Params) => Result;
+
+type InferQueryResult<T> = T extends Query<infer R, any> ? R : never;
+
+type ServiceInterfaceQueries<
+  Queries extends Record<keyof Queries, ServiceQuery<any, any>>
+> = {
+  [key in keyof Queries]: (
+    params: QueryParams<Parameters<Queries[key]>[0]>,
+  ) => Query<
+    InferQueryResult<ReturnType<Queries[key]>>,
+    QueryParams<Parameters<Queries[key]>[0]>
+  >;
+};
+
+type ServiceInterfaceOperations<
+  Operations extends Record<keyof Operations, ServiceOperation<any, any>>
+> = {
+  [key in keyof Operations]: (
+    params: QueryParams<Parameters<Operations[key]>[0]>,
+  ) => ReturnType<Operations[key]>;
+};
+
 export interface ServiceInterface<
-  QueryKeys extends keyof any,
-  OperationKeys extends keyof any
+  Queries extends ServiceInterfaceQueries<Queries>,
+  Operations extends ServiceInterfaceOperations<Operations>
 > {
-  queries: {
-    [key in QueryKeys]: <Params extends QueryParams<Params> | undefined>(
-      params: Params,
-    ) => Query<any, Params>;
-  };
-  operations: {
-    [key in OperationKeys]: (params: any) => Promise<any>;
-  };
+  queries: ServiceInterfaceQueries<Queries>;
+  operations: ServiceInterfaceOperations<Operations>;
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions

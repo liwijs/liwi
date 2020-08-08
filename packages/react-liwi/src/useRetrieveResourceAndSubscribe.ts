@@ -33,7 +33,7 @@ const isInitial = <Result>(
 
 export function useRetrieveResourceAndSubscribe<
   Result,
-  Params extends QueryParams<Params> | undefined
+  Params extends QueryParams<Params>
 >(
   createQuery: (initialParams: Params) => Query<Result, Params>,
   params: Params,
@@ -44,7 +44,7 @@ export function useRetrieveResourceAndSubscribe<
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   );
-  const changeParamsRef = useRef<((parans: Params) => void) | undefined>(
+  const changeParamsRef = useRef<((params: Params) => void) | undefined>(
     undefined,
   );
 
