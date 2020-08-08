@@ -1,4 +1,3 @@
-import * as types from 'liwi-types';
-export { default as WebsocketClient, createMongoResourcesWebsocketClient, } from './WebsocketClient';
-export declare type BaseModel = types.BaseModel;
+export { default as createWebsocketTransportClient } from './createWebsocketTransportClient';
+export type { WebsocketTransportClientOptions } from './createWebsocketTransportClient';
 //# sourceMappingURL=index.d.ts.map

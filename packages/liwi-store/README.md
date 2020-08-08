@@ -8,7 +8,6 @@
 
 <p align="center">
   <a href="https://npmjs.org/package/liwi-store"><img src="https://img.shields.io/npm/v/liwi-store.svg?style=flat-square"></a>
-  <a href="https://david-dm.org/liwijs/liwi?path=packages/liwi-store"><img src="https://david-dm.org/liwijs/liwi.svg?path=packages/liwi-store?style=flat-square"></a>
 </p>
 
 ## Install

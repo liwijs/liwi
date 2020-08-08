@@ -3,28 +3,33 @@
     "monorepo": {
       "ci": true,
       "testing": true,
-      "codecov": true,
+      "codecov": false,
       "documentation": false,
+      "eslint": true,
       "typescript": true,
       "packageNames": [
         "extended-json",
         "liwi-types",
         "liwi",
-        "liwi-resources",
         "liwi-store",
+        "liwi-resources",
+        "liwi-subscribe-store",
+        "liwi-mongo",
         "liwi-resources-client",
         "liwi-resources-server",
-        "liwi-subscribe-store",
-        "react-liwi",
-        "liwi-mongo",
-        "liwi-resources-void-client",
+        "liwi-mongo-example",
         "liwi-resources-websocket-client",
         "liwi-resources-websocket-server",
-        "liwi-mongo-example"
+        "react-liwi",
+        "alp-todo-example"
       ]
     },
     "renovate": {
       "enable": true
+    },
+    "project": {
+      "type": "lib",
+      "yarn2": false
     }
   }
 }

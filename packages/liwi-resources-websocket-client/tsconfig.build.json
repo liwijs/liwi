@@ -21,6 +21,5 @@
   ],
   "references": [
     { "path": "../extended-json/tsconfig.build.json" },
-    { "path": "../liwi-store/tsconfig.build.json" },
     { "path": "../liwi-resources-client/tsconfig.build.json" }
 ]}

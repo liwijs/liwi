@@ -1,8 +1,11 @@
+/* eslint-disable max-lines */
 import {
   Store as StoreInterface,
   AbstractConnection,
-  AbstractStoreCursor,
   UpsertResult,
+  SubscribableStoreQuery,
+  AbstractStoreCursor,
+  SubscribableStore,
 } from 'liwi-store';
 import {
   BaseModel,
@@ -12,61 +15,86 @@ import {
   Sort,
   QueryOptions,
   Transformer,
+  AllowedKeyValue,
 } from 'liwi-types';
-import AbstractSubscribeQuery from './AbstractSubscribeQuery';
 
 export type Actions<Model> =
   | { type: 'inserted'; next: Model[] }
-  | { type: 'updated'; prev: Model[]; next: Model[] }
+  | { type: 'updated'; changes: [Model, Model][] }
   | { type: 'deleted'; prev: Model[] };
 
-export type Listener<Model> = (action: Actions<Model>) => void;
+export type Listener<Model> = (action: Actions<Model>) => unknown;
 
 export default class SubscribeStore<
-  Model extends BaseModel,
   KeyPath extends string,
+  KeyValue extends AllowedKeyValue,
+  Model extends BaseModel & Record<KeyPath, KeyValue>,
+  ModelInsertType extends InsertType<Model, KeyPath>,
   Connection extends AbstractConnection,
-  Cursor extends AbstractStoreCursor<Model, KeyPath, any>,
-  Store extends StoreInterface<Model, KeyPath, Connection, Cursor>
-> implements StoreInterface<Model, KeyPath, Connection, Cursor> {
+  Store extends SubscribableStore<
+    KeyPath,
+    KeyValue,
+    Model,
+    ModelInsertType,
+    Connection
+  >
+>
+  implements
+    StoreInterface<KeyPath, KeyValue, Model, ModelInsertType, Connection> {
   private readonly store: Store;
 
   private readonly listeners: Set<Listener<Model>> = new Set();
 
+  readonly keyPath: KeyPath;
+
   constructor(store: Store) {
     this.store = store;
-  }
-
-  get keyPath() {
-    return this.store.keyPath;
+    this.keyPath = store.keyPath;
   }
 
   get connection(): Connection {
     return this.store.connection;
   }
 
-  subscribe(callback: Listener<Model>) {
+  subscribe(callback: Listener<Model>): () => void {
     this.listeners.add(callback);
     return () => this.listeners.delete(callback);
   }
 
-  callSubscribed(action: Actions<Model>) {
+  callSubscribed(action: Actions<Model>): void {
     this.listeners.forEach((listener) => listener(action));
   }
 
-  createQuery<Transformed>(
+  createQuerySingleItem<Result extends Record<KeyPath, KeyValue>>(
     options: QueryOptions<Model>,
-    transformer?: Transformer<Model, Transformed>,
-  ): AbstractSubscribeQuery<Model, Store, Transformed> {
-    const query: AbstractSubscribeQuery<
-      Model,
-      Store,
-      Transformed
-    > = this.store.createQuery(options, transformer) as AbstractSubscribeQuery<
-      Model,
-      Store,
-      Transformed
-    >;
+    transformer?: Transformer<Model, Result>,
+  ): SubscribableStoreQuery<
+    SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
+    Result,
+    KeyValue
+  > {
+    const query: SubscribableStoreQuery<
+      SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
+      Result,
+      KeyValue
+    > = this.store.createQuerySingleItem<Result>(options, transformer);
+    query.setSubscribeStore(this);
+    return query;
+  }
+
+  createQueryCollection<Item extends Record<KeyPath, KeyValue>>(
+    options: QueryOptions<Model>,
+    transformer?: Transformer<Model, Item>,
+  ): SubscribableStoreQuery<
+    SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
+    Item[],
+    KeyValue
+  > {
+    const query: SubscribableStoreQuery<
+      SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
+      Item[],
+      KeyValue
+    > = this.store.createQueryCollection<Item>(options, transformer);
     query.setSubscribeStore(this);
     return query;
   }
@@ -86,7 +114,7 @@ export default class SubscribeStore<
     return this.store.findOne(criteria, sort);
   }
 
-  async insertOne(object: InsertType<Model, KeyPath>): Promise<Model> {
+  async insertOne(object: ModelInsertType): Promise<Model> {
     const inserted = await this.store.insertOne(object);
     this.callSubscribed({ type: 'inserted', next: [inserted] });
     return inserted;
@@ -94,7 +122,7 @@ export default class SubscribeStore<
 
   async replaceOne(object: Model): Promise<Model> {
     const replaced = await this.store.replaceOne(object);
-    this.callSubscribed({ type: 'updated', prev: [object], next: [replaced] });
+    this.callSubscribed({ type: 'updated', changes: [[object, replaced]] });
     return replaced;
   }
 
@@ -102,19 +130,18 @@ export default class SubscribeStore<
     const replacedObjects = await this.store.replaceSeveral(objects);
     this.callSubscribed({
       type: 'updated',
-      prev: objects,
-      next: replacedObjects,
+      changes: objects.map((prev, index) => [prev, replacedObjects[index]]),
     });
     return replacedObjects;
   }
 
-  async upsertOne(object: InsertType<Model, KeyPath>): Promise<Model> {
+  async upsertOne(object: ModelInsertType): Promise<Model> {
     const result = await this.upsertOneWithInfo(object);
     return result.object;
   }
 
   async upsertOneWithInfo(
-    object: InsertType<Model, KeyPath>,
+    object: ModelInsertType,
   ): Promise<UpsertResult<Model>> {
     const upsertedWithInfo = await this.store.upsertOneWithInfo(object);
     if (upsertedWithInfo.inserted) {
@@ -144,7 +171,7 @@ export default class SubscribeStore<
     partialUpdate: Update<Model>,
   ): Promise<Model> {
     const updated = await this.store.partialUpdateOne(object, partialUpdate);
-    this.callSubscribed({ type: 'updated', prev: [object], next: [updated] });
+    this.callSubscribed({ type: 'updated', changes: [[object, updated]] });
     return updated;
   }
 
@@ -153,8 +180,8 @@ export default class SubscribeStore<
     partialUpdate: Update<Model>,
   ): Promise<void> {
     const cursor = await this.store.cursor(criteria);
-    const prev: Model[] = [];
-    const next: Model[] = [];
+    const changes: [Model, Model][] = [];
+
     await cursor.forEach(async (model) => {
       const key = model[this.store.keyPath];
       const updated = await this.store.partialUpdateByKey(
@@ -162,10 +189,9 @@ export default class SubscribeStore<
         partialUpdate,
         criteria,
       );
-      prev.push(model);
-      next.push(updated);
+      changes.push([model, updated]);
     });
-    this.callSubscribed({ type: 'updated', prev, next });
+    this.callSubscribed({ type: 'updated', changes });
   }
 
   async deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void> {
@@ -184,11 +210,11 @@ export default class SubscribeStore<
     this.callSubscribed({ type: 'deleted', prev });
   }
 
-  async cursor(
+  async cursor<Result = Model>(
     criteria?: Criteria<Model>,
     sort?: Sort<Model>,
-  ): Promise<Cursor> {
-    const cursor = await this.store.cursor(criteria, sort);
+  ): Promise<AbstractStoreCursor<any, KeyValue, Model, Result>> {
+    const cursor = await this.store.cursor<Result>(criteria, sort);
     cursor.overrideStore(this);
     return cursor;
   }

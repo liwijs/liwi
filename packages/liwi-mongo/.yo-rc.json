@@ -8,10 +8,8 @@
     "pob-config": {
       "documentation": false,
       "testing": false
-    }
-  },
-  "liwi-mongo": {
-    "type": {
+    },
+    "project": {
       "type": "lib"
     }
   }

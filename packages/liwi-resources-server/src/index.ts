@@ -1,23 +1,16 @@
-import { BaseModel } from 'liwi-types';
-import { OperationDescriptions, QueryDescriptions } from 'liwi-resources';
-import ServiceResourceInterface, {
-  SubscribeHook as SubscribeHookInterface,
-} from './ServiceResource';
-import CursorResourceInterface from './CursorResource';
-
 export { default as ResourcesServerService } from './ResourcesServerService';
 
-export type SubscribeHook<ConnectedUser = any> = SubscribeHookInterface<
-  ConnectedUser
->;
-export type ServiceResource<
-  Queries extends QueryDescriptions,
-  Operations extends OperationDescriptions = {},
-  ConnectedUser = any
-> = ServiceResourceInterface<Queries, Operations, ConnectedUser>;
-
-export type CursorResource<
-  Model extends BaseModel,
-  Transformed = any,
-  ConnectedUser = any
-> = CursorResourceInterface<Model, Transformed, ConnectedUser>;
+export type {
+  AckError,
+  Query,
+  ResourceSubscribePayload,
+  ToClientMessage,
+  ToServerMessage,
+  ToServerMessages,
+  ToServerQueryPayload,
+  ToServerSubscribeQueryPayload,
+  QuerySubscription,
+} from 'liwi-resources';
+export type { ServiceResource, SubscribeHook } from './ServiceResource';
+// export type { CursorResource } from './CursorResource';
+export { ResourcesServerError } from 'liwi-resources';

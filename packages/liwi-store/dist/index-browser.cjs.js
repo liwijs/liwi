@@ -4,17 +4,16 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var _createForOfIteratorHelperLoose = _interopDefault(require('@babel/runtime/helpers/esm/createForOfIteratorHelperLoose'));
 var _regeneratorRuntime = _interopDefault(require('@babel/runtime/regenerator'));
+var _asyncToGenerator = _interopDefault(require('@babel/runtime/helpers/esm/asyncToGenerator'));
 var _createClass = _interopDefault(require('@babel/runtime/helpers/esm/createClass'));
 var _inheritsLoose = _interopDefault(require('@babel/runtime/helpers/esm/inheritsLoose'));
-var assert = _interopDefault(require('assert'));
 
 var AbstractConnection = function AbstractConnection() {};
 
 /* eslint-disable no-await-in-loop */
-var AbstractCursor =
-/*#__PURE__*/
-function () {
+var AbstractCursor = /*#__PURE__*/function () {
   function AbstractCursor() {}
 
   var _proto = AbstractCursor.prototype;
@@ -27,41 +26,47 @@ function () {
     });
   };
 
-  _proto.forEachKeys = function forEachKeys(callback) {
-    var _key;
+  _proto.forEachKeys = /*#__PURE__*/function () {
+    var _forEachKeys = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(callback) {
+      var _key;
 
-    return _regeneratorRuntime.async(function forEachKeys$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 3;
-            return _regeneratorRuntime.awrap(this.next());
+      return _regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 3;
+              return this.next();
 
-          case 3:
-            _key = _context.sent;
+            case 3:
+              _key = _context.sent;
 
-            if (_key) {
-              _context.next = 6;
+              if (_key) {
+                _context.next = 6;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 6:
+              _context.next = 8;
+              return callback(_key);
+
+            case 8:
+              _context.next = 0;
               break;
-            }
 
-            return _context.abrupt("return");
-
-          case 6:
-            _context.next = 8;
-            return _regeneratorRuntime.awrap(callback(_key));
-
-          case 8:
-            _context.next = 0;
-            break;
-
-          case 10:
-          case "end":
-            return _context.stop();
+            case 10:
+            case "end":
+              return _context.stop();
+          }
         }
-      }
-    }, null, this);
-  };
+      }, _callee, this);
+    }));
+
+    return function forEachKeys() {
+      return _forEachKeys.apply(this, arguments);
+    };
+  }();
 
   _proto.forEach = function forEach(callback) {
     var _this2 = this;
@@ -73,9 +78,7 @@ function () {
     });
   };
 
-  _proto.keysIterator =
-  /*#__PURE__*/
-  _regeneratorRuntime.mark(function keysIterator() {
+  _proto.keysIterator = /*#__PURE__*/_regeneratorRuntime.mark(function keysIterator() {
     return _regeneratorRuntime.wrap(function keysIterator$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -94,67 +97,39 @@ function () {
       }
     }, keysIterator, this);
   });
-  _proto[Symbol.iterator] =
-  /*#__PURE__*/
-  _regeneratorRuntime.mark(function _callee() {
+  _proto[Symbol.iterator] = /*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
     var _this3 = this;
 
-    var _iterator, _isArray, _i, _ref, keyPromise;
+    var _iterator, _step, keyPromise;
 
-    return _regeneratorRuntime.wrap(function _callee$(_context3) {
+    return _regeneratorRuntime.wrap(function _callee2$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _iterator = this.keysIterator(), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();
+            _iterator = _createForOfIteratorHelperLoose(this.keysIterator());
 
           case 1:
-            if (!_isArray) {
+            if ((_step = _iterator()).done) {
               _context3.next = 7;
               break;
             }
 
-            if (!(_i >= _iterator.length)) {
-              _context3.next = 4;
-              break;
-            }
-
-            return _context3.abrupt("break", 16);
-
-          case 4:
-            _ref = _iterator[_i++];
-            _context3.next = 11;
-            break;
-
-          case 7:
-            _i = _iterator.next();
-
-            if (!_i.done) {
-              _context3.next = 10;
-              break;
-            }
-
-            return _context3.abrupt("break", 16);
-
-          case 10:
-            _ref = _i.value;
-
-          case 11:
-            keyPromise = _ref;
-            _context3.next = 14;
+            keyPromise = _step.value;
+            _context3.next = 5;
             return keyPromise.then(function (key) {
               return key && _this3.result();
             });
 
-          case 14:
+          case 5:
             _context3.next = 1;
             break;
 
-          case 16:
+          case 7:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee, this);
+    }, _callee2, this);
   }) // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
 
   /*
@@ -175,9 +150,7 @@ function () {
   return AbstractCursor;
 }();
 
-var AbstractStoreCursor =
-/*#__PURE__*/
-function (_AbstractCursor) {
+var AbstractStoreCursor = /*#__PURE__*/function (_AbstractCursor) {
   _inheritsLoose(AbstractStoreCursor, _AbstractCursor);
 
   function AbstractStoreCursor(store) {
@@ -212,79 +185,7 @@ function (_AbstractCursor) {
   return AbstractStoreCursor;
 }(AbstractCursor);
 
-var AbstractQuery =
-/*#__PURE__*/
-function () {
-  function AbstractQuery() {}
-
-  var _proto = AbstractQuery.prototype;
-
-  _proto.fetchAndSubscribe = function fetchAndSubscribe(callback) {
-    return this._subscribe(callback, true);
-  };
-
-  _proto.subscribe = function subscribe(callback) {
-    return this._subscribe(callback, false);
-  };
-
-  return AbstractQuery;
-}();
-
-var AbstractStore =
-/*#__PURE__*/
-function () {
-  function AbstractStore(connection, keyPath) {
-    assert(connection);
-    this._connection = connection;
-    this.keyPath = keyPath;
-  }
-
-  var _proto = AbstractStore.prototype;
-
-  _proto.findAll = function findAll(criteria, sort) {
-    return this.cursor(criteria, sort).then(function (cursor) {
-      return cursor.toArray();
-    });
-  };
-
-  _proto.upsertOne = function upsertOne(object) {
-    var result;
-    return _regeneratorRuntime.async(function upsertOne$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return _regeneratorRuntime.awrap(this.upsertOneWithInfo(object));
-
-          case 2:
-            result = _context.sent;
-            return _context.abrupt("return", result.object);
-
-          case 4:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, null, this);
-  };
-
-  _proto.deleteOne = function deleteOne(object) {
-    return this.deleteByKey(object[this.keyPath]);
-  };
-
-  _createClass(AbstractStore, [{
-    key: "connection",
-    get: function get() {
-      return this._connection;
-    }
-  }]);
-
-  return AbstractStore;
-}();
-
 exports.AbstractConnection = AbstractConnection;
 exports.AbstractCursor = AbstractCursor;
-exports.AbstractQuery = AbstractQuery;
-exports.AbstractStore = AbstractStore;
 exports.AbstractStoreCursor = AbstractStoreCursor;
 //# sourceMappingURL=index-browser.cjs.js.map

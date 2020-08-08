@@ -1,13 +1,36 @@
-import { AbstractQuery } from 'liwi-store';
+class AbstractSubscribableStoreQuery {
+  changePartialParams() {
+    throw new Error('Method not supported. Please create a new query.');
+  }
 
+  setSubscribeStore(store) {
+    this._subscribeStore = store;
+  }
+
+  getSubscribeStore() {
+    if (!this._subscribeStore) {
+      throw new Error('_subscribeStore is not initialized');
+    }
+
+    return this._subscribeStore;
+  }
+
+  fetchAndSubscribe(callback) {
+    return this._subscribe(callback, true);
+  }
+
+  subscribe(callback) {
+    return this._subscribe(callback, false);
+  }
+
+}
+
+/* eslint-disable max-lines */
 class SubscribeStore {
   constructor(store) {
     this.listeners = new Set();
     this.store = store;
-  }
-
-  get keyPath() {
-    return this.store.keyPath;
+    this.keyPath = store.keyPath;
   }
 
   get connection() {
@@ -23,8 +46,14 @@ class SubscribeStore {
     this.listeners.forEach(listener => listener(action));
   }
 
-  createQuery(options, transformer) {
-    const query = this.store.createQuery(options, transformer);
+  createQuerySingleItem(options, transformer) {
+    const query = this.store.createQuerySingleItem(options, transformer);
+    query.setSubscribeStore(this);
+    return query;
+  }
+
+  createQueryCollection(options, transformer) {
+    const query = this.store.createQueryCollection(options, transformer);
     query.setSubscribeStore(this);
     return query;
   }
@@ -54,8 +83,7 @@ class SubscribeStore {
     const replaced = await this.store.replaceOne(object);
     this.callSubscribed({
       type: 'updated',
-      prev: [object],
-      next: [replaced]
+      changes: [[object, replaced]]
     });
     return replaced;
   }
@@ -64,8 +92,7 @@ class SubscribeStore {
     const replacedObjects = await this.store.replaceSeveral(objects);
     this.callSubscribed({
       type: 'updated',
-      prev: objects,
-      next: replacedObjects
+      changes: objects.map((prev, index) => [prev, replacedObjects[index]])
     });
     return replacedObjects;
   }
@@ -91,41 +118,37 @@ class SubscribeStore {
   }
 
   async partialUpdateByKey(key, partialUpdate, criteria) {
-    return this.partialUpdateOne((await this.findOne({
+    return this.partialUpdateOne(await this.findOne({
       [this.store.keyPath]: key,
       ...criteria
-    })), partialUpdate);
+    }), partialUpdate);
   }
 
   async partialUpdateOne(object, partialUpdate) {
     const updated = await this.store.partialUpdateOne(object, partialUpdate);
     this.callSubscribed({
       type: 'updated',
-      prev: [object],
-      next: [updated]
+      changes: [[object, updated]]
     });
     return updated;
   }
 
   async partialUpdateMany(criteria, partialUpdate) {
     const cursor = await this.store.cursor(criteria);
-    const prev = [];
-    const next = [];
+    const changes = [];
     await cursor.forEach(async model => {
       const key = model[this.store.keyPath];
       const updated = await this.store.partialUpdateByKey(key, partialUpdate, criteria);
-      prev.push(model);
-      next.push(updated);
+      changes.push([model, updated]);
     });
     this.callSubscribed({
       type: 'updated',
-      prev,
-      next
+      changes
     });
   }
 
   async deleteByKey(key, criteria) {
-    return this.deleteOne((await this.findByKey(key, criteria)));
+    return this.deleteOne(await this.findByKey(key, criteria));
   }
 
   async deleteOne(object) {
@@ -154,20 +177,5 @@ class SubscribeStore {
 
 }
 
-class AbstractSubscribeQuery extends AbstractQuery {
-  setSubscribeStore(store) {
-    this._subscribeStore = store;
-  }
-
-  getSubscribeStore() {
-    if (!this._subscribeStore) {
-      throw new Error('_subscribeStore is not initialized');
-    }
-
-    return this._subscribeStore;
-  }
-
-}
-
-export { AbstractSubscribeQuery, SubscribeStore };
+export { AbstractSubscribableStoreQuery, SubscribeStore };
 //# sourceMappingURL=index-node10-dev.es.js.map

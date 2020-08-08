@@ -1,6 +1,6 @@
-import Logger from 'nightingale-logger';
-import { MongoClient } from 'mongodb';
 import { AbstractConnection } from 'liwi-store';
+import { MongoClient } from 'mongodb';
+import Logger from 'nightingale-logger';
 
 const logger = new Logger('liwi:mongo:MongoConnection');
 
@@ -35,7 +35,7 @@ export default class MongoConnection extends AbstractConnection {
     this.connect(connectionString);
   }
 
-  connect(connectionString: string) {
+  connect(connectionString: string): void {
     logger.info('connecting', { connectionString });
 
     const connectPromise = MongoClient.connect(connectionString, {

@@ -1,0 +1,1 @@
+{"version":3,"file":"ExtendedJsonValue.d.ts","sourceRoot":"","sources":["../src/ExtendedJsonValue.ts"],"names":[],"mappings":"AAAA,oBAAY,iBAAiB,GACzB,SAAS,GACT,IAAI,GACJ,MAAM,GACN,MAAM,GACN,OAAO,GACP,IAAI,GACJ,iBAAiB,EAAE,GACnB,kBAAkB,CAAC;AAEvB,MAAM,WAAW,kBAAkB;IACjC,CAAC,GAAG,EAAE,MAAM,GAAG,iBAAiB,CAAC;CAClC"}

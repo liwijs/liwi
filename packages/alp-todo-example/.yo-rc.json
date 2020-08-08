@@ -1,0 +1,16 @@
+{
+  "alp-hello-react-example": {
+    "type": {
+      "type": "app"
+    }
+  },
+  "pob": {
+    "app": {
+      "type": "alp"
+    },
+    "project": {
+      "type": "app"
+    }
+  },
+  "alp-todo-example": {}
+}

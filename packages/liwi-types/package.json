@@ -24,7 +24,6 @@
     "arrowParens": "always"
   },
   "devDependencies": {
-    "eslint": "^6.3.0",
-    "typescript": "^3.4.5"
+    "eslint": "^6.3.0"
   }
 }

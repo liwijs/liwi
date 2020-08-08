@@ -1,12 +1,6 @@
 {
   "root": true,
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json",
-    "createDefaultProgram": true
-  },
-  "plugins": ["@typescript-eslint"],
-  "extends": ["@pob/eslint-config-typescript", "@pob/eslint-config-babel-node"],
+  "extends": ["@pob/eslint-config", "@pob/eslint-config-node"],
   "rules": {
     "unicorn/no-process-exit": "off"
   }

@@ -1,3 +1,4 @@
+import { ExtendedJsonValue } from './ExtendedJsonValue';
 declare type JsonReplacer = (key: string, value: any) => number | string | boolean | Record<string, any> | undefined;
 /**
  * @param {*} value The value to convert to a JSON string
@@ -5,6 +6,6 @@ declare type JsonReplacer = (key: string, value: any) => number | string | boole
  * @param {string|number} [space]
  * @return {string}
  */
-export default function stringify(value: any, replacer?: JsonReplacer, space?: string | number): string;
+export default function stringify(value: ExtendedJsonValue, replacer?: JsonReplacer, space?: string | number): string;
 export {};
 //# sourceMappingURL=stringify.d.ts.map

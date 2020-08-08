@@ -8,13 +8,11 @@
     "pob-config": {
       "documentation": false,
       "testing": {
-        "circleci": true,
-        "codecov": true
+        "codecov": true,
+        "ci": true
       }
-    }
-  },
-  "extended-json": {
-    "type": {
+    },
+    "project": {
       "type": "lib"
     }
   }

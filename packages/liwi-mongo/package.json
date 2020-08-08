@@ -22,7 +22,7 @@
   "scripts": {
     "build": "pob-build",
     "build:definitions": "tsc -p tsconfig.build.json",
-    "lint": "eslint --ext .js,.ts --quiet src",
+    "lint": "yarn --cwd ../.. eslint --ext .js,.ts --quiet packages/liwi-mongo",
     "watch": "pob-watch"
   },
   "prettier": {
@@ -35,27 +35,28 @@
       {
         "target": "node",
         "version": "10",
-        "formats": ["cjs", "es"]
+        "formats": [
+          "cjs",
+          "es"
+        ]
       }
     ],
-    "entries": ["index"]
+    "entries": [
+      "index"
+    ]
   },
   "dependencies": {
-    "@types/mongodb": "^3.3.1",
+    "@types/mongodb": "^3.5.20",
     "liwi-store": "^4.4.0",
-    "liwi-subscribe-store": "^2.5.0",
+    "liwi-subscribe-store": "2.5.0",
     "liwi-types": "^3.0.2",
-    "mingo": "^2.3.5",
-    "mongodb": "^3.3.2",
-    "nightingale-logger": "^6.2.2"
+    "mingo": "^3.0.2",
+    "mongodb": "^3.5.8",
+    "nightingale-logger": "^10.0.1"
   },
   "devDependencies": {
-    "@babel/core": "7.7.7",
-    "@pob/eslint-config-babel-node": "33.0.0",
-    "@pob/eslint-config-typescript": "33.0.8",
-    "babel-preset-latest-node": "4.0.1",
-    "eslint": "6.8.0",
-    "pob-babel": "24.3.0",
-    "prettier": "1.19.1"
+    "@babel/core": "7.10.5",
+    "babel-preset-latest-node": "4.1.0",
+    "pob-babel": "24.14.0"
   }
 }

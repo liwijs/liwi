@@ -1,105 +1,87 @@
-import { PRODUCTION } from 'pob-babel';
+import {
+  Query,
+  QuerySubscription,
+  SubscribeCallback,
+  QueryParams,
+  QueryResult,
+  ToServerQueryPayload,
+} from 'liwi-resources';
 import Logger from 'nightingale-logger';
-import { decode } from 'extended-json';
-import { AbstractQuery } from 'liwi-store';
-import { BaseModel } from 'liwi-types';
-import AbstractClient from './AbstractClient';
-
-interface SubscribeReturn {
-  cancel: () => void;
-  stop: () => void;
-  then: (cb: any) => Promise<any>;
-}
-
-type UnsubscribeEmitOnConnectCallback = () => void;
-type Callback = (err: Error | null, result: any) => void;
+import { TransportClient } from './TransportClient';
 
 const logger = new Logger('liwi:resources:query');
 
 export default class ClientQuery<
-  Model extends BaseModel,
-  KeyPath extends string,
-  Value = Model
-> extends AbstractQuery<Value> {
-  client: AbstractClient<Model, KeyPath>;
+  Result,
+  Params extends QueryParams<Params> = undefined
+> implements Query<Result, Params> {
+  private readonly resourceName: string;
+
+  private readonly transportClient: TransportClient;
 
   key: string;
 
-  private readonly params: any;
+  private params: Params;
 
   constructor(
-    client: AbstractClient<Model, KeyPath>,
+    resourceName: string,
+    transportClient: TransportClient,
     key: string,
-    params?: any,
+    params: Params,
   ) {
-    super();
-    this.client = client;
+    this.resourceName = resourceName;
+    this.transportClient = transportClient;
     this.key = key;
     this.params = params;
   }
 
-  fetch(onFulfilled?: (value: any) => any): Promise<any> {
+  changePartialParams(params: Partial<Params>): void {
+    this.params = { ...this.params, ...params };
+  }
+
+  private getTransportPayload(): ToServerQueryPayload {
+    return {
+      resourceName: this.resourceName,
+      key: this.key,
+      params: this.params,
+    };
+  }
+
+  fetch<T>(onFulfilled?: (result: QueryResult<Result>) => T): Promise<T> {
     logger.debug('fetch', {
-      resourceName: this.client.resourceName,
+      resourceName: this.resourceName,
       key: this.key,
     });
-    return this.client
-      .send('fetch', [this.key, this.params, undefined])
+    return this.transportClient
+      .send<'fetch', QueryResult<Result>>('fetch', this.getTransportPayload())
       .then(onFulfilled);
   }
 
-  _subscribe(callback: Callback, _includeInitial = false): SubscribeReturn {
-    const eventName = `subscribe:${this.client.resourceName}.${this.key}`;
-    logger.debug('subscribe', { eventName });
-    const listener = (err: Error | null, result?: string) => {
-      const decodedResult = result && decode(result);
-      if (!PRODUCTION) logger.debug(eventName, { result, decodedResult });
-      callback(err, decodedResult);
-    };
+  fetchAndSubscribe(
+    callback: SubscribeCallback<any, Result>,
+  ): QuerySubscription {
+    logger.debug('fetchAndSubscribe', {
+      resourceName: this.resourceName,
+      key: this.key,
+    });
 
-    this.client.on(eventName, listener);
+    return this.transportClient.subscribe(
+      'fetchAndSubscribe',
+      this.getTransportPayload(),
+      callback,
+    );
+  }
 
-    let _stopEmitSubscribeOnConnect: UnsubscribeEmitOnConnectCallback;
-    let promise:
-      | Promise<void>
-      | undefined = this.client
-      .emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [
-        this.key,
-        this.params,
-        eventName,
-      ])
-      .then(
-        (stopEmitSubscribe: UnsubscribeEmitOnConnectCallback) => {
-          _stopEmitSubscribeOnConnect = stopEmitSubscribe;
-          logger.debug('subscribed', {
-            resourceName: this.client.resourceName,
-            key: this.key,
-          });
-        },
-        (err: Error) => {
-          this.client.off(eventName, listener);
-          throw err;
-        },
-      );
+  subscribe(callback: SubscribeCallback<any, Result>): QuerySubscription {
+    logger.debug('subscribe', {
+      resourceName: this.resourceName,
+      key: this.key,
+    });
 
-    const stop = () => {
-      if (promise === undefined) return;
-      promise.then(() => {
-        logger.debug('unsubscribe', {
-          resourceName: this.client.resourceName,
-          key: this.key,
-        });
-        _stopEmitSubscribeOnConnect();
-        this.client.send('unsubscribe', [this.key]);
-        promise = undefined;
-        this.client.off(eventName, listener);
-      });
-    };
-
-    return {
-      cancel: stop,
-      stop,
-      then: (cb) => Promise.resolve(promise).then(cb),
-    };
+    return this.transportClient.subscribe(
+      'subscribe',
+      this.getTransportPayload(),
+      callback,
+    );
   }
 }

@@ -2,10 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-const assert = _interopDefault(require('assert'));
-
 class AbstractConnection {}
 
 /* eslint-disable no-await-in-loop */
@@ -83,46 +79,7 @@ class AbstractStoreCursor extends AbstractCursor {
 
 }
 
-class AbstractQuery {
-  fetchAndSubscribe(callback) {
-    return this._subscribe(callback, true);
-  }
-
-  subscribe(callback) {
-    return this._subscribe(callback, false);
-  }
-
-}
-
-class AbstractStore {
-  constructor(connection, keyPath) {
-    assert(connection);
-    this._connection = connection;
-    this.keyPath = keyPath;
-  }
-
-  get connection() {
-    return this._connection;
-  }
-
-  findAll(criteria, sort) {
-    return this.cursor(criteria, sort).then(cursor => cursor.toArray());
-  }
-
-  async upsertOne(object) {
-    const result = await this.upsertOneWithInfo(object);
-    return result.object;
-  }
-
-  deleteOne(object) {
-    return this.deleteByKey(object[this.keyPath]);
-  }
-
-}
-
 exports.AbstractConnection = AbstractConnection;
 exports.AbstractCursor = AbstractCursor;
-exports.AbstractQuery = AbstractQuery;
-exports.AbstractStore = AbstractStore;
 exports.AbstractStoreCursor = AbstractStoreCursor;
 //# sourceMappingURL=index-node10.cjs.js.map

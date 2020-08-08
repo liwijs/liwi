@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "packages/liwi-mongo/tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "@pob/eslint-config-typescript",
+    "@pob/eslint-config-typescript-node"
+  ],
+  "rules": {
+    "import/no-cycle": "off"
+  }
+}

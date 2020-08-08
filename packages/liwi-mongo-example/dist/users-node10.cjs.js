@@ -21,7 +21,8 @@ const users = new liwiMongo.MongoStore(connection, 'users');
   assert(insertedUser.updated);
   connection.close();
 })().catch(err => {
-  console.error(err);
+  console.error(err); // eslint-disable-next-line unicorn/no-process-exit
+
   process.exit(1);
 });
 //# sourceMappingURL=users-node10.cjs.js.map

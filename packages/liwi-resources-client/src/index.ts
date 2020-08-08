@@ -1,67 +1,97 @@
-import { BaseModel } from 'liwi-types';
-import { QueryDescriptions, OperationDescriptions } from 'liwi-resources';
+import type { ServiceInterface, Query, QueryParams } from 'liwi-resources';
 import ClientQuery from './ClientQuery';
-import AbstractClient from './AbstractClient';
+import type { TransportClient } from './TransportClient';
 
-export { default as AbstractClient } from './AbstractClient';
+export { ResourcesServerError } from 'liwi-resources';
+export type {
+  AckError,
+  ToClientMessage,
+  ToServerMessages,
+  ToServerSubscribeMessages,
+  ToServerQueryPayload,
+  ToServerSubscribeQueryPayload,
+  QuerySubscription,
+  Query,
+  QueryParams,
+  QueryResult,
+  QueryMeta,
+  SubscribeCallback,
+} from 'liwi-resources';
+export type { default as ClientQuery } from './ClientQuery';
+export type {
+  TransportClient,
+  TransportClientSubscribeCallback,
+  TransportClientSubscribeResult,
+  ConnectionStateChangeListener,
+  ConnectionStateChangeListenerCreator,
+  ConnectionStates,
+} from './TransportClient';
 
-export type ResourcesClientQueries<
-  Queries extends QueryDescriptions,
-  KeyPath extends string = '_id'
-> = {
-  [P in keyof Queries]: (
-    params: Queries[P]['params'],
-  ) => ClientQuery<Queries[P]['value'], KeyPath>;
-};
+const getKeys = <T extends {}>(o: T): (keyof T)[] =>
+  Object.keys(o) as (keyof T)[];
 
-export type ResourcesClientOperations<
-  Operations extends OperationDescriptions
-> = {
-  [P in keyof Operations]: (
-    params: Operations[P]['params'],
-  ) => Promise<Operations[P]['result']>;
-};
-
-export interface ResourcesClientService<
-  Queries extends QueryDescriptions,
-  Operations extends OperationDescriptions = {}
+interface CreateResourceClientOptions<
+  QueryKeys extends keyof any,
+  OperationKeys extends keyof any
 > {
-  queries: ResourcesClientQueries<Queries>;
-  operations: ResourcesClientOperations<Operations>;
+  queries: Record<QueryKeys, null>;
+  operations: Record<OperationKeys, null>;
 }
 
-interface CreateResourceClientOptions<QueryKeys, OperationKeys> {
-  queries: QueryKeys[];
-  operations: OperationKeys[];
+export type ServiceQuery<Result, Params extends QueryParams<Params>> = (
+  params: Params,
+) => Query<Result, Params>;
+
+export interface ClientServiceInterface<
+  QueryKeys extends keyof any,
+  OperationKeys extends keyof any
+> extends ServiceInterface<QueryKeys, OperationKeys> {
+  queries: {
+    [key in QueryKeys]: ServiceQuery<any, any>;
+  };
+  operations: {
+    [key in OperationKeys]: (params: any) => Promise<any>;
+  };
 }
 
 export const createResourceClientService = <
-  Queries extends QueryDescriptions<keyof Queries>,
-  Operations extends OperationDescriptions<keyof Operations>,
-  Model extends BaseModel,
-  KeyPath extends string = '_id'
+  Service extends ClientServiceInterface<
+    keyof Service['queries'],
+    keyof Service['operations']
+  >
 >(
-  client: AbstractClient<Model, KeyPath>,
-  options: CreateResourceClientOptions<keyof Queries, keyof Operations>,
-): ResourcesClientService<Queries, Operations> => {
-  const queries: Partial<ResourcesClientQueries<Queries, KeyPath>> = {};
-  const operations: Partial<ResourcesClientOperations<Operations>> = {};
+  resourceName: string,
+  options: CreateResourceClientOptions<
+    keyof Service['queries'],
+    keyof Service['operations']
+  >,
+) => {
+  return (transportClient: TransportClient): Service => {
+    const queries: Partial<Service['queries']> = {};
+    const operations: Partial<Service['operations']> = {};
 
-  options.queries.forEach((queryKey) => {
-    queries[queryKey] = (params: any) =>
-      client.createQuery(queryKey as string, params);
-  });
+    getKeys(options.queries).forEach((queryKey) => {
+      queries[queryKey] = ((params: any) =>
+        new ClientQuery(
+          resourceName,
+          transportClient,
+          queryKey as string,
+          params,
+        )) as any;
+    });
 
-  options.operations.forEach((operationKey: keyof Operations) => {
-    operations[operationKey] = (params: any) =>
-      client.send('do', [operationKey, params]);
-  });
+    getKeys(options.operations).forEach((operationKey) => {
+      operations[operationKey] = ((params: any) =>
+        transportClient.send('do', {
+          resourceName,
+          operationKey: operationKey as string,
+          params,
+        })) as any;
+    });
 
-  return {
-    queries: queries as ResourcesClientQueries<Queries>,
-    operations: operations as ResourcesClientOperations<Operations>,
+    return ({
+      queries,
+      operations,
+    } as unknown) as Service;
   };
 };
-
-/** @deprecated use createResourceClientService instead */
-export const createResourceClient = createResourceClientService;

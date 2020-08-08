@@ -1,0 +1,41 @@
+import { POB_TARGET } from 'pob-babel';
+import { Query } from 'liwi-store';
+import { useEffect } from 'react';
+import { applyCollectionChanges } from '../applyChanges/applyCollectionChanges';
+import { ApplyChanges } from '../applyChanges/ApplyChanges';
+import useRetrieveResourceAndSubscribe, {
+  UseResourceAndSubscribeOptions,
+} from './useRetrieveResourceAndSubscribe';
+
+type UseResourceResult<Result> = [true, undefined] | [false, Result];
+
+export default function usePaginatedResource<Result extends {}[]>(
+  createQuery: () => Query<Result>,
+  page: number,
+  numberPerPage: number,
+  subscribeOptions?: UseResourceAndSubscribeOptions,
+): UseResourceResult<Result> {
+  if (POB_TARGET === 'node') return [true, undefined];
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const state = useRetrieveResourceAndSubscribe<Result>(
+    createQuery,
+    applyCollectionChanges as ApplyChanges<Result>,
+    subscribeOptions,
+  );
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    state.query.changeOptions({
+      ...state.query.getCurrentOptions(),
+      page,
+      numberPerPage,
+    });
+  }, [numberPerPage, page, state.query]);
+
+  if (!state.fetched) {
+    return [true, undefined];
+  }
+
+  return [false, state.result];
+}

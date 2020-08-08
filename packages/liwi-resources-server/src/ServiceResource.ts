@@ -1,31 +1,33 @@
-import { AbstractQuery } from 'liwi-store';
-import { QueryDescriptions, OperationDescriptions } from 'liwi-resources';
+import { ServiceInterface } from 'liwi-resources';
 
 export interface SubscribeHook<ConnectedUser = any, P = any> {
   subscribed: (connectedUser: undefined | ConnectedUser, params: P) => void;
   unsubscribed: (connectedUser: undefined | ConnectedUser, params: P) => void;
 }
 
-export default interface ServiceResource<
-  Queries extends QueryDescriptions<keyof Queries>,
-  Operations extends OperationDescriptions<keyof Operations> = {},
+export interface ServiceResource<
+  ClientService extends ServiceInterface<
+    keyof ClientService['queries'],
+    keyof ClientService['operations']
+  >,
   ConnectedUser = any
 > {
   queries: {
-    [P in keyof Queries]: (
-      params: Queries[P]['params'],
+    [P in keyof ClientService['queries']]: (
+      params: Parameters<ClientService['queries'][P]>[0],
       connectedUser: undefined | ConnectedUser,
-    ) =>
-      | AbstractQuery<Queries[P]['value']>
-      | Promise<AbstractQuery<Queries[P]['value']>>;
+    ) => ReturnType<ClientService['queries'][P]>;
   };
   subscribeHooks?: {
-    [P in keyof Queries]?: SubscribeHook<ConnectedUser, Queries[P]['params']>;
+    [P in keyof ClientService['queries']]?: SubscribeHook<
+      ConnectedUser,
+      Parameters<ClientService['queries'][P]>[0]
+    >;
   };
   operations: {
-    [P in keyof Operations]: (
-      params: Operations[P]['params'],
+    [P in keyof ClientService['operations']]: (
+      params: Parameters<ClientService['operations'][P]>[0],
       connectedUser: undefined | ConnectedUser,
-    ) => Promise<Operations[P]['result']>;
+    ) => ReturnType<ClientService['operations'][P]>;
   };
 }

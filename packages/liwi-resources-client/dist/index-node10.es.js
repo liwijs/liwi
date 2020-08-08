@@ -1,131 +1,77 @@
 import Logger from 'nightingale-logger';
-import { decode } from 'extended-json';
-import { AbstractQuery } from 'liwi-store';
+export { ResourcesServerError } from 'liwi-resources';
 
 const logger = new Logger('liwi:resources:query');
-class ClientQuery extends AbstractQuery {
-  constructor(client, key, params) {
-    super();
-    this.client = client;
+class ClientQuery {
+  constructor(resourceName, transportClient, key, params) {
+    this.resourceName = resourceName;
+    this.transportClient = transportClient;
     this.key = key;
     this.params = params;
   }
 
+  changePartialParams(params) {
+    this.params = { ...this.params,
+      ...params
+    };
+  }
+
+  getTransportPayload() {
+    return {
+      resourceName: this.resourceName,
+      key: this.key,
+      params: this.params
+    };
+  }
+
   fetch(onFulfilled) {
     logger.debug('fetch', {
-      resourceName: this.client.resourceName,
+      resourceName: this.resourceName,
       key: this.key
     });
-    return this.client.send('fetch', [this.key, this.params, undefined]).then(onFulfilled);
+    return this.transportClient.send('fetch', this.getTransportPayload()).then(onFulfilled);
   }
 
-  _subscribe(callback, _includeInitial = false) {
-    const eventName = `subscribe:${this.client.resourceName}.${this.key}`;
+  fetchAndSubscribe(callback) {
+    logger.debug('fetchAndSubscribe', {
+      resourceName: this.resourceName,
+      key: this.key
+    });
+    return this.transportClient.subscribe('fetchAndSubscribe', this.getTransportPayload(), callback);
+  }
+
+  subscribe(callback) {
     logger.debug('subscribe', {
-      eventName
+      resourceName: this.resourceName,
+      key: this.key
     });
+    return this.transportClient.subscribe('subscribe', this.getTransportPayload(), callback);
+  }
 
-    const listener = (err, result) => {
-      const decodedResult = result && decode(result);
-      callback(err, decodedResult);
-    };
+}
 
-    this.client.on(eventName, listener);
+const getKeys = o => Object.keys(o);
 
-    let _stopEmitSubscribeOnConnect;
-
-    let promise = this.client.emitSubscribe(_includeInitial ? 'fetchAndSubscribe' : 'subscribe', [this.key, this.params, eventName]).then(stopEmitSubscribe => {
-      _stopEmitSubscribeOnConnect = stopEmitSubscribe;
-      logger.debug('subscribed', {
-        resourceName: this.client.resourceName,
-        key: this.key
-      });
-    }, err => {
-      this.client.off(eventName, listener);
-      throw err;
+const createResourceClientService = (resourceName, options) => {
+  return transportClient => {
+    const queries = {};
+    const operations = {};
+    getKeys(options.queries).forEach(queryKey => {
+      queries[queryKey] = params => new ClientQuery(resourceName, transportClient, queryKey, params);
     });
-
-    const stop = () => {
-      if (!promise) return;
-      promise.then(() => {
-        logger.debug('unsubscribe', {
-          resourceName: this.client.resourceName,
-          key: this.key
-        });
-
-        _stopEmitSubscribeOnConnect();
-
-        this.client.send('unsubscribe', [this.key]);
-        promise = undefined;
-        this.client.off(eventName, listener);
+    getKeys(options.operations).forEach(operationKey => {
+      operations[operationKey] = params => transportClient.send('do', {
+        resourceName,
+        operationKey: operationKey,
+        params
       });
-    };
-
+    });
     return {
-      cancel: stop,
-      stop,
-      then: cb => Promise.resolve(promise).then(cb)
+      queries,
+      operations
     };
-  }
-
-}
-
-class AbstractClient {
-  constructor(resourceName, keyPath) {
-    this.resourceName = resourceName;
-
-    if (!resourceName) {
-      throw new Error(`Invalid resourceName: "${resourceName}"`);
-    }
-
-    this.keyPath = keyPath;
-  }
-
-  createQuery(key, params) {
-    return new ClientQuery(this, key, params);
-  }
-
-  // cursor(
-  //   criteria?: Criteria<Model>,
-  //   sort?: Sort<Model>,
-  // ): Promise<ClientCursor<Model, KeyPath>> {
-  //   return Promise.resolve(new ClientCursor(this, { criteria, sort }));
-  // }
-  findByKey(key, criteria) {
-    throw new Error('Use operations instead');
-  }
-
-  replaceOne(object) {
-    throw new Error('Use operations instead');
-  }
-
-  partialUpdateByKey(key, partialUpdate, criteria) {
-    throw new Error('Use operations instead');
-  }
-
-  deleteByKey(key, criteria) {
-    throw new Error('Use operations instead');
-  }
-
-}
-
-const createResourceClientService = (client, options) => {
-  const queries = {};
-  const operations = {};
-  options.queries.forEach(queryKey => {
-    queries[queryKey] = params => client.createQuery(queryKey, params);
-  });
-  options.operations.forEach(operationKey => {
-    operations[operationKey] = params => client.send('do', [operationKey, params]);
-  });
-  return {
-    queries: queries,
-    operations: operations
   };
 };
-/** @deprecated use createResourceClientService instead */
 
-const createResourceClient = createResourceClientService;
-
-export { AbstractClient, createResourceClient, createResourceClientService };
+export { createResourceClientService };
 //# sourceMappingURL=index-node10.es.js.map

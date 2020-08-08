@@ -1,47 +1,53 @@
 /* eslint-disable max-lines */
-import { ObjectID, Collection, MongoClient } from 'mongodb';
-import { AbstractStore, UpsertResult } from 'liwi-store';
+import { UpsertResult, Store } from 'liwi-store';
 import {
-  BaseModel,
-  InsertType,
   Criteria,
   Sort,
   Update,
   QueryOptions,
   Transformer,
+  AllowedKeyValue,
 } from 'liwi-types';
+import { ObjectID, Collection, MongoClient } from 'mongodb';
+import {
+  MongoBaseModel,
+  MongoKeyPath,
+  MongoInsertType,
+} from './MongoBaseModel';
 import MongoConnection from './MongoConnection';
 import MongoCursor from './MongoCursor';
-import MongoQuery from './MongoQuery';
-import { MongoKeyPath } from '.';
+import MongoQueryCollection from './MongoQueryCollection';
+import MongoQuerySingleItem from './MongoQuerySingleItem';
 
-export type MongoKeyPath = '_id';
-
-export interface MongoModel extends BaseModel {
-  _id: string;
-}
-
-export type MongoInsertType<Model extends MongoModel> = InsertType<
-  Model,
-  MongoKeyPath
->;
-
-export interface MongoUpsertResult<Model extends MongoModel>
-  extends UpsertResult<Model> {
+export interface MongoUpsertResult<
+  KeyValue extends AllowedKeyValue,
+  Model extends MongoBaseModel<KeyValue>
+> extends UpsertResult<Model> {
   object: Model;
   inserted: boolean;
 }
 
-export default class MongoStore<Model extends MongoModel> extends AbstractStore<
-  Model,
-  MongoKeyPath,
-  MongoConnection,
-  MongoCursor<Model>
-> {
+export default class MongoStore<
+  Model extends MongoBaseModel<KeyValue>,
+  KeyValue extends AllowedKeyValue = Model[MongoKeyPath],
+  ModelInsertType extends MongoInsertType<Model> = MongoInsertType<Model>
+>
+  implements
+    Store<
+      MongoKeyPath,
+      KeyValue,
+      Model,
+      MongoInsertType<Model>,
+      MongoConnection
+    > {
+  readonly keyPath: MongoKeyPath = '_id';
+
+  readonly connection: MongoConnection;
+
   private _collection: Collection | Promise<Collection>;
 
   constructor(connection: MongoConnection, collectionName: string) {
-    super(connection, '_id');
+    this.connection = connection;
 
     if (!collectionName) {
       throw new Error(`Invalid collectionName: "${collectionName}"`);
@@ -60,23 +66,30 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
   }
 
   get collection(): Promise<Collection> {
-    if (super.connection.connectionFailed) {
+    if (this.connection.connectionFailed) {
       return Promise.reject(new Error('MongoDB connection failed'));
     }
 
     return Promise.resolve(this._collection);
   }
 
-  createQuery<Transformed>(
+  createQuerySingleItem<Result extends Record<MongoKeyPath, KeyValue> = Model>(
     options: QueryOptions<Model>,
-    transformer?: Transformer<Model, Transformed>,
-  ): MongoQuery<Model, Transformed> {
-    return new MongoQuery(this, options, transformer);
+    transformer?: Transformer<Model, Result>,
+  ): MongoQuerySingleItem<Model, Result, KeyValue, MongoInsertType<Model>> {
+    return new MongoQuerySingleItem(this, options, transformer);
+  }
+
+  createQueryCollection<Item extends Record<MongoKeyPath, KeyValue> = Model>(
+    options: QueryOptions<Model>,
+    transformer?: Transformer<Model, Item>,
+  ): MongoQueryCollection<Model, Model['_id'], MongoInsertType<Model>, Item> {
+    return new MongoQueryCollection(this, options, transformer);
   }
 
   async insertOne(object: MongoInsertType<Model>): Promise<Model> {
     if (!object._id) {
-      object._id = new ObjectID().toString();
+      object._id = new ObjectID().toString() as Model['_id'];
     }
 
     if (!object.created) object.created = new Date();
@@ -99,9 +112,14 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     return object as Model;
   }
 
+  async upsertOne(object: MongoInsertType<Model>): Promise<Model> {
+    const result = await this.upsertOneWithInfo(object);
+    return result.object;
+  }
+
   async upsertOneWithInfo(
     object: MongoInsertType<Model>,
-  ): Promise<MongoUpsertResult<Model>> {
+  ): Promise<MongoUpsertResult<KeyValue, Model>> {
     const $setOnInsert = {
       created: object.created || new Date(),
     };
@@ -170,16 +188,20 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
       .then(() => undefined);
   }
 
+  deleteOne(object: Model): Promise<void> {
+    return this.deleteByKey(object._id);
+  }
+
   deleteMany(selector: Criteria<Model>): Promise<void> {
     return this.collection
       .then((collection) => collection.deleteMany(selector))
       .then(() => undefined);
   }
 
-  cursor(
+  cursor<Result = Model>(
     criteria?: Criteria<Model>,
     sort?: Sort<Model>,
-  ): Promise<MongoCursor<Model>> {
+  ): Promise<MongoCursor<Model, Result, KeyValue, ModelInsertType>> {
     return this.collection
       .then((collection) => collection.find(criteria))
       .then(sort && ((cursor) => cursor.sort(sort)))
@@ -190,6 +212,12 @@ export default class MongoStore<Model extends MongoModel> extends AbstractStore<
     return this.collection
       .then((collection) => collection.findOne({ _id: key, ...criteria }))
       .then((result) => result || undefined);
+  }
+
+  findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]> {
+    return this.cursor<Model>(criteria, sort).then((cursor) =>
+      cursor.toArray(),
+    );
   }
 
   findOne(

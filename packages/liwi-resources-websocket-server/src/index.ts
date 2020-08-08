@@ -1,221 +1,378 @@
 /* eslint-disable complexity, max-lines */
-// import { PRODUCTION } from 'pob-babel';
-// eslint-disable-next-line import/no-unresolved, import/extensions
-import { Namespace, Server, Socket } from 'socket.io';
-import { ResourcesServerService, SubscribeHook } from 'liwi-resources-server';
-import Logger from 'nightingale-logger';
+import http from 'http';
+import net from 'net';
+import { PRODUCTION } from 'pob-babel';
 import { encode, decode } from 'extended-json';
-import { ResourceOperationKey } from 'liwi-types';
-import { SubscribeResult } from 'liwi-store';
+import {
+  AckError,
+  Query,
+  QuerySubscription,
+  SubscribeHook,
+  ToServerMessage,
+  ToClientMessage,
+  ToServerQueryPayload,
+  ToServerSubscribeQueryPayload,
+  ResourcesServerService,
+  ServiceResource,
+  ResourcesServerError,
+} from 'liwi-resources-server';
+import Logger from 'nightingale-logger';
+import WebSocket from 'ws';
 
-const logger = new Logger('liwi:rest-websocket');
+export type WebsocketServer = WebSocket.Server;
 
-type Callback = (err: null | string, result?: string | undefined) => void;
+type GetAuthenticatedUser<AuthenticatedUser> = (
+  request: http.IncomingMessage,
+) => AuthenticatedUser | null;
 
-declare module 'socket.io' {
-  interface Socket {
-    // user added in alp-auth
-    user?: any;
-  }
+interface ExtendedWebSocket extends WebSocket {
+  isAlive: boolean;
 }
 
-interface EventResourceParams {
-  type: ResourceOperationKey;
-  json: string;
-  resourceName: string;
+export interface ResourcesWebsocketServer {
+  wss: WebSocket.Server;
+  close(): void;
 }
 
-interface WatcherAndSubscribeHook {
-  watcher: SubscribeResult<any>;
+interface SubscriptionAndSubscribeHook {
+  subscription: QuerySubscription;
   subscribeHook?: SubscribeHook<any>;
   params?: any;
 }
 
-export default function init(
-  io: Server | Namespace,
-  resourcesService: ResourcesServerService,
-) {
-  io.on('connection', (socket: Socket) => {
-    const openWatchers = new Map<string, WatcherAndSubscribeHook>();
+const logger = new Logger('liwi:resources-websocket-client');
 
-    const unsubscribeWatcher = ({
-      watcher,
-      subscribeHook,
-      params,
-    }: WatcherAndSubscribeHook) => {
-      watcher.stop();
-      if (subscribeHook) {
-        subscribeHook.unsubscribed(socket.user, params);
-      }
-    };
+export const createWsServer = <AuthenticatedUser>(
+  server: http.Server,
+  path = '/ws',
+  resourcesServerService: ResourcesServerService,
+  getAuthenticatedUser: GetAuthenticatedUser<AuthenticatedUser>,
+): ResourcesWebsocketServer => {
+  const wss = new WebSocket.Server({ noServer: true });
 
-    socket.on('disconnect', () => {
-      openWatchers.forEach(unsubscribeWatcher);
+  const getResource = (payload: {
+    resourceName: string;
+  }): ServiceResource<any, any> => {
+    logger.debug('resource', {
+      resourceName: payload.resourceName,
     });
-
-    socket.on(
-      'resource',
-      (
-        { type, resourceName, json }: EventResourceParams,
-        callback: Callback,
-      ): void => {
-        (async (): Promise<void> => {
-          try {
-            const value = json && decode(json);
-
-            switch (type) {
-              case 'cursor toArray': {
-                const resource = resourcesService.getCursorResource(
-                  resourceName,
-                );
-                resourcesService
-                  .createCursor(resource, socket.user, value)
-                  .then((cursor) => cursor.toArray())
-                  .then((results) => callback(null, encode(results)))
-                  .catch((err) => {
-                    logger.error(type, err);
-                    callback(err.message);
-                  });
-                break;
-              }
-
-              case 'fetch':
-              case 'subscribe':
-              case 'fetchAndSubscribe':
-                try {
-                  const resource = resourcesService.getServiceResource(
-                    resourceName,
-                  );
-                  logger.info('resource', { type, resourceName, value });
-
-                  const [key, params, eventName] = value;
-
-                  if (!key.startsWith('query')) {
-                    throw new Error('Invalid query key');
-                  }
-
-                  const query = await resource.queries[key](
-                    params,
-                    socket.user,
-                  );
-
-                  if (type === 'fetch') {
-                    query
-                      .fetch((result: any) =>
-                        callback(null, result && encode(result)),
-                      )
-                      .catch((err: any) => {
-                        logger.error(type, { err });
-                        callback(err.message || err);
-                      });
-                  } else {
-                    const watcherKey = `${resourceName}__${key}`;
-                    if (openWatchers.has(watcherKey)) {
-                      logger.warn(
-                        'Already have a watcher for this key. Cannot add a new one',
-                        { watcherKey, key },
-                      );
-                      callback(
-                        'Already have a watcher for this key. Cannot add a new one',
-                      );
-                      return;
-                    }
-                    const watcher = query[type](
-                      (err: Error | null, result: any) => {
-                        if (err) {
-                          logger.error(type, { err });
-                        }
-
-                        socket.emit(eventName, err, result && encode(result));
-                      },
-                    );
-
-                    watcher.then(
-                      () => callback(null),
-                      (err: Error) => {
-                        logger.error(type, { err });
-                        callback(err.message);
-                      },
-                    );
-
-                    const subscribeHook =
-                      resource.subscribeHooks && resource.subscribeHooks[key];
-                    openWatchers.set(watcherKey, {
-                      watcher,
-                      subscribeHook,
-                      params: subscribeHook ? params : undefined,
-                    });
-                    if (subscribeHook) {
-                      subscribeHook.subscribed(socket.user, params);
-                    }
-                  }
-                } catch (err) {
-                  logger.error(type, { err });
-                  callback(err.message || err);
-                }
-                break;
-
-              case 'unsubscribe': {
-                const [key] = value;
-                const watcherKey = `${resourceName}__${key}`;
-                const watcherAndSubscribeHook = openWatchers.get(watcherKey);
-                if (!watcherAndSubscribeHook) {
-                  logger.warn('tried to unsubscribe non existing watcher', {
-                    key,
-                  });
-                  return callback(null);
-                }
-
-                openWatchers.delete(watcherKey);
-                unsubscribeWatcher(watcherAndSubscribeHook);
-                callback(null);
-                break;
-              }
-
-              case 'do': {
-                try {
-                  const resource = resourcesService.getServiceResource(
-                    resourceName,
-                  );
-                  logger.info('resource', { type, resourceName, value });
-
-                  const [key, params] = value;
-
-                  const operation = resource.operations[key];
-
-                  if (!operation) {
-                    throw new Error('Operation not found');
-                  }
-
-                  operation(params, socket.user).then(
-                    (result) => callback(null, result && encode(result)),
-                    (err: Error) => {
-                      logger.error(type, { err });
-                      callback(err.message);
-                    },
-                  );
-                } catch (err) {
-                  logger.error(type, { err });
-                  callback(err.message || err);
-                }
-                break;
-              }
-
-              default:
-                try {
-                  logger.warn('Unknown command', { type });
-                  callback(`rest: unknown command "${type}"`);
-                } catch (err) {
-                  logger.error(type, { err });
-                  callback(err.message || err);
-                }
-            }
-          } catch (err) {
-            logger.warn('rest error', { err });
-            callback(err.message || err);
-          }
-        })();
-      },
+    const resource = resourcesServerService.getServiceResource(
+      payload.resourceName,
     );
-  });
-}
+    return resource;
+  };
+
+  const createQuery = (
+    payload: ToServerQueryPayload,
+    resource: ServiceResource<any, any>,
+    authenticatedUser: AuthenticatedUser | null,
+  ): Query<any, any> => {
+    if (!payload.key.startsWith('query')) {
+      throw new Error('Invalid query key');
+    }
+
+    return resource.queries[payload.key](payload.params, authenticatedUser);
+  };
+
+  wss.on(
+    'connection',
+    (ws: ExtendedWebSocket, authenticatedUser: AuthenticatedUser | null) => {
+      ws.isAlive = true;
+      const openSubscriptions = new Map<number, SubscriptionAndSubscribeHook>();
+
+      const sendMessage = (
+        type: ToClientMessage[0],
+        id: ToClientMessage[1],
+        error: ToClientMessage[2],
+        result: ToClientMessage[3],
+      ): void => {
+        if (!id) throw new Error('Invalid id');
+        logger.debug('sendMessage', { type, id, error, result });
+        ws.send(encode([type, id, error, result]));
+      };
+
+      const createSafeError = (error: Error): AckError => {
+        if (error instanceof ResourcesServerError) {
+          return { code: error.code, message: error.message };
+        }
+        return {
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Internal Server Error',
+        };
+      };
+
+      const sendAck = (id: number, error: null | Error, result?: any): void => {
+        sendMessage('ack', id, error && createSafeError(error), result);
+      };
+
+      const logUnexpectedError = (
+        error: Error,
+        message: string,
+        payload: any,
+      ): void => {
+        if (!PRODUCTION || !(error instanceof ResourcesServerError)) {
+          logger.error(message, {
+            error,
+            payload: PRODUCTION ? 'redacted' : payload,
+          });
+        }
+      };
+
+      const logUnexpectedErrorAndSendAck = (
+        message: ToServerMessage,
+        error: Error,
+      ): void => {
+        logUnexpectedError(error, message.type, message.payload);
+        sendAck(message.id, error);
+      };
+
+      const sendSubscriptionMessage = (
+        subscriptionId: number,
+        error: null | Error,
+        result: any,
+      ): void => {
+        sendMessage(
+          'subscription',
+          subscriptionId,
+          error && createSafeError(error),
+          result,
+        );
+      };
+
+      const createSubscription = (
+        type: 'fetchAndSubscribe' | 'subscribe',
+        id: number,
+        payload: ToServerSubscribeQueryPayload,
+        resource: ServiceResource<any, any>,
+        query: Query<any, any>,
+      ): void => {
+        const { subscriptionId } = payload;
+        if (openSubscriptions.has(subscriptionId)) {
+          const error =
+            'Already have a watcher for this id. Cannot add a new one';
+          logger.warn(error, { subscriptionId, key: payload.key });
+          throw new ResourcesServerError('ALREADY_HAVE_WATCHER', error);
+        }
+
+        const subscription = query[type]((error: Error | null, result: any) => {
+          if (error) {
+            logUnexpectedError(error, type, payload);
+          }
+          sendSubscriptionMessage(subscriptionId, error, result);
+        });
+
+        subscription.then(
+          () => sendAck(id, null),
+          (err: Error) => {
+            logger.error(type, { err });
+            sendAck(id, err);
+          },
+        );
+
+        const subscribeHook =
+          resource.subscribeHooks && resource.subscribeHooks[payload.key];
+        openSubscriptions.set(subscriptionId, {
+          subscription,
+          subscribeHook,
+          params: subscribeHook ? payload.params : undefined,
+        });
+        if (subscribeHook) {
+          subscribeHook.subscribed(authenticatedUser, payload.params);
+        }
+      };
+
+      const unsubscribeSubscription = ({
+        subscription,
+        subscribeHook,
+        params,
+      }: SubscriptionAndSubscribeHook): void => {
+        subscription.stop();
+        if (subscribeHook) {
+          subscribeHook.unsubscribed(authenticatedUser, params);
+        }
+      };
+
+      const handleDecodedMessage = async (
+        message: ToServerMessage,
+      ): Promise<void> => {
+        switch (message.type) {
+          case 'fetch': {
+            try {
+              const resource = getResource(message.payload);
+              const query = createQuery(
+                message.payload,
+                resource,
+                authenticatedUser,
+              );
+              await query.fetch((result: any) =>
+                sendAck(message.id, null, result),
+              );
+            } catch (err) {
+              logUnexpectedErrorAndSendAck(message, err);
+            }
+            break;
+          }
+          case 'fetchAndSubscribe': {
+            try {
+              const resource = getResource(message.payload);
+              const query = createQuery(
+                message.payload,
+                resource,
+                authenticatedUser,
+              );
+              createSubscription(
+                'fetchAndSubscribe',
+                message.id,
+                message.payload,
+                resource,
+                query,
+              );
+            } catch (err) {
+              logUnexpectedErrorAndSendAck(message, err);
+            }
+            break;
+          }
+          case 'subscribe': {
+            try {
+              const resource = getResource(message.payload);
+              const query = createQuery(
+                message.payload,
+                resource,
+                authenticatedUser,
+              );
+              createSubscription(
+                'subscribe',
+                message.id,
+                message.payload,
+                resource,
+                query,
+              );
+            } catch (err) {
+              logUnexpectedErrorAndSendAck(message, err);
+            }
+            break;
+          }
+          // case 'subscribe:changePayload': {
+          //   break;
+          // }
+          case 'subscribe:close': {
+            try {
+              const { subscriptionId } = message.payload;
+              const SubscriptionAndSubscribeHook = openSubscriptions.get(
+                subscriptionId,
+              );
+              if (!SubscriptionAndSubscribeHook) {
+                logger.warn('tried to unsubscribe non existing watcher', {
+                  subscriptionId,
+                });
+              } else {
+                openSubscriptions.delete(subscriptionId);
+                unsubscribeSubscription(SubscriptionAndSubscribeHook);
+              }
+            } catch (err) {
+              logUnexpectedError(err, message.type, message.payload);
+            }
+            break;
+          }
+          case 'do': {
+            try {
+              const resource = getResource(message.payload);
+              const { operationKey, params } = message.payload;
+
+              const operation = resource.operations[operationKey];
+
+              if (!operation) {
+                throw new ResourcesServerError(
+                  'OPERATION_NOT_FOUND',
+                  `Operation not found: ${operationKey}`,
+                );
+              }
+
+              operation(params, authenticatedUser).then(
+                (result: any) => sendAck(message.id, null, result),
+                (err: Error) => {
+                  logUnexpectedErrorAndSendAck(message, err);
+                },
+              );
+            } catch (err) {
+              logUnexpectedErrorAndSendAck(message, err);
+            }
+            break;
+          }
+        }
+      };
+
+      ws.on('pong', () => {
+        ws.isAlive = true;
+      });
+
+      ws.on('close', () => {
+        openSubscriptions.forEach(unsubscribeSubscription);
+      });
+
+      ws.on('message', (message: string): void => {
+        if (message === 'close') return;
+
+        if (typeof message !== 'string') {
+          logger.warn('got non string message');
+          return;
+        }
+
+        const decoded = decode<
+          [
+            ToServerMessage['type'],
+            ToServerMessage['id'],
+            ToServerMessage['payload'],
+          ]
+        >(message);
+        try {
+          const [type, id, payload] = decoded;
+          logger.debug('received', { type, id, payload });
+          handleDecodedMessage({ type, id, payload } as ToServerMessage);
+        } catch (err) {
+          logger.notice('invalid message', { decoded });
+        }
+      });
+
+      ws.send('connection-ack');
+    },
+  );
+
+  // https://www.npmjs.com/package/ws#how-to-detect-and-close-broken-connections
+  const interval = setInterval(() => {
+    wss.clients.forEach((ws: WebSocket) => {
+      const extWs = ws as ExtendedWebSocket;
+
+      if (!extWs.isAlive) return ws.terminate();
+
+      extWs.isAlive = false;
+      ws.ping(null, undefined);
+    });
+  }, 60000);
+
+  const handleUpgrade = (
+    request: http.IncomingMessage,
+    socket: net.Socket,
+    upgradeHead: Buffer,
+  ): void => {
+    if (request.url !== path) return;
+
+    const authenticatedUser: AuthenticatedUser | null = getAuthenticatedUser(
+      request,
+    );
+    wss.handleUpgrade(request, socket, upgradeHead, (ws) => {
+      wss.emit('connection', ws, authenticatedUser);
+    });
+  };
+
+  server.on('upgrade', handleUpgrade);
+
+  return {
+    wss,
+    close(): void {
+      wss.close();
+      server.removeListener('upgrade', handleUpgrade);
+      clearInterval(interval);
+    },
+  };
+};

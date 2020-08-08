@@ -4,7 +4,6 @@ import { BaseModel } from 'liwi-types';
 
 export default abstract class AbstractCursor<
   Model extends BaseModel,
-  KeyPath extends string,
   Result extends Partial<Model> = Model
 > {
   abstract close(): Promise<void> | void;
@@ -40,13 +39,13 @@ export default abstract class AbstractCursor<
     );
   }
 
-  *keysIterator() {
+  *keysIterator(): Generator<Promise<any>, void, undefined> {
     while (true) {
       yield this.next();
     }
   }
 
-  *[Symbol.iterator]() {
+  *[Symbol.iterator](): Generator<Promise<Result>, void, undefined> {
     // eslint-disable-next-line no-restricted-syntax
     for (const keyPromise of this.keysIterator()) {
       yield keyPromise.then((key) => key && this.result());

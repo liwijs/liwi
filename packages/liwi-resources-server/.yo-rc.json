@@ -8,13 +8,11 @@
     "pob-config": {
       "documentation": false,
       "testing": {
-        "circleci": true,
-        "codecov": false
+        "codecov": false,
+        "ci": true
       }
-    }
-  },
-  "liwi-resources-server": {
-    "type": {
+    },
+    "project": {
       "type": "lib"
     }
   }

@@ -5,7 +5,7 @@ test('simple string', () => {
 });
 
 test('Date', () => {
-  expect(parse('"2016-12-24T00:00:00.000Z"').getTime()).toBe(
-    new Date('2016-12-24').getTime(),
-  );
+  const date = parse('"2016-12-24T00:00:00.000Z"');
+  expect(date).toBeInstanceOf(Date);
+  expect((date as Date).getTime()).toBe(new Date('2016-12-24').getTime());
 });

@@ -1,3 +1,5 @@
+import { ExtendedJsonValue } from './ExtendedJsonValue';
+
 type JsonReplacer = (
   key: string,
   value: any,
@@ -14,7 +16,7 @@ type JsonReplacer = (
  * @return {string}
  */
 export default function stringify(
-  value: any,
+  value: ExtendedJsonValue,
   replacer?: JsonReplacer,
   space?: string | number,
 ): string {

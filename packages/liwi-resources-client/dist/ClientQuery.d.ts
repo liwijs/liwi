@@ -1,19 +1,15 @@
-import { AbstractQuery } from 'liwi-store';
-import { BaseModel } from 'liwi-types';
-import AbstractClient from './AbstractClient';
-interface SubscribeReturn {
-    cancel: () => void;
-    stop: () => void;
-    then: (cb: any) => Promise<any>;
-}
-declare type Callback = (err: Error | null, result: any) => void;
-export default class ClientQuery<Model extends BaseModel, KeyPath extends string, Value = Model> extends AbstractQuery<Value> {
-    client: AbstractClient<Model, KeyPath>;
+import { Query, QuerySubscription, SubscribeCallback, QueryParams, QueryResult } from 'liwi-resources';
+import { TransportClient } from './TransportClient';
+export default class ClientQuery<Result, Params extends QueryParams<Params> = undefined> implements Query<Result, Params> {
+    private readonly resourceName;
+    private readonly transportClient;
     key: string;
-    private readonly params;
-    constructor(client: AbstractClient<Model, KeyPath>, key: string, params?: any);
-    fetch(onFulfilled?: (value: any) => any): Promise<any>;
-    _subscribe(callback: Callback, _includeInitial?: boolean): SubscribeReturn;
+    private params;
+    constructor(resourceName: string, transportClient: TransportClient, key: string, params: Params);
+    changePartialParams(params: Partial<Params>): void;
+    private getTransportPayload;
+    fetch<T>(onFulfilled?: (result: QueryResult<Result>) => T): Promise<T>;
+    fetchAndSubscribe(callback: SubscribeCallback<any, Result>): QuerySubscription;
+    subscribe(callback: SubscribeCallback<any, Result>): QuerySubscription;
 }
-export {};
 //# sourceMappingURL=ClientQuery.d.ts.map

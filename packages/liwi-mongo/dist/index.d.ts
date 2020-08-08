@@ -1,7 +1,6 @@
-import * as MongoStoreExports from './MongoStore';
+export type { MongoBaseModel, MongoKeyPath, MongoInsertType, } from './MongoBaseModel';
+export type { Update } from 'liwi-store';
 export { default as MongoStore } from './MongoStore';
 export { default as MongoConnection } from './MongoConnection';
-export declare type MongoModel = MongoStoreExports.MongoModel;
-export declare type MongoKeyPath = MongoStoreExports.MongoKeyPath;
-export declare type MongoInsertType<Model extends MongoModel> = MongoStoreExports.MongoInsertType<Model>;
+export { default as createMongoSubscribeStore } from './createMongoSubscribeStore';
 //# sourceMappingURL=index.d.ts.map

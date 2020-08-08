@@ -35,5 +35,6 @@ const users: MongoStore<User> = new MongoStore(connection, 'users');
   connection.close();
 })().catch((err) => {
   console.error(err);
+  // eslint-disable-next-line unicorn/no-process-exit
   process.exit(1);
 });

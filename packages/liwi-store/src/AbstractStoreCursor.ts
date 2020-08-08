@@ -1,16 +1,16 @@
 /* eslint-disable no-await-in-loop */
 
-import { BaseModel } from 'liwi-types';
+import { BaseModel, AllowedKeyValue } from 'liwi-types';
 import AbstractCursor from './AbstractCursor';
-import InternalCommonStoreClient from './InternalCommonStoreClient';
+import { InternalCommonStoreClient } from './InternalCommonStoreClient';
 
 export default abstract class AbstractStoreCursor<
+  Store extends InternalCommonStoreClient<Model>,
+  KeyValue extends AllowedKeyValue,
   Model extends BaseModel,
-  KeyPath extends string,
-  Store extends InternalCommonStoreClient<Model, KeyPath, any>,
   Result extends Partial<Model> = Model
-> extends AbstractCursor<Model, KeyPath, Result> {
-  key: any;
+> extends AbstractCursor<Model, Result> {
+  key: KeyValue | undefined;
 
   protected _store: Store;
 
@@ -23,7 +23,7 @@ export default abstract class AbstractStoreCursor<
     return this._store;
   }
 
-  overrideStore(store: Store) {
+  overrideStore(store: Store): void {
     this._store = store;
   }
 

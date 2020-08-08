@@ -6,8 +6,8 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 const mongodb = require('mongodb');
 const liwiStore = require('liwi-store');
-const mingo = _interopDefault(require('mingo'));
 const liwiSubscribeStore = require('liwi-subscribe-store');
+const mingo = _interopDefault(require('mingo'));
 const Logger = _interopDefault(require('nightingale-logger'));
 
 class MongoCursor extends liwiStore.AbstractStoreCursor {
@@ -24,7 +24,7 @@ class MongoCursor extends liwiStore.AbstractStoreCursor {
   next() {
     return this.cursor.next().then(value => {
       this._result = value;
-      this.key = value && value._id;
+      this.key = value === null || value === void 0 ? void 0 : value._id;
       return this.key;
     });
   }
@@ -34,8 +34,8 @@ class MongoCursor extends liwiStore.AbstractStoreCursor {
     return Promise.resolve(this);
   }
 
-  count(applyLimit = false) {
-    return this.cursor.count(applyLimit);
+  count(applySkipLimit = false) {
+    return this.cursor.count(applySkipLimit);
   }
 
   result() {
@@ -57,9 +57,11 @@ class MongoCursor extends liwiStore.AbstractStoreCursor {
 
 }
 
+/* eslint-disable complexity, max-lines */
+
 const identityTransformer = model => model;
 
-class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
+class MongoQueryCollection extends liwiSubscribeStore.AbstractSubscribableStoreQuery {
   constructor(store, options, transformer = identityTransformer) {
     super();
     this.store = store;
@@ -67,78 +69,104 @@ class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
     this.transformer = transformer;
   }
 
-  createMingoQuery() {
-    if (!this.mingoQuery) {
+  createTestCriteria() {
+    if (!this.testCriteria) {
       if (!this.options.criteria) {
-        return {
-          test: () => true
-        };
+        return () => true;
       }
 
-      this.mingoQuery = new mingo.Query(this.options.criteria);
+      const mingoQuery = new mingo.Query(this.options.criteria);
+      this.testCriteria = mingoQuery.test.bind(mingoQuery);
     }
 
-    return this.mingoQuery;
+    return this.testCriteria;
   }
 
   async fetch(onFulfilled) {
     const cursor = await this.createMongoCursor();
-    return cursor.toArray().then(result => result.map(this.transformer)).then(onFulfilled);
+    const [result, count] = await Promise.all([cursor.toArray(), cursor.count()]);
+    return onFulfilled({
+      result: result.map(this.transformer),
+      meta: {
+        total: count
+      },
+      info: {
+        sort: this.options.sort,
+        limit: this.options.limit,
+        keyPath: this.store.keyPath
+      }
+    });
   }
 
   _subscribe(callback, _includeInitial) {
     const store = super.getSubscribeStore();
-    const mingoQuery = this.createMingoQuery();
-
-    const promise = _includeInitial && this.fetch(result => {
+    const testCriteria = this.createTestCriteria();
+    const promise = _includeInitial ? this.fetch(({
+      result,
+      meta,
+      info
+    }) => {
       callback(null, [{
         type: 'initial',
         initial: result,
-        queryInfo: {
-          limit: this.options.limit,
-          keyPath: this.store.keyPath
-        }
+        queryInfo: info,
+        meta
       }]);
-      return result;
-    });
-
+    }) : Promise.resolve();
     const unsubscribe = store.subscribe(action => {
-      const filtered = (action.type === 'inserted' ? action.next : action.prev).filter(object => mingoQuery.test(object));
       const changes = [];
 
       switch (action.type) {
         case 'inserted':
-          changes.push({
-            type: 'inserted',
-            objects: filtered.map(this.transformer)
-          });
-          break;
+          {
+            const filtered = action.next.filter(testCriteria);
+
+            if (filtered.length !== 0) {
+              changes.push({
+                type: 'inserted',
+                result: filtered.map(this.transformer)
+              });
+            }
+
+            break;
+          }
 
         case 'deleted':
-          changes.push({
-            type: 'deleted',
-            keys: filtered.map(object => object[this.store.keyPath])
-          });
-          break;
+          {
+            const filtered = action.prev.filter(testCriteria);
+
+            if (filtered.length !== 0) {
+              changes.push({
+                type: 'deleted',
+                keys: filtered.map(object => object[this.store.keyPath])
+              });
+            }
+
+            break;
+          }
 
         case 'updated':
           {
             const {
               deleted,
-              updated
-            } = filtered.reduce((acc, object, index) => {
-              const nextObject = action.next[index];
-
-              if (!mingoQuery.test(nextObject)) {
-                acc.deleted.push(object[this.store.keyPath]);
-              } else {
-                acc.updated.push(this.transformer(nextObject));
+              updated,
+              inserted
+            } = action.changes.reduce((acc, [prevObject, nextObject]) => {
+              if (testCriteria(prevObject)) {
+                if (!testCriteria(nextObject)) {
+                  acc.deleted.push(prevObject[this.store.keyPath]);
+                } else {
+                  acc.updated.push(this.transformer(nextObject));
+                }
+              } else if (testCriteria(nextObject)) {
+                acc.inserted.push(this.transformer(nextObject));
               }
 
               return acc;
             }, {
               deleted: [],
-              updated: []
+              updated: [],
+              inserted: []
             });
 
             if (deleted.length !== 0) {
@@ -151,7 +179,14 @@ class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
             if (updated.length !== 0) {
               changes.push({
                 type: 'updated',
-                objects: updated
+                result: updated
+              });
+            }
+
+            if (inserted.length !== 0) {
+              changes.push({
+                type: 'inserted',
+                result: inserted
               });
             }
 
@@ -187,7 +222,152 @@ class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
     return {
       stop: unsubscribe,
       cancel: unsubscribe,
-      then: _includeInitial ? (onFulfilled, onRejected) => promise.then(onFulfilled, onRejected) : () => Promise.resolve()
+      then: (onFulfilled, onRejected) => promise.then(onFulfilled, onRejected)
+    };
+  }
+
+  async createMongoCursor() {
+    const cursor = await this.store.cursor(this.options.criteria, this.options.sort);
+
+    if (this.options.skip) {
+      cursor.advance(this.options.skip);
+    }
+
+    if (this.options.limit) {
+      await cursor.limit(this.options.limit);
+    }
+
+    return cursor;
+  }
+
+}
+
+/* eslint-disable complexity, max-lines */
+
+const identityTransformer$1 = model => model;
+
+class MongoQuerySingleItem extends liwiSubscribeStore.AbstractSubscribableStoreQuery {
+  constructor(store, options, transformer = identityTransformer$1) {
+    super();
+    this.store = store;
+    this.options = options;
+    this.transformer = transformer;
+  }
+
+  createMingoQuery() {
+    if (!this.mingoQuery) {
+      if (!this.options.criteria) {
+        return {
+          test: () => true
+        };
+      }
+
+      this.mingoQuery = new mingo.Query(this.options.criteria);
+    }
+
+    return this.mingoQuery;
+  }
+
+  async fetch(onFulfilled) {
+    const cursor = await this.createMongoCursor();
+    await cursor.limit(1);
+    return cursor.toArray().then(result => result[0] && this.transformer(result[0])).then(result => onFulfilled({
+      result,
+      meta: {
+        total: result === null ? 0 : 1
+      },
+      info: {
+        limit: 1,
+        keyPath: this.store.keyPath
+      }
+    }));
+  }
+
+  _subscribe(callback, _includeInitial) {
+    const store = super.getSubscribeStore();
+    const mingoQuery = this.createMingoQuery();
+    const promise = _includeInitial ? this.fetch(({
+      result,
+      meta,
+      info
+    }) => {
+      callback(null, [{
+        type: 'initial',
+        initial: result,
+        queryInfo: info,
+        meta
+      }]);
+    }) : Promise.resolve();
+    const unsubscribe = store.subscribe(async action => {
+      const changes = [];
+
+      switch (action.type) {
+        case 'inserted':
+          {
+            const filtered = action.next.filter(mingoQuery.test);
+
+            if (filtered.length !== 0) {
+              changes.push({
+                type: 'updated',
+                result: this.transformer(filtered[0])
+              });
+            }
+
+            break;
+          }
+
+        case 'deleted':
+          {
+            const filtered = action.prev.filter(mingoQuery.test);
+
+            if (filtered.length !== 0) {
+              changes.push({
+                type: 'deleted',
+                keys: filtered.map(object => object[this.store.keyPath])
+              });
+            }
+
+            break;
+          }
+
+        case 'updated':
+          {
+            const filtered = action.changes.filter(([prev, next]) => mingoQuery.test(prev));
+
+            if (filtered.length !== 0) {
+              if (this.options.sort) {
+                const {
+                  result
+                } = await this.fetch(res => res);
+                changes.push({
+                  type: 'updated',
+                  result
+                });
+              } else if (filtered.length !== 1) {
+                throw new Error('should not match more than 1, use sort if you can have multiple match');
+              } else {
+                const [, next] = filtered[0];
+                changes.push({
+                  type: 'updated',
+                  result: mingoQuery.test(next) ? this.transformer(next) : null
+                });
+              }
+            } else if (filtered.length === 0) ;
+
+            break;
+          }
+
+        default:
+          throw new Error('Unsupported type');
+      }
+
+      if (changes.length === 0) return;
+      callback(null, changes);
+    });
+    return {
+      stop: unsubscribe,
+      cancel: unsubscribe,
+      then: (onFulfilled, onRejected) => promise.then(onFulfilled, onRejected)
     };
   }
 
@@ -204,9 +384,10 @@ class MongoQuery extends liwiSubscribeStore.AbstractSubscribeQuery {
 }
 
 /* eslint-disable max-lines */
-class MongoStore extends liwiStore.AbstractStore {
+class MongoStore {
   constructor(connection, collectionName) {
-    super(connection, '_id');
+    this.keyPath = '_id';
+    this.connection = connection;
 
     if (!collectionName) {
       throw new Error(`Invalid collectionName: "${collectionName}"`);
@@ -222,15 +403,19 @@ class MongoStore extends liwiStore.AbstractStore {
   }
 
   get collection() {
-    if (super.connection.connectionFailed) {
+    if (this.connection.connectionFailed) {
       return Promise.reject(new Error('MongoDB connection failed'));
     }
 
     return Promise.resolve(this._collection);
   }
 
-  createQuery(options, transformer) {
-    return new MongoQuery(this, options, transformer);
+  createQuerySingleItem(options, transformer) {
+    return new MongoQuerySingleItem(this, options, transformer);
+  }
+
+  createQueryCollection(options, transformer) {
+    return new MongoQueryCollection(this, options, transformer);
   }
 
   async insertOne(object) {
@@ -259,6 +444,11 @@ class MongoStore extends liwiStore.AbstractStore {
       _id: object._id
     }, object);
     return object;
+  }
+
+  async upsertOne(object) {
+    const result = await this.upsertOneWithInfo(object);
+    return result.object;
   }
 
   async upsertOneWithInfo(object) {
@@ -326,6 +516,10 @@ class MongoStore extends liwiStore.AbstractStore {
     })).then(() => undefined);
   }
 
+  deleteOne(object) {
+    return this.deleteByKey(object._id);
+  }
+
   deleteMany(selector) {
     return this.collection.then(collection => collection.deleteMany(selector)).then(() => undefined);
   }
@@ -339,6 +533,10 @@ class MongoStore extends liwiStore.AbstractStore {
       _id: key,
       ...criteria
     })).then(result => result || undefined);
+  }
+
+  findAll(criteria, sort) {
+    return this.cursor(criteria, sort).then(cursor => cursor.toArray());
   }
 
   findOne(criteria, sort) {
@@ -454,6 +652,11 @@ class MongoConnection extends liwiStore.AbstractConnection {
 
 }
 
+function createMongoSubscribeStore(mongoStore) {
+  return new liwiSubscribeStore.SubscribeStore(mongoStore);
+}
+
 exports.MongoConnection = MongoConnection;
 exports.MongoStore = MongoStore;
+exports.createMongoSubscribeStore = createMongoSubscribeStore;
 //# sourceMappingURL=index-node10-dev.cjs.js.map
