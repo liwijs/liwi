@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-server",
-  "version": "7.2.0",
+  "version": "7.2.1",
   "description": "resources server for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -97,7 +97,7 @@
   "dependencies": {
     "@babel/runtime": "^7.10.5",
     "extended-json": "^7.0.0",
-    "liwi-resources": "^7.0.0",
+    "liwi-resources": "^7.2.1",
     "liwi-types": "^7.0.0",
     "nightingale-logger": "^10.0.1"
   },
