@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.3.0](https://github.com/liwijs/liwi/compare/v7.2.3...v7.3.0) (2020-08-08)
+
+
+### Features
+
+* add default url ([3006b30](https://github.com/liwijs/liwi/commit/3006b30))
+
+
+
+
+
 ## [7.2.3](https://github.com/liwijs/liwi/compare/v7.2.2...v7.2.3) (2020-08-08)
 
 **Note:** Version bump only for package liwi-resources-websocket-client
