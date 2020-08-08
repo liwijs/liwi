@@ -38,9 +38,10 @@ interface CreateResourceClientOptions<
   operations: Record<OperationKeys, null>;
 }
 
-export type ServiceQuery<Result, Params extends QueryParams<Params>> = (
-  params: Params,
-) => Query<Result, Params>;
+export type ServiceQuery<
+  Result,
+  Params extends QueryParams<Params> | undefined
+> = (params: Params) => Query<Result, Params>;
 
 export interface ClientServiceInterface<
   QueryKeys extends keyof any,

@@ -8,7 +8,7 @@ interface CreateResourceClientOptions<QueryKeys extends keyof any, OperationKeys
     queries: Record<QueryKeys, null>;
     operations: Record<OperationKeys, null>;
 }
-export declare type ServiceQuery<Result, Params extends QueryParams<Params>> = (params: Params) => Query<Result, Params>;
+export declare type ServiceQuery<Result, Params extends QueryParams<Params> | undefined> = (params: Params) => Query<Result, Params>;
 export interface ClientServiceInterface<QueryKeys extends keyof any, OperationKeys extends keyof any> extends ServiceInterface<QueryKeys, OperationKeys> {
     queries: {
         [key in QueryKeys]: ServiceQuery<any, any>;
