@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/liwijs/liwi/compare/v0.18.8...v7.0.0) (2020-08-08)
+
+
+### Bug Fixes
+
+* fixes ([482c388](https://github.com/liwijs/liwi/commit/482c388))
+* improve ServiceResource definitions ([92a1c3b](https://github.com/liwijs/liwi/commit/92a1c3b))
+* unsubscribe and add subscribeHook ([d6e3d5a](https://github.com/liwijs/liwi/commit/d6e3d5a))
+* use partial for $set and $setOnInsert ([2e02952](https://github.com/liwijs/liwi/commit/2e02952))
+
+
+### Code Refactoring
+
+* **react-liwi:** remove react components ([6ece729](https://github.com/liwijs/liwi/commit/6ece729))
+* typescript ([5ec81a1](https://github.com/liwijs/liwi/commit/5ec81a1))
+
+
+### Features
+
+* add and export mongo types ([aec6dba](https://github.com/liwijs/liwi/commit/aec6dba))
+* add transformer ([76861ae](https://github.com/liwijs/liwi/commit/76861ae))
+* add transformer in createQuery ([1826413](https://github.com/liwijs/liwi/commit/1826413))
+* big refactor ([#5](https://github.com/liwijs/liwi/issues/5)) ([a4629c4](https://github.com/liwijs/liwi/commit/a4629c4))
+* liwi-subscribe-store ([53b18a3](https://github.com/liwijs/liwi/commit/53b18a3))
+* queryInfo in applyChanges and liwi-mongo ([ecfdc3f](https://github.com/liwijs/liwi/commit/ecfdc3f))
+* resource operations ([9ddd3b7](https://github.com/liwijs/liwi/commit/9ddd3b7))
+* split liwi-resources into server and client ([df73bf9](https://github.com/liwijs/liwi/commit/df73bf9))
+
+
+### BREAKING CHANGES
+
+* **react-liwi:** use hooks instead of react components
+* added Transformer, query model is now value in query description
+* major rewrite in typescript
+
+
+
+
+
 ## [3.0.2](https://github.com/liwijs/liwi/compare/liwi-types@3.0.1...liwi-types@3.0.2) (2019-09-13)
 
 **Note:** Version bump only for package liwi-types

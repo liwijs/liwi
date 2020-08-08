@@ -1,6 +1,6 @@
 {
   "name": "liwi-store",
-  "version": "4.4.0",
+  "version": "7.0.0",
   "description": "abstract store used by liwi implementations",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.5",
-    "liwi-types": "^3.0.2"
+    "liwi-types": "^7.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.10.5",

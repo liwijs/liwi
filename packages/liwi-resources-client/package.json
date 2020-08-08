@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-client",
-  "version": "4.3.0",
+  "version": "7.0.0",
   "description": "resources client for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -75,10 +75,10 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.5",
-    "extended-json": "^2.3.1",
-    "liwi-resources": "^4.0.5",
-    "liwi-store": "^4.4.0",
-    "liwi-types": "^3.0.2",
+    "extended-json": "^7.0.0",
+    "liwi-resources": "^7.0.0",
+    "liwi-store": "^7.0.0",
+    "liwi-types": "^7.0.0",
     "nightingale-logger": "^10.0.1",
     "type-fest": "^0.15.0"
   },

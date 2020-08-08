@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/liwijs/liwi/compare/v0.18.8...v7.0.0) (2020-08-08)
+
+
+### Bug Fixes
+
+* build ([d286aff](https://github.com/liwijs/liwi/commit/d286aff))
+* encode operation result ([c838894](https://github.com/liwijs/liwi/commit/c838894))
+* fixes ([482c388](https://github.com/liwijs/liwi/commit/482c388))
+* improve ServiceResource definitions ([92a1c3b](https://github.com/liwijs/liwi/commit/92a1c3b))
+* missing callback in unsubscribe ([8ff0fb3](https://github.com/liwijs/liwi/commit/8ff0fb3))
+* remove obsolete dependency ([ce61569](https://github.com/liwijs/liwi/commit/ce61569))
+* resubscribing did not work correctly ([68b485a](https://github.com/liwijs/liwi/commit/68b485a))
+* support namespace ([e677afc](https://github.com/liwijs/liwi/commit/e677afc))
+* unsubscribe and add subscribeHook ([d6e3d5a](https://github.com/liwijs/liwi/commit/d6e3d5a))
+
+
+### Features
+
+* add connected user ([c43685c](https://github.com/liwijs/liwi/commit/c43685c))
+* allow query to be returned with a promise ([902944c](https://github.com/liwijs/liwi/commit/902944c))
+* allow to get params in subscribe hooks ([49e40cf](https://github.com/liwijs/liwi/commit/49e40cf))
+* big refactor ([#5](https://github.com/liwijs/liwi/issues/5)) ([a4629c4](https://github.com/liwijs/liwi/commit/a4629c4))
+* drop node 8 ([2fb6528](https://github.com/liwijs/liwi/commit/2fb6528))
+* queries as fn with result ([1a1abcb](https://github.com/liwijs/liwi/commit/1a1abcb))
+* queryInfo in applyChanges and liwi-mongo ([ecfdc3f](https://github.com/liwijs/liwi/commit/ecfdc3f))
+* resource operations ([9ddd3b7](https://github.com/liwijs/liwi/commit/9ddd3b7))
+* split liwi-resources into server and client ([df73bf9](https://github.com/liwijs/liwi/commit/df73bf9))
+* update deps and improve typescript dev ([b42eefb](https://github.com/liwijs/liwi/commit/b42eefb))
+
+
+### BREAKING CHANGES
+
+* drop node 8
+* multiple typescript typings change
+
+
+
+
+
 ## [3.3.5](https://github.com/liwijs/liwi/compare/liwi-resources-websocket-server@3.3.4...liwi-resources-websocket-server@3.3.5) (2019-10-12)
 
 **Note:** Version bump only for package liwi-resources-websocket-server

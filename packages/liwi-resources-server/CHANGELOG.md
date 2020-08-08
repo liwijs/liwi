@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/liwijs/liwi/compare/v0.18.8...v7.0.0) (2020-08-08)
+
+
+### Bug Fixes
+
+* add missing document.removeEventListener for visibilitychange ([3277950](https://github.com/liwijs/liwi/commit/3277950))
+* exported ServiceResource second arg is optional ([d6c282f](https://github.com/liwijs/liwi/commit/d6c282f))
+* improve ServiceResource definitions ([92a1c3b](https://github.com/liwijs/liwi/commit/92a1c3b))
+* queries definition ([ad3cfa4](https://github.com/liwijs/liwi/commit/ad3cfa4))
+* typescript def queries allow Promise ([60a893e](https://github.com/liwijs/liwi/commit/60a893e))
+* unsubscribe and add subscribeHook ([d6e3d5a](https://github.com/liwijs/liwi/commit/d6e3d5a))
+
+
+### Features
+
+* add connected user ([c43685c](https://github.com/liwijs/liwi/commit/c43685c))
+* add Operations default in ServiceResource ([d60fb38](https://github.com/liwijs/liwi/commit/d60fb38))
+* add transformer ([76861ae](https://github.com/liwijs/liwi/commit/76861ae))
+* add transformer in createQuery ([1826413](https://github.com/liwijs/liwi/commit/1826413))
+* allow to get params in subscribe hooks ([49e40cf](https://github.com/liwijs/liwi/commit/49e40cf))
+* big refactor ([#5](https://github.com/liwijs/liwi/issues/5)) ([a4629c4](https://github.com/liwijs/liwi/commit/a4629c4))
+* drop node 8 ([2fb6528](https://github.com/liwijs/liwi/commit/2fb6528))
+* pass object to ResourcesServerService instead of 2 param ([e3f3225](https://github.com/liwijs/liwi/commit/e3f3225))
+* queries as fn with result ([1a1abcb](https://github.com/liwijs/liwi/commit/1a1abcb))
+* queryInfo in applyChanges and liwi-mongo ([ecfdc3f](https://github.com/liwijs/liwi/commit/ecfdc3f))
+* resource operations ([9ddd3b7](https://github.com/liwijs/liwi/commit/9ddd3b7))
+* split liwi-resources into server and client ([df73bf9](https://github.com/liwijs/liwi/commit/df73bf9))
+* update deps and improve typescript dev ([b42eefb](https://github.com/liwijs/liwi/commit/b42eefb))
+
+
+### BREAKING CHANGES
+
+* drop node 8
+* added Transformer, query model is now value in query description
+* replace new ResourcesServerService(map1, map2) by new ResourcesServerService({serviceResources:map1, cursorResources:map2})
+* multiple typescript typings change
+
+
+
+
+
 ## [4.3.5](https://github.com/liwijs/liwi/compare/liwi-resources-server@4.3.4...liwi-resources-server@4.3.5) (2019-10-12)
 
 **Note:** Version bump only for package liwi-resources-server
