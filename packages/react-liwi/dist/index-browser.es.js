@@ -163,9 +163,6 @@ function useRetrieveResource(createQuery, params, deps) {
         var result = _ref2.result,
             meta = _ref2.meta,
             info = _ref2.info;
-        console.log('result rr', {
-          result: result
-        });
         dispatch({
           type: 'resolve',
           result: result,

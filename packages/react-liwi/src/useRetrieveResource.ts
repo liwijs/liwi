@@ -63,7 +63,6 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
     dispatch({
       type: 'refetch',
       promise: fetch(state.query, ({ result, meta, info }) => {
-        console.log('result rr', { result });
         dispatch({ type: 'resolve', result, meta, queryInfo: info });
       }).catch((err) => {
         dispatch({ type: 'error', error: err });
