@@ -1,6 +1,7 @@
 import { BaseModel, Criteria, Sort } from 'liwi-types';
 // import ResourceServerCursor from './ResourceServerCursor';
 import { ServiceResource } from './ServiceResource';
+
 // import { CursorResource } from './CursorResource';
 
 export interface CreateCursorOptions<Model extends BaseModel> {
@@ -9,7 +10,7 @@ export interface CreateCursorOptions<Model extends BaseModel> {
   limit?: number;
 }
 
-export default class ResourcesServerService {
+export class ResourcesServerService {
   readonly serviceResources: Map<string, ServiceResource<any, any>>;
 
   // readonly cursorResources: Map<string, CursorResource<any, any, any>>;

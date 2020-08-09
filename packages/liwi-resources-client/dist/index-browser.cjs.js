@@ -8,7 +8,6 @@ var Logger = _interopDefault(require('nightingale-logger'));
 var liwiResources = require('liwi-resources');
 
 var logger = new Logger('liwi:resources:query');
-
 var ClientQuery = /*#__PURE__*/function () {
   function ClientQuery(resourceName, transportClient, key, params) {
     this.resourceName = resourceName;

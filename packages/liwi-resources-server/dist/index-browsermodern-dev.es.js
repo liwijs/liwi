@@ -1,4 +1,6 @@
+import { ResourcesServerError } from 'liwi-resources';
 export { ResourcesServerError } from 'liwi-resources';
+import Logger from 'nightingale-logger';
 
 // import ResourceServerCursor from './ResourceServerCursor';
 // import { CursorResource } from './CursorResource';
@@ -46,5 +48,200 @@ class ResourcesServerService {
 
 }
 
-export { ResourcesServerService };
+/* eslint-disable complexity, max-lines */
+const logger = new Logger('liwi:resources-websocket-client');
+
+const logUnexpectedError = function logUnexpectedError(error, message, payload) {
+  logger.error(message, {
+    error,
+    payload: payload
+  });
+};
+
+const createMessageHandler = function createMessageHandler(resourcesServerService, authenticatedUser, allowSubscriptions) {
+  const openSubscriptions = allowSubscriptions ? new Map() : null;
+
+  const getResource = function getResource(payload) {
+    logger.debug('resource', {
+      resourceName: payload.resourceName
+    });
+    const resource = resourcesServerService.getServiceResource(payload.resourceName);
+    return resource;
+  };
+
+  const createQuery = function createQuery(payload, resource) {
+    if (!payload.key.startsWith('query')) {
+      throw new Error('Invalid query key');
+    }
+
+    return resource.queries[payload.key](payload.params, authenticatedUser);
+  };
+
+  const createSubscription = function createSubscription(type, payload, resource, query, sendSubscriptionMessage) {
+    if (!openSubscriptions) {
+      throw new Error('Subscriptions not allowed');
+    }
+
+    const {
+      subscriptionId
+    } = payload;
+
+    if (openSubscriptions.has(subscriptionId)) {
+      logger.warn("Already have a watcher for this id. Cannot add a new one", {
+        subscriptionId,
+        key: payload.key
+      });
+      throw new ResourcesServerError('ALREADY_HAVE_WATCHER', "Already have a watcher for this id. Cannot add a new one");
+    }
+
+    const subscription = query[type](function (error, result) {
+      if (error) {
+        logUnexpectedError(error, type, payload);
+      }
+
+      sendSubscriptionMessage(subscriptionId, error, result);
+    });
+    const subscribeHook = resource.subscribeHooks && resource.subscribeHooks[payload.key];
+    openSubscriptions.set(subscriptionId, {
+      subscription,
+      subscribeHook,
+      params: subscribeHook ? payload.params : undefined
+    });
+
+    if (subscribeHook) {
+      subscribeHook.subscribed(authenticatedUser, payload.params);
+    }
+
+    return subscription.then(function () {
+      return null;
+    });
+  };
+
+  const unsubscribeSubscription = function unsubscribeSubscription({
+    subscription,
+    subscribeHook,
+    params
+  }) {
+    subscription.stop();
+
+    if (subscribeHook) {
+      subscribeHook.unsubscribed(authenticatedUser, params);
+    }
+  };
+
+  return {
+    close: function close() {
+      if (openSubscriptions) {
+        openSubscriptions.forEach(unsubscribeSubscription);
+      }
+    },
+    messageHandler: async function messageHandler(message, subscriptionCallback) {
+      switch (message.type) {
+        case 'fetch':
+          {
+            try {
+              const resource = getResource(message.payload);
+              const query = createQuery(message.payload, resource);
+              await query.fetch(function (result) {
+                return result;
+              });
+            } catch (err) {
+              logUnexpectedError(err, message.type, message.payload);
+              throw err;
+            }
+
+            break;
+          }
+
+        case 'fetchAndSubscribe':
+          {
+            try {
+              const resource = getResource(message.payload);
+              const query = createQuery(message.payload, resource);
+
+              if (!openSubscriptions) {
+                await query.fetch(function (result) {
+                  return result;
+                });
+              } else {
+                await createSubscription('fetchAndSubscribe', message.payload, resource, query, subscriptionCallback);
+              }
+            } catch (err) {
+              logUnexpectedError(err, message.type, message.payload);
+              throw err;
+            }
+
+            break;
+          }
+
+        case 'subscribe':
+          {
+            try {
+              const resource = getResource(message.payload);
+              const query = createQuery(message.payload, resource);
+              await createSubscription('subscribe', message.payload, resource, query, subscriptionCallback);
+            } catch (err) {
+              logUnexpectedError(err, message.type, message.payload);
+              throw err;
+            }
+
+            break;
+          }
+        // case 'subscribe:changePayload': {
+        //   break;
+        // }
+
+        case 'subscribe:close':
+          {
+            if (!openSubscriptions) {
+              throw new Error('Subscriptions not allowed');
+            }
+
+            try {
+              const {
+                subscriptionId
+              } = message.payload;
+              const SubscriptionAndSubscribeHook = openSubscriptions.get(subscriptionId);
+
+              if (!SubscriptionAndSubscribeHook) {
+                logger.warn('tried to unsubscribe non existing watcher', {
+                  subscriptionId
+                });
+              } else {
+                openSubscriptions.delete(subscriptionId);
+                unsubscribeSubscription(SubscriptionAndSubscribeHook);
+              }
+            } catch (err) {
+              logUnexpectedError(err, message.type, message.payload);
+            }
+
+            break;
+          }
+
+        case 'do':
+          {
+            try {
+              const resource = getResource(message.payload);
+              const {
+                operationKey,
+                params
+              } = message.payload;
+              const operation = resource.operations[operationKey];
+
+              if (!operation) {
+                throw new ResourcesServerError('OPERATION_NOT_FOUND', `Operation not found: ${operationKey}`);
+              }
+
+              return await operation(params, authenticatedUser);
+            } catch (err) {
+              logUnexpectedError(err, message.type, message.payload);
+              throw err;
+            }
+          }
+      }
+    }
+  };
+};
+
+export { ResourcesServerService, createMessageHandler };
 //# sourceMappingURL=index-browsermodern-dev.es.js.map

@@ -31,6 +31,7 @@
     "liwi-mongo": "^7.2.3",
     "liwi-resources": "^7.2.3",
     "liwi-resources-client": "^7.2.3",
+    "liwi-resources-direct-client": "^7.3.0",
     "liwi-resources-server": "^7.2.3",
     "liwi-resources-websocket-client": "^7.3.0",
     "liwi-resources-websocket-server": "^7.2.3",

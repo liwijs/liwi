@@ -18,6 +18,7 @@
         "liwi-resources-client",
         "liwi-resources-server",
         "liwi-mongo-example",
+        "liwi-resources-direct-client",
         "liwi-resources-websocket-client",
         "liwi-resources-websocket-server",
         "react-liwi",

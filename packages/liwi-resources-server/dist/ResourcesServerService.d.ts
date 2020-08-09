@@ -5,7 +5,7 @@ export interface CreateCursorOptions<Model extends BaseModel> {
     sort?: Sort<Model>;
     limit?: number;
 }
-export default class ResourcesServerService {
+export declare class ResourcesServerService {
     readonly serviceResources: Map<string, ServiceResource<any, any>>;
     constructor({ serviceResources, }: {
         serviceResources: Map<string, ServiceResource<any, any>>;

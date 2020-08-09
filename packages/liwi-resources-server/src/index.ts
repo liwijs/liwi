@@ -1,5 +1,6 @@
-export { default as ResourcesServerService } from './ResourcesServerService';
-
+export { ResourcesServerError } from 'liwi-resources';
+export { ResourcesServerService } from './ResourcesServerService';
+export { createMessageHandler } from './createMessageHandler';
 export type {
   AckError,
   Query,
@@ -12,5 +13,8 @@ export type {
   QuerySubscription,
 } from 'liwi-resources';
 export type { ServiceResource, SubscribeHook } from './ServiceResource';
+export type {
+  SubscriptionAndSubscribeHook,
+  SubscriptionCallback,
+} from './createMessageHandler';
 // export type { CursorResource } from './CursorResource';
-export { ResourcesServerError } from 'liwi-resources';

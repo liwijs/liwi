@@ -1,20 +1,15 @@
 /* eslint-disable complexity, max-lines */
 import http from 'http';
 import net from 'net';
-import { PRODUCTION } from 'pob-babel';
 import { encode, decode } from 'extended-json';
 import {
   AckError,
-  Query,
-  QuerySubscription,
-  SubscribeHook,
   ToServerMessage,
   ToClientMessage,
-  ToServerQueryPayload,
-  ToServerSubscribeQueryPayload,
   ResourcesServerService,
-  ServiceResource,
   ResourcesServerError,
+  createMessageHandler,
+  SubscriptionCallback,
 } from 'liwi-resources-server';
 import Logger from 'nightingale-logger';
 import WebSocket from 'ws';
@@ -34,12 +29,6 @@ export interface ResourcesWebsocketServer {
   close(): void;
 }
 
-interface SubscriptionAndSubscribeHook {
-  subscription: QuerySubscription;
-  subscribeHook?: SubscribeHook<any>;
-  params?: any;
-}
-
 const logger = new Logger('liwi:resources-websocket-client');
 
 export const createWsServer = <AuthenticatedUser>(
@@ -50,35 +39,10 @@ export const createWsServer = <AuthenticatedUser>(
 ): ResourcesWebsocketServer => {
   const wss = new WebSocket.Server({ noServer: true });
 
-  const getResource = (payload: {
-    resourceName: string;
-  }): ServiceResource<any, any> => {
-    logger.debug('resource', {
-      resourceName: payload.resourceName,
-    });
-    const resource = resourcesServerService.getServiceResource(
-      payload.resourceName,
-    );
-    return resource;
-  };
-
-  const createQuery = (
-    payload: ToServerQueryPayload,
-    resource: ServiceResource<any, any>,
-    authenticatedUser: AuthenticatedUser | null,
-  ): Query<any, any> => {
-    if (!payload.key.startsWith('query')) {
-      throw new Error('Invalid query key');
-    }
-
-    return resource.queries[payload.key](payload.params, authenticatedUser);
-  };
-
   wss.on(
     'connection',
     (ws: ExtendedWebSocket, authenticatedUser: AuthenticatedUser | null) => {
       ws.isAlive = true;
-      const openSubscriptions = new Map<number, SubscriptionAndSubscribeHook>();
 
       const sendMessage = (
         type: ToClientMessage[0],
@@ -105,28 +69,7 @@ export const createWsServer = <AuthenticatedUser>(
         sendMessage('ack', id, error && createSafeError(error), result);
       };
 
-      const logUnexpectedError = (
-        error: Error,
-        message: string,
-        payload: any,
-      ): void => {
-        if (!PRODUCTION || !(error instanceof ResourcesServerError)) {
-          logger.error(message, {
-            error,
-            payload: PRODUCTION ? 'redacted' : payload,
-          });
-        }
-      };
-
-      const logUnexpectedErrorAndSendAck = (
-        message: ToServerMessage,
-        error: Error,
-      ): void => {
-        logUnexpectedError(error, message.type, message.payload);
-        sendAck(message.id, error);
-      };
-
-      const sendSubscriptionMessage = (
+      const sendSubscriptionMessage: SubscriptionCallback = (
         subscriptionId: number,
         error: null | Error,
         result: any,
@@ -139,167 +82,18 @@ export const createWsServer = <AuthenticatedUser>(
         );
       };
 
-      const createSubscription = (
-        type: 'fetchAndSubscribe' | 'subscribe',
-        id: number,
-        payload: ToServerSubscribeQueryPayload,
-        resource: ServiceResource<any, any>,
-        query: Query<any, any>,
-      ): void => {
-        const { subscriptionId } = payload;
-        if (openSubscriptions.has(subscriptionId)) {
-          const error =
-            'Already have a watcher for this id. Cannot add a new one';
-          logger.warn(error, { subscriptionId, key: payload.key });
-          throw new ResourcesServerError('ALREADY_HAVE_WATCHER', error);
-        }
+      const { messageHandler, close } = createMessageHandler(
+        resourcesServerService,
+        authenticatedUser,
+        true,
+      );
 
-        const subscription = query[type]((error: Error | null, result: any) => {
-          if (error) {
-            logUnexpectedError(error, type, payload);
-          }
-          sendSubscriptionMessage(subscriptionId, error, result);
-        });
-
-        subscription.then(
-          () => sendAck(id, null),
-          (err: Error) => {
-            logger.error(type, { err });
-            sendAck(id, err);
-          },
-        );
-
-        const subscribeHook =
-          resource.subscribeHooks && resource.subscribeHooks[payload.key];
-        openSubscriptions.set(subscriptionId, {
-          subscription,
-          subscribeHook,
-          params: subscribeHook ? payload.params : undefined,
-        });
-        if (subscribeHook) {
-          subscribeHook.subscribed(authenticatedUser, payload.params);
-        }
-      };
-
-      const unsubscribeSubscription = ({
-        subscription,
-        subscribeHook,
-        params,
-      }: SubscriptionAndSubscribeHook): void => {
-        subscription.stop();
-        if (subscribeHook) {
-          subscribeHook.unsubscribed(authenticatedUser, params);
-        }
-      };
-
-      const handleDecodedMessage = async (
+      const handleDecodedMessage = (
         message: ToServerMessage,
       ): Promise<void> => {
-        switch (message.type) {
-          case 'fetch': {
-            try {
-              const resource = getResource(message.payload);
-              const query = createQuery(
-                message.payload,
-                resource,
-                authenticatedUser,
-              );
-              await query.fetch((result: any) =>
-                sendAck(message.id, null, result),
-              );
-            } catch (err) {
-              logUnexpectedErrorAndSendAck(message, err);
-            }
-            break;
-          }
-          case 'fetchAndSubscribe': {
-            try {
-              const resource = getResource(message.payload);
-              const query = createQuery(
-                message.payload,
-                resource,
-                authenticatedUser,
-              );
-              createSubscription(
-                'fetchAndSubscribe',
-                message.id,
-                message.payload,
-                resource,
-                query,
-              );
-            } catch (err) {
-              logUnexpectedErrorAndSendAck(message, err);
-            }
-            break;
-          }
-          case 'subscribe': {
-            try {
-              const resource = getResource(message.payload);
-              const query = createQuery(
-                message.payload,
-                resource,
-                authenticatedUser,
-              );
-              createSubscription(
-                'subscribe',
-                message.id,
-                message.payload,
-                resource,
-                query,
-              );
-            } catch (err) {
-              logUnexpectedErrorAndSendAck(message, err);
-            }
-            break;
-          }
-          // case 'subscribe:changePayload': {
-          //   break;
-          // }
-          case 'subscribe:close': {
-            try {
-              const { subscriptionId } = message.payload;
-              const SubscriptionAndSubscribeHook = openSubscriptions.get(
-                subscriptionId,
-              );
-              if (!SubscriptionAndSubscribeHook) {
-                logger.warn('tried to unsubscribe non existing watcher', {
-                  subscriptionId,
-                });
-              } else {
-                openSubscriptions.delete(subscriptionId);
-                unsubscribeSubscription(SubscriptionAndSubscribeHook);
-              }
-            } catch (err) {
-              logUnexpectedError(err, message.type, message.payload);
-            }
-            break;
-          }
-          case 'do': {
-            try {
-              const resource = getResource(message.payload);
-              const { operationKey, params } = message.payload;
-
-              const operation = resource.operations[operationKey];
-
-              if (!operation) {
-                throw new ResourcesServerError(
-                  'OPERATION_NOT_FOUND',
-                  `Operation not found: ${operationKey}`,
-                );
-              }
-
-              operation(params, authenticatedUser).then(
-                (result: any) => sendAck(message.id, null, result),
-                (err: Error) => {
-                  logUnexpectedErrorAndSendAck(message, err);
-                },
-              );
-            } catch (err) {
-              logUnexpectedErrorAndSendAck(message, err);
-            }
-            break;
-          }
-        }
+        return messageHandler(message, sendSubscriptionMessage)
+          .then((result) => sendAck(message.id, null, result))
+          .catch((err) => sendAck(message.id, err));
       };
 
       ws.on('pong', () => {
@@ -307,7 +101,7 @@ export const createWsServer = <AuthenticatedUser>(
       });
 
       ws.on('close', () => {
-        openSubscriptions.forEach(unsubscribeSubscription);
+        close();
       });
 
       ws.on('message', (message: string): void => {

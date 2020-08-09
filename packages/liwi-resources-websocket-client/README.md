@@ -13,13 +13,28 @@
 ## Install
 
 ```bash
-npm install --save liwi-websocket-client
+npm install --save liwi-resources-websocket-client
 ```
 
 ## Usage
 
-```js
-import liwiWebsocketClient from 'liwi-websocket-client';
+```tsx
+import {
+  createWebsocketTransportClient,
+  WebsocketTransportClientOptions,
+} from 'liwi-resources-websocket-client';
+import React, { ReactElement } from 'react';
+import { TransportClientProvider } from 'react-liwi';
+import App from './core/Layout';
 
-console.log(liwiWebsocketClient);
+export default function BrowserApp(): ReactElement {
+  return (
+    <TransportClientProvider<WebsocketTransportClientOptions>
+      createFn={createWebsocketTransportClient}
+      onError={console.error}
+    >
+      <App />
+    </TransportClientProvider>
+  );
+}
 ```

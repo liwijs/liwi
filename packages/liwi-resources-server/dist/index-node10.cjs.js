@@ -2,7 +2,10 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
 const liwiResources = require('liwi-resources');
+const Logger = _interopDefault(require('nightingale-logger'));
 
 // import ResourceServerCursor from './ResourceServerCursor';
 // import { CursorResource } from './CursorResource';
@@ -50,6 +53,197 @@ class ResourcesServerService {
 
 }
 
+/* eslint-disable complexity, max-lines */
+const logger = new Logger('liwi:resources-websocket-client');
+
+const logUnexpectedError = (error, message, payload) => {
+  if (!(error instanceof liwiResources.ResourcesServerError)) {
+    logger.error(message, {
+      error,
+      payload: 'redacted'
+    });
+  }
+};
+
+const createMessageHandler = (resourcesServerService, authenticatedUser, allowSubscriptions) => {
+  const openSubscriptions = allowSubscriptions ? new Map() : null;
+
+  const getResource = payload => {
+    logger.debug('resource', {
+      resourceName: payload.resourceName
+    });
+    const resource = resourcesServerService.getServiceResource(payload.resourceName);
+    return resource;
+  };
+
+  const createQuery = (payload, resource) => {
+    if (!payload.key.startsWith('query')) {
+      throw new Error('Invalid query key');
+    }
+
+    return resource.queries[payload.key](payload.params, authenticatedUser);
+  };
+
+  const createSubscription = (type, payload, resource, query, sendSubscriptionMessage) => {
+    if (!openSubscriptions) {
+      throw new Error('Subscriptions not allowed');
+    }
+
+    const {
+      subscriptionId
+    } = payload;
+
+    if (openSubscriptions.has(subscriptionId)) {
+      logger.warn("Already have a watcher for this id. Cannot add a new one", {
+        subscriptionId,
+        key: payload.key
+      });
+      throw new liwiResources.ResourcesServerError('ALREADY_HAVE_WATCHER', "Already have a watcher for this id. Cannot add a new one");
+    }
+
+    const subscription = query[type]((error, result) => {
+      if (error) {
+        logUnexpectedError(error, type);
+      }
+
+      sendSubscriptionMessage(subscriptionId, error, result);
+    });
+    const subscribeHook = resource.subscribeHooks && resource.subscribeHooks[payload.key];
+    openSubscriptions.set(subscriptionId, {
+      subscription,
+      subscribeHook,
+      params: subscribeHook ? payload.params : undefined
+    });
+
+    if (subscribeHook) {
+      subscribeHook.subscribed(authenticatedUser, payload.params);
+    }
+
+    return subscription.then(() => null);
+  };
+
+  const unsubscribeSubscription = ({
+    subscription,
+    subscribeHook,
+    params
+  }) => {
+    subscription.stop();
+
+    if (subscribeHook) {
+      subscribeHook.unsubscribed(authenticatedUser, params);
+    }
+  };
+
+  return {
+    close: () => {
+      if (openSubscriptions) {
+        openSubscriptions.forEach(unsubscribeSubscription);
+      }
+    },
+    messageHandler: async (message, subscriptionCallback) => {
+      switch (message.type) {
+        case 'fetch':
+          {
+            try {
+              const resource = getResource(message.payload);
+              const query = createQuery(message.payload, resource);
+              await query.fetch(result => result);
+            } catch (err) {
+              logUnexpectedError(err, message.type, message.payload);
+              throw err;
+            }
+
+            break;
+          }
+
+        case 'fetchAndSubscribe':
+          {
+            try {
+              const resource = getResource(message.payload);
+              const query = createQuery(message.payload, resource);
+
+              if (!openSubscriptions) {
+                await query.fetch(result => result);
+              } else {
+                await createSubscription('fetchAndSubscribe', message.payload, resource, query, subscriptionCallback);
+              }
+            } catch (err) {
+              logUnexpectedError(err, message.type, message.payload);
+              throw err;
+            }
+
+            break;
+          }
+
+        case 'subscribe':
+          {
+            try {
+              const resource = getResource(message.payload);
+              const query = createQuery(message.payload, resource);
+              await createSubscription('subscribe', message.payload, resource, query, subscriptionCallback);
+            } catch (err) {
+              logUnexpectedError(err, message.type, message.payload);
+              throw err;
+            }
+
+            break;
+          }
+        // case 'subscribe:changePayload': {
+        //   break;
+        // }
+
+        case 'subscribe:close':
+          {
+            if (!openSubscriptions) {
+              throw new Error('Subscriptions not allowed');
+            }
+
+            try {
+              const {
+                subscriptionId
+              } = message.payload;
+              const SubscriptionAndSubscribeHook = openSubscriptions.get(subscriptionId);
+
+              if (!SubscriptionAndSubscribeHook) {
+                logger.warn('tried to unsubscribe non existing watcher', {
+                  subscriptionId
+                });
+              } else {
+                openSubscriptions.delete(subscriptionId);
+                unsubscribeSubscription(SubscriptionAndSubscribeHook);
+              }
+            } catch (err) {
+              logUnexpectedError(err, message.type, message.payload);
+            }
+
+            break;
+          }
+
+        case 'do':
+          {
+            try {
+              const resource = getResource(message.payload);
+              const {
+                operationKey,
+                params
+              } = message.payload;
+              const operation = resource.operations[operationKey];
+
+              if (!operation) {
+                throw new liwiResources.ResourcesServerError('OPERATION_NOT_FOUND', `Operation not found: ${operationKey}`);
+              }
+
+              return await operation(params, authenticatedUser);
+            } catch (err) {
+              logUnexpectedError(err, message.type, message.payload);
+              throw err;
+            }
+          }
+      }
+    }
+  };
+};
+
 Object.defineProperty(exports, 'ResourcesServerError', {
   enumerable: true,
   get: function () {
@@ -57,4 +251,5 @@ Object.defineProperty(exports, 'ResourcesServerError', {
   }
 });
 exports.ResourcesServerService = ResourcesServerService;
+exports.createMessageHandler = createMessageHandler;
 //# sourceMappingURL=index-node10.cjs.js.map
