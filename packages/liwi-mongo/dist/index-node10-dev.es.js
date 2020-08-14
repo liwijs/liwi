@@ -265,16 +265,19 @@ class MongoQuerySingleItem extends AbstractSubscribableStoreQuery {
   async fetch(onFulfilled) {
     const cursor = await this.createMongoCursor();
     await cursor.limit(1);
-    return cursor.toArray().then(result => result[0] && this.transformer(result[0])).then(result => onFulfilled({
-      result,
-      meta: {
-        total: result === null ? 0 : 1
-      },
-      info: {
-        limit: 1,
-        keyPath: this.store.keyPath
-      }
-    }));
+    return cursor.toArray().then(result => {
+      const item = result.length === 0 ? null : this.transformer(result[0]);
+      return onFulfilled({
+        result: item,
+        meta: {
+          total: result === null ? 0 : 1
+        },
+        info: {
+          limit: 1,
+          keyPath: this.store.keyPath
+        }
+      });
+    });
   }
 
   _subscribe(callback, _includeInitial) {
