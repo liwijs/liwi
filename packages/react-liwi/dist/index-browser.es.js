@@ -115,9 +115,6 @@ function useRetrieveResource(createQuery, params, deps) {
 
   var fetch = function fetch(query, callback) {
     var fetchId = ++currentFetchId.current;
-    console.log('fetch', {
-      fetchId: fetchId
-    });
     return query.fetch(function (result) {
       if (currentFetchId.current === fetchId) {
         callback(result);
@@ -489,10 +486,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, deps, _temp) {
     }
 
     if (changeParamsRef.current) {
-      console.log('call changeparams', params);
       changeParamsRef.current(params);
-    } else {
-      console.log('changeParamsRef.current is undefined');
     } // eslint-disable-next-line react-hooks/exhaustive-deps
 
   }, deps);

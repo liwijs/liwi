@@ -25,7 +25,6 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
     callback: (result: QueryResult<Result>) => void,
   ): Promise<void> => {
     const fetchId = ++currentFetchId.current;
-    console.log('fetch', { fetchId });
     return query.fetch((result): void => {
       if (currentFetchId.current === fetchId) {
         callback(result);

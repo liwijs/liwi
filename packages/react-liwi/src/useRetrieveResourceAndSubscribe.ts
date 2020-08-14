@@ -215,10 +215,7 @@ export function useRetrieveResourceAndSubscribe<
     }
 
     if (changeParamsRef.current) {
-      console.log('call changeparams', params);
       changeParamsRef.current(params);
-    } else {
-      console.log('changeParamsRef.current is undefined');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
