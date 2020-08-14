@@ -147,13 +147,11 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
             try {
               const resource = getResource(message.payload);
               const query = createQuery(message.payload, resource);
-              await query.fetch(result => result);
+              return await query.fetch(result => result);
             } catch (err) {
               logUnexpectedError(err, message.type, message.payload);
               throw err;
             }
-
-            break;
           }
 
         case 'fetchAndSubscribe':
@@ -163,7 +161,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               const query = createQuery(message.payload, resource);
 
               if (!openSubscriptions) {
-                await query.fetch(result => result);
+                return await query.fetch(result => result);
               } else {
                 await createSubscription('fetchAndSubscribe', message.payload, resource, query, subscriptionCallback);
               }

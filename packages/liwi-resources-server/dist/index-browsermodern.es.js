@@ -144,15 +144,13 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
             try {
               const resource = getResource(message.payload);
               const query = createQuery(message.payload, resource);
-              await query.fetch(function (result) {
+              return await query.fetch(function (result) {
                 return result;
               });
             } catch (err) {
               logUnexpectedError(err, message.type, message.payload);
               throw err;
             }
-
-            break;
           }
 
         case 'fetchAndSubscribe':
@@ -162,7 +160,7 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
               const query = createQuery(message.payload, resource);
 
               if (!openSubscriptions) {
-                await query.fetch(function (result) {
+                return await query.fetch(function (result) {
                   return result;
                 });
               } else {

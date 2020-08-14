@@ -141,12 +141,11 @@ export const createMessageHandler = <AuthenticatedUser>(
           try {
             const resource = getResource(message.payload);
             const query = createQuery(message.payload, resource);
-            await query.fetch((result: any) => result);
+            return await query.fetch((result: any) => result);
           } catch (err) {
             logUnexpectedError(err, message.type, message.payload);
             throw err;
           }
-          break;
         }
         case 'fetchAndSubscribe': {
           try {
@@ -154,7 +153,7 @@ export const createMessageHandler = <AuthenticatedUser>(
             const query = createQuery(message.payload, resource);
 
             if (!openSubscriptions) {
-              await query.fetch((result: any) => result);
+              return await query.fetch((result: any) => result);
             } else {
               await createSubscription(
                 'fetchAndSubscribe',

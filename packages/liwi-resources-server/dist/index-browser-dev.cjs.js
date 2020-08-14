@@ -150,7 +150,7 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
             switch (_context.prev = _context.next) {
               case 0:
                 _context.t0 = message.type;
-                _context.next = _context.t0 === 'fetch' ? 3 : _context.t0 === 'fetchAndSubscribe' ? 15 : _context.t0 === 'subscribe' ? 32 : _context.t0 === 'subscribe:close' ? 44 : _context.t0 === 'do' ? 48 : 63;
+                _context.next = _context.t0 === 'fetch' ? 3 : _context.t0 === 'fetchAndSubscribe' ? 15 : _context.t0 === 'subscribe' ? 33 : _context.t0 === 'subscribe:close' ? 45 : _context.t0 === 'do' ? 49 : 64;
                 break;
 
               case 3:
@@ -163,17 +163,13 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
                 });
 
               case 8:
-                _context.next = 14;
-                break;
+                return _context.abrupt("return", _context.sent);
 
-              case 10:
-                _context.prev = 10;
+              case 11:
+                _context.prev = 11;
                 _context.t1 = _context["catch"](3);
                 logUnexpectedError(_context.t1, message.type, message.payload);
                 throw _context.t1;
-
-              case 14:
-                return _context.abrupt("break", 63);
 
               case 15:
                 _context.prev = 15;
@@ -181,7 +177,7 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
                 _query = createQuery(message.payload, _resource);
 
                 if (openSubscriptions) {
-                  _context.next = 23;
+                  _context.next = 24;
                   break;
                 }
 
@@ -191,55 +187,54 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
                 });
 
               case 21:
-                _context.next = 25;
-                break;
+                return _context.abrupt("return", _context.sent);
 
-              case 23:
-                _context.next = 25;
+              case 24:
+                _context.next = 26;
                 return createSubscription('fetchAndSubscribe', message.payload, _resource, _query, subscriptionCallback);
 
-              case 25:
-                _context.next = 31;
+              case 26:
+                _context.next = 32;
                 break;
 
-              case 27:
-                _context.prev = 27;
+              case 28:
+                _context.prev = 28;
                 _context.t2 = _context["catch"](15);
                 logUnexpectedError(_context.t2, message.type, message.payload);
                 throw _context.t2;
 
-              case 31:
-                return _context.abrupt("break", 63);
-
               case 32:
-                _context.prev = 32;
+                return _context.abrupt("break", 64);
+
+              case 33:
+                _context.prev = 33;
                 _resource2 = getResource(message.payload);
                 _query2 = createQuery(message.payload, _resource2);
-                _context.next = 37;
+                _context.next = 38;
                 return createSubscription('subscribe', message.payload, _resource2, _query2, subscriptionCallback);
 
-              case 37:
-                _context.next = 43;
+              case 38:
+                _context.next = 44;
                 break;
 
-              case 39:
-                _context.prev = 39;
-                _context.t3 = _context["catch"](32);
+              case 40:
+                _context.prev = 40;
+                _context.t3 = _context["catch"](33);
                 logUnexpectedError(_context.t3, message.type, message.payload);
                 throw _context.t3;
 
-              case 43:
-                return _context.abrupt("break", 63);
-
               case 44:
+                return _context.abrupt("break", 64);
+
+              case 45:
                 if (openSubscriptions) {
-                  _context.next = 46;
+                  _context.next = 47;
                   break;
                 }
 
                 throw new Error('Subscriptions not allowed');
 
-              case 46:
+              case 47:
                 try {
                   _subscriptionId = message.payload.subscriptionId;
                   _SubscriptionAndSubscribeHook = openSubscriptions.get(_subscriptionId);
@@ -256,40 +251,40 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
                   logUnexpectedError(err, message.type, message.payload);
                 }
 
-                return _context.abrupt("break", 63);
+                return _context.abrupt("break", 64);
 
-              case 48:
-                _context.prev = 48;
+              case 49:
+                _context.prev = 49;
                 _resource3 = getResource(message.payload);
                 _message$payload = message.payload, operationKey = _message$payload.operationKey, params = _message$payload.params;
                 operation = _resource3.operations[operationKey];
 
                 if (operation) {
-                  _context.next = 54;
+                  _context.next = 55;
                   break;
                 }
 
                 throw new liwiResources.ResourcesServerError('OPERATION_NOT_FOUND', "Operation not found: " + operationKey);
 
-              case 54:
-                _context.next = 56;
+              case 55:
+                _context.next = 57;
                 return operation(params, authenticatedUser);
 
-              case 56:
+              case 57:
                 return _context.abrupt("return", _context.sent);
 
-              case 59:
-                _context.prev = 59;
-                _context.t4 = _context["catch"](48);
+              case 60:
+                _context.prev = 60;
+                _context.t4 = _context["catch"](49);
                 logUnexpectedError(_context.t4, message.type, message.payload);
                 throw _context.t4;
 
-              case 63:
+              case 64:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[3, 10], [15, 27], [32, 39], [48, 59]]);
+        }, _callee, null, [[3, 11], [15, 28], [33, 40], [49, 60]]);
       }));
 
       return function messageHandler() {
