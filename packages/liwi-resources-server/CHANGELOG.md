@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.4.3](https://github.com/liwijs/liwi/compare/v7.4.2...v7.4.3) (2020-08-14)
+
+
+### Bug Fixes
+
+* return result ([ec33b4e](https://github.com/liwijs/liwi/commit/ec33b4e))
+
+
+
+
+
 # [7.4.0](https://github.com/liwijs/liwi/compare/v7.3.0...v7.4.0) (2020-08-09)
 
 
