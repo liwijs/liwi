@@ -51,7 +51,11 @@ const createWsServer = (server, path = '/ws', resourcesServerService, getAuthent
     } = createMessageHandler(resourcesServerService, authenticatedUser, true);
 
     const handleDecodedMessage = message => {
-      return messageHandler(message, sendSubscriptionMessage).then(result => sendAck(message.id, null, result)).catch(err => sendAck(message.id, err));
+      if (message.id == null) {
+        return messageHandler(message, sendSubscriptionMessage).then(() => {});
+      } else {
+        return messageHandler(message, sendSubscriptionMessage).then(result => sendAck(message.id, null, result)).catch(err => sendAck(message.id, err));
+      }
     };
 
     ws.on('pong', () => {

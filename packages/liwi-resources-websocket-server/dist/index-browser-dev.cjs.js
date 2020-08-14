@@ -60,11 +60,15 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
         close = _createMessageHandler.close;
 
     var handleDecodedMessage = function handleDecodedMessage(message) {
-      return messageHandler(message, sendSubscriptionMessage).then(function (result) {
-        return sendAck(message.id, null, result);
-      }).catch(function (err) {
-        return sendAck(message.id, err);
-      });
+      if (message.id == null) {
+        return messageHandler(message, sendSubscriptionMessage).then(function () {});
+      } else {
+        return messageHandler(message, sendSubscriptionMessage).then(function (result) {
+          return sendAck(message.id, null, result);
+        }).catch(function (err) {
+          return sendAck(message.id, err);
+        });
+      }
     };
 
     ws.on('pong', function () {

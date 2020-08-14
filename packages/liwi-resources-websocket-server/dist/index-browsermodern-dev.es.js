@@ -51,11 +51,15 @@ const createWsServer = function createWsServer(server, path = '/ws', resourcesSe
     } = createMessageHandler(resourcesServerService, authenticatedUser, true);
 
     const handleDecodedMessage = function handleDecodedMessage(message) {
-      return messageHandler(message, sendSubscriptionMessage).then(function (result) {
-        return sendAck(message.id, null, result);
-      }).catch(function (err) {
-        return sendAck(message.id, err);
-      });
+      if (message.id == null) {
+        return messageHandler(message, sendSubscriptionMessage).then(function () {});
+      } else {
+        return messageHandler(message, sendSubscriptionMessage).then(function (result) {
+          return sendAck(message.id, null, result);
+        }).catch(function (err) {
+          return sendAck(message.id, err);
+        });
+      }
     };
 
     ws.on('pong', function () {
