@@ -1,14 +1,8 @@
-/* eslint-disable unicorn/prefer-add-event-listener */
+/* eslint-disable unicorn/prefer-add-event-listener, max-lines */
 import Backoff from 'backo2';
+import type { ConnectionStates } from 'liwi-resources-client';
 
-type States =
-  | 'closed'
-  | 'opening'
-  | 'connecting'
-  | 'connected'
-  | 'reconnecting';
-
-export type StateChangeListener = (newState: States) => void;
+export type StateChangeListener = (newState: ConnectionStates) => void;
 
 export type StateChangeListenerCreator = (
   listener: StateChangeListener,
@@ -24,7 +18,7 @@ export interface SimpleWebsocketClientOptions {
   reconnectionAttempts?: number;
   inactivityTimeout?: number;
   onMessage: (message: MessageEvent) => void;
-  onError: (event: Event) => void;
+  onError?: (event: Event) => void;
 }
 
 type Message = Parameters<WebSocket['send']>[0];
@@ -50,7 +44,7 @@ export default function createSimpleWebsocketClient({
   onError,
 }: SimpleWebsocketClientOptions): WebsocketTransport {
   let ws: WebSocket | null = null;
-  let currentState: States = 'closed';
+  let currentState: ConnectionStates = 'closed';
   let isConnected = false;
   const stateChangeListeners = new Set<StateChangeListener>();
 
@@ -66,7 +60,7 @@ export default function createSimpleWebsocketClient({
     inactivity: null,
   };
 
-  const setCurrentState = (newState: States): void => {
+  const setCurrentState = (newState: ConnectionStates): void => {
     if (currentState === newState) return;
     currentState = newState;
     isConnected = currentState === 'connected';
@@ -91,27 +85,30 @@ export default function createSimpleWebsocketClient({
     }
   };
 
-  let tryReconnect: () => void;
+  let tryReconnect: (() => void) | undefined;
 
   const connect = (): void => {
-    setCurrentState('opening');
     const webSocket = new WebSocket(url, protocols);
     ws = webSocket;
     clearInternalTimeout('maxConnect');
+    setCurrentState('connecting');
     webSocket.onopen = (): void => {
-      setCurrentState('connecting');
+      backoff.reset();
       clearInternalTimeout('maxConnect');
     };
 
-    webSocket.onclose = (): void => {
-      if (currentState !== 'closed') {
-        if (tryReconnect) {
-          tryReconnect();
-        } else {
-          closeWebsocket();
-        }
+    const handleCloseOrError = (): void => {
+      if (currentState === 'closed') return;
+      if (!tryReconnect) {
+        closeWebsocket();
+      } else if (document.visibilityState === 'hidden') {
+        setCurrentState('wait-for-visibility');
+      } else {
+        tryReconnect();
       }
     };
+
+    webSocket.onclose = handleCloseOrError;
 
     webSocket.onmessage = (message): void => {
       if (message.data === 'connection-ack') {
@@ -122,7 +119,9 @@ export default function createSimpleWebsocketClient({
     };
 
     webSocket.onerror = (event): void => {
-      onError(event);
+      console.error('ws error', event);
+      if (onError) onError(event);
+      handleCloseOrError();
     };
   };
 
@@ -132,11 +131,11 @@ export default function createSimpleWebsocketClient({
         return;
       }
 
-      if (currentState === 'reconnecting') {
+      if (currentState === 'reconnect-scheduled') {
         return;
       }
 
-      setCurrentState('reconnecting');
+      setCurrentState('reconnect-scheduled');
       clearInternalTimeout('tryReconnect');
       const delay = backoff.duration();
       timeouts.tryReconnect = setTimeout(() => {
@@ -145,6 +144,29 @@ export default function createSimpleWebsocketClient({
     };
   }
 
+  const visibilityChangHandler: (() => void) | undefined = !tryReconnect
+    ? undefined
+    : () => {
+        if (document.visibilityState === 'hidden') {
+          if (currentState === 'reconnect-scheduled') {
+            setCurrentState('wait-for-visibility');
+            if (timeouts.tryReconnect !== null) {
+              clearTimeout(timeouts.tryReconnect);
+            }
+          }
+          return;
+        }
+        if (currentState !== 'wait-for-visibility') return;
+
+        if (tryReconnect) {
+          backoff.reset();
+          tryReconnect();
+        }
+      };
+
+  if (visibilityChangHandler) {
+    window.addEventListener('visibilitychange', visibilityChangHandler);
+  }
   const wsTransport: WebsocketTransport = {
     connect,
 
@@ -154,6 +176,9 @@ export default function createSimpleWebsocketClient({
           ws.send('close');
         }
         closeWebsocket();
+      }
+      if (visibilityChangHandler) {
+        window.removeEventListener('visibilitychange', visibilityChangHandler);
       }
     },
 

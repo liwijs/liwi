@@ -5,7 +5,7 @@ export interface TransportClientSubscribeResult<Result, Payload extends Record<k
     cancel: () => void;
     stop: () => void;
 }
-export declare type ConnectionStates = 'closed' | 'opening' | 'connecting' | 'connected' | 'reconnecting';
+export declare type ConnectionStates = 'closed' | 'opening' | 'connecting' | 'connected' | 'reconnect-scheduled' | 'wait-for-visibility';
 export declare type ConnectionStateChangeListener = (newState: ConnectionStates) => void;
 export declare type ConnectionStateChangeListenerCreator = (listener: ConnectionStateChangeListener) => () => void;
 export interface TransportClient {

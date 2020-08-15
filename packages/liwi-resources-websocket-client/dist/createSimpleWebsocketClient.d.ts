@@ -1,5 +1,5 @@
-declare type States = 'closed' | 'opening' | 'connecting' | 'connected' | 'reconnecting';
-export declare type StateChangeListener = (newState: States) => void;
+import type { ConnectionStates } from 'liwi-resources-client';
+export declare type StateChangeListener = (newState: ConnectionStates) => void;
 export declare type StateChangeListenerCreator = (listener: StateChangeListener) => () => void;
 export interface SimpleWebsocketClientOptions {
     url: string;
@@ -11,7 +11,7 @@ export interface SimpleWebsocketClientOptions {
     reconnectionAttempts?: number;
     inactivityTimeout?: number;
     onMessage: (message: MessageEvent) => void;
-    onError: (event: Event) => void;
+    onError?: (event: Event) => void;
 }
 declare type Message = Parameters<WebSocket['send']>[0];
 export interface WebsocketTransport {

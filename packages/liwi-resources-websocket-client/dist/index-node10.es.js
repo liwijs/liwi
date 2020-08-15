@@ -3,7 +3,7 @@ import { ResourcesServerError } from 'liwi-resources-client';
 import Logger from 'nightingale-logger';
 import Backoff from 'backo2';
 
-/* eslint-disable unicorn/prefer-add-event-listener */
+/* eslint-disable unicorn/prefer-add-event-listener, max-lines */
 function createSimpleWebsocketClient({
   url,
   protocols,
@@ -59,25 +59,29 @@ function createSimpleWebsocketClient({
   let tryReconnect;
 
   const connect = () => {
-    setCurrentState('opening');
     const webSocket = new WebSocket(url, protocols);
     ws = webSocket;
     clearInternalTimeout('maxConnect');
+    setCurrentState('connecting');
 
     webSocket.onopen = () => {
-      setCurrentState('connecting');
+      backoff.reset();
       clearInternalTimeout('maxConnect');
     };
 
-    webSocket.onclose = () => {
-      if (currentState !== 'closed') {
-        if (tryReconnect) {
-          tryReconnect();
-        } else {
-          closeWebsocket();
-        }
+    const handleCloseOrError = () => {
+      if (currentState === 'closed') return;
+
+      if (!tryReconnect) {
+        closeWebsocket();
+      } else if (document.visibilityState === 'hidden') {
+        setCurrentState('wait-for-visibility');
+      } else {
+        tryReconnect();
       }
     };
+
+    webSocket.onclose = handleCloseOrError;
 
     webSocket.onmessage = message => {
       if (message.data === 'connection-ack') {
@@ -88,7 +92,9 @@ function createSimpleWebsocketClient({
     };
 
     webSocket.onerror = event => {
-      onError(event);
+      console.error('ws error', event);
+      if (onError) onError(event);
+      handleCloseOrError();
     };
   };
 
@@ -98,17 +104,42 @@ function createSimpleWebsocketClient({
         return;
       }
 
-      if (currentState === 'reconnecting') {
+      if (currentState === 'reconnect-scheduled') {
         return;
       }
 
-      setCurrentState('reconnecting');
+      setCurrentState('reconnect-scheduled');
       clearInternalTimeout('tryReconnect');
       const delay = backoff.duration();
       timeouts.tryReconnect = setTimeout(() => {
         connect();
       }, delay);
     };
+  }
+
+  const visibilityChangHandler = !tryReconnect ? undefined : () => {
+    if (document.visibilityState === 'hidden') {
+      if (currentState === 'reconnect-scheduled') {
+        setCurrentState('wait-for-visibility');
+
+        if (timeouts.tryReconnect !== null) {
+          clearTimeout(timeouts.tryReconnect);
+        }
+      }
+
+      return;
+    }
+
+    if (currentState !== 'wait-for-visibility') return;
+
+    if (tryReconnect) {
+      backoff.reset();
+      tryReconnect();
+    }
+  };
+
+  if (visibilityChangHandler) {
+    window.addEventListener('visibilitychange', visibilityChangHandler);
   }
 
   return {
@@ -121,6 +152,10 @@ function createSimpleWebsocketClient({
         }
 
         closeWebsocket();
+      }
+
+      if (visibilityChangHandler) {
+        window.removeEventListener('visibilitychange', visibilityChangHandler);
       }
     },
 

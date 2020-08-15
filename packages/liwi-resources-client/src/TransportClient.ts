@@ -23,7 +23,8 @@ export type ConnectionStates =
   | 'opening'
   | 'connecting'
   | 'connected'
-  | 'reconnecting';
+  | 'reconnect-scheduled'
+  | 'wait-for-visibility';
 
 export type ConnectionStateChangeListener = (
   newState: ConnectionStates,

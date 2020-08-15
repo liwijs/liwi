@@ -10,7 +10,7 @@ var liwiResourcesClient = require('liwi-resources-client');
 var Logger = _interopDefault(require('nightingale-logger'));
 var Backoff = _interopDefault(require('backo2'));
 
-/* eslint-disable unicorn/prefer-add-event-listener */
+/* eslint-disable unicorn/prefer-add-event-listener, max-lines */
 function createSimpleWebsocketClient(_ref) {
   var url = _ref.url,
       protocols = _ref.protocols,
@@ -71,25 +71,29 @@ function createSimpleWebsocketClient(_ref) {
   var tryReconnect;
 
   var connect = function connect() {
-    setCurrentState('opening');
     var webSocket = new WebSocket(url, protocols);
     ws = webSocket;
     clearInternalTimeout('maxConnect');
+    setCurrentState('connecting');
 
     webSocket.onopen = function () {
-      setCurrentState('connecting');
+      backoff.reset();
       clearInternalTimeout('maxConnect');
     };
 
-    webSocket.onclose = function () {
-      if (currentState !== 'closed') {
-        if (tryReconnect) {
-          tryReconnect();
-        } else {
-          closeWebsocket();
-        }
+    var handleCloseOrError = function handleCloseOrError() {
+      if (currentState === 'closed') return;
+
+      if (!tryReconnect) {
+        closeWebsocket();
+      } else if (document.visibilityState === 'hidden') {
+        setCurrentState('wait-for-visibility');
+      } else {
+        tryReconnect();
       }
     };
+
+    webSocket.onclose = handleCloseOrError;
 
     webSocket.onmessage = function (message) {
       if (message.data === 'connection-ack') {
@@ -100,7 +104,9 @@ function createSimpleWebsocketClient(_ref) {
     };
 
     webSocket.onerror = function (event) {
-      onError(event);
+      console.error('ws error', event);
+      if (onError) onError(event);
+      handleCloseOrError();
     };
   };
 
@@ -110,17 +116,42 @@ function createSimpleWebsocketClient(_ref) {
         return;
       }
 
-      if (currentState === 'reconnecting') {
+      if (currentState === 'reconnect-scheduled') {
         return;
       }
 
-      setCurrentState('reconnecting');
+      setCurrentState('reconnect-scheduled');
       clearInternalTimeout('tryReconnect');
       var delay = backoff.duration();
       timeouts.tryReconnect = setTimeout(function () {
         connect();
       }, delay);
     };
+  }
+
+  var visibilityChangHandler = !tryReconnect ? undefined : function () {
+    if (document.visibilityState === 'hidden') {
+      if (currentState === 'reconnect-scheduled') {
+        setCurrentState('wait-for-visibility');
+
+        if (timeouts.tryReconnect !== null) {
+          clearTimeout(timeouts.tryReconnect);
+        }
+      }
+
+      return;
+    }
+
+    if (currentState !== 'wait-for-visibility') return;
+
+    if (tryReconnect) {
+      backoff.reset();
+      tryReconnect();
+    }
+  };
+
+  if (visibilityChangHandler) {
+    window.addEventListener('visibilitychange', visibilityChangHandler);
   }
 
   var wsTransport = {
@@ -132,6 +163,10 @@ function createSimpleWebsocketClient(_ref) {
         }
 
         closeWebsocket();
+      }
+
+      if (visibilityChangHandler) {
+        window.removeEventListener('visibilitychange', visibilityChangHandler);
       }
     },
     isConnected: function (_isConnected) {
