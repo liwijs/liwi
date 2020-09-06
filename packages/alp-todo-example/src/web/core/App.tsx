@@ -1,40 +1,13 @@
-import React, { ReactElement, Component, ErrorInfo } from 'react';
+import React, { ReactElement } from 'react';
 import TodoModule from '../todo/TodoModule';
-import ErrorPage from './ErrorPage';
+import AppErrorCatcher from './AppErrorCatcher';
 
 interface AppProps {}
 
-interface AppState {
-  hasError: boolean;
-}
-
-export default class App extends Component<AppProps, AppState> {
-  static getDerivedStateFromError(): AppState {
-    return { hasError: true };
-  }
-
-  state = {
-    hasError: false,
-  };
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    // eslint-disable-next-line no-console
-    console.error(error);
-  }
-
-  render(): ReactElement {
-    if (this.state.hasError) {
-      return (
-        <ErrorPage
-          onRetryClick={(): void => {
-            this.setState({
-              hasError: false,
-            });
-          }}
-        />
-      );
-    }
-
-    return <TodoModule />;
-  }
+export default function App(props: AppProps): ReactElement {
+  return (
+    <AppErrorCatcher>
+      <TodoModule />
+    </AppErrorCatcher>
+  );
 }
