@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.6.0](https://github.com/liwijs/liwi/compare/v7.5.0...v7.6.0) (2020-10-05)
+
+
+### Features
+
+* add skip ([6764e7b](https://github.com/liwijs/liwi/commit/6764e7b))
+
+
+
+
+
 # [7.5.0](https://github.com/liwijs/liwi/compare/v7.4.3...v7.5.0) (2020-08-15)
 
 **Note:** Version bump only for package react-liwi

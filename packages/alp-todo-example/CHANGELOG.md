@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.6.0](https://github.com/liwijs/liwi/compare/v7.5.0...v7.6.0) (2020-10-05)
+
+
+### Bug Fixes
+
+* better AppErrorCatcher ([f53c554](https://github.com/liwijs/liwi/commit/f53c554))
+
+
+
+
+
 # [7.5.0](https://github.com/liwijs/liwi/compare/v7.4.3...v7.5.0) (2020-08-15)
 
 **Note:** Version bump only for package alp-todo-example
