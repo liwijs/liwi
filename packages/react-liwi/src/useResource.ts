@@ -10,6 +10,7 @@ import {
 
 interface UseResourceOptionsRequiredParams<Params extends QueryParams<Params>> {
   params: Params;
+  skip?: boolean;
   subscribe?: boolean;
   subscribeOptions?: UseResourceAndSubscribeOptions;
 }
@@ -22,7 +23,12 @@ export type UseResourceOptions<
 
 export function useResource<Result, Params extends QueryParams<Params>>(
   createQuery: (initialParams: Params) => Query<Result, Params>,
-  { params, subscribe, subscribeOptions }: UseResourceOptions<Params>,
+  {
+    params,
+    skip = false,
+    subscribe,
+    subscribeOptions,
+  }: UseResourceOptions<Params>,
   deps: any[],
 ): ResourceResult<Result, Params> {
   if (POB_TARGET === 'node') {
@@ -44,11 +50,17 @@ export function useResource<Result, Params extends QueryParams<Params>>(
       useRetrieveResourceAndSubscribe<Result, Params>(
         createQuery,
         params as Params,
+        skip,
         deps,
         subscribeOptions,
       )
     : // eslint-disable-next-line react-hooks/rules-of-hooks
-      useRetrieveResource<Result, Params>(createQuery, params as Params, deps);
+      useRetrieveResource<Result, Params>(
+        createQuery,
+        params as Params,
+        skip,
+        deps,
+      );
 
   return result;
 }

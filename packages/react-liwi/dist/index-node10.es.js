@@ -2,6 +2,7 @@ import React, { useMemo, useState, useCallback, createContext, useEffect } from 
 
 function useResource(createQuery, {
   params,
+  skip = false,
   subscribe,
   subscribeOptions
 }, deps) {

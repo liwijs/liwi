@@ -37,6 +37,7 @@ export function useRetrieveResourceAndSubscribe<
 >(
   createQuery: (initialParams: Params) => Query<Result, Params>,
   params: Params,
+  skip: boolean,
   deps: any[],
   { visibleTimeout }: UseResourceAndSubscribeOptions = defaultOptions,
 ): ResourceResult<Result, Params> {
@@ -49,6 +50,8 @@ export function useRetrieveResourceAndSubscribe<
   );
 
   const handleVisibilityChangeRef = useRef<any>(undefined);
+  const skipRef = useRef(skip);
+  skipRef.current = skip;
 
   const unsubscribe = (): void => {
     logger.info('unsubscribe');
@@ -151,15 +154,19 @@ export function useRetrieveResourceAndSubscribe<
             );
           };
 
-          changeParamsRef.current = (params: Params) => {
-            queryLogger.info('change params', { params });
+          changeParamsRef.current = (params: Params): void => {
+            queryLogger.info('change params', {
+              skip: skipRef.current,
+              params,
+            });
+
             if (querySubscriptionRef.current) {
               querySubscriptionRef.current.stop();
             }
 
             query.changeParams(params);
 
-            if (!document.hidden) {
+            if (!document.hidden && !skipRef.current) {
               dispatch({
                 type: 'fetching',
               });
@@ -168,6 +175,7 @@ export function useRetrieveResourceAndSubscribe<
           };
 
           const handleVisibilityChange = (): void => {
+            if (skipRef.current) return;
             if (!document.hidden) {
               if (timeoutRef.current !== undefined) {
                 queryLogger.debug('timeout cleared');
@@ -218,7 +226,7 @@ export function useRetrieveResourceAndSubscribe<
       changeParamsRef.current(params);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
+  }, [skip, ...deps]);
 
   useEffect(() => {
     return () => {

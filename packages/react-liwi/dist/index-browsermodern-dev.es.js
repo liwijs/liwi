@@ -107,7 +107,7 @@ function reducer(state, action) {
   }
 }
 
-function useRetrieveResource(createQuery, params, deps) {
+function useRetrieveResource(createQuery, params, skip, deps) {
   const isTransportReady = useContext(TransportClientReadyContext);
   const wasReady = useRef(isTransportReady);
   const currentFetchId = useRef(0);
@@ -123,7 +123,7 @@ function useRetrieveResource(createQuery, params, deps) {
 
   const [state, dispatch] = useReducer(reducer, function () {
     const query = createQuery(params);
-    if (!isTransportReady) return {
+    if (!isTransportReady || skip) return {
       query
     };
     return {
@@ -150,6 +150,7 @@ function useRetrieveResource(createQuery, params, deps) {
   useEffect(function () {
     if (wasReady.current) return;
     if (!isTransportReady) return;
+    if (skip) return;
     wasReady.current = true;
     dispatch({
       type: 'refetch',
@@ -171,11 +172,15 @@ function useRetrieveResource(createQuery, params, deps) {
         });
       })
     });
-  }, [isTransportReady, state.query]);
+  }, [isTransportReady, skip, state.query]);
   const firstEffectChangeParams = useRef(false);
   useEffect(function () {
     if (firstEffectChangeParams.current === false) {
       firstEffectChangeParams.current = true;
+      return;
+    }
+
+    if (skip) {
       return;
     }
 
@@ -201,7 +206,7 @@ function useRetrieveResource(createQuery, params, deps) {
         });
       })
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.query, ...deps]);
+  }, [state.query, skip, ...deps]);
   return createResourceResultFromState(state);
 }
 
@@ -331,13 +336,15 @@ const isInitial = function isInitial(changes) {
   return changes.length === 1 && changes[0].type === 'initial';
 };
 
-function useRetrieveResourceAndSubscribe(createQuery, params, deps, {
+function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
   visibleTimeout
 } = defaultOptions) {
   const querySubscriptionRef = useRef(undefined);
   const timeoutRef = useRef(undefined);
   const changeParamsRef = useRef(undefined);
   const handleVisibilityChangeRef = useRef(undefined);
+  const skipRef = useRef(skip);
+  skipRef.current = skip;
 
   const unsubscribe = function unsubscribe() {
     logger.info('unsubscribe'); // reset timeout to allow resubscribing
@@ -426,6 +433,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, deps, {
 
         changeParamsRef.current = function (params) {
           queryLogger.info('change params', {
+            skip: skipRef.current,
             params
           });
 
@@ -435,7 +443,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, deps, {
 
           query.changeParams(params);
 
-          if (!document.hidden) {
+          if (!document.hidden && !skipRef.current) {
             dispatch({
               type: 'fetching'
             });
@@ -444,6 +452,8 @@ function useRetrieveResourceAndSubscribe(createQuery, params, deps, {
         };
 
         const handleVisibilityChange = function handleVisibilityChange() {
+          if (skipRef.current) return;
+
           if (!document.hidden) {
             if (timeoutRef.current !== undefined) {
               queryLogger.debug('timeout cleared');
@@ -485,7 +495,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, deps, {
       changeParamsRef.current(params);
     } // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  }, deps);
+  }, [skip, ...deps]);
   useEffect(function () {
     return function () {
       if (handleVisibilityChangeRef.current) {
@@ -507,12 +517,13 @@ function useRetrieveResourceAndSubscribe(createQuery, params, deps, {
 
 function useResource(createQuery, {
   params,
+  skip = false,
   subscribe,
   subscribeOptions
 }, deps) {
   const result = subscribe ? // eslint-disable-next-line react-hooks/rules-of-hooks
-  useRetrieveResourceAndSubscribe(createQuery, params, deps, subscribeOptions) : // eslint-disable-next-line react-hooks/rules-of-hooks
-  useRetrieveResource(createQuery, params, deps);
+  useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, subscribeOptions) : // eslint-disable-next-line react-hooks/rules-of-hooks
+  useRetrieveResource(createQuery, params, skip, deps);
   return result;
 }
 

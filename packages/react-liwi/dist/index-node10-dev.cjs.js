@@ -9,6 +9,7 @@ const React__default = _interopDefault(React);
 
 function useResource(createQuery, {
   params,
+  skip = false,
   subscribe,
   subscribeOptions
 }, deps) {

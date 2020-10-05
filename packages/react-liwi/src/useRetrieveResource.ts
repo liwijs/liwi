@@ -14,6 +14,7 @@ import reducer, {
 export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
   createQuery: (initialParams: Params) => Query<Result, Params>,
   params: Params,
+  skip: boolean,
   deps: any[],
 ): ResourceResult<Result, Params> {
   const isTransportReady = useContext(TransportClientReadyContext);
@@ -40,7 +41,7 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
     () => {
       const query = createQuery(params);
 
-      if (!isTransportReady) return { query };
+      if (!isTransportReady || skip) return { query };
 
       return {
         query,
@@ -57,6 +58,7 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
   useEffect(() => {
     if (wasReady.current) return;
     if (!isTransportReady) return;
+    if (skip) return;
     wasReady.current = true;
 
     dispatch({
@@ -67,13 +69,17 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
         dispatch({ type: 'error', error: err });
       }),
     });
-  }, [isTransportReady, state.query]);
+  }, [isTransportReady, skip, state.query]);
 
   const firstEffectChangeParams = useRef(false);
 
   useEffect(() => {
     if (firstEffectChangeParams.current === false) {
       firstEffectChangeParams.current = true;
+      return;
+    }
+
+    if (skip) {
       return;
     }
 
@@ -89,7 +95,7 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
       }),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.query, ...deps]);
+  }, [state.query, skip, ...deps]);
 
   return createResourceResultFromState(state);
 }
