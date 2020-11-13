@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.6.1](https://github.com/liwijs/liwi/compare/v7.6.0...v7.6.1) (2020-11-13)
+
+
+### Bug Fixes
+
+* wss protocol detection ([b487ce6](https://github.com/liwijs/liwi/commit/b487ce6))
+
+
+
+
+
 # [7.5.0](https://github.com/liwijs/liwi/compare/v7.4.3...v7.5.0) (2020-08-15)
 
 
