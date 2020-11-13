@@ -273,7 +273,7 @@ function createResourcesWebsocketClient({
   const wsClient = createSimpleWebsocketClient({ ...options,
     url,
     onMessage: event => {
-      logger.info('message', {
+      logger.debug('message', {
         data: event.data
       });
       const [type, id, error, result] = decode(event.data);

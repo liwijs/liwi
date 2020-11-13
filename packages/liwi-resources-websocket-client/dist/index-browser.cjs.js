@@ -293,7 +293,7 @@ function createResourcesWebsocketClient(_ref2) {
   var wsClient = createSimpleWebsocketClient(Object.assign({}, options, {
     url: url,
     onMessage: function onMessage(event) {
-      logger.info('message', {
+      logger.debug('message', {
         data: event.data
       });
 
