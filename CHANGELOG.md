@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.6.2](https://github.com/liwijs/liwi/compare/v7.6.1...v7.6.2) (2020-11-13)
+
+
+### Bug Fixes
+
+* log message in debug ([89ef949](https://github.com/liwijs/liwi/commit/89ef949))
+
+
+
+
+
 ## [7.6.1](https://github.com/liwijs/liwi/compare/v7.6.0...v7.6.1) (2020-11-13)
 
 
