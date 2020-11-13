@@ -165,7 +165,7 @@ export default function createResourcesWebsocketClient({
     ...options,
     url,
     onMessage: (event) => {
-      logger.info('message', { data: event.data });
+      logger.debug('message', { data: event.data });
       const [type, id, error, result] = decode<ToClientMessage>(event.data);
       const handler = handlers[type];
 
