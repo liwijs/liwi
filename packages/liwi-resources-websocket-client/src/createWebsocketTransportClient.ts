@@ -126,7 +126,7 @@ export default function createResourcesWebsocketClient({
   const subscriptions = new Map<number, Subscription<any, any>>();
 
   if (!url) {
-    url = `ws${window.location.protocol === 'https' ? 's' : ''}://${
+    url = `ws${window.location.protocol === 'https:' ? 's' : ''}://${
       window.location.host
     }/ws`;
   }

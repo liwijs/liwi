@@ -228,7 +228,7 @@ function createResourcesWebsocketClient(_ref) {
   const subscriptions = new Map();
 
   if (!url) {
-    url = `ws${window.location.protocol === 'https' ? 's' : ''}://${window.location.host}/ws`;
+    url = `ws${window.location.protocol === 'https:' ? 's' : ''}://${window.location.host}/ws`;
   }
 
   logger.info('create', {
