@@ -1,7 +1,9 @@
 {
   "root": true,
   "extends": ["@pob/eslint-config", "@pob/eslint-config-node"],
+  "ignorePatterns": ["*.d.ts", "/dist"],
   "rules": {
-    "unicorn/no-process-exit": "off"
+    "unicorn/no-process-exit": "off",
+    "@typescript-eslint/no-floating-promises": "warn"
   }
 }

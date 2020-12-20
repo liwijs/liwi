@@ -1,15 +1,17 @@
 /* eslint-disable complexity, max-lines */
-import http from 'http';
-import net from 'net';
+import type http from 'http';
+import type net from 'net';
 import { encode, decode } from 'extended-json';
-import {
+import type {
   AckError,
   ToServerMessage,
   ToClientMessage,
   ResourcesServerService,
+  SubscriptionCallback,
+} from 'liwi-resources-server';
+import {
   ResourcesServerError,
   createMessageHandler,
-  SubscriptionCallback,
 } from 'liwi-resources-server';
 import Logger from 'nightingale-logger';
 import WebSocket from 'ws';
@@ -26,7 +28,7 @@ interface ExtendedWebSocket extends WebSocket {
 
 export interface ResourcesWebsocketServer {
   wss: WebSocket.Server;
-  close(): void;
+  close: () => void;
 }
 
 const logger = new Logger('liwi:resources-websocket-client');
@@ -130,7 +132,7 @@ export const createWsServer = <AuthenticatedUser>(
           const [type, id, payload] = decoded;
           logger.debug('received', { type, id, payload });
           handleDecodedMessage({ type, id, payload } as ToServerMessage);
-        } catch (err) {
+        } catch {
           logger.notice('invalid message', { decoded });
         }
       });
@@ -149,7 +151,7 @@ export const createWsServer = <AuthenticatedUser>(
       extWs.isAlive = false;
       ws.ping(null, undefined);
     });
-  }, 60000);
+  }, 60_000);
 
   const handleUpgrade = (
     request: http.IncomingMessage,

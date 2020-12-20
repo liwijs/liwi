@@ -1,20 +1,25 @@
 /* eslint-disable complexity, max-lines */
-import { QuerySubscription, SubscribeCallback, QueryResult } from 'liwi-store';
-import { AbstractSubscribableStoreQuery, Actions } from 'liwi-subscribe-store';
-import {
+import type {
+  QuerySubscription,
+  SubscribeCallback,
+  QueryResult,
+} from 'liwi-store';
+import type { Actions } from 'liwi-subscribe-store';
+import { AbstractSubscribableStoreQuery } from 'liwi-subscribe-store';
+import type {
   Changes,
   QueryOptions,
   Transformer,
   AllowedKeyValue,
 } from 'liwi-types';
 import mingo from 'mingo';
-import {
+import type {
   MongoBaseModel,
   MongoInsertType,
   MongoKeyPath,
 } from './MongoBaseModel';
-import MongoCursor from './MongoCursor';
-import MongoStore from './MongoStore';
+import type MongoCursor from './MongoCursor';
+import type MongoStore from './MongoStore';
 
 const identityTransformer = <
   Model extends MongoBaseModel<any>,
@@ -111,7 +116,7 @@ export default class MongoQueryCollection<
       switch (action.type) {
         case 'inserted': {
           const filtered = action.next.filter(testCriteria);
-          if (filtered.length !== 0) {
+          if (filtered.length > 0) {
             changes.push({
               type: 'inserted',
               result: filtered.map(this.transformer),
@@ -121,7 +126,7 @@ export default class MongoQueryCollection<
         }
         case 'deleted': {
           const filtered = action.prev.filter(testCriteria);
-          if (filtered.length !== 0) {
+          if (filtered.length > 0) {
             changes.push({
               type: 'deleted',
               keys: filtered.map((object) => object[this.store.keyPath]),
@@ -155,13 +160,13 @@ export default class MongoQueryCollection<
             { deleted: [], updated: [], inserted: [] },
           );
 
-          if (deleted.length !== 0) {
+          if (deleted.length > 0) {
             changes.push({ type: 'deleted', keys: deleted });
           }
-          if (updated.length !== 0) {
+          if (updated.length > 0) {
             changes.push({ type: 'updated', result: updated });
           }
-          if (inserted.length !== 0) {
+          if (inserted.length > 0) {
             changes.push({ type: 'inserted', result: inserted });
           }
 

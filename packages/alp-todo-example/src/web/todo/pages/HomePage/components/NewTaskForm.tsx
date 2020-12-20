@@ -1,10 +1,5 @@
-import React, {
-  ReactElement,
-  useState,
-  FormEventHandler,
-  useContext,
-  useEffect,
-} from 'react';
+import type { ReactElement, FormEventHandler } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useOperation, TransportClientReadyContext } from 'react-liwi';
 import { TodoServicesContext } from 'web/todo/services/TodoServicesProvider';
 

@@ -9,6 +9,7 @@
     "@pob/eslint-config-typescript",
     "@pob/eslint-config-typescript-node"
   ],
+  "ignorePatterns": ["*.d.ts"],
   "rules": {
     "import/no-cycle": "off"
   }

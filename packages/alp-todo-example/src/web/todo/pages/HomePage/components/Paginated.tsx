@@ -1,5 +1,6 @@
 /* eslint-disable unicorn/no-nested-ternary */
-import React, { useContext, ReactElement, useState } from 'react';
+import type { ReactElement } from 'react';
+import React, { useContext, useState } from 'react';
 import { usePaginatedResource } from 'react-liwi';
 import { TodoServicesContext } from 'web/todo/services/TodoServicesProvider';
 

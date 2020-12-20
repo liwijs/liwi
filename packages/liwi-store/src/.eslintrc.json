@@ -6,6 +6,7 @@
   },
   "plugins": ["@typescript-eslint"],
   "extends": ["@pob/eslint-config-typescript"],
+  "ignorePatterns": ["*.d.ts"],
   "rules": {
     "import/no-cycle": "off"
   }

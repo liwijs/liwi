@@ -1,12 +1,12 @@
 import { SubscribeStore } from 'liwi-subscribe-store';
-import { AllowedKeyValue } from 'liwi-types';
-import {
+import type { AllowedKeyValue } from 'liwi-types';
+import type {
   MongoBaseModel,
   MongoKeyPath,
   MongoInsertType,
 } from './MongoBaseModel';
-import MongoConnection from './MongoConnection';
-import MongoStore from './MongoStore';
+import type MongoConnection from './MongoConnection';
+import type MongoStore from './MongoStore';
 
 export default function createMongoSubscribeStore<
   Model extends MongoBaseModel<KeyValue>,

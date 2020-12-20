@@ -7,16 +7,17 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com:liwijs/liwi.git",
+    "url": "https://github.com/liwijs/liwi.git",
     "directory": "packages/alp-todo-example"
   },
   "homepage": "https://github.com/liwijs/liwi",
   "engines": {
-    "node": ">=10.13.0"
+    "node": ">=12.10.0"
   },
   "scripts": {
     "build": "alp-dev-build",
-    "lint": "yarn --cwd ../.. eslint --ext .js,.ts,.tsx --quiet packages/alp-todo-example",
+    "lint": "yarn run lint:eslint",
+    "lint:eslint": "yarn --cwd ../.. eslint --ext .js,.ts,.tsx --report-unused-disable-directives --quiet packages/alp-todo-example",
     "start": "alp-dev"
   },
   "prettier": {

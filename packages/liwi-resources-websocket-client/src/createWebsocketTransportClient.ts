@@ -1,5 +1,6 @@
 /* eslint-disable max-lines */
-import { encode, decode, ExtendedJsonValue } from 'extended-json';
+import type { ExtendedJsonValue } from 'extended-json';
+import { encode, decode } from 'extended-json';
 import { ResourcesServerError } from 'liwi-resources-client';
 import type {
   TransportClient,
@@ -11,9 +12,8 @@ import type {
   AckError,
 } from 'liwi-resources-client';
 import Logger from 'nightingale-logger';
-import createSimpleWebsocketClient, {
-  SimpleWebsocketClientOptions,
-} from './createSimpleWebsocketClient';
+import type { SimpleWebsocketClientOptions } from './createSimpleWebsocketClient';
+import createSimpleWebsocketClient from './createSimpleWebsocketClient';
 
 const logger = new Logger('liwi:resources-websocket-client');
 
@@ -51,8 +51,7 @@ type Handler<T> = (id: number, error: AckError | null, result: T) => void;
 class SubscribeResultPromise<
   Result,
   Payload extends Record<keyof Payload & string, ExtendedJsonValue | undefined>
->
-  implements
+> implements
     TransportClientSubscribeResult<Result, Payload>,
     PromiseLike<Result> {
   private readonly promise: Promise<Result>;

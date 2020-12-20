@@ -1,8 +1,6 @@
-import {
-  ServiceQuery,
-  createResourceClientService,
-} from 'liwi-resources-client';
-import { DraftTask, Task } from './Task';
+import type { ServiceQuery } from 'liwi-resources-client';
+import { createResourceClientService } from 'liwi-resources-client';
+import type { DraftTask, Task } from './Task';
 
 export interface QueryAllParams {
   completed?: boolean;
@@ -31,9 +29,10 @@ export interface TasksService {
   };
 }
 
-export const createTasksServiceClient = createResourceClientService<
-  TasksService
->('tasks', {
-  queries: { queryAll: null, queryWithoutParams: null },
-  operations: { create: null, patch: null, clearCompleted: null },
-});
+export const createTasksServiceClient = createResourceClientService<TasksService>(
+  'tasks',
+  {
+    queries: { queryAll: null, queryWithoutParams: null },
+    operations: { create: null, patch: null, clearCompleted: null },
+  },
+);

@@ -5,5 +5,9 @@
     "project": "packages/liwi-subscribe-store/tsconfig.json"
   },
   "plugins": ["@typescript-eslint"],
-  "extends": ["@pob/eslint-config-typescript"]
+  "extends": ["@pob/eslint-config-typescript"],
+  "ignorePatterns": ["*.d.ts"],
+  "rules": {
+    "@typescript-eslint/no-unsafe-assignment": "warn"
+  }
 }

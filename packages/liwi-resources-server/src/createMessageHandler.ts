@@ -1,16 +1,16 @@
 /* eslint-disable complexity, max-lines */
 import { PRODUCTION } from 'pob-babel';
-import {
+import type {
   Query,
   QuerySubscription,
   ToServerMessage,
   ToServerSubscribeQueryPayload,
-  ResourcesServerError,
   ToServerQueryPayload,
 } from 'liwi-resources';
+import { ResourcesServerError } from 'liwi-resources';
 import Logger from 'nightingale-logger';
-import { ResourcesServerService } from './ResourcesServerService';
-import { ServiceResource, SubscribeHook } from './ServiceResource';
+import type { ResourcesServerService } from './ResourcesServerService';
+import type { ServiceResource, SubscribeHook } from './ServiceResource';
 
 const logger = new Logger('liwi:resources-websocket-client');
 

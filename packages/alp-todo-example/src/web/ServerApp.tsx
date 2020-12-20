@@ -1,8 +1,7 @@
-import {
-  createDirectTransportClient,
-  DirectTransportClientOptions,
-} from 'liwi-resources-direct-client';
-import React, { ReactElement, useContext } from 'react';
+import type { DirectTransportClientOptions } from 'liwi-resources-direct-client';
+import { createDirectTransportClient } from 'liwi-resources-direct-client';
+import type { ReactElement } from 'react';
+import React, { useContext } from 'react';
 import ReactAlpContext from 'react-alp-context';
 import { TransportClientProvider } from 'react-liwi';
 import { resourcesServerService } from 'server/resources';

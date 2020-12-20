@@ -1,4 +1,4 @@
-import { ExtendedJsonValue } from './ExtendedJsonValue';
+import type { ExtendedJsonValue } from './ExtendedJsonValue';
 
 // eslint-disable-next-line unicorn/no-unsafe-regex
 const regexpStringDate = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;

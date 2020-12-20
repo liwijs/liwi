@@ -1,11 +1,12 @@
-import { Query, QueryParams } from 'liwi-resources-client';
+import type { Query, QueryParams } from 'liwi-resources-client';
 import { useMemo } from 'react';
-import {
+import type {
   ResourceResultInitialLoading,
   ResourceResultInitialError,
   ResourceResultLoaded,
 } from './createResourceResultFromState';
-import { useResource, UseResourceOptions } from './useResource';
+import type { UseResourceOptions } from './useResource';
+import { useResource } from './useResource';
 
 type PaginatedQueryParams<Params> = QueryParams<Params> &
   Record<'page', number>;

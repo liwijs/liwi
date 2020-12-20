@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import {
+import type {
   Store as StoreInterface,
   AbstractConnection,
   UpsertResult,
@@ -7,7 +7,7 @@ import {
   AbstractStoreCursor,
   SubscribableStore,
 } from 'liwi-store';
-import {
+import type {
   BaseModel,
   InsertType,
   Update,
@@ -38,8 +38,7 @@ export default class SubscribeStore<
     ModelInsertType,
     Connection
   >
->
-  implements
+> implements
     StoreInterface<KeyPath, KeyValue, Model, ModelInsertType, Connection> {
   private readonly store: Store;
 

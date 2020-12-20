@@ -1,5 +1,5 @@
-import { ExtendedJsonValue } from 'extended-json';
-import { Query, QueryParams } from 'liwi-store';
+import type { ExtendedJsonValue } from 'extended-json';
+import type { Query, QueryParams } from 'liwi-store';
 
 export type {
   Query,

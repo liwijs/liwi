@@ -1,5 +1,6 @@
 import { config } from 'alp-node';
-import { MongoStore, MongoConnection, MongoBaseModel } from 'liwi-mongo';
+import type { MongoBaseModel } from 'liwi-mongo';
+import { MongoStore, MongoConnection } from 'liwi-mongo';
 
 export { createMongoSubscribeStore } from 'liwi-mongo';
 

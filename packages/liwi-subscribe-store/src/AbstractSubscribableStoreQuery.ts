@@ -1,11 +1,11 @@
-import {
+import type {
   Query,
   SubscribeCallback,
   QuerySubscription,
   QueryResult,
 } from 'liwi-store';
-import { BaseModel, InsertType, AllowedKeyValue } from 'liwi-types';
-import SubscribeStore from './SubscribeStore';
+import type { BaseModel, InsertType, AllowedKeyValue } from 'liwi-types';
+import type SubscribeStore from './SubscribeStore';
 
 export default abstract class AbstractSubscribableStoreQuery<
   KeyPath extends string,

@@ -1,9 +1,10 @@
-/* eslint-disable camelcase, complexity */
-import { Change, Changes, QueryInfo, QueryMeta } from 'liwi-types';
+/* eslint-disable complexity */
+import type { Change, Changes, QueryInfo, QueryMeta } from 'liwi-types';
 import { Lazy } from 'mingo/lazy';
 import { $sort } from 'mingo/operators/pipeline';
 
 function sortCollection(collection: any, sort: any): any {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return $sort(Lazy(collection), sort, { config: { idKey: '_id' } }).value();
 }
 
@@ -60,7 +61,7 @@ const applyCollectionChange = <Value extends any>(
 };
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
-export function applyCollectionChanges<Result extends Item[], Item>(
+export function applyCollectionChanges<Item>(
   state: undefined | Item[],
   changes: Changes<any, Item[]>,
   queryMeta: QueryMeta,
@@ -71,6 +72,7 @@ export function applyCollectionChanges<Result extends Item[], Item>(
   const newQueryMeta = { ...queryMeta };
 
   return {
+    // eslint-ignore-next-line unicorn/no-reduce
     state: changes.reduce<Item[]>(
       (result: Item[], change: Change<any, Item[]>) =>
         applyCollectionChange<Item>(result, change, queryMeta, queryInfo),

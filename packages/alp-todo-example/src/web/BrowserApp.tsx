@@ -1,8 +1,7 @@
-import {
-  createWebsocketTransportClient,
-  WebsocketTransportClientOptions,
-} from 'liwi-resources-websocket-client';
-import React, { ReactElement } from 'react';
+import type { WebsocketTransportClientOptions } from 'liwi-resources-websocket-client';
+import { createWebsocketTransportClient } from 'liwi-resources-websocket-client';
+import type { ReactElement } from 'react';
+import React from 'react';
 import { TransportClientProvider } from 'react-liwi';
 import App from './core/Layout';
 

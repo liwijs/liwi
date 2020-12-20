@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
-import { UpsertResult, Store } from 'liwi-store';
-import {
+import type { UpsertResult, Store } from 'liwi-store';
+import type {
   Criteria,
   Sort,
   Update,
@@ -8,13 +8,14 @@ import {
   Transformer,
   AllowedKeyValue,
 } from 'liwi-types';
-import { ObjectID, Collection, MongoClient } from 'mongodb';
-import {
+import type { Collection, MongoClient } from 'mongodb';
+import { ObjectID } from 'mongodb';
+import type {
   MongoBaseModel,
   MongoKeyPath,
   MongoInsertType,
 } from './MongoBaseModel';
-import MongoConnection from './MongoConnection';
+import type MongoConnection from './MongoConnection';
 import MongoCursor from './MongoCursor';
 import MongoQueryCollection from './MongoQueryCollection';
 import MongoQuerySingleItem from './MongoQuerySingleItem';
@@ -31,8 +32,7 @@ export default class MongoStore<
   Model extends MongoBaseModel<KeyValue>,
   KeyValue extends AllowedKeyValue = Model[MongoKeyPath],
   ModelInsertType extends MongoInsertType<Model> = MongoInsertType<Model>
->
-  implements
+> implements
     Store<
       MongoKeyPath,
       KeyValue,

@@ -5,15 +5,15 @@
       "authorEmail": "christophe@hurpeau.com",
       "authorUrl": "https://christophe.hurpeau.com"
     },
-    "pob-config": {
+    "project": {
+      "type": "lib"
+    },
+    "lib": {
       "documentation": false,
       "testing": {
         "codecov": true,
         "ci": true
       }
-    },
-    "project": {
-      "type": "lib"
     }
   }
 }
