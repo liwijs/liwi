@@ -443,14 +443,15 @@ class MongoStore {
     return object;
   }
 
-  async upsertOne(object) {
-    const result = await this.upsertOneWithInfo(object);
+  async upsertOne(object, setOnInsertPartialObject) {
+    const result = await this.upsertOneWithInfo(object, setOnInsertPartialObject);
     return result.object;
   }
 
-  async upsertOneWithInfo(object) {
+  async upsertOneWithInfo(object, setOnInsertPartialObject) {
     const $setOnInsert = {
-      created: object.created || new Date()
+      created: object.created || new Date(),
+      ...setOnInsertPartialObject
     };
     if (!object.updated) object.updated = new Date();
     const $set = { ...object
@@ -469,7 +470,7 @@ class MongoStore {
     });
 
     if (upsertedCount) {
-      object.created = $setOnInsert.created;
+      Object.assign(object, $setOnInsert);
     }
 
     return {

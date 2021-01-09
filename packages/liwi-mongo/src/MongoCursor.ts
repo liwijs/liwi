@@ -1,14 +1,13 @@
 import { AbstractStoreCursor } from 'liwi-store';
 import { AllowedKeyValue } from 'liwi-types';
 import { Cursor } from 'mongodb';
-import { MongoBaseModel, MongoInsertType } from './MongoBaseModel';
+import { MongoBaseModel } from './MongoBaseModel';
 import MongoStore from './MongoStore';
 
 export default class MongoCursor<
   Model extends MongoBaseModel<KeyValue>,
   Result extends Partial<Model> = Model,
-  KeyValue extends AllowedKeyValue = Model['_id'],
-  ModelInsertType extends MongoInsertType<Model> = MongoInsertType<Model>
+  KeyValue extends AllowedKeyValue = Model['_id']
 > extends AbstractStoreCursor<
   MongoStore<Model, KeyValue>,
   KeyValue,
@@ -21,10 +20,7 @@ export default class MongoCursor<
 
   private _result?: Result;
 
-  constructor(
-    store: MongoStore<Model, KeyValue, ModelInsertType>,
-    cursor: Cursor,
-  ) {
+  constructor(store: MongoStore<Model, KeyValue>, cursor: Cursor) {
     super(store);
     this.cursor = cursor;
   }

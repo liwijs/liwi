@@ -67,9 +67,15 @@ export interface Store<
 
   replaceSeveral(objects: Model[]): Promise<Model[]>;
 
-  upsertOne(object: ModelInsertType): Promise<Model>;
+  upsertOne: <K extends keyof ModelInsertType>(
+    object: Exclude<ModelInsertType, K>,
+    setOnInsertPartialObject?: Pick<ModelInsertType, K>,
+  ) => Promise<Model>;
 
-  upsertOneWithInfo(object: ModelInsertType): Promise<UpsertResult<Model>>;
+  upsertOneWithInfo: <K extends keyof ModelInsertType>(
+    object: Exclude<ModelInsertType, K>,
+    setOnInsertPartialObject?: Pick<ModelInsertType, K>,
+  ) => Promise<UpsertResult<Model>>;
 
   partialUpdateByKey(
     key: KeyValue,

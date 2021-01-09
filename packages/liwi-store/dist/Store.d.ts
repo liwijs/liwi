@@ -19,8 +19,8 @@ export interface Store<KeyPath extends string, KeyValue extends AllowedKeyValue,
     insertOne(object: ModelInsertType): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
     replaceSeveral(objects: Model[]): Promise<Model[]>;
-    upsertOne(object: ModelInsertType): Promise<Model>;
-    upsertOneWithInfo(object: ModelInsertType): Promise<UpsertResult<Model>>;
+    upsertOne: <K extends keyof ModelInsertType>(object: Exclude<ModelInsertType, K>, setOnInsertPartialObject?: Pick<ModelInsertType, K>) => Promise<Model>;
+    upsertOneWithInfo: <K extends keyof ModelInsertType>(object: Exclude<ModelInsertType, K>, setOnInsertPartialObject?: Pick<ModelInsertType, K>) => Promise<UpsertResult<Model>>;
     partialUpdateByKey(key: KeyValue, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateMany(criteria: Criteria<Model>, partialUpdate: Update<Model>): Promise<void>;

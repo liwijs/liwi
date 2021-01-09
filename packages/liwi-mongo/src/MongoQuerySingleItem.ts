@@ -30,19 +30,15 @@ interface TestCriteria {
 export default class MongoQuerySingleItem<
   Model extends MongoBaseModel<KeyValue>,
   Result extends Record<MongoKeyPath, KeyValue> | null = Model | null,
-  KeyValue extends AllowedKeyValue = Model['_id'],
-  ModelInsertType extends MongoInsertType<Model, KeyValue> = MongoInsertType<
-    Model,
-    KeyValue
-  >
+  KeyValue extends AllowedKeyValue = Model['_id']
 > extends AbstractSubscribableStoreQuery<
   MongoKeyPath,
   KeyValue,
   Model,
-  ModelInsertType,
+  MongoInsertType<Model, KeyValue>,
   Result
 > {
-  private readonly store: MongoStore<Model, KeyValue, ModelInsertType>;
+  private readonly store: MongoStore<Model, KeyValue>;
 
   private readonly options: QueryOptions<Model>;
 
@@ -51,7 +47,7 @@ export default class MongoQuerySingleItem<
   private readonly transformer: Transformer<Model, Result>;
 
   constructor(
-    store: MongoStore<Model, KeyValue, ModelInsertType>,
+    store: MongoStore<Model, KeyValue>,
     options: QueryOptions<Model>,
     transformer: Transformer<Model, Result> = identityTransformer,
   ) {
@@ -181,7 +177,7 @@ export default class MongoQuerySingleItem<
   }
 
   private async createMongoCursor(): Promise<
-    MongoCursor<Model, Model, KeyValue, ModelInsertType>
+    MongoCursor<Model, Model, KeyValue>
   > {
     const cursor = await this.store.cursor(
       this.options.criteria,

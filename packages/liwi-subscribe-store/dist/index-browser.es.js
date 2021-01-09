@@ -183,14 +183,14 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.upsertOne = /*#__PURE__*/function () {
-    var _upsertOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee4(object) {
+    var _upsertOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee4(object, setOnInsertPartialObject) {
       var result;
       return _regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
               _context4.next = 2;
-              return this.upsertOneWithInfo(object);
+              return this.upsertOneWithInfo(object, setOnInsertPartialObject);
 
             case 2:
               result = _context4.sent;
@@ -210,14 +210,14 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.upsertOneWithInfo = /*#__PURE__*/function () {
-    var _upsertOneWithInfo = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee5(object) {
+    var _upsertOneWithInfo = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee5(object, setOnInsertPartialObject) {
       var upsertedWithInfo;
       return _regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) {
           switch (_context5.prev = _context5.next) {
             case 0:
               _context5.next = 2;
-              return this.store.upsertOneWithInfo(object);
+              return this.store.upsertOneWithInfo(object, setOnInsertPartialObject);
 
             case 2:
               upsertedWithInfo = _context5.sent;

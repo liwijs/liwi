@@ -2,25 +2,24 @@ import { SubscribeStore } from 'liwi-subscribe-store';
 import { AllowedKeyValue } from 'liwi-types';
 import {
   MongoBaseModel,
-  MongoKeyPath,
   MongoInsertType,
+  MongoKeyPath,
 } from './MongoBaseModel';
 import MongoConnection from './MongoConnection';
 import MongoStore from './MongoStore';
 
 export default function createMongoSubscribeStore<
   Model extends MongoBaseModel<KeyValue>,
-  KeyValue extends AllowedKeyValue = Model[MongoKeyPath],
-  ModelInsertType extends MongoInsertType<Model> = MongoInsertType<Model>
+  KeyValue extends AllowedKeyValue = Model[MongoKeyPath]
 >(
-  mongoStore: MongoStore<Model, KeyValue, ModelInsertType>,
+  mongoStore: MongoStore<Model, KeyValue>,
 ): SubscribeStore<
   MongoKeyPath,
   KeyValue,
   Model,
-  ModelInsertType,
+  MongoInsertType<Model, KeyValue>,
   MongoConnection,
-  MongoStore<Model, KeyValue, ModelInsertType>
+  MongoStore<Model, KeyValue>
 > {
   return new SubscribeStore(mongoStore);
 }

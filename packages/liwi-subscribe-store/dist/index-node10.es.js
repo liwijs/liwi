@@ -101,13 +101,13 @@ class SubscribeStore {
     return replacedObjects;
   }
 
-  async upsertOne(object) {
-    const result = await this.upsertOneWithInfo(object);
+  async upsertOne(object, setOnInsertPartialObject) {
+    const result = await this.upsertOneWithInfo(object, setOnInsertPartialObject);
     return result.object;
   }
 
-  async upsertOneWithInfo(object) {
-    const upsertedWithInfo = await this.store.upsertOneWithInfo(object);
+  async upsertOneWithInfo(object, setOnInsertPartialObject) {
+    const upsertedWithInfo = await this.store.upsertOneWithInfo(object, setOnInsertPartialObject);
 
     if (upsertedWithInfo.inserted) {
       this.callSubscribed({

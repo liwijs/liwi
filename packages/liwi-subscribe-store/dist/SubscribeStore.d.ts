@@ -27,8 +27,8 @@ export default class SubscribeStore<KeyPath extends string, KeyValue extends All
     insertOne(object: ModelInsertType): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
     replaceSeveral(objects: Model[]): Promise<Model[]>;
-    upsertOne(object: ModelInsertType): Promise<Model>;
-    upsertOneWithInfo(object: ModelInsertType): Promise<UpsertResult<Model>>;
+    upsertOne<K extends keyof ModelInsertType>(object: Exclude<ModelInsertType, K>, setOnInsertPartialObject?: Pick<ModelInsertType, K>): Promise<Model>;
+    upsertOneWithInfo<K extends keyof ModelInsertType>(object: Exclude<ModelInsertType, K>, setOnInsertPartialObject?: Pick<ModelInsertType, K>): Promise<UpsertResult<Model>>;
     partialUpdateByKey(key: any, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateMany(criteria: Criteria<Model>, partialUpdate: Update<Model>): Promise<void>;

@@ -28,16 +28,15 @@ type TestCriteria = (obj: any) => boolean;
 export default class MongoQueryCollection<
   Model extends MongoBaseModel<KeyValue>,
   KeyValue extends AllowedKeyValue = Model['_id'],
-  ModelInsertType extends MongoInsertType<Model> = MongoInsertType<Model>,
   Item extends Record<MongoKeyPath, KeyValue> = Model
 > extends AbstractSubscribableStoreQuery<
   MongoKeyPath,
   KeyValue,
   Model,
-  ModelInsertType,
+  MongoInsertType<Model, KeyValue>,
   Item[]
 > {
-  private readonly store: MongoStore<Model, KeyValue, ModelInsertType>;
+  private readonly store: MongoStore<Model, KeyValue>;
 
   private readonly options: QueryOptions<Model>;
 
@@ -46,7 +45,7 @@ export default class MongoQueryCollection<
   private readonly transformer: Transformer<Model, Item>;
 
   constructor(
-    store: MongoStore<Model, KeyValue, ModelInsertType>,
+    store: MongoStore<Model, KeyValue>,
     options: QueryOptions<Model>,
     transformer: Transformer<Model, Item> = identityTransformer,
   ) {
@@ -206,7 +205,7 @@ export default class MongoQueryCollection<
   }
 
   private async createMongoCursor(): Promise<
-    MongoCursor<Model, Model, KeyValue, ModelInsertType>
+    MongoCursor<Model, Model, KeyValue>
   > {
     const cursor = await this.store.cursor(
       this.options.criteria,

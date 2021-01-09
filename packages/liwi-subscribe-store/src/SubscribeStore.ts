@@ -135,15 +135,25 @@ export default class SubscribeStore<
     return replacedObjects;
   }
 
-  async upsertOne(object: ModelInsertType): Promise<Model> {
-    const result = await this.upsertOneWithInfo(object);
+  async upsertOne<K extends keyof ModelInsertType>(
+    object: Exclude<ModelInsertType, K>,
+    setOnInsertPartialObject?: Pick<ModelInsertType, K>,
+  ): Promise<Model> {
+    const result = await this.upsertOneWithInfo(
+      object,
+      setOnInsertPartialObject,
+    );
     return result.object;
   }
 
-  async upsertOneWithInfo(
-    object: ModelInsertType,
+  async upsertOneWithInfo<K extends keyof ModelInsertType>(
+    object: Exclude<ModelInsertType, K>,
+    setOnInsertPartialObject?: Pick<ModelInsertType, K>,
   ): Promise<UpsertResult<Model>> {
-    const upsertedWithInfo = await this.store.upsertOneWithInfo(object);
+    const upsertedWithInfo = await this.store.upsertOneWithInfo(
+      object,
+      setOnInsertPartialObject,
+    );
     if (upsertedWithInfo.inserted) {
       this.callSubscribed({
         type: 'inserted',

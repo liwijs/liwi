@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { UpsertResult, Store } from 'liwi-store';
+import { UpsertResult, SubscribableStore } from 'liwi-store';
 import {
   Criteria,
   Sort,
@@ -29,11 +29,10 @@ export interface MongoUpsertResult<
 
 export default class MongoStore<
   Model extends MongoBaseModel<KeyValue>,
-  KeyValue extends AllowedKeyValue = Model[MongoKeyPath],
-  ModelInsertType extends MongoInsertType<Model> = MongoInsertType<Model>
+  KeyValue extends AllowedKeyValue = Model[MongoKeyPath]
 >
   implements
-    Store<
+    SubscribableStore<
       MongoKeyPath,
       KeyValue,
       Model,
@@ -76,15 +75,23 @@ export default class MongoStore<
   createQuerySingleItem<Result extends Record<MongoKeyPath, KeyValue> = Model>(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Result>,
-  ): MongoQuerySingleItem<Model, Result, KeyValue, MongoInsertType<Model>> {
-    return new MongoQuerySingleItem(this, options, transformer);
+  ): MongoQuerySingleItem<Model, Result, KeyValue> {
+    return new MongoQuerySingleItem<Model, Result, KeyValue>(
+      this,
+      options,
+      transformer,
+    );
   }
 
   createQueryCollection<Item extends Record<MongoKeyPath, KeyValue> = Model>(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Item>,
-  ): MongoQueryCollection<Model, Model['_id'], MongoInsertType<Model>, Item> {
-    return new MongoQueryCollection(this, options, transformer);
+  ): MongoQueryCollection<Model, Model['_id'], Item> {
+    return new MongoQueryCollection<Model, KeyValue, Item>(
+      this,
+      options,
+      transformer,
+    );
   }
 
   async insertOne(object: MongoInsertType<Model>): Promise<Model> {
@@ -112,16 +119,24 @@ export default class MongoStore<
     return object as Model;
   }
 
-  async upsertOne(object: MongoInsertType<Model>): Promise<Model> {
-    const result = await this.upsertOneWithInfo(object);
+  async upsertOne<K extends keyof MongoInsertType<Model>>(
+    object: Exclude<MongoInsertType<Model>, K>,
+    setOnInsertPartialObject?: Pick<MongoInsertType<Model>, K>,
+  ): Promise<Model> {
+    const result = await this.upsertOneWithInfo(
+      object,
+      setOnInsertPartialObject,
+    );
     return result.object;
   }
 
-  async upsertOneWithInfo(
-    object: MongoInsertType<Model>,
+  async upsertOneWithInfo<K extends keyof MongoInsertType<Model>>(
+    object: Exclude<MongoInsertType<Model>, K>,
+    setOnInsertPartialObject?: Pick<MongoInsertType<Model>, K>,
   ): Promise<MongoUpsertResult<KeyValue, Model>> {
     const $setOnInsert = {
       created: object.created || new Date(),
+      ...setOnInsertPartialObject,
     };
 
     if (!object.updated) object.updated = new Date();
@@ -138,10 +153,10 @@ export default class MongoStore<
     );
 
     if (upsertedCount) {
-      object.created = $setOnInsert.created;
+      Object.assign(object, $setOnInsert);
     }
 
-    return { object: object as Model, inserted: !!upsertedCount };
+    return { object: (object as unknown) as Model, inserted: !!upsertedCount };
   }
 
   replaceSeveral(objects: Model[]): Promise<Model[]> {
@@ -201,7 +216,7 @@ export default class MongoStore<
   cursor<Result = Model>(
     criteria?: Criteria<Model>,
     sort?: Sort<Model>,
-  ): Promise<MongoCursor<Model, Result, KeyValue, ModelInsertType>> {
+  ): Promise<MongoCursor<Model, Result, KeyValue>> {
     return this.collection
       .then((collection) => collection.find(criteria))
       .then(sort && ((cursor) => cursor.sort(sort)))
