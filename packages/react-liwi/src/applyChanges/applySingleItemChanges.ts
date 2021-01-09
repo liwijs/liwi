@@ -1,5 +1,4 @@
-/* eslint-disable camelcase, complexity */
-import { Change, Changes, QueryInfo, QueryMeta } from 'liwi-types';
+import type { Change, Changes, QueryInfo, QueryMeta } from 'liwi-types';
 
 const applySingleItemChange = <Value extends Record<keyof Value, any>>(
   state: Value | null,
@@ -41,6 +40,7 @@ export function applySingleItemChanges<
   const newQueryMeta = { ...queryMeta };
 
   return {
+    // eslint-ignore-next-line unicorn/no-reduce
     state: changes.reduce<Value | null>(
       (result: Value | null, change: Change<any, Value | null>) =>
         applySingleItemChange<Value>(result, change, queryMeta, queryInfo),

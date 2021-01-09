@@ -15,10 +15,10 @@ export interface SimpleWebsocketClientOptions {
 }
 declare type Message = Parameters<WebSocket['send']>[0];
 export interface WebsocketTransport {
-    connect(): void;
-    close(): void;
-    isConnected(): boolean;
-    sendMessage(message: Message): void;
+    connect: () => void;
+    close: () => void;
+    isConnected: () => boolean;
+    sendMessage: (message: Message) => void;
     listenStateChange: StateChangeListenerCreator;
 }
 export default function createSimpleWebsocketClient({ url, protocols, reconnection, reconnectionDelayMin, reconnectionDelayMax, reconnectionAttempts, onMessage, onError, }: SimpleWebsocketClientOptions): WebsocketTransport;

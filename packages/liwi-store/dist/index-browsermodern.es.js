@@ -1,17 +1,13 @@
 class AbstractConnection {}
 
-/* eslint-disable no-await-in-loop */
 class AbstractCursor {
   nextResult() {
-    var _this = this;
-
-    return this.next().then(function () {
-      return _this.result();
-    });
+    return this.next().then(() => this.result());
   }
 
   async forEachKeys(callback) {
     while (true) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const key = await this.next();
       if (!key) return;
       await callback(key);
@@ -19,13 +15,7 @@ class AbstractCursor {
   }
 
   forEach(callback) {
-    var _this2 = this;
-
-    return this.forEachKeys(function () {
-      return _this2.result().then(function (result) {
-        return callback(result);
-      });
-    });
+    return this.forEachKeys(() => this.result().then(result => callback(result)));
   }
 
   *keysIterator() {
@@ -35,13 +25,9 @@ class AbstractCursor {
   }
 
   *[Symbol.iterator]() {
-    var _this3 = this;
-
-    // eslint-disable-next-line no-restricted-syntax
     for (const keyPromise of this.keysIterator()) {
-      yield keyPromise.then(function (key) {
-        return key && _this3.result();
-      });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      yield keyPromise.then(key => key && this.result());
     }
   } // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
 
@@ -63,7 +49,6 @@ class AbstractCursor {
 
 }
 
-/* eslint-disable no-await-in-loop */
 class AbstractStoreCursor extends AbstractCursor {
   constructor(store) {
     super();

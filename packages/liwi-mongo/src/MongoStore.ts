@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
-import { UpsertResult, SubscribableStore } from 'liwi-store';
-import {
+import type { UpsertResult, SubscribableStore, QueryParams } from 'liwi-store';
+import type {
   Criteria,
   Sort,
   Update,
@@ -8,13 +8,14 @@ import {
   Transformer,
   AllowedKeyValue,
 } from 'liwi-types';
-import { ObjectID, Collection, MongoClient } from 'mongodb';
-import {
+import type { Collection, MongoClient } from 'mongodb';
+import { ObjectID } from 'mongodb';
+import type {
   MongoBaseModel,
   MongoKeyPath,
   MongoInsertType,
 } from './MongoBaseModel';
-import MongoConnection from './MongoConnection';
+import type MongoConnection from './MongoConnection';
 import MongoCursor from './MongoCursor';
 import MongoQueryCollection from './MongoQueryCollection';
 import MongoQuerySingleItem from './MongoQuerySingleItem';
@@ -30,8 +31,7 @@ export interface MongoUpsertResult<
 export default class MongoStore<
   Model extends MongoBaseModel<KeyValue>,
   KeyValue extends AllowedKeyValue = Model[MongoKeyPath]
->
-  implements
+> implements
     SubscribableStore<
       MongoKeyPath,
       KeyValue,
@@ -72,22 +72,28 @@ export default class MongoStore<
     return Promise.resolve(this._collection);
   }
 
-  createQuerySingleItem<Result extends Record<MongoKeyPath, KeyValue> = Model>(
+  createQuerySingleItem<
+    Result extends Record<MongoKeyPath, KeyValue> = Model,
+    Params extends QueryParams<Params> = never
+  >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Result>,
-  ): MongoQuerySingleItem<Model, Result, KeyValue> {
-    return new MongoQuerySingleItem<Model, Result, KeyValue>(
+  ): MongoQuerySingleItem<Model, Params, Result, KeyValue> {
+    return new MongoQuerySingleItem<Model, Params, Result, KeyValue>(
       this,
       options,
       transformer,
     );
   }
 
-  createQueryCollection<Item extends Record<MongoKeyPath, KeyValue> = Model>(
+  createQueryCollection<
+    Item extends Record<MongoKeyPath, KeyValue> = Model,
+    Params extends QueryParams<Params> = never
+  >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Item>,
-  ): MongoQueryCollection<Model, Model['_id'], Item> {
-    return new MongoQueryCollection<Model, KeyValue, Item>(
+  ): MongoQueryCollection<Model, Params, Model['_id'], Item> {
+    return new MongoQueryCollection<Model, Params, KeyValue, Item>(
       this,
       options,
       transformer,

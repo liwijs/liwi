@@ -1,16 +1,16 @@
 /* eslint-disable complexity, max-lines */
 import { PRODUCTION } from 'pob-babel';
-import {
+import type {
   Query,
   QuerySubscription,
   ToServerMessage,
   ToServerSubscribeQueryPayload,
-  ResourcesServerError,
   ToServerQueryPayload,
 } from 'liwi-resources';
+import { ResourcesServerError } from 'liwi-resources';
 import Logger from 'nightingale-logger';
-import { ResourcesServerService } from './ResourcesServerService';
-import { ServiceResource, SubscribeHook } from './ServiceResource';
+import type { ResourcesServerService } from './ResourcesServerService';
+import type { ServiceResource, SubscribeHook } from './ServiceResource';
 
 const logger = new Logger('liwi:resources-websocket-client');
 
@@ -39,6 +39,7 @@ const logUnexpectedError = (
   if (!PRODUCTION || !(error instanceof ResourcesServerError)) {
     logger.error(message, {
       error,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       payload: PRODUCTION ? 'redacted' : payload,
     });
   }
@@ -52,7 +53,7 @@ export const createMessageHandler = <AuthenticatedUser>(
   messageHandler: MessageHandler;
   close: () => void;
 } => {
-  const openSubscriptions = allowSubscriptions
+  const openedSubscriptions = allowSubscriptions
     ? new Map<number, SubscriptionAndSubscribeHook>()
     : null;
 
@@ -76,6 +77,7 @@ export const createMessageHandler = <AuthenticatedUser>(
       throw new Error('Invalid query key');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return resource.queries[payload.key](payload.params, authenticatedUser);
   };
 
@@ -86,12 +88,12 @@ export const createMessageHandler = <AuthenticatedUser>(
     query: Query<any, any>,
     sendSubscriptionMessage: SubscriptionCallback,
   ): PromiseLike<null> => {
-    if (!openSubscriptions) {
+    if (!openedSubscriptions) {
       throw new Error('Subscriptions not allowed');
     }
 
     const { subscriptionId } = payload;
-    if (openSubscriptions.has(subscriptionId)) {
+    if (openedSubscriptions.has(subscriptionId)) {
       const error = 'Already have a watcher for this id. Cannot add a new one';
       logger.warn(error, { subscriptionId, key: payload.key });
       throw new ResourcesServerError('ALREADY_HAVE_WATCHER', error);
@@ -104,9 +106,8 @@ export const createMessageHandler = <AuthenticatedUser>(
       sendSubscriptionMessage(subscriptionId, error, result);
     });
 
-    const subscribeHook =
-      resource.subscribeHooks && resource.subscribeHooks[payload.key];
-    openSubscriptions.set(subscriptionId, {
+    const subscribeHook = resource.subscribeHooks?.[payload.key];
+    openedSubscriptions.set(subscriptionId, {
       subscription,
       subscribeHook,
       params: subscribeHook ? payload.params : undefined,
@@ -131,43 +132,40 @@ export const createMessageHandler = <AuthenticatedUser>(
 
   return {
     close: () => {
-      if (openSubscriptions) {
-        openSubscriptions.forEach(unsubscribeSubscription);
+      if (openedSubscriptions) {
+        openedSubscriptions.forEach(unsubscribeSubscription);
       }
     },
-    messageHandler: async (message, subscriptionCallback): Promise<void> => {
+    messageHandler: async (message, subscriptionCallback): Promise<unknown> => {
       switch (message.type) {
         case 'fetch': {
           try {
             const resource = getResource(message.payload);
             const query = createQuery(message.payload, resource);
-            return await query.fetch((result: any) => result);
+            return await query.fetch((result) => result);
           } catch (err) {
             logUnexpectedError(err, message.type, message.payload);
             throw err;
           }
+          return;
         }
         case 'fetchAndSubscribe': {
           try {
             const resource = getResource(message.payload);
             const query = createQuery(message.payload, resource);
 
-            if (!openSubscriptions) {
-              return await query.fetch((result: any) => result);
-            } else {
-              await createSubscription(
-                'fetchAndSubscribe',
-                message.payload,
-                resource,
-                query,
-                subscriptionCallback,
-              );
-            }
+            return await createSubscription(
+              'fetchAndSubscribe',
+              message.payload,
+              resource,
+              query,
+              subscriptionCallback,
+            );
           } catch (err) {
             logUnexpectedError(err, message.type, message.payload);
             throw err;
           }
-          break;
+          return;
         }
         case 'subscribe': {
           try {
@@ -184,18 +182,18 @@ export const createMessageHandler = <AuthenticatedUser>(
             logUnexpectedError(err, message.type, message.payload);
             throw err;
           }
-          break;
+          return;
         }
         // case 'subscribe:changePayload': {
         //   break;
         // }
         case 'subscribe:close': {
-          if (!openSubscriptions) {
+          if (!openedSubscriptions) {
             throw new Error('Subscriptions not allowed');
           }
           try {
             const { subscriptionId } = message.payload;
-            const SubscriptionAndSubscribeHook = openSubscriptions.get(
+            const SubscriptionAndSubscribeHook = openedSubscriptions.get(
               subscriptionId,
             );
             if (!SubscriptionAndSubscribeHook) {
@@ -203,13 +201,13 @@ export const createMessageHandler = <AuthenticatedUser>(
                 subscriptionId,
               });
             } else {
-              openSubscriptions.delete(subscriptionId);
+              openedSubscriptions.delete(subscriptionId);
               unsubscribeSubscription(SubscriptionAndSubscribeHook);
             }
           } catch (err) {
             logUnexpectedError(err, message.type, message.payload);
           }
-          break;
+          return;
         }
         case 'do': {
           try {
@@ -225,6 +223,7 @@ export const createMessageHandler = <AuthenticatedUser>(
               );
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return await operation(params, authenticatedUser);
           } catch (err) {
             logUnexpectedError(err, message.type, message.payload);

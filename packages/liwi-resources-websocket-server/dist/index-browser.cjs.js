@@ -9,7 +9,6 @@ var liwiResourcesServer = require('liwi-resources-server');
 var Logger = _interopDefault(require('nightingale-logger'));
 var WebSocket = _interopDefault(require('ws'));
 
-/* eslint-disable complexity, max-lines */
 var logger = new Logger('liwi:resources-websocket-client');
 var createWsServer = function createWsServer(server, path, resourcesServerService, getAuthenticatedUser) {
   if (path === void 0) {
@@ -25,10 +24,10 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
     var sendMessage = function sendMessage(type, id, error, result) {
       if (!id) throw new Error('Invalid id');
       logger.debug('sendMessage', {
-        type: type,
-        id: id,
-        error: error,
-        result: result
+        type,
+        id,
+        error,
+        result
       });
       ws.send(extendedJson.encode([type, id, error, result]));
     };
@@ -93,18 +92,19 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
       try {
         type = decoded[0], id = decoded[1], payload = decoded[2];
         logger.debug('received', {
-          type: type,
-          id: id,
-          payload: payload
-        });
+          type,
+          id,
+          payload
+        }); // eslint-disable-next-line @typescript-eslint/no-floating-promises
+
         handleDecodedMessage({
-          type: type,
-          id: id,
-          payload: payload
+          type,
+          id,
+          payload
         });
-      } catch (err) {
+      } catch (_unused) {
         logger.notice('invalid message', {
-          decoded: decoded
+          decoded
         });
       }
     });
@@ -124,9 +124,11 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
     if (request.url !== path) return;
     var authenticatedUserPromise = Promise.resolve(getAuthenticatedUser(request));
     wss.handleUpgrade(request, socket, upgradeHead, function (ws) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       authenticatedUserPromise.catch(function (err) {
-        logger.warn('getAuthenticatedUser threw an error, return null instead.', {
-          err: err
+        logger.warn('getAuthenticatedUser threw an error, return null instead.', // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        {
+          err
         });
         return null;
       }).then(function (authenticatedUser) {
@@ -137,12 +139,14 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
 
   server.on('upgrade', handleUpgrade);
   return {
-    wss: wss,
-    close: function close() {
+    wss,
+
+    close() {
       wss.close();
       server.removeListener('upgrade', handleUpgrade);
       clearInterval(interval);
     }
+
   };
 };
 

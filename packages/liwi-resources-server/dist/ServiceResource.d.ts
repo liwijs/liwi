@@ -1,4 +1,4 @@
-import { ServiceInterface } from 'liwi-resources';
+import type { ServiceInterface } from 'liwi-resources';
 export interface SubscribeHook<ConnectedUser = any, P = any> {
     subscribed: (connectedUser: undefined | ConnectedUser, params: P) => void;
     unsubscribed: (connectedUser: undefined | ConnectedUser, params: P) => void;

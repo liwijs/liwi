@@ -2,7 +2,7 @@ import type { ServiceInterface as ClientServiceInterface } from 'liwi-resources'
 import { ClientQuery } from './ClientQuery';
 import type { TransportClient } from './TransportClient';
 
-const getKeys = <T extends {}>(o: T): (keyof T)[] =>
+const getKeys = <T extends Record<keyof T, unknown>>(o: T): (keyof T)[] =>
   Object.keys(o) as (keyof T)[];
 
 interface CreateResourceClientOptions<

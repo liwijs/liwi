@@ -1,4 +1,4 @@
-import {
+import type {
   Query,
   QuerySubscription,
   SubscribeCallback,
@@ -7,7 +7,7 @@ import {
   ToServerQueryPayload,
 } from 'liwi-resources';
 import Logger from 'nightingale-logger';
-import { TransportClient } from './TransportClient';
+import type { TransportClient } from './TransportClient';
 
 const logger = new Logger('liwi:resources:query');
 

@@ -1,14 +1,9 @@
 import classNames from 'classnames';
-import React, {
-  ReactElement,
-  useState,
-  MouseEventHandler,
-  useRef,
-  useEffect,
-} from 'react';
-import { OperationCallWrapper } from 'react-liwi';
-import { Task } from 'modules/tasks/Task';
-import { TasksService } from 'modules/tasks/TasksService';
+import type { ReactElement, MouseEventHandler } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import type { OperationCallWrapper } from 'react-liwi';
+import type { Task } from 'modules/tasks/Task';
+import type { TasksService } from 'modules/tasks/TasksService';
 
 export interface TaskItemProps {
   task: Task;
@@ -33,27 +28,43 @@ function TaskItem({
   };
 
   const handleSaveEditText = (): void => {
-    onChangeLabel(editText).then((success) => {
-      if (!success) {
+    onChangeLabel(editText).then(
+      (success) => {
+        if (!success) {
+          setOptimisticUpdatedTask({
+            ...optimisticUpdatedTask,
+            label: task.label,
+          });
+        }
+      },
+      () => {
         setOptimisticUpdatedTask({
           ...optimisticUpdatedTask,
           label: task.label,
         });
-      }
-    });
+      },
+    );
     setOptimisticUpdatedTask({ ...optimisticUpdatedTask, label: editText });
     setEditing(false);
   };
 
   const handleCompletedChange = (): void => {
-    onChangeCompleted(!optimisticUpdatedTask.completed).then((success) => {
-      if (!success) {
+    onChangeCompleted(!optimisticUpdatedTask.completed).then(
+      (success) => {
+        if (!success) {
+          setOptimisticUpdatedTask({
+            ...optimisticUpdatedTask,
+            completed: task.completed,
+          });
+        }
+      },
+      () => {
         setOptimisticUpdatedTask({
           ...optimisticUpdatedTask,
           completed: task.completed,
         });
-      }
-    });
+      },
+    );
     setOptimisticUpdatedTask({
       ...optimisticUpdatedTask,
       completed: !optimisticUpdatedTask.completed,

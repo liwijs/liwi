@@ -4,21 +4,22 @@
   "description": "db abstraction",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
   "license": "ISC",
-  "repository": "https://github.com:liwijs/liwi.git",
+  "repository": "https://github.com/liwijs/liwi.git",
   "homepage": "https://github.com/liwijs/liwi",
   "engines": {
-    "node": ">=10.13.0"
+    "node": ">=12.10.0"
   },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "build": "lerna run --stream build",
+    "build": "lerna run --stream build && yarn run build:definitions",
     "build:definitions": "tsc -b tsconfig.build.json",
     "clean": "rm -Rf docs dist test/node6 coverage",
-    "lint": "eslint --ext js,ts,tsx .",
-    "postbuild": "yarn run build:definitions",
-    "preversion": "yarn run lint && yarn run build --since -- -- --no-clean && repository-check-dirty",
+    "lint": "yarn run lint:prettier && yarn run lint:eslint",
+    "lint:eslint": "eslint --report-unused-disable-directives --quiet --resolve-plugins-relative-to . --ext js,ts,tsx .",
+    "lint:prettier": "prettier --check .",
+    "preversion": "yarn run lint && yarn run build && repository-check-dirty",
     "release": "cross-env GH_TOKEN=$POB_GITHUB_TOKEN lerna version --conventional-commits --conventional-graduate --create-release=github -m 'chore: release' && lerna publish from-git",
     "test": "lerna run --stream test",
     "tsc": "tsc -b",
@@ -35,23 +36,17 @@
     ]
   },
   "devDependencies": {
-    "@pob/commitlint-config": "1.1.2",
-    "@pob/eslint-config": "38.0.0",
-    "@pob/eslint-config-node": "38.0.0",
-    "@pob/eslint-config-typescript": "38.1.0",
-    "@pob/eslint-config-typescript-node": "38.0.2",
-    "@pob/eslint-config-typescript-react": "38.0.0",
-    "@pob/root": "2.2.2",
-    "@typescript-eslint/eslint-plugin": "2.34.0",
-    "eslint": "6.8.0",
-    "eslint-import-resolver-node": "0.3.4",
-    "eslint-plugin-import": "2.22.0",
-    "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "3.1.3",
-    "eslint-plugin-unicorn": "18.0.1",
-    "husky": "4.2.5",
-    "lerna": "3.22.1",
-    "prettier": "2.0.5",
-    "typescript": "3.9.6"
+    "@pob/commitlint-config": "2.0.1",
+    "@pob/eslint-config": "42.0.1",
+    "@pob/eslint-config-node": "42.0.0",
+    "@pob/eslint-config-typescript": "42.0.1",
+    "@pob/eslint-config-typescript-node": "42.0.0",
+    "@pob/eslint-config-typescript-react": "42.0.1",
+    "@pob/lerna-light": "3.23.0",
+    "@pob/root": "3.0.3",
+    "eslint": "7.17.0",
+    "husky": "4.3.7",
+    "prettier": "2.2.1",
+    "typescript": "4.1.3"
   }
 }

@@ -51,19 +51,20 @@ class ResourcesServerService {
 /* eslint-disable complexity, max-lines */
 const logger = new Logger('liwi:resources-websocket-client');
 
-const logUnexpectedError = function logUnexpectedError(error, message, payload) {
+const logUnexpectedError = (error, message, payload) => {
   if (!(error instanceof ResourcesServerError)) {
     logger.error(message, {
       error,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       payload: 'redacted'
     });
   }
 };
 
-const createMessageHandler = function createMessageHandler(resourcesServerService, authenticatedUser, allowSubscriptions) {
-  const openSubscriptions = allowSubscriptions ? new Map() : null;
+const createMessageHandler = (resourcesServerService, authenticatedUser, allowSubscriptions) => {
+  const openedSubscriptions = allowSubscriptions ? new Map() : null;
 
-  const getResource = function getResource(payload) {
+  const getResource = payload => {
     logger.debug('resource', {
       resourceName: payload.resourceName
     });
@@ -71,16 +72,17 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
     return resource;
   };
 
-  const createQuery = function createQuery(payload, resource) {
+  const createQuery = (payload, resource) => {
     if (!payload.key.startsWith('query')) {
       throw new Error('Invalid query key');
-    }
+    } // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
 
     return resource.queries[payload.key](payload.params, authenticatedUser);
   };
 
-  const createSubscription = function createSubscription(type, payload, resource, query, sendSubscriptionMessage) {
-    if (!openSubscriptions) {
+  const createSubscription = (type, payload, resource, query, sendSubscriptionMessage) => {
+    if (!openedSubscriptions) {
       throw new Error('Subscriptions not allowed');
     }
 
@@ -88,7 +90,7 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
       subscriptionId
     } = payload;
 
-    if (openSubscriptions.has(subscriptionId)) {
+    if (openedSubscriptions.has(subscriptionId)) {
       logger.warn("Already have a watcher for this id. Cannot add a new one", {
         subscriptionId,
         key: payload.key
@@ -96,15 +98,15 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
       throw new ResourcesServerError('ALREADY_HAVE_WATCHER', "Already have a watcher for this id. Cannot add a new one");
     }
 
-    const subscription = query[type](function (error, result) {
+    const subscription = query[type]((error, result) => {
       if (error) {
         logUnexpectedError(error, type);
       }
 
       sendSubscriptionMessage(subscriptionId, error, result);
     });
-    const subscribeHook = resource.subscribeHooks && resource.subscribeHooks[payload.key];
-    openSubscriptions.set(subscriptionId, {
+    const subscribeHook = resource.subscribeHooks?.[payload.key];
+    openedSubscriptions.set(subscriptionId, {
       subscription,
       subscribeHook,
       params: subscribeHook ? payload.params : undefined
@@ -114,16 +116,14 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
       subscribeHook.subscribed(authenticatedUser, payload.params);
     }
 
-    return subscription.then(function () {
-      return null;
-    });
+    return subscription.then(() => null);
   };
 
-  const unsubscribeSubscription = function unsubscribeSubscription({
+  const unsubscribeSubscription = ({
     subscription,
     subscribeHook,
     params
-  }) {
+  }) => {
     subscription.stop();
 
     if (subscribeHook) {
@@ -132,25 +132,25 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
   };
 
   return {
-    close: function close() {
-      if (openSubscriptions) {
-        openSubscriptions.forEach(unsubscribeSubscription);
+    close: () => {
+      if (openedSubscriptions) {
+        openedSubscriptions.forEach(unsubscribeSubscription);
       }
     },
-    messageHandler: async function messageHandler(message, subscriptionCallback) {
+    messageHandler: async (message, subscriptionCallback) => {
       switch (message.type) {
         case 'fetch':
           {
             try {
               const resource = getResource(message.payload);
               const query = createQuery(message.payload, resource);
-              return await query.fetch(function (result) {
-                return result;
-              });
+              return await query.fetch(result => result);
             } catch (err) {
               logUnexpectedError(err, message.type, message.payload);
               throw err;
             }
+
+            return;
           }
 
         case 'fetchAndSubscribe':
@@ -158,20 +158,13 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
             try {
               const resource = getResource(message.payload);
               const query = createQuery(message.payload, resource);
-
-              if (!openSubscriptions) {
-                return await query.fetch(function (result) {
-                  return result;
-                });
-              } else {
-                await createSubscription('fetchAndSubscribe', message.payload, resource, query, subscriptionCallback);
-              }
+              return await createSubscription('fetchAndSubscribe', message.payload, resource, query, subscriptionCallback);
             } catch (err) {
               logUnexpectedError(err, message.type, message.payload);
               throw err;
             }
 
-            break;
+            return;
           }
 
         case 'subscribe':
@@ -185,7 +178,7 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
               throw err;
             }
 
-            break;
+            return;
           }
         // case 'subscribe:changePayload': {
         //   break;
@@ -193,7 +186,7 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
 
         case 'subscribe:close':
           {
-            if (!openSubscriptions) {
+            if (!openedSubscriptions) {
               throw new Error('Subscriptions not allowed');
             }
 
@@ -201,21 +194,21 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
               const {
                 subscriptionId
               } = message.payload;
-              const SubscriptionAndSubscribeHook = openSubscriptions.get(subscriptionId);
+              const SubscriptionAndSubscribeHook = openedSubscriptions.get(subscriptionId);
 
               if (!SubscriptionAndSubscribeHook) {
                 logger.warn('tried to unsubscribe non existing watcher', {
                   subscriptionId
                 });
               } else {
-                openSubscriptions.delete(subscriptionId);
+                openedSubscriptions.delete(subscriptionId);
                 unsubscribeSubscription(SubscriptionAndSubscribeHook);
               }
             } catch (err) {
               logUnexpectedError(err, message.type, message.payload);
             }
 
-            break;
+            return;
           }
 
         case 'do':
@@ -230,7 +223,8 @@ const createMessageHandler = function createMessageHandler(resourcesServerServic
 
               if (!operation) {
                 throw new ResourcesServerError('OPERATION_NOT_FOUND', `Operation not found: ${operationKey}`);
-              }
+              } // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
 
               return await operation(params, authenticatedUser);
             } catch (err) {

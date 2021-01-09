@@ -1,7 +1,7 @@
-import { Update } from 'liwi-mongo';
-import { ServiceResource } from 'liwi-resources-server';
-import { Task } from 'modules/tasks/Task';
-import { TasksService } from 'modules/tasks/TasksService';
+import type { Update } from 'liwi-mongo';
+import type { ServiceResource } from 'liwi-resources-server';
+import type { Task } from 'modules/tasks/Task';
+import type { TasksService } from 'modules/tasks/TasksService';
 import { tasksStore } from 'server/stores/tasksStores';
 
 export const tasksService: ServiceResource<TasksService> = {

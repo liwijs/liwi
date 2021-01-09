@@ -1,8 +1,8 @@
-import { UpsertResult, SubscribableStore } from 'liwi-store';
-import { Criteria, Sort, Update, QueryOptions, Transformer, AllowedKeyValue } from 'liwi-types';
-import { Collection } from 'mongodb';
-import { MongoBaseModel, MongoKeyPath, MongoInsertType } from './MongoBaseModel';
-import MongoConnection from './MongoConnection';
+import type { UpsertResult, SubscribableStore, QueryParams } from 'liwi-store';
+import type { Criteria, Sort, Update, QueryOptions, Transformer, AllowedKeyValue } from 'liwi-types';
+import type { Collection } from 'mongodb';
+import type { MongoBaseModel, MongoKeyPath, MongoInsertType } from './MongoBaseModel';
+import type MongoConnection from './MongoConnection';
 import MongoCursor from './MongoCursor';
 import MongoQueryCollection from './MongoQueryCollection';
 import MongoQuerySingleItem from './MongoQuerySingleItem';
@@ -16,8 +16,8 @@ export default class MongoStore<Model extends MongoBaseModel<KeyValue>, KeyValue
     private _collection;
     constructor(connection: MongoConnection, collectionName: string);
     get collection(): Promise<Collection>;
-    createQuerySingleItem<Result extends Record<MongoKeyPath, KeyValue> = Model>(options: QueryOptions<Model>, transformer?: Transformer<Model, Result>): MongoQuerySingleItem<Model, Result, KeyValue>;
-    createQueryCollection<Item extends Record<MongoKeyPath, KeyValue> = Model>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): MongoQueryCollection<Model, Model['_id'], Item>;
+    createQuerySingleItem<Result extends Record<MongoKeyPath, KeyValue> = Model, Params extends QueryParams<Params> = never>(options: QueryOptions<Model>, transformer?: Transformer<Model, Result>): MongoQuerySingleItem<Model, Params, Result, KeyValue>;
+    createQueryCollection<Item extends Record<MongoKeyPath, KeyValue> = Model, Params extends QueryParams<Params> = never>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): MongoQueryCollection<Model, Params, Model['_id'], Item>;
     insertOne(object: MongoInsertType<Model>): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
     upsertOne<K extends keyof MongoInsertType<Model>>(object: Exclude<MongoInsertType<Model>, K>, setOnInsertPartialObject?: Pick<MongoInsertType<Model>, K>): Promise<Model>;

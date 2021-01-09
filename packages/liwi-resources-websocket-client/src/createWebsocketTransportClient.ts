@@ -1,5 +1,6 @@
 /* eslint-disable max-lines */
-import { encode, decode, ExtendedJsonValue } from 'extended-json';
+import type { ExtendedJsonValue } from 'extended-json';
+import { encode, decode } from 'extended-json';
 import { ResourcesServerError } from 'liwi-resources-client';
 import type {
   TransportClient,
@@ -11,9 +12,8 @@ import type {
   AckError,
 } from 'liwi-resources-client';
 import Logger from 'nightingale-logger';
-import createSimpleWebsocketClient, {
-  SimpleWebsocketClientOptions,
-} from './createSimpleWebsocketClient';
+import type { SimpleWebsocketClientOptions } from './createSimpleWebsocketClient';
+import createSimpleWebsocketClient from './createSimpleWebsocketClient';
 
 const logger = new Logger('liwi:resources-websocket-client');
 
@@ -42,7 +42,7 @@ export type WebsocketTransportClientOptions = Omit<
   Partial<Pick<SimpleWebsocketClientOptions, 'url'>>;
 
 type PromiseExecutor<T> = (
-  resolve: (value?: T | PromiseLike<T>) => void,
+  resolve: (value: T | PromiseLike<T>) => void,
   reject: (reason?: any) => void,
 ) => void;
 
@@ -51,8 +51,7 @@ type Handler<T> = (id: number, error: AckError | null, result: T) => void;
 class SubscribeResultPromise<
   Result,
   Payload extends Record<keyof Payload & string, ExtendedJsonValue | undefined>
->
-  implements
+> implements
     TransportClientSubscribeResult<Result, Payload>,
     PromiseLike<Result> {
   private readonly promise: Promise<Result>;
@@ -77,7 +76,7 @@ class SubscribeResultPromise<
     //   Payload
     // >['changePayload'];
   }) {
-    this.promise = new Promise((resolve, reject) => {
+    this.promise = new Promise<Result>((resolve, reject) => {
       return executor(resolve, reject);
     });
     this.stop = stop;
@@ -241,7 +240,7 @@ export default function createResourcesWebsocketClient({
           });
           if (wsClient.isConnected()) {
             // TODO reject should remove subscription ?
-            sendWithAck(type, message).then(resolve, reject);
+            sendWithAck(type, message).then(resolve as any, reject);
           }
         },
         stop: (): void => {

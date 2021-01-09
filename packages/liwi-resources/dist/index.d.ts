@@ -1,5 +1,5 @@
-import { ExtendedJsonValue } from 'extended-json';
-import { Query, QueryParams } from 'liwi-store';
+import type { ExtendedJsonValue } from 'extended-json';
+import type { Query, QueryParams } from 'liwi-store';
 export type { Query, QuerySubscription, QueryParams, QueryResult, QueryMeta, SubscribeCallback, } from 'liwi-store';
 export interface ResourceSubscribePayload<Options> {
     resourceName: string;
@@ -23,11 +23,13 @@ export declare type AckError = {
     code: string;
     message: string;
 };
-export declare type ToClientMessage<T = ExtendedJsonValue> = ['ack' | 'subscription', // type
-number, // id
-// id
-AckError | null, // error
-T];
+export declare type ToClientMessage<T = ExtendedJsonValue> = [
+    'ack' | 'subscription',
+    number,
+    // id
+    AckError | null,
+    T
+];
 export interface DoPayload {
     resourceName: string;
     operationKey: string;
@@ -44,7 +46,10 @@ export interface ToServerSubscribeQueryPayload extends ToServerQueryPayload {
 export interface ToServerSubscribeClose {
     subscriptionId: number;
 }
-declare type Message<RequestPayload, ResponsePayload> = [RequestPayload, ResponsePayload];
+declare type Message<RequestPayload, ResponsePayload> = [
+    RequestPayload,
+    ResponsePayload
+];
 declare type SubscribeMessage<RequestPayload extends {
     params: Record<string, ExtendedJsonValue> | undefined;
 }, ResponsePayload, SubscribeCallbackMessage> = [RequestPayload, ResponsePayload, SubscribeCallbackMessage];

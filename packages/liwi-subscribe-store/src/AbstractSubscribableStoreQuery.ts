@@ -1,24 +1,28 @@
-import {
+import type {
   Query,
   SubscribeCallback,
   QuerySubscription,
   QueryResult,
+  QueryParams,
 } from 'liwi-store';
-import { BaseModel, InsertType, AllowedKeyValue } from 'liwi-types';
-import SubscribeStore from './SubscribeStore';
+import type { BaseModel, InsertType, AllowedKeyValue } from 'liwi-types';
+import type SubscribeStore from './SubscribeStore';
 
 export default abstract class AbstractSubscribableStoreQuery<
   KeyPath extends string,
   KeyValue extends AllowedKeyValue,
   Model extends BaseModel & Record<KeyPath, KeyValue>,
   ModelInsertType extends InsertType<Model, KeyPath>,
+  Params extends QueryParams<Params> = never,
   Result = Model
-> implements Query<Result, never, KeyValue> {
-  changeParams(params: never): never {
+> implements Query<Result, Params, KeyValue> {
+  changeParams(params: Params): never {
     throw new Error('Method not supported. Please create a new query.');
   }
 
-  changePartialParams(params: never): never {
+  changePartialParams(
+    params: Params extends undefined ? never : Partial<Params>,
+  ): never {
     throw new Error('Method not supported. Please create a new query.');
   }
 

@@ -1,7 +1,7 @@
-import { Query, QueryParams } from 'liwi-resources-client';
-import { ResourceResultInitialLoading, ResourceResultInitialError, ResourceResultLoaded } from './createResourceResultFromState';
-import { UseResourceOptions } from './useResource';
-declare type PaginatedQueryParams<Params> = QueryParams<Params> & Record<'page', number>;
+import type { Query, QueryParams } from 'liwi-resources-client';
+import type { ResourceResultInitialLoading, ResourceResultInitialError, ResourceResultLoaded } from './createResourceResultFromState';
+import type { UseResourceOptions } from './useResource';
+declare type PaginatedQueryParams<Params extends Record<string, unknown>> = QueryParams<Params> & Record<'page', number>;
 declare type UsePaginatedResourceOptions<Params extends PaginatedQueryParams<Params>> = UseResourceOptions<Params>;
 interface Pagination {
     totalPages: number;

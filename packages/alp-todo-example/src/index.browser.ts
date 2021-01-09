@@ -11,5 +11,5 @@ app.start(async () => {
 
   // react app
   const renderApp = createReactApp(browserApp);
-  renderApp(BrowserApp);
+  await renderApp(BrowserApp);
 });

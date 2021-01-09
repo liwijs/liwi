@@ -1,11 +1,9 @@
 import 'nightingale-app-console';
-import { Server } from 'http';
+import type { Server } from 'http';
 import Alp from 'alp-node';
 import createReactApp from 'alp-react';
-import {
-  createWsServer,
-  ResourcesWebsocketServer,
-} from 'liwi-resources-websocket-server';
+import type { ResourcesWebsocketServer } from 'liwi-resources-websocket-server';
+import { createWsServer } from 'liwi-resources-websocket-server';
 import { resourcesServerService } from './server/resources';
 import App from './web/core/Layout';
 
@@ -41,6 +39,7 @@ const p = app
 if (module.hot) {
   module.hot.accept('./web/core/Layout');
   module.hot.accept('./server/resources', () => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     p.then((server) => {
       wss.close();
       createWss(server);

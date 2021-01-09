@@ -1,15 +1,13 @@
-import { Query, QueryParams, QueryResult } from 'liwi-resources-client';
-import { useReducer, useEffect, useRef, useContext } from 'react';
+import type { Query, QueryParams, QueryResult } from 'liwi-resources-client';
+import { useReducer, useEffect, useRef, useContext, useCallback } from 'react';
 import { TransportClientReadyContext } from './TransportClientProvider';
-import {
-  createResourceResultFromState,
-  ResourceResult,
-} from './createResourceResultFromState';
-import reducer, {
-  initReducer,
+import type { ResourceResult } from './createResourceResultFromState';
+import { createResourceResultFromState } from './createResourceResultFromState';
+import type {
   ResourceReducer,
   ResourceReducerInitializerReturn,
 } from './reducer';
+import reducer, { initReducer } from './reducer';
 
 export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
   createQuery: (initialParams: Params) => Query<Result, Params>,
@@ -21,17 +19,20 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
   const wasReady = useRef(isTransportReady);
   const currentFetchId = useRef(0);
 
-  const fetch = (
-    query: Query<Result, Params>,
-    callback: (result: QueryResult<Result>) => void,
-  ): Promise<void> => {
-    const fetchId = ++currentFetchId.current;
-    return query.fetch((result): void => {
-      if (currentFetchId.current === fetchId) {
-        callback(result);
-      }
-    });
-  };
+  const fetch = useCallback(
+    (
+      query: Query<Result, Params>,
+      callback: (result: QueryResult<Result>) => void,
+    ): Promise<void> => {
+      const fetchId = ++currentFetchId.current;
+      return query.fetch((result): void => {
+        if (currentFetchId.current === fetchId) {
+          callback(result);
+        }
+      });
+    },
+    [],
+  );
 
   const [state, dispatch] = useReducer<
     ResourceReducer<Result, Params>,
@@ -69,7 +70,7 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
         dispatch({ type: 'error', error: err });
       }),
     });
-  }, [isTransportReady, skip, state.query]);
+  }, [isTransportReady, fetch, skip, state.query]);
 
   const firstEffectChangeParams = useRef(false);
 

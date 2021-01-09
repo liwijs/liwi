@@ -1,11 +1,13 @@
-import { Query } from 'liwi-resources-client';
+import type { Query } from 'liwi-resources-client';
 import { useResource } from './useResource';
 
 interface Test {}
 
 export function TestDataNotUndefinedWhenLoadingTrue(): void {
   const testResource = useResource(
-    ((() => {}) as unknown) as (params: {}) => Query<Test[], {}>,
+    ((() => {}) as unknown) as (
+      params: Record<string, unknown>,
+    ) => Query<Test[], any>,
     {
       params: {},
     },
@@ -20,7 +22,9 @@ export function TestDataNotUndefinedWhenLoadingTrue(): void {
 
 export function TestDataNotUndefinedWhenLoadingTrueWhenDestructuring(): void {
   const { initialLoading, data: tests } = useResource(
-    ((() => {}) as unknown) as (params: {}) => Query<Test[], {}>,
+    ((() => {}) as unknown) as (
+      params: Record<string, unknown>,
+    ) => Query<Test[], any>,
     {
       params: {},
     },
@@ -29,20 +33,22 @@ export function TestDataNotUndefinedWhenLoadingTrueWhenDestructuring(): void {
 
   if (initialLoading) return;
 
-  // @ts-expect-error
+  // @ts-expect-error tests could be undefined
   console.log(tests[0]);
 }
 
 export function TestParamsUndefined(): void {
   const { initialLoading, data: tests } = useResource(
-    ((() => {}) as unknown) as (params: {}) => Query<Test[], {}>,
+    ((() => {}) as unknown) as (
+      params: Record<string, unknown>,
+    ) => Query<Test[], any>,
     {},
     [],
   );
 
   if (initialLoading) return;
 
-  // @ts-expect-error
+  // @ts-expect-error tests could be undefined
   console.log(tests[0]);
 }
 
@@ -51,14 +57,14 @@ export function TestParamsShouldBeRequired(): void {
     ((() => {}) as unknown) as (params: {
       page: number;
     }) => Query<Test[], { page: number }>,
-    // @ts-expect-error
+    // @ts-expect-error we don't care about params for this test
     {},
     [],
   );
 
   if (initialLoading) return;
 
-  // @ts-expect-error
+  // @ts-expect-error tests could be undefined
   console.log(tests[0]);
 }
 

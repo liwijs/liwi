@@ -1,6 +1,4 @@
-/* eslint-disable no-await-in-loop */
-
-import { BaseModel } from 'liwi-types';
+import type { BaseModel } from 'liwi-types';
 
 export default abstract class AbstractCursor<
   Model extends BaseModel,
@@ -26,6 +24,7 @@ export default abstract class AbstractCursor<
     callback: (key: any) => Promise<void> | void,
   ): Promise<void> {
     while (true) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const key = await this.next();
       if (!key) return;
 
@@ -46,8 +45,8 @@ export default abstract class AbstractCursor<
   }
 
   *[Symbol.iterator](): Generator<Promise<Result>, void, undefined> {
-    // eslint-disable-next-line no-restricted-syntax
     for (const keyPromise of this.keysIterator()) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       yield keyPromise.then((key) => key && this.result());
     }
   }

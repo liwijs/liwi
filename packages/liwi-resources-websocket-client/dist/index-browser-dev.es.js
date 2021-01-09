@@ -1,3 +1,4 @@
+import _extends from '@babel/runtime/helpers/esm/extends';
 import _objectWithoutPropertiesLoose from '@babel/runtime/helpers/esm/objectWithoutPropertiesLoose';
 import { decode, encode } from 'extended-json';
 import { ResourcesServerError } from 'liwi-resources-client';
@@ -148,9 +149,10 @@ function createSimpleWebsocketClient(_ref) {
     window.addEventListener('visibilitychange', visibilityChangHandler);
   }
 
-  var wsTransport = {
-    connect: connect,
-    close: function close() {
+  return {
+    connect,
+
+    close() {
       if (ws) {
         if (currentState === 'connected') {
           ws.send('close');
@@ -163,23 +165,16 @@ function createSimpleWebsocketClient(_ref) {
         window.removeEventListener('visibilitychange', visibilityChangHandler);
       }
     },
-    isConnected: function (_isConnected) {
-      function isConnected() {
-        return _isConnected.apply(this, arguments);
-      }
 
-      isConnected.toString = function () {
-        return _isConnected.toString();
-      };
+    isConnected() {
+      return isConnected;
+    },
 
-      return isConnected;
-    }(function () {
-      return isConnected;
-    }),
-    sendMessage: function sendMessage(message) {
+    sendMessage(message) {
       if (!ws) throw new Error('Cannot send message');
       ws.send(message);
     },
+
     listenStateChange: function listenStateChange(listener) {
       stateChangeListeners.add(listener);
       return function () {
@@ -187,7 +182,6 @@ function createSimpleWebsocketClient(_ref) {
       };
     }
   };
-  return wsTransport;
 }
 
 var logger = new Logger('liwi:resources-websocket-client');
@@ -238,22 +232,22 @@ function createResourcesWebsocketClient(_ref2) {
   var subscriptions = new Map();
 
   if (!url) {
-    url = "ws" + (window.location.protocol === 'https:' ? 's' : '') + "://" + window.location.host + "/ws";
+    url = `ws${window.location.protocol === 'https:' ? 's' : ''}://${window.location.host}/ws`;
   }
 
   logger.info('create', {
-    url: url
+    url
   });
   var handlers = {
     ack: function ack(id, error, result) {
       logger.debug('ack', {
-        id: id
+        id
       });
       var ack = acks.get(id);
 
       if (!ack) {
         logger.warn('no ack found', {
-          id: id
+          id
         });
       } else if (error) {
         ack.reject(createSafeError(error));
@@ -263,18 +257,18 @@ function createResourcesWebsocketClient(_ref2) {
     },
     subscription: function subscription(id, error, result) {
       logger.debug('subscription', {
-        id: id
+        id
       });
       var subscription = subscriptions.get(id);
 
       if (!subscription) {
         if (id < currentSubscriptionId) {
           logger.warn('subscription previously closed', {
-            id: id
+            id
           });
         } else {
           logger.warn('no subscription found', {
-            id: id
+            id
           });
         }
       } else if (error) {
@@ -284,8 +278,8 @@ function createResourcesWebsocketClient(_ref2) {
       }
     }
   };
-  var wsClient = createSimpleWebsocketClient(Object.assign({}, options, {
-    url: url,
+  var wsClient = createSimpleWebsocketClient(_extends({}, options, {
+    url,
     onMessage: function onMessage(event) {
       logger.debug('message', {
         data: event.data
@@ -364,17 +358,19 @@ function createResourcesWebsocketClient(_ref2) {
     subscribe: function subscribe(type, messageWithoutSubscriptionId, callback) {
       var id = currentId++;
       var subscriptionId = currentSubscriptionId++;
-      var message = Object.assign({}, messageWithoutSubscriptionId, {
-        subscriptionId: subscriptionId
+
+      var message = _extends({}, messageWithoutSubscriptionId, {
+        subscriptionId
       });
+
       return new SubscribeResultPromise({
         executor: function executor(resolve, reject) {
           subscriptions.set(subscriptionId, {
-            type: type,
-            message: message,
-            resolve: resolve,
-            reject: reject,
-            callback: callback
+            type,
+            message,
+            resolve,
+            reject,
+            callback
           });
 
           if (wsClient.isConnected()) {
@@ -388,7 +384,7 @@ function createResourcesWebsocketClient(_ref2) {
 
           if (wsClient.isConnected()) {
             sendMessage('subscribe:close', null, {
-              subscriptionId: subscriptionId
+              subscriptionId
             });
           }
         } // changePayload: (payload: Payload): Promise<void> => {
@@ -412,7 +408,7 @@ function createResourcesWebsocketClient(_ref2) {
   };
   wsClient.listenStateChange(function (newState) {
     logger.info('newState', {
-      newState: newState
+      newState
     });
 
     if (newState === 'connected') {
@@ -423,7 +419,7 @@ function createResourcesWebsocketClient(_ref2) {
     } else {
       resourcesClient.send = sendThrowNotConnected;
       acks.forEach(function (ack) {
-        ack.reject(new Error("Failed to get ack, connection state is now " + newState));
+        ack.reject(new Error(`Failed to get ack, connection state is now ${newState}`));
       });
       acks.clear();
 

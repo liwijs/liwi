@@ -1,10 +1,5 @@
-import React, {
-  ReactElement,
-  useState,
-  FormEventHandler,
-  useContext,
-  useEffect,
-} from 'react';
+import type { ReactElement, FormEventHandler } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useOperation, TransportClientReadyContext } from 'react-liwi';
 import { TodoServicesContext } from 'web/todo/services/TodoServicesProvider';
 
@@ -31,11 +26,14 @@ export function NewTaskForm(): ReactElement {
           label: newTaskInput,
           completed: false,
         },
-      }).then(([err]) => {
-        if (!err) {
-          setNewTaskInput('');
-        }
-      });
+      }).then(
+        ([err]) => {
+          if (!err) {
+            setNewTaskInput('');
+          }
+        },
+        (err) => {},
+      );
     }
     return false;
   };

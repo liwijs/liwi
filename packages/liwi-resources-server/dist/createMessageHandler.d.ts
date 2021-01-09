@@ -1,6 +1,6 @@
-import { QuerySubscription, ToServerMessage } from 'liwi-resources';
-import { ResourcesServerService } from './ResourcesServerService';
-import { SubscribeHook } from './ServiceResource';
+import type { QuerySubscription, ToServerMessage } from 'liwi-resources';
+import type { ResourcesServerService } from './ResourcesServerService';
+import type { SubscribeHook } from './ServiceResource';
 export declare type SubscriptionCallback = (subscriptionId: number, error: null | Error, result: any) => void;
 export declare type MessageHandler = (message: ToServerMessage, subscriptionCallback: SubscriptionCallback) => Promise<unknown>;
 export interface SubscriptionAndSubscribeHook {

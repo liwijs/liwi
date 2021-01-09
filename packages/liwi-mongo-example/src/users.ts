@@ -32,7 +32,7 @@ const users: MongoStore<User> = new MongoStore(connection, 'users');
   assert(insertedUser.created);
   assert(insertedUser.updated);
 
-  connection.close();
+  await connection.close();
 })().catch((err) => {
   console.error(err);
   // eslint-disable-next-line unicorn/no-process-exit

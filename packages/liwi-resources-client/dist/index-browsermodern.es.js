@@ -15,7 +15,9 @@ class ClientQuery {
   }
 
   changePartialParams(params) {
-    this.params = Object.assign({}, this.params, params);
+    this.params = { ...this.params,
+      ...params
+    };
   }
 
   getTransportPayload() {
@@ -52,27 +54,21 @@ class ClientQuery {
 
 }
 
-const getKeys = function getKeys(o) {
-  return Object.keys(o);
-};
+const getKeys = o => Object.keys(o);
 
-const createResourceClientService = function createResourceClientService(resourceName, options) {
-  return function (transportClient) {
+const createResourceClientService = (resourceName, options) => {
+  return transportClient => {
     const queries = {};
     const operations = {};
-    getKeys(options.queries).forEach(function (queryKey) {
-      queries[queryKey] = function (params) {
-        return new ClientQuery(resourceName, transportClient, queryKey, params);
-      };
+    getKeys(options.queries).forEach(queryKey => {
+      queries[queryKey] = params => new ClientQuery(resourceName, transportClient, queryKey, params);
     });
-    getKeys(options.operations).forEach(function (operationKey) {
-      operations[operationKey] = function (params) {
-        return transportClient.send('do', {
-          resourceName,
-          operationKey: operationKey,
-          params
-        });
-      };
+    getKeys(options.operations).forEach(operationKey => {
+      operations[operationKey] = params => transportClient.send('do', {
+        resourceName,
+        operationKey: operationKey,
+        params
+      });
     });
     return {
       queries,
