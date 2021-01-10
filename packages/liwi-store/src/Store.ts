@@ -7,18 +7,27 @@ import type {
   Transformer,
   Update,
   AllowedKeyValue,
+  SetOptional,
+  OptionalBaseModelKeysForInsert,
 } from 'liwi-types';
 import type AbstractConnection from './AbstractConnection';
 import type AbstractStoreCursor from './AbstractStoreCursor';
 import type { InternalCommonStoreClient } from './InternalCommonStoreClient';
 import type { Query, QueryParams } from './Query';
 
+export type UpsertPartialObject<
+  KeyPath extends keyof Model,
+  KeyValue extends AllowedKeyValue,
+  Model extends BaseModel & Record<KeyPath, KeyValue>,
+  K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>
+> = SetOptional<Model, K | KeyPath | OptionalBaseModelKeysForInsert>;
+
 export interface UpsertResult<Model extends BaseModel> {
   object: Model;
   inserted: boolean;
 }
 export interface Store<
-  KeyPath extends string,
+  KeyPath extends keyof Model,
   KeyValue extends AllowedKeyValue,
   Model extends BaseModel & Record<KeyPath, KeyValue>,
   ModelInsertType extends InsertType<Model, KeyPath>,
@@ -67,14 +76,18 @@ export interface Store<
 
   replaceSeveral: (objects: Model[]) => Promise<Model[]>;
 
-  upsertOne: <K extends keyof ModelInsertType>(
-    object: Exclude<ModelInsertType, K>,
-    setOnInsertPartialObject?: Pick<ModelInsertType, K>,
+  upsertOne: <
+    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>
+  >(
+    object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
+    setOnInsertPartialObject?: Pick<Model, K>,
   ) => Promise<Model>;
 
-  upsertOneWithInfo: <K extends keyof ModelInsertType>(
-    object: Exclude<ModelInsertType, K>,
-    setOnInsertPartialObject?: Pick<ModelInsertType, K>,
+  upsertOneWithInfo: <
+    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>
+  >(
+    object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
+    setOnInsertPartialObject?: Pick<Model, K>,
   ) => Promise<UpsertResult<Model>>;
 
   partialUpdateByKey: (

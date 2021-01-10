@@ -98,8 +98,7 @@
     "liwi-resources": "^8.0.0",
     "liwi-store": "^8.0.0",
     "liwi-types": "^8.0.0",
-    "nightingale-logger": "^10.0.1",
-    "type-fest": "^0.15.0"
+    "nightingale-logger": "^10.0.1"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",

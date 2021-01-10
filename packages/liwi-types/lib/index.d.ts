@@ -1,15 +1,21 @@
+export type Except<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+export type SetOptional<T, K extends keyof T> = Except<T, K> &
+  Partial<Pick<T, K>>;
+
 export interface BaseModel {
   created: Date;
   updated: Date;
 }
 
+export type OptionalBaseModelKeysForInsert = keyof BaseModel;
+
 export type AllowedKeyValue = string | number;
 
-export type InsertType<T extends BaseModel, IdKey extends string> = Pick<
-  T,
-  Exclude<keyof T, IdKey | 'created' | 'updated'>
-> &
-  Partial<Pick<T, IdKey | 'created' | 'updated'>>;
+export type InsertType<
+  Model extends BaseModel & Record<KeyPath, unknown>,
+  KeyPath extends keyof Model
+> = SetOptional<Model, KeyPath | OptionalBaseModelKeysForInsert>;
 
 // export type InsertedType<T extends BaseModel> = T;
 

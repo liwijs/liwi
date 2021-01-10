@@ -459,7 +459,11 @@ class MongoStore {
       created: object.created || new Date(),
       ...setOnInsertPartialObject
     };
-    if (!object.updated) object.updated = new Date();
+
+    if (!object.updated) {
+      object.updated = new Date();
+    }
+
     const $set = { ...object
     };
     delete $set.created;

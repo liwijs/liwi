@@ -7,6 +7,7 @@ import type {
   AbstractStoreCursor,
   SubscribableStore,
   QueryParams,
+  UpsertPartialObject,
 } from 'liwi-store';
 import type {
   BaseModel,
@@ -17,6 +18,7 @@ import type {
   QueryOptions,
   Transformer,
   AllowedKeyValue,
+  OptionalBaseModelKeysForInsert,
 } from 'liwi-types';
 
 export type Actions<Model> =
@@ -27,7 +29,7 @@ export type Actions<Model> =
 export type Listener<Model> = (action: Actions<Model>) => unknown;
 
 export default class SubscribeStore<
-  KeyPath extends string,
+  KeyPath extends keyof Model,
   KeyValue extends AllowedKeyValue,
   Model extends BaseModel & Record<KeyPath, KeyValue>,
   ModelInsertType extends InsertType<Model, KeyPath>,
@@ -72,16 +74,20 @@ export default class SubscribeStore<
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Result>,
   ): SubscribableStoreQuery<
+    KeyPath,
+    KeyValue,
+    Model,
     SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
     Result,
-    Params,
-    KeyValue
+    Params
   > {
     const query: SubscribableStoreQuery<
+      KeyPath,
+      KeyValue,
+      Model,
       SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
       Result,
-      Params,
-      KeyValue
+      Params
     > = this.store.createQuerySingleItem<Result, Params>(options, transformer);
     query.setSubscribeStore(this);
     return query;
@@ -94,16 +100,20 @@ export default class SubscribeStore<
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Item>,
   ): SubscribableStoreQuery<
+    KeyPath,
+    KeyValue,
+    Model,
     SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
     Item[],
-    Params,
-    KeyValue
+    Params
   > {
     const query: SubscribableStoreQuery<
+      KeyPath,
+      KeyValue,
+      Model,
       SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
       Item[],
-      Params,
-      KeyValue
+      Params
     > = this.store.createQueryCollection<Item, Params>(options, transformer);
     query.setSubscribeStore(this);
     return query;
@@ -145,9 +155,11 @@ export default class SubscribeStore<
     return replacedObjects;
   }
 
-  async upsertOne<K extends keyof ModelInsertType>(
-    object: Exclude<ModelInsertType, K>,
-    setOnInsertPartialObject?: Pick<ModelInsertType, K>,
+  async upsertOne<
+    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>
+  >(
+    object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
+    setOnInsertPartialObject?: Pick<Model, K>,
   ): Promise<Model> {
     const result = await this.upsertOneWithInfo(
       object,
@@ -156,9 +168,11 @@ export default class SubscribeStore<
     return result.object;
   }
 
-  async upsertOneWithInfo<K extends keyof ModelInsertType>(
-    object: Exclude<ModelInsertType, K>,
-    setOnInsertPartialObject?: Pick<ModelInsertType, K>,
+  async upsertOneWithInfo<
+    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>
+  >(
+    object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
+    setOnInsertPartialObject?: Pick<Model, K>,
   ): Promise<UpsertResult<Model>> {
     const upsertedWithInfo = await this.store.upsertOneWithInfo(
       object,

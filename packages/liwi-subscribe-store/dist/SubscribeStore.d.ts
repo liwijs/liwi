@@ -1,5 +1,5 @@
-import type { Store as StoreInterface, AbstractConnection, UpsertResult, SubscribableStoreQuery, AbstractStoreCursor, SubscribableStore, QueryParams } from 'liwi-store';
-import type { BaseModel, InsertType, Update, Criteria, Sort, QueryOptions, Transformer, AllowedKeyValue } from 'liwi-types';
+import type { Store as StoreInterface, AbstractConnection, UpsertResult, SubscribableStoreQuery, AbstractStoreCursor, SubscribableStore, QueryParams, UpsertPartialObject } from 'liwi-store';
+import type { BaseModel, InsertType, Update, Criteria, Sort, QueryOptions, Transformer, AllowedKeyValue, OptionalBaseModelKeysForInsert } from 'liwi-types';
 export declare type Actions<Model> = {
     type: 'inserted';
     next: Model[];
@@ -11,7 +11,7 @@ export declare type Actions<Model> = {
     prev: Model[];
 };
 export declare type Listener<Model> = (action: Actions<Model>) => unknown;
-export default class SubscribeStore<KeyPath extends string, KeyValue extends AllowedKeyValue, Model extends BaseModel & Record<KeyPath, KeyValue>, ModelInsertType extends InsertType<Model, KeyPath>, Connection extends AbstractConnection, Store extends SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>> implements StoreInterface<KeyPath, KeyValue, Model, ModelInsertType, Connection> {
+export default class SubscribeStore<KeyPath extends keyof Model, KeyValue extends AllowedKeyValue, Model extends BaseModel & Record<KeyPath, KeyValue>, ModelInsertType extends InsertType<Model, KeyPath>, Connection extends AbstractConnection, Store extends SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>> implements StoreInterface<KeyPath, KeyValue, Model, ModelInsertType, Connection> {
     private readonly store;
     private readonly listeners;
     readonly keyPath: KeyPath;
@@ -19,16 +19,16 @@ export default class SubscribeStore<KeyPath extends string, KeyValue extends All
     get connection(): Connection;
     subscribe(callback: Listener<Model>): () => void;
     callSubscribed(action: Actions<Model>): void;
-    createQuerySingleItem<Result extends Record<KeyPath, KeyValue>, Params extends QueryParams<Params>>(options: QueryOptions<Model>, transformer?: Transformer<Model, Result>): SubscribableStoreQuery<SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>, Result, Params, KeyValue>;
-    createQueryCollection<Item extends Record<KeyPath, KeyValue>, Params extends QueryParams<Params>>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): SubscribableStoreQuery<SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>, Item[], Params, KeyValue>;
+    createQuerySingleItem<Result extends Record<KeyPath, KeyValue>, Params extends QueryParams<Params>>(options: QueryOptions<Model>, transformer?: Transformer<Model, Result>): SubscribableStoreQuery<KeyPath, KeyValue, Model, SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>, Result, Params>;
+    createQueryCollection<Item extends Record<KeyPath, KeyValue>, Params extends QueryParams<Params>>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): SubscribableStoreQuery<KeyPath, KeyValue, Model, SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>, Item[], Params>;
     findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
     findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined>;
     findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;
     insertOne(object: ModelInsertType): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
     replaceSeveral(objects: Model[]): Promise<Model[]>;
-    upsertOne<K extends keyof ModelInsertType>(object: Exclude<ModelInsertType, K>, setOnInsertPartialObject?: Pick<ModelInsertType, K>): Promise<Model>;
-    upsertOneWithInfo<K extends keyof ModelInsertType>(object: Exclude<ModelInsertType, K>, setOnInsertPartialObject?: Pick<ModelInsertType, K>): Promise<UpsertResult<Model>>;
+    upsertOne<K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>): Promise<Model>;
+    upsertOneWithInfo<K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>): Promise<UpsertResult<Model>>;
     partialUpdateByKey(key: any, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateMany(criteria: Criteria<Model>, partialUpdate: Update<Model>): Promise<void>;

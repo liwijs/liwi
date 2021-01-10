@@ -1,5 +1,5 @@
-import type { UpsertResult, SubscribableStore, QueryParams } from 'liwi-store';
-import type { Criteria, Sort, Update, QueryOptions, Transformer, AllowedKeyValue } from 'liwi-types';
+import type { UpsertResult, SubscribableStore, QueryParams, UpsertPartialObject } from 'liwi-store';
+import type { Criteria, Sort, Update, QueryOptions, Transformer, AllowedKeyValue, OptionalBaseModelKeysForInsert } from 'liwi-types';
 import type { Collection } from 'mongodb';
 import type { MongoBaseModel, MongoKeyPath, MongoInsertType } from './MongoBaseModel';
 import type MongoConnection from './MongoConnection';
@@ -20,8 +20,8 @@ export default class MongoStore<Model extends MongoBaseModel<KeyValue>, KeyValue
     createQueryCollection<Item extends Record<MongoKeyPath, KeyValue> = Model, Params extends QueryParams<Params> = never>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): MongoQueryCollection<Model, Params, Model['_id'], Item>;
     insertOne(object: MongoInsertType<Model>): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
-    upsertOne<K extends keyof MongoInsertType<Model>>(object: Exclude<MongoInsertType<Model>, K>, setOnInsertPartialObject?: Pick<MongoInsertType<Model>, K>): Promise<Model>;
-    upsertOneWithInfo<K extends keyof MongoInsertType<Model>>(object: Exclude<MongoInsertType<Model>, K>, setOnInsertPartialObject?: Pick<MongoInsertType<Model>, K>): Promise<MongoUpsertResult<KeyValue, Model>>;
+    upsertOne<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>): Promise<Model>;
+    upsertOneWithInfo<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>): Promise<MongoUpsertResult<KeyValue, Model>>;
     replaceSeveral(objects: Model[]): Promise<Model[]>;
     partialUpdateByKey(key: any, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;

@@ -9,7 +9,7 @@ import type { BaseModel, InsertType, AllowedKeyValue } from 'liwi-types';
 import type SubscribeStore from './SubscribeStore';
 
 export default abstract class AbstractSubscribableStoreQuery<
-  KeyPath extends string,
+  KeyPath extends keyof Model,
   KeyValue extends AllowedKeyValue,
   Model extends BaseModel & Record<KeyPath, KeyValue>,
   ModelInsertType extends InsertType<Model, KeyPath>,

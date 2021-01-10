@@ -1,5 +1,10 @@
 /* eslint-disable max-lines */
-import type { UpsertResult, SubscribableStore, QueryParams } from 'liwi-store';
+import type {
+  UpsertResult,
+  SubscribableStore,
+  QueryParams,
+  UpsertPartialObject,
+} from 'liwi-store';
 import type {
   Criteria,
   Sort,
@@ -7,6 +12,7 @@ import type {
   QueryOptions,
   Transformer,
   AllowedKeyValue,
+  OptionalBaseModelKeysForInsert,
 } from 'liwi-types';
 import type { Collection, MongoClient } from 'mongodb';
 import { ObjectID } from 'mongodb';
@@ -125,9 +131,14 @@ export default class MongoStore<
     return object as Model;
   }
 
-  async upsertOne<K extends keyof MongoInsertType<Model>>(
-    object: Exclude<MongoInsertType<Model>, K>,
-    setOnInsertPartialObject?: Pick<MongoInsertType<Model>, K>,
+  async upsertOne<
+    K extends Exclude<
+      keyof Model,
+      MongoKeyPath | OptionalBaseModelKeysForInsert
+    >
+  >(
+    object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>,
+    setOnInsertPartialObject?: Pick<Model, K>,
   ): Promise<Model> {
     const result = await this.upsertOneWithInfo(
       object,
@@ -136,18 +147,25 @@ export default class MongoStore<
     return result.object;
   }
 
-  async upsertOneWithInfo<K extends keyof MongoInsertType<Model>>(
-    object: Exclude<MongoInsertType<Model>, K>,
-    setOnInsertPartialObject?: Pick<MongoInsertType<Model>, K>,
+  async upsertOneWithInfo<
+    K extends Exclude<
+      keyof Model,
+      MongoKeyPath | OptionalBaseModelKeysForInsert
+    >
+  >(
+    object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>,
+    setOnInsertPartialObject?: Pick<Model, K>,
   ): Promise<MongoUpsertResult<KeyValue, Model>> {
     const $setOnInsert = {
       created: object.created || new Date(),
       ...setOnInsertPartialObject,
     };
 
-    if (!object.updated) object.updated = new Date();
+    if (!object.updated) {
+      (object as MongoBaseModel).updated = new Date();
+    }
 
-    const $set = { ...object };
+    const $set: Partial<typeof object> = { ...object };
     delete $set.created;
 
     const collection = await this.collection;

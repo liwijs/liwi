@@ -102,8 +102,7 @@
     "liwi-resources-client": "^8.0.0",
     "liwi-types": "^8.0.0",
     "mingo": "^3.0.2",
-    "nightingale-logger": "^10.0.1",
-    "type-fest": "0.20.2"
+    "nightingale-logger": "^10.0.1"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
