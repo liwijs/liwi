@@ -1,5 +1,4 @@
-import React, { createContext, useState, useEffect, useContext, useRef, useReducer, useMemo, useCallback } from 'react';
-import _objectWithoutPropertiesLoose from '@babel/runtime/helpers/esm/objectWithoutPropertiesLoose';
+import React, { createContext, useState, useEffect, useContext, useRef, useCallback, useReducer, useMemo } from 'react';
 import Logger from 'nightingale-logger';
 import { Lazy } from 'mingo/lazy';
 import { $sort } from 'mingo/operators/pipeline';
@@ -7,21 +6,19 @@ import { $sort } from 'mingo/operators/pipeline';
 const TransportClientContext = /*#__PURE__*/createContext(undefined);
 const TransportClientStateContext = /*#__PURE__*/createContext('opening');
 const TransportClientReadyContext = /*#__PURE__*/createContext(false);
-function TransportClientProvider(_ref) {
-  let {
-    createFn,
-    children
-  } = _ref,
-      params = _objectWithoutPropertiesLoose(_ref, ["createFn", "children"]);
-
-  const [client] = useState(function () {
+function TransportClientProvider({
+  createFn,
+  children,
+  ...params
+}) {
+  const [client] = useState(() => {
     return createFn(params);
   });
   const [connectionState, setConnectionState] = useState('opening');
-  useEffect(function () {
+  useEffect(() => {
     const closeConnectionStateListener = client.listenStateChange(setConnectionState);
     client.connect();
-    return function () {
+    return () => {
       closeConnectionStateListener();
       client.close();
     };
@@ -35,19 +32,17 @@ function TransportClientProvider(_ref) {
   }, children)));
 }
 
-const createResourceResultFromState = function createResourceResultFromState(state) {
-  return {
-    query: state.query,
-    initialLoading: !state.fetched && state.fetching,
-    initialError: !state.fetched && !!state.error,
-    fetched: state.fetched,
-    fetching: state.fetching,
-    data: !state.fetched ? undefined : state.result,
-    meta: !state.fetched ? undefined : state.meta,
-    queryInfo: !state.fetched ? undefined : state.queryInfo,
-    error: state.error
-  };
-};
+const createResourceResultFromState = state => ({
+  query: state.query,
+  initialLoading: !state.fetched && state.fetching,
+  initialError: !state.fetched && !!state.error,
+  fetched: state.fetched,
+  fetching: state.fetching,
+  data: !state.fetched ? undefined : state.result,
+  meta: !state.fetched ? undefined : state.meta,
+  queryInfo: !state.fetched ? undefined : state.queryInfo,
+  error: state.error
+});
 
 function initReducer(initializer) {
   const init = initializer();
@@ -92,15 +87,15 @@ function reducer(state, action) {
       };
 
     case 'fetching':
-      return Object.assign({}, state, {
+      return { ...state,
         fetching: true
-      });
+      };
 
     case 'error':
-      return Object.assign({}, state, {
+      return { ...state,
         fetching: false,
         error: action.error
-      });
+      };
 
     default:
       throw new Error('Invalid action');
@@ -111,35 +106,33 @@ function useRetrieveResource(createQuery, params, skip, deps) {
   const isTransportReady = useContext(TransportClientReadyContext);
   const wasReady = useRef(isTransportReady);
   const currentFetchId = useRef(0);
-
-  const fetch = function fetch(query, callback) {
+  const fetch = useCallback((query, callback) => {
     const fetchId = ++currentFetchId.current;
-    return query.fetch(function (result) {
+    return query.fetch(result => {
       if (currentFetchId.current === fetchId) {
         callback(result);
       }
     });
-  };
-
-  const [state, dispatch] = useReducer(reducer, function () {
+  }, []);
+  const [state, dispatch] = useReducer(reducer, () => {
     const query = createQuery(params);
     if (!isTransportReady || skip) return {
       query
     };
     return {
       query,
-      promise: fetch(query, function ({
+      promise: fetch(query, ({
         result,
         meta,
         info
-      }) {
+      }) => {
         dispatch({
           type: 'resolve',
           result,
           meta,
           queryInfo: info
         });
-      }).catch(function (err) {
+      }).catch(err => {
         dispatch({
           type: 'error',
           error: err
@@ -147,34 +140,34 @@ function useRetrieveResource(createQuery, params, skip, deps) {
       })
     };
   }, initReducer);
-  useEffect(function () {
+  useEffect(() => {
     if (wasReady.current) return;
     if (!isTransportReady) return;
     if (skip) return;
     wasReady.current = true;
     dispatch({
       type: 'refetch',
-      promise: fetch(state.query, function ({
+      promise: fetch(state.query, ({
         result,
         meta,
         info
-      }) {
+      }) => {
         dispatch({
           type: 'resolve',
           result,
           meta,
           queryInfo: info
         });
-      }).catch(function (err) {
+      }).catch(err => {
         dispatch({
           type: 'error',
           error: err
         });
       })
     });
-  }, [isTransportReady, skip, state.query]);
+  }, [isTransportReady, fetch, skip, state.query]);
   const firstEffectChangeParams = useRef(false);
-  useEffect(function () {
+  useEffect(() => {
     if (firstEffectChangeParams.current === false) {
       firstEffectChangeParams.current = true;
       return;
@@ -188,18 +181,18 @@ function useRetrieveResource(createQuery, params, skip, deps) {
     if (!wasReady.current) return;
     dispatch({
       type: 'refetch',
-      promise: fetch(state.query, function ({
+      promise: fetch(state.query, ({
         result,
         meta,
         info
-      }) {
+      }) => {
         dispatch({
           type: 'resolve',
           result,
           meta,
           queryInfo: info
         });
-      }).catch(function (err) {
+      }).catch(err => {
         dispatch({
           type: 'error',
           error: err
@@ -210,9 +203,10 @@ function useRetrieveResource(createQuery, params, skip, deps) {
   return createResourceResultFromState(state);
 }
 
-/* eslint-disable camelcase, complexity */
+/* eslint-disable complexity */
 
 function sortCollection(collection, sort) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return $sort(Lazy(collection), sort, {
     config: {
       idKey: '_id'
@@ -220,11 +214,9 @@ function sortCollection(collection, sort) {
   }).value();
 }
 
-const copy = function copy(state) {
-  return state.slice();
-};
+const copy = state => state.slice();
 
-const applyCollectionChange = function applyCollectionChange(state, change, queryMeta, queryInfo) {
+const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
   switch (change.type) {
     case 'initial':
       return change.initial;
@@ -247,19 +239,15 @@ const applyCollectionChange = function applyCollectionChange(state, change, quer
         queryMeta.total -= change.keys.length;
         const keyPath = queryInfo.keyPath;
         const deletedKeys = change.keys;
-        return state.filter(function (value) {
-          return !deletedKeys.includes(value[keyPath]);
-        });
+        return state.filter(value => !deletedKeys.includes(value[keyPath]));
       }
 
     case 'updated':
       {
         const keyPath = queryInfo.keyPath;
         const newState = copy(state);
-        change.result.forEach(function (newObject) {
-          const index = newState.findIndex(function (o) {
-            return o[keyPath] === newObject[keyPath];
-          });
+        change.result.forEach(newObject => {
+          const index = newState.findIndex(o => o[keyPath] === newObject[keyPath]);
           if (index === -1) return;
           newState[index] = newObject;
         });
@@ -277,17 +265,16 @@ function applyCollectionChanges(state, changes, queryMeta, queryInfo) {
     state,
     meta: queryMeta
   };
-  const newQueryMeta = Object.assign({}, queryMeta);
+  const newQueryMeta = { ...queryMeta
+  };
   return {
-    state: changes.reduce(function (result, change) {
-      return applyCollectionChange(result, change, queryMeta, queryInfo);
-    }, state),
+    // eslint-ignore-next-line unicorn/no-reduce
+    state: changes.reduce((result, change) => applyCollectionChange(result, change, queryMeta, queryInfo), state),
     meta: newQueryMeta
   };
 }
 
-/* eslint-disable camelcase, complexity */
-const applySingleItemChange = function applySingleItemChange(state, change, queryMeta) {
+const applySingleItemChange = (state, change, queryMeta) => {
   switch (change.type) {
     case 'initial':
       queryMeta.total = change.initial === null ? 0 : 1;
@@ -316,11 +303,11 @@ function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
     state,
     meta: queryMeta
   };
-  const newQueryMeta = Object.assign({}, queryMeta);
+  const newQueryMeta = { ...queryMeta
+  };
   return {
-    state: changes.reduce(function (result, change) {
-      return applySingleItemChange(result, change, queryMeta);
-    }, state),
+    // eslint-ignore-next-line unicorn/no-reduce
+    state: changes.reduce((result, change) => applySingleItemChange(result, change, queryMeta), state),
     meta: newQueryMeta
   };
 }
@@ -332,9 +319,7 @@ const defaultOptions = {
 };
 const logger = new Logger('react-liwi:useResourceAndSubscribe');
 
-const isInitial = function isInitial(changes) {
-  return changes.length === 1 && changes[0].type === 'initial';
-};
+const isInitial = changes => changes.length === 1 && changes[0].type === 'initial';
 
 function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
   visibleTimeout
@@ -346,7 +331,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
   const skipRef = useRef(skip);
   skipRef.current = skip;
 
-  const unsubscribe = function unsubscribe() {
+  const unsubscribe = () => {
     logger.info('unsubscribe'); // reset timeout to allow resubscribing
 
     timeoutRef.current = undefined;
@@ -357,7 +342,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
     }
   };
 
-  const [state, dispatch] = useReducer(reducer, function () {
+  const [state, dispatch] = useReducer(reducer, () => {
     const query = createQuery(params);
     let applyChanges;
     let currentResult;
@@ -365,19 +350,19 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
     let currentQueryInfo;
     return {
       query,
-      promise: new Promise(function () {
+      promise: new Promise(() => {
         const queryLogger = logger.context({
           resourceName: query.resourceName,
           key: query.key
         });
         queryLogger.debug('init');
 
-        const subscribe = function subscribe() {
+        const subscribe = () => {
           queryLogger.debug('subscribing', {
             querySubscriptionRef: querySubscriptionRef.current,
             timeoutRef: timeoutRef.current
           });
-          querySubscriptionRef.current = query.fetchAndSubscribe(function (err, changes) {
+          querySubscriptionRef.current = query.fetchAndSubscribe((err, changes) => {
             queryLogger.debug('received changes', {
               err,
               changes
@@ -421,17 +406,17 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
               }
             }
           });
-          querySubscriptionRef.current.then(function () {
+          querySubscriptionRef.current.then(() => {
             queryLogger.success('subscribed');
-          }, function (error) {
+          }, err => {
             dispatch({
               type: 'error',
-              error
+              error: err
             });
           });
         };
 
-        changeParamsRef.current = function (params) {
+        changeParamsRef.current = params => {
           queryLogger.info('change params', {
             skip: skipRef.current,
             params
@@ -451,7 +436,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
           }
         };
 
-        const handleVisibilityChange = function handleVisibilityChange() {
+        const handleVisibilityChange = () => {
           if (skipRef.current) return;
 
           if (!document.hidden) {
@@ -485,7 +470,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
     };
   }, initReducer);
   const firstEffectChangeParams = useRef(false);
-  useEffect(function () {
+  useEffect(() => {
     if (firstEffectChangeParams.current === false) {
       firstEffectChangeParams.current = true;
       return;
@@ -496,8 +481,8 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
     } // eslint-disable-next-line react-hooks/exhaustive-deps
 
   }, [skip, ...deps]);
-  useEffect(function () {
-    return function () {
+  useEffect(() => {
+    return () => {
       if (handleVisibilityChangeRef.current) {
         document.removeEventListener('visibilitychange', handleVisibilityChangeRef.current);
       }
@@ -510,9 +495,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
       unsubscribe();
     };
   }, []);
-  return useMemo(function () {
-    return createResourceResultFromState(state);
-  }, [state]);
+  return useMemo(() => createResourceResultFromState(state), [state]);
 }
 
 function useResource(createQuery, {
@@ -528,45 +511,39 @@ function useResource(createQuery, {
 }
 
 function usePaginatedResource(createQuery, options, deps) {
-  var _result$meta, _result$queryInfo;
-
   const result = useResource(createQuery, options, deps);
-  const total = (_result$meta = result.meta) === null || _result$meta === void 0 ? void 0 : _result$meta.total;
-  const limit = (_result$queryInfo = result.queryInfo) === null || _result$queryInfo === void 0 ? void 0 : _result$queryInfo.limit;
-  const pagination = useMemo(function () {
+  const total = result.meta?.total;
+  const limit = result.queryInfo?.limit;
+  const pagination = useMemo(() => {
     if (total === undefined) return undefined;
     return {
       totalPages: limit ? Math.ceil(total / limit) : 1
     };
   }, [total, limit]);
-  return useMemo(function () {
-    return Object.assign({}, result, {
-      pagination
-    });
-  }, [result, pagination]);
+  return useMemo(() => ({ ...result,
+    pagination
+  }), [result, pagination]);
 }
 
 function useOperation(operationCall) {
-  const [state, setState] = useState(function () {
-    return {
-      loading: false,
-      error: undefined
-    };
-  });
-  const operationCallWrapper = useCallback(function (...params) {
+  const [state, setState] = useState(() => ({
+    loading: false,
+    error: undefined
+  }));
+  const operationCallWrapper = useCallback((...params) => {
     setState({
       loading: true,
       error: undefined
     });
 
     try {
-      return operationCall(...params).then(function (result) {
+      return operationCall(...params).then(result => {
         setState({
           loading: false,
           error: undefined
         });
         return [undefined, result];
-      }, function (err) {
+      }, err => {
         setState({
           loading: false,
           error: err

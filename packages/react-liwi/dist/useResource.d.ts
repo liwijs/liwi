@@ -1,7 +1,7 @@
-import { Query, QueryParams } from 'liwi-resources-client';
-import { SetOptional } from 'type-fest';
-import { ResourceResult } from './createResourceResultFromState';
-import { UseResourceAndSubscribeOptions } from './useRetrieveResourceAndSubscribe';
+import type { Query, QueryParams } from 'liwi-resources-client';
+import type { SetOptional } from 'type-fest';
+import type { ResourceResult } from './createResourceResultFromState';
+import type { UseResourceAndSubscribeOptions } from './useRetrieveResourceAndSubscribe';
 interface UseResourceOptionsRequiredParams<Params extends QueryParams<Params>> {
     params: Params;
     skip?: boolean;

@@ -1,12 +1,10 @@
 import { POB_TARGET } from 'pob-babel';
-import { Query, QueryParams } from 'liwi-resources-client';
-import { SetOptional } from 'type-fest';
-import { ResourceResult } from './createResourceResultFromState';
+import type { Query, QueryParams } from 'liwi-resources-client';
+import type { SetOptional } from 'type-fest';
+import type { ResourceResult } from './createResourceResultFromState';
 import { useRetrieveResource } from './useRetrieveResource';
-import {
-  useRetrieveResourceAndSubscribe,
-  UseResourceAndSubscribeOptions,
-} from './useRetrieveResourceAndSubscribe';
+import type { UseResourceAndSubscribeOptions } from './useRetrieveResourceAndSubscribe';
+import { useRetrieveResourceAndSubscribe } from './useRetrieveResourceAndSubscribe';
 
 interface UseResourceOptionsRequiredParams<Params extends QueryParams<Params>> {
   params: Params;

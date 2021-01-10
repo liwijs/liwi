@@ -5,8 +5,11 @@ export interface BaseModel {
 
 export type AllowedKeyValue = string | number;
 
-export type InsertType<T extends BaseModel, IdKey extends string>
-  = Pick<T, Exclude<keyof T, IdKey | 'created' | 'updated'>> & Partial<Pick<T, IdKey | 'created' | 'updated'>>;
+export type InsertType<T extends BaseModel, IdKey extends string> = Pick<
+  T,
+  Exclude<keyof T, IdKey | 'created' | 'updated'>
+> &
+  Partial<Pick<T, IdKey | 'created' | 'updated'>>;
 
 // export type InsertedType<T extends BaseModel> = T;
 
@@ -15,38 +18,54 @@ export type InsertType<T extends BaseModel, IdKey extends string>
 // export type UpdatedType<T extends BaseModel> = Pick<T, Exclude<keyof T, 'updated'>> &
 // Required<Pick<T, 'updated'>>;
 
-export type $CurrentDateSpec = true | { $type: "timestamp" } | { $type: "date" };
+export type $CurrentDateSpec =
+  | true
+  | { $type: 'timestamp' }
+  | { $type: 'date' };
 
 export interface Update<Model extends BaseModel> {
   /* Field Update Operators */
-  $currentDate?: { [P in keyof Model]?: $CurrentDateSpec } & { [field: string]: $CurrentDateSpec },
-  $inc?: { [P in keyof Model]?: number } & { [field: string]: number },
-  $min?: { [P in keyof Model]?: number } & { [field: string]: number },
-  $max?: { [P in keyof Model]?: number } & { [field: string]: number },
-  $mul?: { [P in keyof Model]?: number } & { [field: string]: number },
-  $rename?: { [P in keyof Model]?: string } & { [field: string]: string },
-  $set?: Partial<Model> & { [field: string]: any },
-  $setOnInsert?: Partial<Model> & { [field: string]: any },
-  $unset?: { [P in keyof Model]?: any } & { [field: string]: any },
+  $currentDate?: { [P in keyof Model]?: $CurrentDateSpec } & {
+    [field: string]: $CurrentDateSpec;
+  };
+  $inc?: { [P in keyof Model]?: number } & { [field: string]: number };
+  $min?: { [P in keyof Model]?: number } & { [field: string]: number };
+  $max?: { [P in keyof Model]?: number } & { [field: string]: number };
+  $mul?: { [P in keyof Model]?: number } & { [field: string]: number };
+  $rename?: { [P in keyof Model]?: string } & { [field: string]: string };
+  $set?: Partial<Model> & { [field: string]: any };
+  $setOnInsert?: Partial<Model> & { [field: string]: any };
+  $unset?: { [P in keyof Model]?: any } & { [field: string]: any };
 
   /* Array Update Operators */
   // Model[P] is Array ? never :
-  $addToSet?: { [P in keyof Model]?: any } & { [field: string]: any },
-  $pop?: { [P in keyof Model]?: 1 | -1 } & { [field: string]: 1 | -1 },
-  $pull?: { [P in keyof Model]?: any } & { [field: string]: any },
+  $addToSet?: { [P in keyof Model]?: any } & { [field: string]: any };
+  $pop?: { [P in keyof Model]?: 1 | -1 } & { [field: string]: 1 | -1 };
+  $pull?: { [P in keyof Model]?: any } & { [field: string]: any };
   /** The $push operator appends a specified value to an array. */
-  $push?: { [P in keyof Model]?: any } & { [field: string]: any },
-  $pullAll?: { [P in keyof Model]?: Array<any> } & { [field: string]: Array<any> },
+  $push?: { [P in keyof Model]?: any } & { [field: string]: any };
+  $pullAll?: { [P in keyof Model]?: Array<any> } & {
+    [field: string]: Array<any>;
+  };
 }
 
+export type ExcludeOnlyFields<Model extends BaseModel> = {
+  [P in keyof Model]?: 0;
+} & { [key: string]: 0 };
+export type IncludeOnlyFields<Model extends BaseModel> = {
+  [P in keyof Model]?: 1;
+} & { [key: string]: 1 };
+export type Fields<Model extends BaseModel> =
+  | ExcludeOnlyFields<Model>
+  | IncludeOnlyFields<Model>;
 
-export type ExcludeOnlyFields<Model extends BaseModel> = { [P in keyof Model]?: 0 } & { [key: string]: 0; };
-export type IncludeOnlyFields<Model extends BaseModel> = { [P in keyof Model]?: 1 } & { [key: string]: 1; };
-export type Fields<Model extends BaseModel> = ExcludeOnlyFields<Model> | IncludeOnlyFields<Model>;
+export type Criteria<Model extends BaseModel> = { [P in keyof Model]?: any } & {
+  [key: string]: any;
+};
 
-export type Criteria<Model extends BaseModel> = { [P in keyof Model]?: any } & { [key: string]: any }
-
-export type Sort<Model extends BaseModel> = { [P in keyof Model]?: -1 | 1 } & { [key: string]: -1 | 1; }
+export type Sort<Model extends BaseModel> = { [P in keyof Model]?: -1 | 1 } & {
+  [key: string]: -1 | 1;
+};
 
 export interface QueryMeta {
   total: number;
@@ -58,7 +77,12 @@ export interface QueryInfo<Item extends Record<keyof Item, unknown>> {
   keyPath: keyof Item;
 }
 
-export type InitialChange<Value = any> = { type: 'initial'; initial: Value, meta: QueryMeta; queryInfo: QueryInfo<any> };
+export type InitialChange<Value = any> = {
+  type: 'initial';
+  initial: Value;
+  meta: QueryMeta;
+  queryInfo: QueryInfo<any>;
+};
 
 export type Change<KeyValue, Result> =
   | InitialChange<Result>

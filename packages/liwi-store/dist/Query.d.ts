@@ -1,4 +1,4 @@
-import { BaseModel, Changes, Fields, Criteria, Sort, AllowedKeyValue, QueryMeta, QueryInfo } from 'liwi-types';
+import type { BaseModel, Changes, Fields, Criteria, Sort, AllowedKeyValue, QueryMeta, QueryInfo } from 'liwi-types';
 export type { QueryMeta, QueryInfo } from 'liwi-types';
 export interface QueryOptions<Model extends BaseModel> {
     fields?: Fields<Model>;
@@ -11,7 +11,7 @@ export interface QuerySubscription extends PromiseLike<void> {
 }
 export declare type SubscribeCallback<KeyValue extends AllowedKeyValue, Result> = (err: Error | null, changes: Changes<KeyValue, Result>) => unknown;
 export declare type AllowedParamValue = undefined | null | string | number | boolean | Date | AllowedParamValue[];
-export declare type QueryParams<Params extends {}> = {
+export declare type QueryParams<Params extends Record<string, unknown>> = {
     [P in keyof Params]: Extract<Params[P], AllowedParamValue>;
 };
 export interface QueryResult<Result> {
@@ -20,10 +20,10 @@ export interface QueryResult<Result> {
     meta: QueryMeta;
 }
 export interface Query<Result, Params extends QueryParams<Params>, KeyValue extends AllowedKeyValue = AllowedKeyValue> {
-    changeParams(params: Params): void;
-    changePartialParams(params: Params extends undefined ? never : Partial<Params>): void;
-    fetch<T>(onFulfilled: (result: QueryResult<Result>) => T): Promise<T>;
-    fetchAndSubscribe(callback: SubscribeCallback<KeyValue, Result>): QuerySubscription;
-    subscribe(callback: SubscribeCallback<KeyValue, Result>): QuerySubscription;
+    changeParams: (params: Params) => void;
+    changePartialParams: (params: Params extends undefined ? never : Partial<Params>) => void;
+    fetch: <T>(onFulfilled: (result: QueryResult<Result>) => T) => Promise<T>;
+    fetchAndSubscribe: (callback: SubscribeCallback<KeyValue, Result>) => QuerySubscription;
+    subscribe: (callback: SubscribeCallback<KeyValue, Result>) => QuerySubscription;
 }
 //# sourceMappingURL=Query.d.ts.map

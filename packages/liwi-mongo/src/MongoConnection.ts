@@ -11,6 +11,7 @@ export default class MongoConnection extends AbstractConnection {
 
   connectionFailed?: boolean;
 
+  // TODO interface
   constructor(config: Map<string, string | number>) {
     super();
 
@@ -27,10 +28,14 @@ export default class MongoConnection extends AbstractConnection {
     const connectionString =
       `mongodb://${
         config.has('user')
-          ? `${config.get('user')}:${config.get('password')}@`
+          ? `${config.get('user') as string}:${
+              config.get('password') as string
+            }@`
           : ''
       }` +
-      `${config.get('host')}:${config.get('port')}/${config.get('database')}`;
+      `${config.get('host') as string}:${config.get('port') as string}/${
+        config.get('database') as string
+      }`;
 
     this.connect(connectionString);
   }

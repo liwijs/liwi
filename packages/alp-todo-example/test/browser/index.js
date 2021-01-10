@@ -1,5 +1,4 @@
 import { strictEqual } from 'assert';
-import { readFileSync } from 'fs';
 
 suite('test hello server', () => {
   const fixture = window.fixture;

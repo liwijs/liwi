@@ -1,5 +1,5 @@
-/* eslint-disable jsx-a11y/no-autofocus */
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import React from 'react';
 import Info from './components/Info';
 import Main from './components/Main';
 import { NewTaskForm } from './components/NewTaskForm';

@@ -1,3 +1,4 @@
+import _extends from '@babel/runtime/helpers/esm/extends';
 import Logger from 'nightingale-logger';
 export { ResourcesServerError } from 'liwi-resources';
 
@@ -17,7 +18,7 @@ var ClientQuery = /*#__PURE__*/function () {
   };
 
   _proto.changePartialParams = function changePartialParams(params) {
-    this.params = Object.assign({}, this.params, params);
+    this.params = _extends({}, this.params, params);
   };
 
   _proto.getTransportPayload = function getTransportPayload() {
@@ -71,15 +72,15 @@ var createResourceClientService = function createResourceClientService(resourceN
     getKeys(options.operations).forEach(function (operationKey) {
       operations[operationKey] = function (params) {
         return transportClient.send('do', {
-          resourceName: resourceName,
+          resourceName,
           operationKey: operationKey,
-          params: params
+          params
         });
       };
     });
     return {
-      queries: queries,
-      operations: operations
+      queries,
+      operations
     };
   };
 };

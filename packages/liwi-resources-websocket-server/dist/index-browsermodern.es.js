@@ -3,16 +3,15 @@ import { createMessageHandler, ResourcesServerError } from 'liwi-resources-serve
 import Logger from 'nightingale-logger';
 import WebSocket from 'ws';
 
-/* eslint-disable complexity, max-lines */
 const logger = new Logger('liwi:resources-websocket-client');
-const createWsServer = function createWsServer(server, path = '/ws', resourcesServerService, getAuthenticatedUser) {
+const createWsServer = (server, path = '/ws', resourcesServerService, getAuthenticatedUser) => {
   const wss = new WebSocket.Server({
     noServer: true
   });
-  wss.on('connection', function (ws, authenticatedUser) {
+  wss.on('connection', (ws, authenticatedUser) => {
     ws.isAlive = true;
 
-    const sendMessage = function sendMessage(type, id, error, result) {
+    const sendMessage = (type, id, error, result) => {
       if (!id) throw new Error('Invalid id');
       logger.debug('sendMessage', {
         type,
@@ -23,7 +22,7 @@ const createWsServer = function createWsServer(server, path = '/ws', resourcesSe
       ws.send(encode([type, id, error, result]));
     };
 
-    const createSafeError = function createSafeError(error) {
+    const createSafeError = error => {
       if (error instanceof ResourcesServerError) {
         return {
           code: error.code,
@@ -37,11 +36,11 @@ const createWsServer = function createWsServer(server, path = '/ws', resourcesSe
       };
     };
 
-    const sendAck = function sendAck(id, error, result) {
+    const sendAck = (id, error, result) => {
       sendMessage('ack', id, error && createSafeError(error), result);
     };
 
-    const sendSubscriptionMessage = function sendSubscriptionMessage(subscriptionId, error, result) {
+    const sendSubscriptionMessage = (subscriptionId, error, result) => {
       sendMessage('subscription', subscriptionId, error && createSafeError(error), result);
     };
 
@@ -50,25 +49,21 @@ const createWsServer = function createWsServer(server, path = '/ws', resourcesSe
       close
     } = createMessageHandler(resourcesServerService, authenticatedUser, true);
 
-    const handleDecodedMessage = function handleDecodedMessage(message) {
+    const handleDecodedMessage = message => {
       if (message.id == null) {
-        return messageHandler(message, sendSubscriptionMessage).then(function () {});
+        return messageHandler(message, sendSubscriptionMessage).then(() => {});
       } else {
-        return messageHandler(message, sendSubscriptionMessage).then(function (result) {
-          return sendAck(message.id, null, result);
-        }).catch(function (err) {
-          return sendAck(message.id, err);
-        });
+        return messageHandler(message, sendSubscriptionMessage).then(result => sendAck(message.id, null, result)).catch(err => sendAck(message.id, err));
       }
     };
 
-    ws.on('pong', function () {
+    ws.on('pong', () => {
       ws.isAlive = true;
     });
-    ws.on('close', function () {
+    ws.on('close', () => {
       close();
     });
-    ws.on('message', function (message) {
+    ws.on('message', message => {
       if (message === 'close') return;
 
       if (typeof message !== 'string') {
@@ -84,13 +79,14 @@ const createWsServer = function createWsServer(server, path = '/ws', resourcesSe
           type,
           id,
           payload
-        });
+        }); // eslint-disable-next-line @typescript-eslint/no-floating-promises
+
         handleDecodedMessage({
           type,
           id,
           payload
         });
-      } catch (err) {
+      } catch {
         logger.notice('invalid message', {
           decoded
         });
@@ -99,8 +95,8 @@ const createWsServer = function createWsServer(server, path = '/ws', resourcesSe
     ws.send('connection-ack');
   }); // https://www.npmjs.com/package/ws#how-to-detect-and-close-broken-connections
 
-  const interval = setInterval(function () {
-    wss.clients.forEach(function (ws) {
+  const interval = setInterval(() => {
+    wss.clients.forEach(ws => {
       const extWs = ws;
       if (!extWs.isAlive) return ws.terminate();
       extWs.isAlive = false;
@@ -108,16 +104,18 @@ const createWsServer = function createWsServer(server, path = '/ws', resourcesSe
     });
   }, 60000);
 
-  const handleUpgrade = function handleUpgrade(request, socket, upgradeHead) {
+  const handleUpgrade = (request, socket, upgradeHead) => {
     if (request.url !== path) return;
     const authenticatedUserPromise = Promise.resolve(getAuthenticatedUser(request));
-    wss.handleUpgrade(request, socket, upgradeHead, function (ws) {
-      authenticatedUserPromise.catch(function (err) {
-        logger.warn('getAuthenticatedUser threw an error, return null instead.', {
+    wss.handleUpgrade(request, socket, upgradeHead, ws => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      authenticatedUserPromise.catch(err => {
+        logger.warn('getAuthenticatedUser threw an error, return null instead.', // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        {
           err
         });
         return null;
-      }).then(function (authenticatedUser) {
+      }).then(authenticatedUser => {
         wss.emit('connection', ws, authenticatedUser);
       });
     });

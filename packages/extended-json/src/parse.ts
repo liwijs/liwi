@@ -1,11 +1,17 @@
-import { ExtendedJsonValue } from './ExtendedJsonValue';
+import type { ExtendedJsonValue } from './ExtendedJsonValue';
 
 // eslint-disable-next-line unicorn/no-unsafe-regex
 const regexpStringDate = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
 
-type JsonReviver = (key: string, value: any) => any;
+type JsonReviver = <T extends ExtendedJsonValue>(
+  key: string,
+  value: T,
+) => ExtendedJsonValue;
 
-const internalReviver: JsonReviver = (key: string, value: any) => {
+const internalReviver: JsonReviver = function <T extends ExtendedJsonValue>(
+  key: string,
+  value: T,
+): T | Date {
   if (typeof value === 'string') {
     const matchDate = regexpStringDate.exec(value);
     if (matchDate) {
@@ -39,5 +45,5 @@ export default function parse<Value = ExtendedJsonValue>(
     reviver == null
       ? internalReviver
       : (key, value) => reviver(key, internalReviver(key, value)),
-  );
+  ) as Value;
 }

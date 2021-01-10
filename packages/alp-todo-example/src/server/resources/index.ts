@@ -1,4 +1,5 @@
-import { ResourcesServerService, ServiceResource } from 'liwi-resources-server';
+import type { ServiceResource } from 'liwi-resources-server';
+import { ResourcesServerService } from 'liwi-resources-server';
 import { tasksService } from './tasksService';
 
 export const resourcesServerService = new ResourcesServerService({

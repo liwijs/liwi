@@ -1,20 +1,26 @@
 /* eslint-disable complexity, max-lines */
-import { QuerySubscription, SubscribeCallback, QueryResult } from 'liwi-store';
-import { AbstractSubscribableStoreQuery, Actions } from 'liwi-subscribe-store';
-import {
+import type {
+  QuerySubscription,
+  SubscribeCallback,
+  QueryResult,
+  QueryParams,
+} from 'liwi-store';
+import type { Actions } from 'liwi-subscribe-store';
+import { AbstractSubscribableStoreQuery } from 'liwi-subscribe-store';
+import type {
   Changes,
   QueryOptions,
   Transformer,
   AllowedKeyValue,
 } from 'liwi-types';
 import mingo from 'mingo';
-import {
+import type {
   MongoBaseModel,
   MongoInsertType,
   MongoKeyPath,
 } from './MongoBaseModel';
-import MongoCursor from './MongoCursor';
-import MongoStore from './MongoStore';
+import type MongoCursor from './MongoCursor';
+import type MongoStore from './MongoStore';
 
 const identityTransformer = <
   Model extends MongoBaseModel<any>,
@@ -24,11 +30,12 @@ const identityTransformer = <
 ): Transformed => (model as unknown) as Transformed;
 
 interface TestCriteria {
-  test(obj: any): boolean;
+  test: (obj: any) => boolean;
 }
 
 export default class MongoQuerySingleItem<
   Model extends MongoBaseModel<KeyValue>,
+  Params extends QueryParams<Params> = never,
   Result extends Record<MongoKeyPath, KeyValue> | null = Model | null,
   KeyValue extends AllowedKeyValue = Model['_id']
 > extends AbstractSubscribableStoreQuery<
@@ -36,6 +43,7 @@ export default class MongoQuerySingleItem<
   KeyValue,
   Model,
   MongoInsertType<Model, KeyValue>,
+  Params,
   Result
 > {
   private readonly store: MongoStore<Model, KeyValue>;
@@ -111,7 +119,7 @@ export default class MongoQuerySingleItem<
       switch (action.type) {
         case 'inserted': {
           const filtered = action.next.filter(mingoQuery.test);
-          if (filtered.length !== 0) {
+          if (filtered.length > 0) {
             changes.push({
               type: 'updated',
               result: this.transformer(filtered[0]),
@@ -121,7 +129,7 @@ export default class MongoQuerySingleItem<
         }
         case 'deleted': {
           const filtered = action.prev.filter(mingoQuery.test);
-          if (filtered.length !== 0) {
+          if (filtered.length > 0) {
             changes.push({
               type: 'deleted',
               keys: filtered.map((object) => object[this.store.keyPath]),
@@ -133,7 +141,7 @@ export default class MongoQuerySingleItem<
           const filtered = action.changes.filter(([prev, next]) =>
             mingoQuery.test(prev),
           );
-          if (filtered.length !== 0) {
+          if (filtered.length > 0) {
             if (this.options.sort) {
               const { result } = await this.fetch((res) => res);
               changes.push({

@@ -1,13 +1,14 @@
-import {
+import type {
   BaseModel,
   InsertType,
   QueryOptions,
   Transformer,
   AllowedKeyValue,
 } from 'liwi-types';
-import AbstractConnection from './AbstractConnection';
-import { Store } from './Store';
-import { SubscribableStoreQuery } from './SubscribableStoreQuery';
+import type AbstractConnection from './AbstractConnection';
+import type { QueryParams } from './Query';
+import type { Store } from './Store';
+import type { SubscribableStoreQuery } from './SubscribableStoreQuery';
 
 export interface SubscribableStore<
   KeyPath extends string,
@@ -16,13 +17,19 @@ export interface SubscribableStore<
   ModelInsertType extends InsertType<Model, KeyPath>,
   Connection extends AbstractConnection
 > extends Store<KeyPath, KeyValue, Model, ModelInsertType, Connection> {
-  createQuerySingleItem<Result extends Record<KeyPath, KeyValue>>(
+  createQuerySingleItem: <
+    Result extends Record<KeyPath, KeyValue>,
+    Params extends QueryParams<Params>
+  >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Result>,
-  ): SubscribableStoreQuery<any, Result, KeyValue>;
+  ) => SubscribableStoreQuery<any, Result, Params, KeyValue>;
 
-  createQueryCollection<Item extends Record<KeyPath, KeyValue>>(
+  createQueryCollection: <
+    Item extends Record<KeyPath, KeyValue>,
+    Params extends QueryParams<Params>
+  >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Item>,
-  ): SubscribableStoreQuery<any, Item[], KeyValue>;
+  ) => SubscribableStoreQuery<any, Item[], Params, KeyValue>;
 }

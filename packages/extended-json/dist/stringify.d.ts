@@ -1,4 +1,4 @@
-import { ExtendedJsonValue } from './ExtendedJsonValue';
+import type { ExtendedJsonValue } from './ExtendedJsonValue';
 declare type JsonReplacer = (key: string, value: any) => number | string | boolean | Record<string, any> | undefined;
 /**
  * @param {*} value The value to convert to a JSON string

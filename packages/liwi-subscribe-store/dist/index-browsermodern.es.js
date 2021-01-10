@@ -42,18 +42,12 @@ class SubscribeStore {
   }
 
   subscribe(callback) {
-    var _this = this;
-
     this.listeners.add(callback);
-    return function () {
-      return _this.listeners.delete(callback);
-    };
+    return () => this.listeners.delete(callback);
   }
 
   callSubscribed(action) {
-    this.listeners.forEach(function (listener) {
-      return listener(action);
-    });
+    this.listeners.forEach(listener => listener(action));
   }
 
   createQuerySingleItem(options, transformer) {
@@ -102,9 +96,7 @@ class SubscribeStore {
     const replacedObjects = await this.store.replaceSeveral(objects);
     this.callSubscribed({
       type: 'updated',
-      changes: objects.map(function (prev, index) {
-        return [prev, replacedObjects[index]];
-      })
+      changes: objects.map((prev, index) => [prev, replacedObjects[index]])
     });
     return replacedObjects;
   }
@@ -130,9 +122,10 @@ class SubscribeStore {
   }
 
   async partialUpdateByKey(key, partialUpdate, criteria) {
-    return this.partialUpdateOne(await this.findOne(Object.assign({
-      [this.store.keyPath]: key
-    }, criteria)), partialUpdate);
+    return this.partialUpdateOne(await this.findOne({
+      [this.store.keyPath]: key,
+      ...criteria
+    }), partialUpdate);
   }
 
   async partialUpdateOne(object, partialUpdate) {
@@ -145,13 +138,11 @@ class SubscribeStore {
   }
 
   async partialUpdateMany(criteria, partialUpdate) {
-    var _this2 = this;
-
     const cursor = await this.store.cursor(criteria);
     const changes = [];
-    await cursor.forEach(async function (model) {
-      const key = model[_this2.store.keyPath];
-      const updated = await _this2.store.partialUpdateByKey(key, partialUpdate, criteria);
+    await cursor.forEach(async model => {
+      const key = model[this.store.keyPath];
+      const updated = await this.store.partialUpdateByKey(key, partialUpdate, criteria);
       changes.push([model, updated]);
     });
     this.callSubscribed({

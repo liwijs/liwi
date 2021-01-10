@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 export interface OperationState {
   loading: boolean;
-  error: undefined | any;
+  error: undefined | Error;
 }
 
 export type OperationCallWrapper<T extends (...args: any) => Promise<any>> = (

@@ -1,5 +1,5 @@
-import { TransportClient } from 'liwi-resources-client';
-import { ResourcesServerService } from 'liwi-resources-server';
+import type { TransportClient } from 'liwi-resources-client';
+import type { ResourcesServerService } from 'liwi-resources-server';
 export interface DirectTransportClientOptions<AuthenticatedUser> {
     resourcesServerService: ResourcesServerService;
     authenticatedUser: AuthenticatedUser | null;

@@ -1,13 +1,14 @@
 /* eslint-disable max-lines */
-import {
+import type {
   Store as StoreInterface,
   AbstractConnection,
   UpsertResult,
   SubscribableStoreQuery,
   AbstractStoreCursor,
   SubscribableStore,
+  QueryParams,
 } from 'liwi-store';
-import {
+import type {
   BaseModel,
   InsertType,
   Update,
@@ -38,8 +39,7 @@ export default class SubscribeStore<
     ModelInsertType,
     Connection
   >
->
-  implements
+> implements
     StoreInterface<KeyPath, KeyValue, Model, ModelInsertType, Connection> {
   private readonly store: Store;
 
@@ -65,36 +65,46 @@ export default class SubscribeStore<
     this.listeners.forEach((listener) => listener(action));
   }
 
-  createQuerySingleItem<Result extends Record<KeyPath, KeyValue>>(
+  createQuerySingleItem<
+    Result extends Record<KeyPath, KeyValue>,
+    Params extends QueryParams<Params>
+  >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Result>,
   ): SubscribableStoreQuery<
     SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
     Result,
+    Params,
     KeyValue
   > {
     const query: SubscribableStoreQuery<
       SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
       Result,
+      Params,
       KeyValue
-    > = this.store.createQuerySingleItem<Result>(options, transformer);
+    > = this.store.createQuerySingleItem<Result, Params>(options, transformer);
     query.setSubscribeStore(this);
     return query;
   }
 
-  createQueryCollection<Item extends Record<KeyPath, KeyValue>>(
+  createQueryCollection<
+    Item extends Record<KeyPath, KeyValue>,
+    Params extends QueryParams<Params>
+  >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Item>,
   ): SubscribableStoreQuery<
     SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
     Item[],
+    Params,
     KeyValue
   > {
     const query: SubscribableStoreQuery<
       SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>,
       Item[],
+      Params,
       KeyValue
-    > = this.store.createQueryCollection<Item>(options, transformer);
+    > = this.store.createQueryCollection<Item, Params>(options, transformer);
     query.setSubscribeStore(this);
     return query;
   }

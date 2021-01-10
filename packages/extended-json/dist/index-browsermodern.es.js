@@ -16,7 +16,7 @@ function stringify(value, replacer, space) {
 // eslint-disable-next-line unicorn/no-unsafe-regex
 const regexpStringDate = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
 
-const internalReviver = function internalReviver(key, value) {
+const internalReviver = function (key, value) {
   if (typeof value === 'string') {
     const matchDate = regexpStringDate.exec(value);
 
@@ -35,9 +35,7 @@ const internalReviver = function internalReviver(key, value) {
 
 
 function parse(text, reviver) {
-  return JSON.parse(text, reviver == null ? internalReviver : function (key, value) {
-    return reviver(key, internalReviver(key, value));
-  });
+  return JSON.parse(text, reviver == null ? internalReviver : (key, value) => reviver(key, internalReviver(key, value)));
 }
 
 export { parse as decode, stringify as encode, parse, stringify };

@@ -28,7 +28,7 @@ var ResourcesServerService = /*#__PURE__*/function () {
 
   _proto.getServiceResource = function getServiceResource(key) {
     var resource = this.serviceResources.get(key);
-    if (!resource) throw new Error("Invalid service resource: \"" + key + "\"");
+    if (!resource) throw new Error(`Invalid service resource: "${key}"`);
     return resource;
   } // getCursorResource(key: string) {
   //   const resource = this.cursorResources.get(key);
@@ -58,14 +58,15 @@ var logger = new Logger('liwi:resources-websocket-client');
 var logUnexpectedError = function logUnexpectedError(error, message, payload) {
   if (!(error instanceof ResourcesServerError)) {
     logger.error(message, {
-      error: error,
+      error,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       payload: 'redacted'
     });
   }
 };
 
 var createMessageHandler = function createMessageHandler(resourcesServerService, authenticatedUser, allowSubscriptions) {
-  var openSubscriptions = allowSubscriptions ? new Map() : null;
+  var openedSubscriptions = allowSubscriptions ? new Map() : null;
 
   var getResource = function getResource(payload) {
     logger.debug('resource', {
@@ -78,21 +79,24 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
   var createQuery = function createQuery(payload, resource) {
     if (!payload.key.startsWith('query')) {
       throw new Error('Invalid query key');
-    }
+    } // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
 
     return resource.queries[payload.key](payload.params, authenticatedUser);
   };
 
   var createSubscription = function createSubscription(type, payload, resource, query, sendSubscriptionMessage) {
-    if (!openSubscriptions) {
+    var _resource$subscribeHo;
+
+    if (!openedSubscriptions) {
       throw new Error('Subscriptions not allowed');
     }
 
     var subscriptionId = payload.subscriptionId;
 
-    if (openSubscriptions.has(subscriptionId)) {
+    if (openedSubscriptions.has(subscriptionId)) {
       logger.warn("Already have a watcher for this id. Cannot add a new one", {
-        subscriptionId: subscriptionId,
+        subscriptionId,
         key: payload.key
       });
       throw new ResourcesServerError('ALREADY_HAVE_WATCHER', "Already have a watcher for this id. Cannot add a new one");
@@ -105,10 +109,10 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
 
       sendSubscriptionMessage(subscriptionId, error, result);
     });
-    var subscribeHook = resource.subscribeHooks && resource.subscribeHooks[payload.key];
-    openSubscriptions.set(subscriptionId, {
-      subscription: subscription,
-      subscribeHook: subscribeHook,
+    var subscribeHook = (_resource$subscribeHo = resource.subscribeHooks) == null ? void 0 : _resource$subscribeHo[payload.key];
+    openedSubscriptions.set(subscriptionId, {
+      subscription,
+      subscribeHook,
       params: subscribeHook ? payload.params : undefined
     });
 
@@ -134,8 +138,8 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
 
   return {
     close: function close() {
-      if (openSubscriptions) {
-        openSubscriptions.forEach(unsubscribeSubscription);
+      if (openedSubscriptions) {
+        openedSubscriptions.forEach(unsubscribeSubscription);
       }
     },
     messageHandler: function () {
@@ -147,7 +151,7 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
             switch (_context.prev = _context.next) {
               case 0:
                 _context.t0 = message.type;
-                _context.next = _context.t0 === 'fetch' ? 3 : _context.t0 === 'fetchAndSubscribe' ? 15 : _context.t0 === 'subscribe' ? 33 : _context.t0 === 'subscribe:close' ? 45 : _context.t0 === 'do' ? 49 : 64;
+                _context.next = _context.t0 === 'fetch' ? 3 : _context.t0 === 'fetchAndSubscribe' ? 16 : _context.t0 === 'subscribe' ? 29 : _context.t0 === 'subscribe:close' ? 41 : _context.t0 === 'do' ? 45 : 60;
                 break;
 
               case 3:
@@ -169,119 +173,106 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
                 throw _context.t1;
 
               case 15:
-                _context.prev = 15;
+                return _context.abrupt("return");
+
+              case 16:
+                _context.prev = 16;
                 _resource = getResource(message.payload);
                 _query = createQuery(message.payload, _resource);
-
-                if (openSubscriptions) {
-                  _context.next = 24;
-                  break;
-                }
-
                 _context.next = 21;
-                return _query.fetch(function (result) {
-                  return result;
-                });
+                return createSubscription('fetchAndSubscribe', message.payload, _resource, _query, subscriptionCallback);
 
               case 21:
                 return _context.abrupt("return", _context.sent);
 
               case 24:
-                _context.next = 26;
-                return createSubscription('fetchAndSubscribe', message.payload, _resource, _query, subscriptionCallback);
-
-              case 26:
-                _context.next = 32;
-                break;
-
-              case 28:
-                _context.prev = 28;
-                _context.t2 = _context["catch"](15);
+                _context.prev = 24;
+                _context.t2 = _context["catch"](16);
                 logUnexpectedError(_context.t2, message.type, message.payload);
                 throw _context.t2;
 
-              case 32:
-                return _context.abrupt("break", 64);
+              case 28:
+                return _context.abrupt("return");
 
-              case 33:
-                _context.prev = 33;
+              case 29:
+                _context.prev = 29;
                 _resource2 = getResource(message.payload);
                 _query2 = createQuery(message.payload, _resource2);
-                _context.next = 38;
+                _context.next = 34;
                 return createSubscription('subscribe', message.payload, _resource2, _query2, subscriptionCallback);
 
-              case 38:
-                _context.next = 44;
+              case 34:
+                _context.next = 40;
                 break;
 
-              case 40:
-                _context.prev = 40;
-                _context.t3 = _context["catch"](33);
+              case 36:
+                _context.prev = 36;
+                _context.t3 = _context["catch"](29);
                 logUnexpectedError(_context.t3, message.type, message.payload);
                 throw _context.t3;
 
-              case 44:
-                return _context.abrupt("break", 64);
+              case 40:
+                return _context.abrupt("return");
 
-              case 45:
-                if (openSubscriptions) {
-                  _context.next = 47;
+              case 41:
+                if (openedSubscriptions) {
+                  _context.next = 43;
                   break;
                 }
 
                 throw new Error('Subscriptions not allowed');
 
-              case 47:
+              case 43:
                 try {
                   _subscriptionId = message.payload.subscriptionId;
-                  _SubscriptionAndSubscribeHook = openSubscriptions.get(_subscriptionId);
+                  _SubscriptionAndSubscribeHook = openedSubscriptions.get(_subscriptionId);
 
                   if (!_SubscriptionAndSubscribeHook) {
                     logger.warn('tried to unsubscribe non existing watcher', {
                       subscriptionId: _subscriptionId
                     });
                   } else {
-                    openSubscriptions.delete(_subscriptionId);
+                    openedSubscriptions.delete(_subscriptionId);
                     unsubscribeSubscription(_SubscriptionAndSubscribeHook);
                   }
                 } catch (err) {
                   logUnexpectedError(err, message.type, message.payload);
                 }
 
-                return _context.abrupt("break", 64);
+                return _context.abrupt("return");
 
-              case 49:
-                _context.prev = 49;
+              case 45:
+                _context.prev = 45;
                 _resource3 = getResource(message.payload);
                 _message$payload = message.payload, operationKey = _message$payload.operationKey, params = _message$payload.params;
                 operation = _resource3.operations[operationKey];
 
                 if (operation) {
-                  _context.next = 55;
+                  _context.next = 51;
                   break;
                 }
 
-                throw new ResourcesServerError('OPERATION_NOT_FOUND', "Operation not found: " + operationKey);
+                throw new ResourcesServerError('OPERATION_NOT_FOUND', `Operation not found: ${operationKey}`);
 
-              case 55:
-                _context.next = 57;
+              case 51:
+                _context.next = 53;
                 return operation(params, authenticatedUser);
 
-              case 57:
+              case 53:
                 return _context.abrupt("return", _context.sent);
 
-              case 60:
-                _context.prev = 60;
-                _context.t4 = _context["catch"](49);
+              case 56:
+                _context.prev = 56;
+                _context.t4 = _context["catch"](45);
                 logUnexpectedError(_context.t4, message.type, message.payload);
                 throw _context.t4;
 
-              case 64:
+              case 60:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[3, 11], [15, 28], [33, 40], [49, 60]]);
+        }, _callee, null, [[3, 11], [16, 24], [29, 36], [45, 56]]);
       }));
 
       return function messageHandler() {

@@ -1,4 +1,4 @@
-import {
+import type {
   BaseModel,
   Changes,
   Fields,
@@ -36,7 +36,7 @@ export type AllowedParamValue =
   | Date
   | AllowedParamValue[];
 
-export type QueryParams<Params extends {}> = {
+export type QueryParams<Params extends Record<string, unknown>> = {
   [P in keyof Params]: Extract<Params[P], AllowedParamValue>;
 };
 
@@ -51,17 +51,19 @@ export interface Query<
   Params extends QueryParams<Params>,
   KeyValue extends AllowedKeyValue = AllowedKeyValue
 > {
-  changeParams(params: Params): void;
+  changeParams: (params: Params) => void;
 
-  changePartialParams(
+  changePartialParams: (
     params: Params extends undefined ? never : Partial<Params>,
-  ): void;
+  ) => void;
 
-  fetch<T>(onFulfilled: (result: QueryResult<Result>) => T): Promise<T>;
+  fetch: <T>(onFulfilled: (result: QueryResult<Result>) => T) => Promise<T>;
 
-  fetchAndSubscribe(
+  fetchAndSubscribe: (
     callback: SubscribeCallback<KeyValue, Result>,
-  ): QuerySubscription;
+  ) => QuerySubscription;
 
-  subscribe(callback: SubscribeCallback<KeyValue, Result>): QuerySubscription;
+  subscribe: (
+    callback: SubscribeCallback<KeyValue, Result>,
+  ) => QuerySubscription;
 }

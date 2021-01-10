@@ -1,5 +1,5 @@
-import { ExtendedJsonValue } from 'extended-json';
-import {
+import type { ExtendedJsonValue } from 'extended-json';
+import type {
   ToServerSimpleMessages,
   ToServerSubscribeMessages,
 } from 'liwi-resources';
@@ -35,19 +35,19 @@ export type ConnectionStateChangeListenerCreator = (
 ) => () => void;
 
 export interface TransportClient {
-  connect(): void;
-  close(): void;
+  connect: () => void;
+  close: () => void;
   listenStateChange: ConnectionStateChangeListenerCreator;
 
-  send<
+  send: <
     T extends keyof ToServerSimpleMessages,
     U extends ToServerSimpleMessages[T][1] = ToServerSimpleMessages[T][1]
   >(
     type: T,
     message: ToServerSimpleMessages[T][0],
-  ): Promise<U>;
+  ) => Promise<U>;
 
-  subscribe<
+  subscribe: <
     T extends keyof ToServerSubscribeMessages<Payload>,
     Payload extends Record<keyof Payload & string, ExtendedJsonValue>,
     Result,
@@ -59,5 +59,5 @@ export interface TransportClient {
       'subscriptionId'
     >,
     callback: TransportClientSubscribeCallback<V>,
-  ): TransportClientSubscribeResult<Result, Payload>;
+  ) => TransportClientSubscribeResult<Result, Payload>;
 }

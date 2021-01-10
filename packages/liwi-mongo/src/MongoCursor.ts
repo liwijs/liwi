@@ -1,8 +1,8 @@
 import { AbstractStoreCursor } from 'liwi-store';
-import { AllowedKeyValue } from 'liwi-types';
-import { Cursor } from 'mongodb';
-import { MongoBaseModel } from './MongoBaseModel';
-import MongoStore from './MongoStore';
+import type { AllowedKeyValue } from 'liwi-types';
+import type { Cursor } from 'mongodb';
+import type { MongoBaseModel } from './MongoBaseModel';
+import type MongoStore from './MongoStore';
 
 export default class MongoCursor<
   Model extends MongoBaseModel<KeyValue>,

@@ -1,20 +1,22 @@
 /* eslint-disable max-lines */
-import { Query, QueryParams, QuerySubscription } from 'liwi-resources-client';
-import { Changes, InitialChange, QueryInfo, QueryMeta } from 'liwi-types';
+import type {
+  Query,
+  QueryParams,
+  QuerySubscription,
+} from 'liwi-resources-client';
+import type { Changes, InitialChange, QueryInfo, QueryMeta } from 'liwi-types';
 import Logger from 'nightingale-logger';
 import { useEffect, useReducer, useRef, useMemo } from 'react';
-import { ApplyChanges } from './applyChanges/ApplyChanges';
+import type { ApplyChanges } from './applyChanges/ApplyChanges';
 import { applyCollectionChanges } from './applyChanges/applyCollectionChanges';
 import { applySingleItemChanges } from './applyChanges/applySingleItemChanges';
-import {
-  createResourceResultFromState,
-  ResourceResult,
-} from './createResourceResultFromState';
-import reducer, {
+import type { ResourceResult } from './createResourceResultFromState';
+import { createResourceResultFromState } from './createResourceResultFromState';
+import type {
   ResourceReducer,
   ResourceReducerInitializerReturn,
-  initReducer,
 } from './reducer';
+import reducer, { initReducer } from './reducer';
 
 export interface UseResourceAndSubscribeOptions {
   visibleTimeout: number;
@@ -145,10 +147,10 @@ export function useRetrieveResourceAndSubscribe<
               () => {
                 queryLogger.success('subscribed');
               },
-              (error) => {
+              (err) => {
                 dispatch({
                   type: 'error',
-                  error,
+                  error: err,
                 });
               },
             );

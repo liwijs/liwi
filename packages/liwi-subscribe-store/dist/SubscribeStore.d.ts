@@ -1,5 +1,5 @@
-import { Store as StoreInterface, AbstractConnection, UpsertResult, SubscribableStoreQuery, AbstractStoreCursor, SubscribableStore } from 'liwi-store';
-import { BaseModel, InsertType, Update, Criteria, Sort, QueryOptions, Transformer, AllowedKeyValue } from 'liwi-types';
+import type { Store as StoreInterface, AbstractConnection, UpsertResult, SubscribableStoreQuery, AbstractStoreCursor, SubscribableStore, QueryParams } from 'liwi-store';
+import type { BaseModel, InsertType, Update, Criteria, Sort, QueryOptions, Transformer, AllowedKeyValue } from 'liwi-types';
 export declare type Actions<Model> = {
     type: 'inserted';
     next: Model[];
@@ -19,8 +19,8 @@ export default class SubscribeStore<KeyPath extends string, KeyValue extends All
     get connection(): Connection;
     subscribe(callback: Listener<Model>): () => void;
     callSubscribed(action: Actions<Model>): void;
-    createQuerySingleItem<Result extends Record<KeyPath, KeyValue>>(options: QueryOptions<Model>, transformer?: Transformer<Model, Result>): SubscribableStoreQuery<SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>, Result, KeyValue>;
-    createQueryCollection<Item extends Record<KeyPath, KeyValue>>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): SubscribableStoreQuery<SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>, Item[], KeyValue>;
+    createQuerySingleItem<Result extends Record<KeyPath, KeyValue>, Params extends QueryParams<Params>>(options: QueryOptions<Model>, transformer?: Transformer<Model, Result>): SubscribableStoreQuery<SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>, Result, Params, KeyValue>;
+    createQueryCollection<Item extends Record<KeyPath, KeyValue>, Params extends QueryParams<Params>>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): SubscribableStoreQuery<SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>, Item[], Params, KeyValue>;
     findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
     findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined>;
     findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;

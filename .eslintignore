@@ -1,6 +1,0 @@
-*.d.ts
-packages/*/dist
-packages/*/test
-packages/*/public
-packages/*/build
-node_modules

@@ -1,5 +1,5 @@
-import { Query, QuerySubscription, SubscribeCallback, QueryParams, QueryResult } from 'liwi-resources';
-import { TransportClient } from './TransportClient';
+import type { Query, QuerySubscription, SubscribeCallback, QueryParams, QueryResult } from 'liwi-resources';
+import type { TransportClient } from './TransportClient';
 export declare class ClientQuery<Result, Params extends QueryParams<Params>> implements Query<Result, Params> {
     private readonly resourceName;
     private readonly transportClient;

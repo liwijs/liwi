@@ -4,6 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var _extends = _interopDefault(require('@babel/runtime/helpers/esm/extends'));
 var Logger = _interopDefault(require('nightingale-logger'));
 var liwiResources = require('liwi-resources');
 
@@ -23,7 +24,7 @@ var ClientQuery = /*#__PURE__*/function () {
   };
 
   _proto.changePartialParams = function changePartialParams(params) {
-    this.params = Object.assign({}, this.params, params);
+    this.params = _extends({}, this.params, params);
   };
 
   _proto.getTransportPayload = function getTransportPayload() {
@@ -77,24 +78,19 @@ var createResourceClientService = function createResourceClientService(resourceN
     getKeys(options.operations).forEach(function (operationKey) {
       operations[operationKey] = function (params) {
         return transportClient.send('do', {
-          resourceName: resourceName,
+          resourceName,
           operationKey: operationKey,
-          params: params
+          params
         });
       };
     });
     return {
-      queries: queries,
-      operations: operations
+      queries,
+      operations
     };
   };
 };
 
-Object.defineProperty(exports, 'ResourcesServerError', {
-  enumerable: true,
-  get: function () {
-    return liwiResources.ResourcesServerError;
-  }
-});
+exports.ResourcesServerError = liwiResources.ResourcesServerError;
 exports.createResourceClientService = createResourceClientService;
 //# sourceMappingURL=index-browser-dev.cjs.js.map

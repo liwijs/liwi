@@ -1,3 +1,4 @@
+import _extends from '@babel/runtime/helpers/esm/extends';
 import _regeneratorRuntime from '@babel/runtime/regenerator';
 import _asyncToGenerator from '@babel/runtime/helpers/esm/asyncToGenerator';
 import _createClass from '@babel/runtime/helpers/esm/createClass';
@@ -255,15 +256,15 @@ var SubscribeStore = /*#__PURE__*/function () {
 
   _proto.partialUpdateByKey = /*#__PURE__*/function () {
     var _partialUpdateByKey = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee6(key, partialUpdate, criteria) {
-      var _Object$assign;
-
       return _regeneratorRuntime.wrap(function _callee6$(_context6) {
         while (1) {
           switch (_context6.prev = _context6.next) {
             case 0:
               _context6.t0 = this;
               _context6.next = 3;
-              return this.findOne(Object.assign((_Object$assign = {}, _Object$assign[this.store.keyPath] = key, _Object$assign), criteria));
+              return this.findOne(_extends({
+                [this.store.keyPath]: key
+              }, criteria));
 
             case 3:
               _context6.t1 = _context6.sent;
@@ -361,7 +362,7 @@ var SubscribeStore = /*#__PURE__*/function () {
             case 6:
               this.callSubscribed({
                 type: 'updated',
-                changes: changes
+                changes
               });
 
             case 7:
@@ -455,7 +456,7 @@ var SubscribeStore = /*#__PURE__*/function () {
             case 8:
               this.callSubscribed({
                 type: 'deleted',
-                prev: prev
+                prev
               });
 
             case 9:

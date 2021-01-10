@@ -1,15 +1,8 @@
-import React, {
-  createContext,
-  ReactElement,
-  useState,
-  useContext,
-  ReactNode,
-} from 'react';
+import type { ReactElement, ReactNode } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 import { TransportClientContext } from 'react-liwi';
-import {
-  TasksService,
-  createTasksServiceClient,
-} from 'modules/tasks/TasksService';
+import type { TasksService } from 'modules/tasks/TasksService';
+import { createTasksServiceClient } from 'modules/tasks/TasksService';
 
 interface TodoServices {
   tasksService: TasksService;

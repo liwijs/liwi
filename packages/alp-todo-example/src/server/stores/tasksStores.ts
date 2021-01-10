@@ -1,4 +1,4 @@
-import { Task } from 'modules/tasks/Task';
+import type { Task } from 'modules/tasks/Task';
 import {
   createMongoSubscribeStore,
   createMongoStore,

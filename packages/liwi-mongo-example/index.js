@@ -1,4 +1,4 @@
-/* eslint-disable import/no-dynamic-require, prettier/prettier */
+/* eslint-disable import/no-dynamic-require */
 
 'use strict';
 

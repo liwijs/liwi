@@ -1,5 +1,5 @@
-import { ExtendedJsonValue } from './ExtendedJsonValue';
-declare type JsonReviver = (key: string, value: any) => any;
+import type { ExtendedJsonValue } from './ExtendedJsonValue';
+declare type JsonReviver = <T extends ExtendedJsonValue>(key: string, value: T) => ExtendedJsonValue;
 /**
  * @param  {string}   text      The string to parse as JSON
  * @param  {function} [reviver] If a function, prescribes how the value originally produced by parsing is transformed, before being returned

@@ -1,11 +1,9 @@
-import {
+import type {
   TransportClient,
   TransportClientSubscribeResult,
 } from 'liwi-resources-client';
-import {
-  ResourcesServerService,
-  createMessageHandler,
-} from 'liwi-resources-server';
+import type { ResourcesServerService } from 'liwi-resources-server';
+import { createMessageHandler } from 'liwi-resources-server';
 
 export interface DirectTransportClientOptions<AuthenticatedUser> {
   resourcesServerService: ResourcesServerService;
