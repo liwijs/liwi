@@ -14,6 +14,7 @@ export default function ServerApp(): ReactElement {
     <TransportClientProvider<DirectTransportClientOptions<null>>
       createFn={createDirectTransportClient}
       resourcesServerService={resourcesServerService}
+      authenticatedUser={null}
       // authenticatedUser={ctx.sanitizedState.user}
     >
       <App />

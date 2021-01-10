@@ -9,9 +9,9 @@ export type OperationCallWrapper<T extends (...args: any) => Promise<any>> = (
   ...args: Parameters<T>
 ) => Promise<[undefined | Error | any, undefined | ReturnType<T>]>;
 
-export function useOperation<
-  T extends (...args: any) => Promise<ReturnType<T>>
->(operationCall: T): [OperationCallWrapper<T>, OperationState] {
+export function useOperation<T extends (...args: any) => Promise<any>>(
+  operationCall: T,
+): [OperationCallWrapper<T>, OperationState] {
   const [state, setState] = useState<OperationState>(() => ({
     loading: false,
     error: undefined,

@@ -11,12 +11,12 @@ export const TransportClientStateContext = createContext<ConnectionStates>(
 );
 export const TransportClientReadyContext = createContext<boolean>(false);
 
-type TransportClientProviderProps<P extends Record<keyof P, unknown>> = {
+type TransportClientProviderProps<P extends Record<never, unknown>> = {
   createFn: (params: Omit<P, 'createFn' | 'children'>) => TransportClient;
   children: ReactChild;
 } & P;
 
-export function TransportClientProvider<P extends Record<keyof P, unknown>>({
+export function TransportClientProvider<P extends Record<never, unknown>>({
   createFn,
   children,
   ...params

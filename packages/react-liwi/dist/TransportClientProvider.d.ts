@@ -4,10 +4,10 @@ import React from 'react';
 export declare const TransportClientContext: React.Context<TransportClient>;
 export declare const TransportClientStateContext: React.Context<ConnectionStates>;
 export declare const TransportClientReadyContext: React.Context<boolean>;
-declare type TransportClientProviderProps<P extends Record<keyof P, unknown>> = {
+declare type TransportClientProviderProps<P extends Record<never, unknown>> = {
     createFn: (params: Omit<P, 'createFn' | 'children'>) => TransportClient;
     children: ReactChild;
 } & P;
-export declare function TransportClientProvider<P extends Record<keyof P, unknown>>({ createFn, children, ...params }: TransportClientProviderProps<P>): ReactElement;
+export declare function TransportClientProvider<P extends Record<never, unknown>>({ createFn, children, ...params }: TransportClientProviderProps<P>): ReactElement;
 export {};
 //# sourceMappingURL=TransportClientProvider.d.ts.map
