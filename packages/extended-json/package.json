@@ -1,6 +1,6 @@
 {
   "name": "extended-json",
-  "version": "8.0.0",
+  "version": "8.0.2",
   "description": "extended json with date using reviver",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
