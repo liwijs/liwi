@@ -50,12 +50,18 @@
       }
     }
   },
+  "module:node": "./dist/index-node12.mjs",
+  "module:node-dev": "./dist/index-node12-dev.mjs",
+  "module:browser": "./dist/index-browser.es.js",
+  "module:browser-dev": "./dist/index-browser-dev.es.js",
+  "module:modern-browsers": "./dist/index-browsermodern.es.js",
+  "module:modern-browsers-dev": "./dist/index-browsermodern-dev.es.js",
   "sideEffects": false,
   "scripts": {
     "build": "pob-build && yarn run build:definitions",
     "build:definitions": "tsc -p tsconfig.build.json",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn --cwd ../.. eslint --ext .js,.ts --report-unused-disable-directives --quiet packages/liwi-subscribe-store",
+    "lint:eslint": "yarn --cwd ../.. run eslint --ext .js,.mjs,.ts --report-unused-disable-directives --quiet packages/liwi-subscribe-store",
     "watch": "pob-watch"
   },
   "prettier": {
@@ -100,9 +106,9 @@
   "devDependencies": {
     "@babel/core": "7.12.10",
     "@babel/preset-env": "7.12.11",
-    "babel-preset-latest-node": "5.2.0",
+    "babel-preset-latest-node": "5.4.0",
     "babel-preset-modern-browsers": "15.0.2",
     "pob-babel": "26.3.0",
-    "rollup": "2.36.1"
+    "rollup": "2.36.2"
   }
 }

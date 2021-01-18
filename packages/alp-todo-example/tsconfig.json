@@ -6,18 +6,7 @@
     /* No need to check .d.ts files */
     "skipLibCheck": true,
 
-    "rootDirs": [
-      "src",
-      "../../packages/liwi-resources/src",
-      "../../packages/liwi-subscribe-store/src",
-      "../../packages/liwi-mongo/src",
-      "../../packages/liwi-resources-client/src",
-      "../../packages/liwi-resources-server/src",
-      "../../packages/liwi-resources-direct-client/src",
-      "../../packages/liwi-resources-websocket-client/src",
-      "../../packages/liwi-resources-websocket-server/src",
-      "../../packages/react-liwi/src"
-    ],
+    "rootDirs": ["src"],
 
     "target": "esnext" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */,
     "module": "esnext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
@@ -46,20 +35,41 @@
 
     "paths": {
       "liwi-resources": ["../../../packages/liwi-resources/src"],
+      "liwi-resources/*": ["../../../packages/liwi-resources/src/*"],
       "liwi-subscribe-store": ["../../../packages/liwi-subscribe-store/src"],
+      "liwi-subscribe-store/*": [
+        "../../../packages/liwi-subscribe-store/src/*"
+      ],
       "liwi-mongo": ["../../../packages/liwi-mongo/src"],
+      "liwi-mongo/*": ["../../../packages/liwi-mongo/src/*"],
       "liwi-resources-client": ["../../../packages/liwi-resources-client/src"],
+      "liwi-resources-client/*": [
+        "../../../packages/liwi-resources-client/src/*"
+      ],
       "liwi-resources-server": ["../../../packages/liwi-resources-server/src"],
+      "liwi-resources-server/*": [
+        "../../../packages/liwi-resources-server/src/*"
+      ],
       "liwi-resources-direct-client": [
         "../../../packages/liwi-resources-direct-client/src"
+      ],
+      "liwi-resources-direct-client/*": [
+        "../../../packages/liwi-resources-direct-client/src/*"
       ],
       "liwi-resources-websocket-client": [
         "../../../packages/liwi-resources-websocket-client/src"
       ],
+      "liwi-resources-websocket-client/*": [
+        "../../../packages/liwi-resources-websocket-client/src/*"
+      ],
       "liwi-resources-websocket-server": [
         "../../../packages/liwi-resources-websocket-server/src"
       ],
-      "react-liwi": ["../../../packages/react-liwi/src"]
+      "liwi-resources-websocket-server/*": [
+        "../../../packages/liwi-resources-websocket-server/src/*"
+      ],
+      "react-liwi": ["../../../packages/react-liwi/src"],
+      "react-liwi/*": ["../../../packages/react-liwi/src/*"]
     }
   }
 }

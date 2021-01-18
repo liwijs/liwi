@@ -17,7 +17,7 @@
   "scripts": {
     "build": "alp-dev-build",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn --cwd ../.. eslint --ext .js,.ts,.tsx --report-unused-disable-directives --quiet packages/alp-todo-example",
+    "lint:eslint": "yarn --cwd ../.. run eslint --ext .js,.mjs,.ts,.tsx --report-unused-disable-directives --quiet packages/alp-todo-example",
     "start": "alp-dev"
   },
   "prettier": {
@@ -37,7 +37,7 @@
     "liwi-resources-websocket-client": "^8.0.1",
     "liwi-resources-websocket-server": "^8.0.1",
     "liwi-subscribe-store": "^8.0.1",
-    "nightingale-app-console": "10.0.1",
+    "nightingale-app-console": "11.0.2",
     "react": "16.11.0",
     "react-alp-context": "^2.1.0",
     "react-alp-translate": "^4.1.0",

@@ -28,12 +28,14 @@
       }
     }
   },
+  "module:node": "./dist/index-node12.mjs",
+  "module:node-dev": "./dist/index-node12-dev.mjs",
   "sideEffects": false,
   "scripts": {
     "build": "pob-build && yarn run build:definitions",
     "build:definitions": "tsc -p tsconfig.build.json",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn --cwd ../.. eslint --ext .js,.ts --report-unused-disable-directives --quiet packages/liwi-resources-direct-client",
+    "lint:eslint": "yarn --cwd ../.. run eslint --ext .js,.mjs,.ts --report-unused-disable-directives --quiet packages/liwi-resources-direct-client",
     "watch": "pob-watch"
   },
   "prettier": {
@@ -61,13 +63,13 @@
     "extended-json": "^8.0.0",
     "liwi-resources-client": "^8.0.1",
     "liwi-resources-server": "^8.0.1",
-    "nightingale-logger": "^10.0.1"
+    "nightingale-logger": "^11.0.1"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
     "@types/backo2": "^1.0.1",
-    "babel-preset-latest-node": "5.2.0",
+    "babel-preset-latest-node": "5.4.0",
     "pob-babel": "26.3.0",
-    "rollup": "2.36.1"
+    "rollup": "2.36.2"
   }
 }

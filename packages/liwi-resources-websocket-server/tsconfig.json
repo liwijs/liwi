@@ -6,12 +6,7 @@
     /* No need to check .d.ts files */
     "skipLibCheck": true,
 
-    "rootDirs": [
-      "src",
-      "../../packages/extended-json/src",
-      "../../packages/liwi-store/src",
-      "../../packages/liwi-resources-server/src"
-    ],
+    "rootDirs": ["src"],
 
     "target": "esnext" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */,
     "module": "esnext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
@@ -40,8 +35,13 @@
 
     "paths": {
       "extended-json": ["../../../packages/extended-json/src"],
+      "extended-json/*": ["../../../packages/extended-json/src/*"],
       "liwi-store": ["../../../packages/liwi-store/src"],
-      "liwi-resources-server": ["../../../packages/liwi-resources-server/src"]
+      "liwi-store/*": ["../../../packages/liwi-store/src/*"],
+      "liwi-resources-server": ["../../../packages/liwi-resources-server/src"],
+      "liwi-resources-server/*": [
+        "../../../packages/liwi-resources-server/src/*"
+      ]
     }
   }
 }
