@@ -24,6 +24,6 @@
     "arrowParens": "always"
   },
   "devDependencies": {
-    "eslint": "^6.3.0"
+    "eslint": "^7.18.0"
   }
 }
