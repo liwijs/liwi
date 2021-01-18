@@ -63,13 +63,13 @@
     "extended-json": "^8.0.3",
     "liwi-resources-client": "^8.0.3",
     "liwi-resources-server": "^8.0.3",
-    "nightingale-logger": "^11.0.1"
+    "nightingale-logger": "^11.0.5"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
     "@types/backo2": "^1.0.1",
     "babel-preset-latest-node": "5.4.0",
-    "pob-babel": "26.3.0",
+    "pob-babel": "26.4.0",
     "rollup": "2.36.2"
   }
 }

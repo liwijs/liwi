@@ -539,8 +539,8 @@ function usePaginatedResource(createQuery, options, deps) {
   var _result$meta, _result$queryInfo;
 
   var result = useResource(createQuery, options, deps);
-  var total = (_result$meta = result.meta) == null ? void 0 : _result$meta.total;
-  var limit = (_result$queryInfo = result.queryInfo) == null ? void 0 : _result$queryInfo.limit;
+  var total = (_result$meta = result.meta) === null || _result$meta === void 0 ? void 0 : _result$meta.total;
+  var limit = (_result$queryInfo = result.queryInfo) === null || _result$queryInfo === void 0 ? void 0 : _result$queryInfo.limit;
   var pagination = useMemo(function () {
     if (total === undefined) return undefined;
     return {

@@ -114,7 +114,7 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
 
       sendSubscriptionMessage(subscriptionId, error, result);
     });
-    var subscribeHook = (_resource$subscribeHo = resource.subscribeHooks) == null ? void 0 : _resource$subscribeHo[payload.key];
+    var subscribeHook = (_resource$subscribeHo = resource.subscribeHooks) === null || _resource$subscribeHo === void 0 ? void 0 : _resource$subscribeHo[payload.key];
     openedSubscriptions.set(subscriptionId, {
       subscription,
       subscribeHook,

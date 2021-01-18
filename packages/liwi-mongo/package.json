@@ -65,12 +65,12 @@
     "liwi-types": "^8.0.1",
     "mingo": "^3.0.2",
     "mongodb": "^3.5.8",
-    "nightingale-logger": "^11.0.1"
+    "nightingale-logger": "^11.0.5"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
     "babel-preset-latest-node": "5.4.0",
-    "pob-babel": "26.3.0",
+    "pob-babel": "26.4.0",
     "rollup": "2.36.2"
   }
 }

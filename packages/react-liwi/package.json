@@ -108,7 +108,7 @@
     "liwi-resources-client": "^8.0.3",
     "liwi-types": "^8.0.1",
     "mingo": "^3.0.2",
-    "nightingale-logger": "^11.0.1"
+    "nightingale-logger": "^11.0.5"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
@@ -117,7 +117,7 @@
     "@types/react": "^16.8.16",
     "babel-preset-latest-node": "5.4.0",
     "babel-preset-modern-browsers": "15.0.2",
-    "pob-babel": "26.3.0",
+    "pob-babel": "26.4.0",
     "react": "^16.8.6",
     "rollup": "2.36.2"
   }
