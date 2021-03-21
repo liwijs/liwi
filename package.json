@@ -36,17 +36,17 @@
     ]
   },
   "devDependencies": {
-    "@pob/commitlint-config": "2.0.1",
+    "@pob/commitlint-config": "2.1.0",
     "@pob/eslint-config": "43.0.0",
-    "@pob/eslint-config-node": "43.0.0",
+    "@pob/eslint-config-node": "43.1.0",
     "@pob/eslint-config-typescript": "43.0.0",
     "@pob/eslint-config-typescript-node": "43.0.0",
     "@pob/eslint-config-typescript-react": "43.0.0",
-    "@pob/lerna-light": "3.23.0",
-    "@pob/root": "3.0.3",
-    "eslint": "7.18.0",
+    "@pob/lerna-light": "3.24.0",
+    "@pob/root": "3.2.0",
+    "eslint": "7.22.0",
     "husky": "4.3.8",
     "prettier": "2.2.1",
-    "typescript": "4.1.3"
+    "typescript": "4.2.3"
   }
 }

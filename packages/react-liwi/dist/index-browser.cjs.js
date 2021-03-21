@@ -67,11 +67,11 @@ function initReducer(initializer) {
   return {
     fetched: false,
     fetching: true,
-    query,
+    query: query,
     result: undefined,
     meta: undefined,
     queryInfo: undefined,
-    promise,
+    promise: promise,
     error: undefined
   };
 }
@@ -132,18 +132,18 @@ function useRetrieveResource(createQuery, params, skip, deps) {
   var _useReducer = React.useReducer(reducer, function () {
     var query = createQuery(params);
     if (!isTransportReady || skip) return {
-      query
+      query: query
     };
     return {
-      query,
+      query: query,
       promise: fetch(query, function (_ref) {
         var result = _ref.result,
             meta = _ref.meta,
             info = _ref.info;
         dispatch({
           type: 'resolve',
-          result,
-          meta,
+          result: result,
+          meta: meta,
           queryInfo: info
         });
       }).catch(function (err) {
@@ -170,8 +170,8 @@ function useRetrieveResource(createQuery, params, skip, deps) {
             info = _ref2.info;
         dispatch({
           type: 'resolve',
-          result,
-          meta,
+          result: result,
+          meta: meta,
           queryInfo: info
         });
       }).catch(function (err) {
@@ -203,8 +203,8 @@ function useRetrieveResource(createQuery, params, skip, deps) {
             info = _ref3.info;
         dispatch({
           type: 'resolve',
-          result,
-          meta,
+          result: result,
+          meta: meta,
           queryInfo: info
         });
       }).catch(function (err) {
@@ -281,7 +281,7 @@ var applyCollectionChange = function applyCollectionChange(state, change, queryM
 
 function applyCollectionChanges(state, changes, queryMeta, queryInfo) {
   if (state === undefined) return {
-    state,
+    state: state,
     meta: queryMeta
   };
 
@@ -322,7 +322,7 @@ var applySingleItemChange = function applySingleItemChange(state, change, queryM
 
 function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
   if (state === undefined) return {
-    state,
+    state: state,
     meta: queryMeta
   };
 
@@ -377,7 +377,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
     var currentMeta;
     var currentQueryInfo;
     return {
-      query,
+      query: query,
       promise: new Promise(function () {
         var queryLogger = logger.context({
           resourceName: query.resourceName,
@@ -394,8 +394,8 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
             var _applyChanges, newResult, newMeta;
 
             queryLogger.debug('received changes', {
-              err,
-              changes
+              err: err,
+              changes: changes
             });
 
             if (err) {
@@ -446,7 +446,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
         changeParamsRef.current = function (params) {
           queryLogger.info('change params', {
             skip: skipRef.current,
-            params
+            params: params
           });
 
           if (querySubscriptionRef.current) {
@@ -546,8 +546,8 @@ function usePaginatedResource(createQuery, options, deps) {
   var _result$meta, _result$queryInfo;
 
   var result = useResource(createQuery, options, deps);
-  var total = (_result$meta = result.meta) === null || _result$meta === void 0 ? void 0 : _result$meta.total;
-  var limit = (_result$queryInfo = result.queryInfo) === null || _result$queryInfo === void 0 ? void 0 : _result$queryInfo.limit;
+  var total = (_result$meta = result.meta) == null ? void 0 : _result$meta.total;
+  var limit = (_result$queryInfo = result.queryInfo) == null ? void 0 : _result$queryInfo.limit;
   var pagination = React.useMemo(function () {
     if (total === undefined) return undefined;
     return {
@@ -556,7 +556,7 @@ function usePaginatedResource(createQuery, options, deps) {
   }, [total, limit]);
   return React.useMemo(function () {
     return _extends({}, result, {
-      pagination
+      pagination: pagination
     });
   }, [result, pagination]);
 }

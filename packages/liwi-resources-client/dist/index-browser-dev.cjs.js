@@ -78,15 +78,15 @@ var createResourceClientService = function createResourceClientService(resourceN
     getKeys(options.operations).forEach(function (operationKey) {
       operations[operationKey] = function (params) {
         return transportClient.send('do', {
-          resourceName,
+          resourceName: resourceName,
           operationKey: operationKey,
-          params
+          params: params
         });
       };
     });
     return {
-      queries,
-      operations
+      queries: queries,
+      operations: operations
     };
   };
 };

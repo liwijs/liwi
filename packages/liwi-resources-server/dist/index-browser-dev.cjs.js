@@ -33,7 +33,7 @@ var ResourcesServerService = /*#__PURE__*/function () {
 
   _proto.getServiceResource = function getServiceResource(key) {
     var resource = this.serviceResources.get(key);
-    if (!resource) throw new Error(`Invalid service resource: "${key}"`);
+    if (!resource) throw new Error("Invalid service resource: \"" + key + "\"");
     return resource;
   } // getCursorResource(key: string) {
   //   const resource = this.cursorResources.get(key);
@@ -62,7 +62,7 @@ var logger = new Logger('liwi:resources-websocket-client');
 
 var logUnexpectedError = function logUnexpectedError(error, message, payload) {
   logger.error(message, {
-    error,
+    error: error,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     payload: payload
   });
@@ -99,7 +99,7 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
 
     if (openedSubscriptions.has(subscriptionId)) {
       logger.warn("Already have a watcher for this id. Cannot add a new one", {
-        subscriptionId,
+        subscriptionId: subscriptionId,
         key: payload.key
       });
       throw new liwiResources.ResourcesServerError('ALREADY_HAVE_WATCHER', "Already have a watcher for this id. Cannot add a new one");
@@ -112,10 +112,10 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
 
       sendSubscriptionMessage(subscriptionId, error, result);
     });
-    var subscribeHook = (_resource$subscribeHo = resource.subscribeHooks) === null || _resource$subscribeHo === void 0 ? void 0 : _resource$subscribeHo[payload.key];
+    var subscribeHook = (_resource$subscribeHo = resource.subscribeHooks) == null ? void 0 : _resource$subscribeHo[payload.key];
     openedSubscriptions.set(subscriptionId, {
-      subscription,
-      subscribeHook,
+      subscription: subscription,
+      subscribeHook: subscribeHook,
       params: subscribeHook ? payload.params : undefined
     });
 
@@ -255,7 +255,7 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
                   break;
                 }
 
-                throw new liwiResources.ResourcesServerError('OPERATION_NOT_FOUND', `Operation not found: ${operationKey}`);
+                throw new liwiResources.ResourcesServerError('OPERATION_NOT_FOUND', "Operation not found: " + operationKey);
 
               case 51:
                 _context.next = 53;

@@ -24,10 +24,10 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
     var sendMessage = function sendMessage(type, id, error, result) {
       if (!id) throw new Error('Invalid id');
       logger.debug('sendMessage', {
-        type,
-        id,
-        error,
-        result
+        type: type,
+        id: id,
+        error: error,
+        result: result
       });
       ws.send(extendedJson.encode([type, id, error, result]));
     };
@@ -92,19 +92,19 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
       try {
         type = decoded[0], id = decoded[1], payload = decoded[2];
         logger.debug('received', {
-          type,
-          id,
-          payload
+          type: type,
+          id: id,
+          payload: payload
         }); // eslint-disable-next-line @typescript-eslint/no-floating-promises
 
         handleDecodedMessage({
-          type,
-          id,
-          payload
+          type: type,
+          id: id,
+          payload: payload
         });
       } catch (_unused) {
         logger.notice('invalid message', {
-          decoded
+          decoded: decoded
         });
       }
     });
@@ -128,7 +128,7 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
       authenticatedUserPromise.catch(function (err) {
         logger.warn('getAuthenticatedUser threw an error, return null instead.', // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         {
-          err
+          err: err
         });
         return null;
       }).then(function (authenticatedUser) {
@@ -139,14 +139,12 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
 
   server.on('upgrade', handleUpgrade);
   return {
-    wss,
-
-    close() {
+    wss: wss,
+    close: function close() {
       wss.close();
       server.removeListener('upgrade', handleUpgrade);
       clearInterval(interval);
     }
-
   };
 };
 

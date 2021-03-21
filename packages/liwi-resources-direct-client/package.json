@@ -59,17 +59,17 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.12.5",
+    "@babel/runtime": "^7.13.10",
     "extended-json": "^8.0.4",
     "liwi-resources-client": "^8.0.4",
     "liwi-resources-server": "^8.0.4",
     "nightingale-logger": "^11.0.5"
   },
   "devDependencies": {
-    "@babel/core": "7.12.10",
+    "@babel/core": "7.13.10",
     "@types/backo2": "^1.0.1",
-    "babel-preset-latest-node": "5.4.0",
-    "pob-babel": "26.4.0",
-    "rollup": "2.36.2"
+    "babel-preset-latest-node": "5.5.1",
+    "pob-babel": "26.8.0",
+    "rollup": "2.42.1"
   }
 }

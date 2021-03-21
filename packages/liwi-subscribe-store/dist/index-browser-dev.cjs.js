@@ -368,7 +368,7 @@ var SubscribeStore = /*#__PURE__*/function () {
             case 6:
               this.callSubscribed({
                 type: 'updated',
-                changes
+                changes: changes
               });
 
             case 7:
@@ -462,7 +462,7 @@ var SubscribeStore = /*#__PURE__*/function () {
             case 8:
               this.callSubscribed({
                 type: 'deleted',
-                prev
+                prev: prev
               });
 
             case 9:
