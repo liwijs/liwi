@@ -1,13 +1,13 @@
 import { AbstractConnection } from 'liwi-store';
-import { MongoClient } from 'mongodb';
+import mongodb from 'mongodb';
 import Logger from 'nightingale-logger';
 
 const logger = new Logger('liwi:mongo:MongoConnection');
 
 export default class MongoConnection extends AbstractConnection {
-  _connection?: MongoClient;
+  _connection?: mongodb.MongoClient;
 
-  _connecting?: Promise<MongoClient>;
+  _connecting?: Promise<mongodb.MongoClient>;
 
   connectionFailed?: boolean;
 
@@ -43,7 +43,7 @@ export default class MongoConnection extends AbstractConnection {
   connect(connectionString: string): void {
     logger.info('connecting', { connectionString });
 
-    const connectPromise = MongoClient.connect(connectionString, {
+    const connectPromise = mongodb.MongoClient.connect(connectionString, {
       useNewUrlParser: true,
     })
       .then((connection) => {
@@ -92,7 +92,7 @@ export default class MongoConnection extends AbstractConnection {
     this._connecting = this.getConnection();
   }
 
-  getConnection(): Promise<MongoClient> {
+  getConnection(): Promise<mongodb.MongoClient> {
     throw new Error('call connect()');
   }
 

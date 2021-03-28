@@ -1,12 +1,12 @@
 import { AbstractConnection } from 'liwi-store';
-import { MongoClient } from 'mongodb';
+import mongodb from 'mongodb';
 export default class MongoConnection extends AbstractConnection {
-    _connection?: MongoClient;
-    _connecting?: Promise<MongoClient>;
+    _connection?: mongodb.MongoClient;
+    _connecting?: Promise<mongodb.MongoClient>;
     connectionFailed?: boolean;
     constructor(config: Map<string, string | number>);
     connect(connectionString: string): void;
-    getConnection(): Promise<MongoClient>;
+    getConnection(): Promise<mongodb.MongoClient>;
     close(): Promise<void>;
 }
 //# sourceMappingURL=MongoConnection.d.ts.map

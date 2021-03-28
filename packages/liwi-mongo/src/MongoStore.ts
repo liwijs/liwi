@@ -15,7 +15,7 @@ import type {
   OptionalBaseModelKeysForInsert,
 } from 'liwi-types';
 import type { Collection, MongoClient } from 'mongodb';
-import { ObjectID } from 'mongodb';
+import mongodb from 'mongodb';
 import type {
   MongoBaseModel,
   MongoKeyPath,
@@ -108,7 +108,7 @@ export default class MongoStore<
 
   async insertOne(object: MongoInsertType<Model>): Promise<Model> {
     if (!object._id) {
-      object._id = new ObjectID().toString() as Model['_id'];
+      object._id = new mongodb.ObjectID().toString() as Model['_id'];
     }
 
     if (!object.created) object.created = new Date();

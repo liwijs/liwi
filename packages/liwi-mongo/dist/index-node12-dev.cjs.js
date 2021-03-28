@@ -10,6 +10,7 @@ const Logger = require('nightingale-logger');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
 
+const mongodb__default = /*#__PURE__*/_interopDefaultLegacy(mongodb);
 const mingo__default = /*#__PURE__*/_interopDefaultLegacy(mingo);
 const Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
 
@@ -424,7 +425,7 @@ class MongoStore {
 
   async insertOne(object) {
     if (!object._id) {
-      object._id = new mongodb.ObjectID().toString();
+      object._id = new mongodb__default.ObjectID().toString();
     }
 
     if (!object.created) object.created = new Date();
@@ -580,7 +581,7 @@ class MongoConnection extends liwiStore.AbstractConnection {
     logger.info('connecting', {
       connectionString
     });
-    const connectPromise = mongodb.MongoClient.connect(connectionString, {
+    const connectPromise = mongodb__default.MongoClient.connect(connectionString, {
       useNewUrlParser: true
     }).then(connection => {
       logger.info('connected', {

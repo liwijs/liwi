@@ -1,4 +1,4 @@
-import { ObjectID, MongoClient } from 'mongodb';
+import mongodb from 'mongodb';
 import { AbstractStoreCursor, AbstractConnection } from 'liwi-store';
 import { AbstractSubscribableStoreQuery, SubscribeStore } from 'liwi-subscribe-store';
 import mingo from 'mingo';
@@ -415,7 +415,7 @@ class MongoStore {
 
   async insertOne(object) {
     if (!object._id) {
-      object._id = new ObjectID().toString();
+      object._id = new mongodb.ObjectID().toString();
     }
 
     if (!object.created) object.created = new Date();
@@ -571,7 +571,7 @@ class MongoConnection extends AbstractConnection {
     logger.info('connecting', {
       connectionString
     });
-    const connectPromise = MongoClient.connect(connectionString, {
+    const connectPromise = mongodb.MongoClient.connect(connectionString, {
       useNewUrlParser: true
     }).then(connection => {
       logger.info('connected', {
