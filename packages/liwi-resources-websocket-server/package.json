@@ -106,7 +106,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
-    "@types/socket.io": "^2.1.8",
     "extended-json": "^8.0.4",
     "liwi-resources-server": "^8.0.4",
     "liwi-store": "^8.0.4",
