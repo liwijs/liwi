@@ -37,7 +37,7 @@
     "liwi-resources-websocket-client": "^8.0.4",
     "liwi-resources-websocket-server": "^8.0.4",
     "liwi-subscribe-store": "^8.0.4",
-    "nightingale-app-console": "11.0.5",
+    "nightingale-app-console": "11.6.0",
     "react": "16.11.0",
     "react-alp-context": "^2.1.0",
     "react-alp-translate": "^4.1.0",

@@ -65,7 +65,7 @@
     "liwi-types": "^8.0.4",
     "mingo": "^3.0.2",
     "mongodb": "^3.5.8",
-    "nightingale-logger": "^11.0.5"
+    "nightingale-logger": "^11.6.0"
   },
   "devDependencies": {
     "@babel/core": "7.13.13",

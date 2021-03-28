@@ -9748,42 +9748,43 @@ nightingale-ansi-formatter@^10.0.1:
     nightingale-formatter "^10.0.1"
     nightingale-types "^10.0.1"
 
-nightingale-ansi-formatter@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-ansi-formatter/-/nightingale-ansi-formatter-11.0.5.tgz#b04638a74b26d7b47c90a1cccb80d7285734779f"
-  integrity sha512-VNyOOBIydSS2HRUXXDFWOVznqEZXJUBMydE1yWEGN78afmZAITxO0/mIfe7KEmQOtdqpW/8JgxtXtU4L0U80+Q==
+nightingale-ansi-formatter@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-ansi-formatter/-/nightingale-ansi-formatter-11.6.0.tgz#cbe4490d06864c707252680dfa7671902097d61e"
+  integrity sha512-DnQ/Yfz/tfA0j1NNASQzC4LurleQAVqfdiu5izUlodgwFmztYdbTfM/PJQVraE12gZHEsZiZ6NI0cSaEvlCqhQ==
   dependencies:
     "@types/ansi-styles" "^3.2.1"
     ansi-styles "^4.0.0"
-    nightingale-formatter "^11.0.5"
-    nightingale-types "^11.0.5"
+    nightingale-formatter "^11.6.0"
+    nightingale-types "^11.6.0"
 
-nightingale-app-console@11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-app-console/-/nightingale-app-console-11.0.5.tgz#031dce26f12fcc279bfd3ed5e247264d592aebf9"
-  integrity sha512-Ub0lxRrN62YqIC9D0aj/+T+X2jT2dYmkWIYFVcUNKZVO9yCubMrNIyIwjfnpfuuqGJitc66utKDTG+Bhn8zJdg==
+nightingale-app-console@11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-app-console/-/nightingale-app-console-11.6.0.tgz#e937b694bad71f8e49c8ad8f0f5db4e435d8afb7"
+  integrity sha512-qnzKPwTNbnAmyDW3c4mn9TG5Uzmq22IzdMEqyJq9KEkATi+VfRLdDKumF8KSLRsECQO9Sir+uuN4GJlTc291oA==
   dependencies:
-    nightingale "^11.0.5"
-    nightingale-browser-console "^11.0.5"
-    nightingale-console "^11.0.5"
+    "@types/node" ">=12.0.0"
+    nightingale "^11.6.0"
+    nightingale-browser-console "^11.6.0"
+    nightingale-console "^11.6.0"
 
-nightingale-browser-console-formatter@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-browser-console-formatter/-/nightingale-browser-console-formatter-11.0.5.tgz#4797e43ba8c04d035fd1e63a2cf5baad76a72d1b"
-  integrity sha512-8JMzxPYavrSOTCQQ+g9+X9PHBcJKKarOHGJpNepi71EpRvazEy3zPyt070mfQYA8EIu75cGlJMQUxS2zltYupA==
+nightingale-browser-console-formatter@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-browser-console-formatter/-/nightingale-browser-console-formatter-11.6.0.tgz#f012855b4a94b53e82fd528870091ead90a00333"
+  integrity sha512-PcdxPM6ixswWuKCoVE5LcqkUh+V3AXlMTlrfY4/SpfmyR9j6w3a86lL0ffvsSnBZC6hbBGeYQoe50os7Ifxymg==
   dependencies:
-    nightingale-formatter "^11.0.5"
-    nightingale-types "^11.0.5"
+    nightingale-formatter "^11.6.0"
+    nightingale-types "^11.6.0"
 
-nightingale-browser-console@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-browser-console/-/nightingale-browser-console-11.0.5.tgz#8227b2b1c1112f60c56b23a3fd82e71a50fb6a8b"
-  integrity sha512-PE9Kzu8/1eaPl7Le8fa7uFloN+hqac2VS2IE3UEWHppGl3Je3Ysar0dR5vmClUu0yQuJd3+ZLHB5d4lBF7ZJ5Q==
+nightingale-browser-console@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-browser-console/-/nightingale-browser-console-11.6.0.tgz#b144aa64b4825804fd57a7a52925fb3839441bd6"
+  integrity sha512-j4KPiRI6v+XzAwhLnaYCjOnSiyk5KDMafkKaCUcKTpqUSH+itPItWUuNjIVMKHh82VpmIuBTnIhuvfTP4xvq0g==
   dependencies:
-    nightingale-browser-console-formatter "^11.0.5"
-    nightingale-console-output "^11.0.5"
-    nightingale-debug "^11.0.5"
-    nightingale-types "^11.0.5"
+    nightingale-browser-console-formatter "^11.6.0"
+    nightingale-console-output "^11.6.0"
+    nightingale-debug "^11.6.0"
+    nightingale-types "^11.6.0"
 
 nightingale-console-output@^10.0.1:
   version "10.0.1"
@@ -9793,14 +9794,14 @@ nightingale-console-output@^10.0.1:
     nightingale-levels "^10.0.1"
     nightingale-types "^10.0.1"
 
-nightingale-console-output@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-console-output/-/nightingale-console-output-11.0.5.tgz#93b8ed76fdb918e977486a21d89b691e3eefb232"
-  integrity sha512-0/3zoEL8Dn2ILKp8kD0rVwsa46ekn0tm/UFthhuilxGVJ21/oGgWV/VBFc73DRwJw0zkr8bk215PZz/WO/ktow==
+nightingale-console-output@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-console-output/-/nightingale-console-output-11.6.0.tgz#d43c63a083ca2bd9d9412ab7bfc0e44b2795dd9e"
+  integrity sha512-sto+1RWhS5O4VEsdNMNasg3MGlWTU2mxP9qhZyhfwZbJWAR+NlV3I8CvyGbsjzYHT3w73FEPsbOxRCgLueEmBg==
   dependencies:
     "@types/node" ">=12.0.0"
-    nightingale-levels "^11.0.5"
-    nightingale-types "^11.0.5"
+    nightingale-levels "^11.6.0"
+    nightingale-types "^11.6.0"
 
 nightingale-console@^10.0.1:
   version "10.0.1"
@@ -9813,18 +9814,18 @@ nightingale-console@^10.0.1:
     nightingale-json-formatter "^10.0.1"
     nightingale-types "^10.0.1"
 
-nightingale-console@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-console/-/nightingale-console-11.0.5.tgz#6689d8a4f81f98e2d74f010745ae314316dec100"
-  integrity sha512-fQwX9rJCkDx0DzlHscF8Dqm5ztQAokQBT8r8qVt/uFAYQYo+0Op9ujqtsgXwdHGD80VRzemxY72t6yPqIYWktw==
+nightingale-console@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-console/-/nightingale-console-11.6.0.tgz#6589b22151065f54d5377f5bdb92a551a645e020"
+  integrity sha512-ZN+V5MdZnB9L0SKxaqdjW7lFM/A3ekJ51hw5/+wkQuU8EB3/6FfAfpS/h+XtWxbFGlG/EzY/6avRBBhIFHCFWg==
   dependencies:
     "@types/node" ">=12.0.0"
-    nightingale-ansi-formatter "^11.0.5"
-    nightingale-console-output "^11.0.5"
-    nightingale-debug "^11.0.5"
-    nightingale-json-formatter "^11.0.5"
-    nightingale-levels "^11.0.5"
-    nightingale-types "^11.0.5"
+    nightingale-ansi-formatter "^11.6.0"
+    nightingale-console-output "^11.6.0"
+    nightingale-debug "^11.6.0"
+    nightingale-json-formatter "^11.6.0"
+    nightingale-levels "^11.6.0"
+    nightingale-types "^11.6.0"
 
 nightingale-debug@^10.0.1:
   version "10.0.1"
@@ -9833,12 +9834,12 @@ nightingale-debug@^10.0.1:
   dependencies:
     nightingale-levels "^10.0.1"
 
-nightingale-debug@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-debug/-/nightingale-debug-11.0.5.tgz#446b82ed531ed5228c4f4c2565d9d282f7903bcc"
-  integrity sha512-Dy7gXX7ceelHlw+VmhyO+8IzMNoK2zsha1zzd2IiPuam+Za7c5d/do0VtEBMYZT9PPF/Pcy0ePmi88A7BAVq6g==
+nightingale-debug@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-debug/-/nightingale-debug-11.6.0.tgz#4710da279dbb6de53cc3a6f661fb4888a157aa2d"
+  integrity sha512-uzbf1bTzgvDdKv2xoPaUhdLHamZdbz/iPBU6YdnTHz1T2Vac9Bi3wPfLq5XP2Kq9uVf8QWbNUjSBRpVX4sm0MA==
   dependencies:
-    nightingale-levels "^11.0.5"
+    nightingale-levels "^11.6.0"
 
 nightingale-formatter@^10.0.1:
   version "10.0.1"
@@ -9848,13 +9849,13 @@ nightingale-formatter@^10.0.1:
     nightingale-levels "^10.0.1"
     nightingale-types "^10.0.1"
 
-nightingale-formatter@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-formatter/-/nightingale-formatter-11.0.5.tgz#6e162e0102a01855fa64b9c85972b4c6a1eb294a"
-  integrity sha512-ajuU8FOa12suLhvW0poYmwr+WeUsQbuoCX6IBOEKtdW+DmNMxSLQs2IH7jjDFzgVkyTGk2Kt4h/IHMryI2PFDA==
+nightingale-formatter@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-formatter/-/nightingale-formatter-11.6.0.tgz#9ccd05211c103a256c294a360652e37801c5b80e"
+  integrity sha512-4iHknhqJOLuI+ZA1VoCPQplz9tWqYtQz4KUI3g+AgLDpunVH4NKDHKFxMDsqrvRoONZfFKvXxlJ9PRWRzezBBQ==
   dependencies:
-    nightingale-levels "^11.0.5"
-    nightingale-types "^11.0.5"
+    nightingale-levels "^11.6.0"
+    nightingale-types "^11.6.0"
 
 nightingale-json-formatter@^10.0.1:
   version "10.0.1"
@@ -9864,23 +9865,23 @@ nightingale-json-formatter@^10.0.1:
     nightingale-formatter "^10.0.1"
     nightingale-types "^10.0.1"
 
-nightingale-json-formatter@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-json-formatter/-/nightingale-json-formatter-11.0.5.tgz#72865d7f6737d2298bc8306c6492bef9aee625ec"
-  integrity sha512-WtL2dNlMY3kzVTfbAUHqxpIOgNpsU+EF0hZ98j1PCzfuNqREGsUj9Cludh99yN7Nj5UDxnkHL9GdszlD4R1Ezg==
+nightingale-json-formatter@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-json-formatter/-/nightingale-json-formatter-11.6.0.tgz#21cd3a4feba1ce53e65948647847209c574976da"
+  integrity sha512-q5N+hDBE7kHNxKbWjvquzhyPer7jNOnF+x0PPohgl3jjL+mQqR7ro7cxPxYaLiiE0CS1G47PIsKCXTNW/PIw8Q==
   dependencies:
-    nightingale-formatter "^11.0.5"
-    nightingale-types "^11.0.5"
+    nightingale-formatter "^11.6.0"
+    nightingale-types "^11.6.0"
 
 nightingale-levels@^10.0.1:
   version "10.0.1"
   resolved "https://registry.yarnpkg.com/nightingale-levels/-/nightingale-levels-10.0.1.tgz#55c2bfb0b03e5b14ac263d5870173ecb851f6ee3"
   integrity sha512-nnfOk+vLI37XhkKFMy8kWlUtNWipkXdOCr1iV0d0WHa8BuTxdtxx33hhoYSIB5+4WU2MdVYv/vrz557CHAxhVQ==
 
-nightingale-levels@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-levels/-/nightingale-levels-11.0.5.tgz#cfeffa20678e7b1ae4bebc2ff7956896f8cb7035"
-  integrity sha512-EfTQBef9goZKF85g2GEot78Pysa+hTkedU5cl7MFEz/Asnqqm4+q22pOQfbm8IaW6cpLSBniH6UgWBlOKWtIxw==
+nightingale-levels@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-levels/-/nightingale-levels-11.6.0.tgz#f13070076e74a8b8065ca83c3a38f84c7703d456"
+  integrity sha512-oCASA0cydX2JV7fyhykU+SQG0DWaUf1U8uxIXwOjpgOr7nicV/F1SUgUxxO9z2bjbzT9lDkrGRcoPpoTCuSFXg==
 
 nightingale-logger@^10.0.1:
   version "10.0.1"
@@ -9891,14 +9892,14 @@ nightingale-logger@^10.0.1:
     nightingale-levels "^10.0.1"
     nightingale-types "^10.0.1"
 
-nightingale-logger@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-logger/-/nightingale-logger-11.0.5.tgz#81c48153eed983d7f768586272769598ca127974"
-  integrity sha512-vprJR0z7oypNKg/MFM9+1RicYQpEYg93wtgzM6s7t1cJHzquCkHBiEt9MYgpwKPKrCyUadiaDB5/19lbtv0iyw==
+nightingale-logger@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-logger/-/nightingale-logger-11.6.0.tgz#55677b2ceb4dd803c6e0dd75e209e97f98a0a1a2"
+  integrity sha512-6F2m+Ry6k5GNFjGfEnQjraRYkHtt3Mc+2uoxqYphKLy1qmmFyt/pynvv3TFeUUM3r6NYeFklnMTX18HBDtn6zQ==
   dependencies:
     "@types/node" ">=12.0.0"
-    nightingale-levels "^11.0.5"
-    nightingale-types "^11.0.5"
+    nightingale-levels "^11.6.0"
+    nightingale-types "^11.6.0"
 
 nightingale-types@^10.0.1:
   version "10.0.1"
@@ -9907,12 +9908,12 @@ nightingale-types@^10.0.1:
   dependencies:
     nightingale-levels "^10.0.1"
 
-nightingale-types@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale-types/-/nightingale-types-11.0.5.tgz#20780839ecdf0c0ba0feeee11b1ea7185a8c2dde"
-  integrity sha512-HvcSP43x1GeIH/FYJ/HJJWHhKpk7CNze9rr6Exk32oxPtAV+roFdNQH98eRiTDu70e7G9WNM774l7QqtCsS65g==
+nightingale-types@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale-types/-/nightingale-types-11.6.0.tgz#3ca389f905af36f9735518f0aa62749488bddd83"
+  integrity sha512-KkM4pjlx7QoklIzVKYwjBykaEsKE9AXlx5KBK6XwAF6BglVXAimPyG3Auh9PReR8IVROie+6NLjtWUKqSDKujQ==
   dependencies:
-    nightingale-levels "^11.0.5"
+    nightingale-levels "^11.6.0"
 
 nightingale@^10.0.1:
   version "10.0.1"
@@ -9923,15 +9924,15 @@ nightingale@^10.0.1:
     nightingale-logger "^10.0.1"
     nightingale-types "^10.0.1"
 
-nightingale@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/nightingale/-/nightingale-11.0.5.tgz#c5e43bd5896f21ecd2585c9b9b48bf149231429c"
-  integrity sha512-oAka0yYvgFlWFpVUda+TwO/fBWhswKXIxUeNpP8lnqvs5B/f5viVnQxtju1+vLkGjJbgGxw4zDKUCkDagcALrA==
+nightingale@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/nightingale/-/nightingale-11.6.0.tgz#57a9b048af05acedfb18afb72cebf9f0834e3fee"
+  integrity sha512-c53eTO5JG9TjTwQjxeWM2mAk82jb6oUduZoOQjeWm3Gi4VdUBD+CfUcZrIHPysbv6kVo5XjmV3I0J9uRpykapw==
   dependencies:
     "@types/node" ">=12.0.0"
-    nightingale-levels "^11.0.5"
-    nightingale-logger "^11.0.5"
-    nightingale-types "^11.0.5"
+    nightingale-levels "^11.6.0"
+    nightingale-logger "^11.6.0"
+    nightingale-types "^11.6.0"
 
 node-fetch@^2.6.0, node-fetch@^2.6.1:
   version "2.6.1"
