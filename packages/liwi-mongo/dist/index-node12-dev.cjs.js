@@ -242,8 +242,6 @@ class MongoQueryCollection extends liwiSubscribeStore.AbstractSubscribableStoreQ
 
 }
 
-/* eslint-disable complexity, max-lines */
-
 const identityTransformer$1 = model => model;
 
 class MongoQuerySingleItem extends liwiSubscribeStore.AbstractSubscribableStoreQuery {

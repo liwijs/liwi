@@ -128,7 +128,7 @@ export default class MongoStore<
 
     const collection = await this.collection;
     await collection.replaceOne({ _id: object._id }, object);
-    return object as Model;
+    return object!;
   }
 
   async upsertOne<
@@ -202,7 +202,7 @@ export default class MongoStore<
       throw new Error('Update failed');
     }
     const object = await this.findByKey(key);
-    return object as Model;
+    return object!;
   }
 
   partialUpdateOne(

@@ -65,8 +65,7 @@ export default class MongoConnection extends AbstractConnection {
         connection.on('reconnect', () => {
           logger.warn('reconnect', { connectionString });
           this.connectionFailed = false;
-          this.getConnection = () =>
-            Promise.resolve(this._connection as MongoClient);
+          this.getConnection = () => Promise.resolve(this._connection!);
         });
         connection.on('error', (err) => {
           logger.warn('error', { connectionString, err });
@@ -74,8 +73,7 @@ export default class MongoConnection extends AbstractConnection {
 
         this._connection = connection;
         this._connecting = undefined;
-        this.getConnection = () =>
-          Promise.resolve(this._connection as MongoClient);
+        this.getConnection = () => Promise.resolve(this._connection!);
         return connection;
       })
       .catch((err) => {

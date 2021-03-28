@@ -8,9 +8,9 @@ function sortCollection(collection: any, sort: any): any {
   return $sort(Lazy(collection), sort, { config: { idKey: '_id' } }).value();
 }
 
-const copy = <Value>(state: Value[]): Value[] => state.slice();
+const copy = <Value>(state: Value[]): Value[] => [...state];
 
-const applyCollectionChange = <Value extends any>(
+const applyCollectionChange = <Value>(
   state: Value[],
   change: Change<any, Value[]>,
   queryMeta: QueryMeta,

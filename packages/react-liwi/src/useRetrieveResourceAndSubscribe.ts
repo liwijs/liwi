@@ -124,8 +124,8 @@ export function useRetrieveResourceAndSubscribe<
                   const { state: newResult, meta: newMeta } = applyChanges(
                     currentResult,
                     changes,
-                    currentMeta as NonNullable<typeof currentMeta>,
-                    currentQueryInfo as NonNullable<typeof currentQueryInfo>,
+                    currentMeta!,
+                    currentQueryInfo!,
                   );
 
                   if (newResult && newResult !== currentResult) {
@@ -135,9 +135,7 @@ export function useRetrieveResourceAndSubscribe<
                       type: 'resolve',
                       result: newResult,
                       meta: newMeta,
-                      queryInfo: currentQueryInfo as NonNullable<
-                        typeof currentQueryInfo
-                      >,
+                      queryInfo: currentQueryInfo!,
                     });
                   }
                 }

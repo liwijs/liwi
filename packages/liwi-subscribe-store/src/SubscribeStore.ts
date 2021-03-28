@@ -195,7 +195,7 @@ export default class SubscribeStore<
     criteria?: Criteria<Model>,
   ): Promise<Model> {
     return this.partialUpdateOne(
-      (await this.findOne({ [this.store.keyPath]: key, ...criteria })) as Model,
+      (await this.findOne({ [this.store.keyPath]: key, ...criteria }))!,
       partialUpdate,
     );
   }
@@ -229,7 +229,7 @@ export default class SubscribeStore<
   }
 
   async deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void> {
-    return this.deleteOne((await this.findByKey(key, criteria)) as Model);
+    return this.deleteOne((await this.findByKey(key, criteria))!);
   }
 
   async deleteOne(object: Model): Promise<void> {

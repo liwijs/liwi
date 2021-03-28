@@ -34,7 +34,9 @@ export default function Paginated({
         Select:
         <select
           defaultValue="active"
-          onChange={(e) => setCompleted(e.target.value === 'completed')}
+          onChange={(e) => {
+            setCompleted(e.target.value === 'completed');
+          }}
         >
           <option value="active">Active</option>
           <option value="completed">Completed</option>
@@ -55,13 +57,18 @@ export default function Paginated({
           Total: {tasksResourceResult.meta.total} ; Page: {page}
           {tasksResourceResult.pagination.totalPages > 1 ? (
             <div>
-              {new Array(tasksResourceResult.pagination.totalPages)
+              {Array.from({ length: tasksResourceResult.pagination.totalPages })
                 .fill(null)
                 .map((v, i) => {
                   return (
                     // eslint-disable-next-line react/no-array-index-key
                     <span key={i}>
-                      <button type="button" onClick={() => setPage(i + 1)}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPage(i + 1);
+                        }}
+                      >
                         {i + 1}
                       </button>{' '}
                     </span>

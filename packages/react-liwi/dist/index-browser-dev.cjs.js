@@ -228,7 +228,7 @@ function sortCollection(collection, sort) {
 }
 
 var copy = function copy(state) {
-  return state.slice();
+  return [].concat(state);
 };
 
 var applyCollectionChange = function applyCollectionChange(state, change, queryMeta, queryInfo) {

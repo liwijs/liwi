@@ -214,7 +214,7 @@ function sortCollection(collection, sort) {
   }).value();
 }
 
-const copy = state => state.slice();
+const copy = state => [...state];
 
 const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
   switch (change.type) {

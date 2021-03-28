@@ -15,7 +15,7 @@ interface UseResourceOptionsRequiredParams<Params extends QueryParams<Params>> {
 
 export type UseResourceOptions<
   Params extends QueryParams<Params>
-> = Params extends { [key: string]: never }
+> = Params extends Record<string, never>
   ? SetOptional<UseResourceOptionsRequiredParams<Params>, 'params'>
   : UseResourceOptionsRequiredParams<Params>;
 

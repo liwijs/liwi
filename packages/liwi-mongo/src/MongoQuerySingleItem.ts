@@ -1,4 +1,3 @@
-/* eslint-disable complexity, max-lines */
 import type {
   QuerySubscription,
   SubscribeCallback,
@@ -156,9 +155,7 @@ export default class MongoQuerySingleItem<
               const [, next] = filtered[0];
               changes.push({
                 type: 'updated',
-                result: (mingoQuery.test(next)
-                  ? this.transformer(next)
-                  : null) as Result,
+                result: mingoQuery.test(next) ? this.transformer(next) : null!,
               });
             }
           } else if (filtered.length === 0) {

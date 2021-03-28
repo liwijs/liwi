@@ -236,8 +236,6 @@ class MongoQueryCollection extends AbstractSubscribableStoreQuery {
 
 }
 
-/* eslint-disable complexity, max-lines */
-
 const identityTransformer$1 = model => model;
 
 class MongoQuerySingleItem extends AbstractSubscribableStoreQuery {
