@@ -2,12 +2,15 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
 const extendedJson = require('extended-json');
 const liwiResourcesClient = require('liwi-resources-client');
-const Logger = _interopDefault(require('nightingale-logger'));
-const Backoff = _interopDefault(require('backo2'));
+const Logger = require('nightingale-logger');
+const Backoff = require('backo2');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+
+const Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
+const Backoff__default = /*#__PURE__*/_interopDefaultLegacy(Backoff);
 
 /* eslint-disable unicorn/prefer-add-event-listener, max-lines */
 function createSimpleWebsocketClient({
@@ -24,7 +27,7 @@ function createSimpleWebsocketClient({
   let currentState = 'closed';
   let isConnected = false;
   const stateChangeListeners = new Set();
-  const backoff = new Backoff({
+  const backoff = new Backoff__default({
     min: reconnectionDelayMin,
     max: reconnectionDelayMax,
     factor: 1.2
@@ -184,7 +187,7 @@ function createSimpleWebsocketClient({
 }
 
 /* eslint-disable max-lines */
-const logger = new Logger('liwi:resources-websocket-client');
+const logger = new Logger__default('liwi:resources-websocket-client');
 
 class SubscribeResultPromise {
   // readonly changePayload: TransportClientSubscribeResult<

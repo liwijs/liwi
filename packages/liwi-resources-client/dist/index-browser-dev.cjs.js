@@ -2,13 +2,16 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var _extends = _interopDefault(require('@babel/runtime/helpers/esm/extends'));
-var Logger = _interopDefault(require('nightingale-logger'));
+var _extends = require('@babel/runtime/helpers/esm/extends');
+var Logger = require('nightingale-logger');
 var liwiResources = require('liwi-resources');
 
-var logger = new Logger('liwi:resources:query');
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+
+var _extends__default = /*#__PURE__*/_interopDefaultLegacy(_extends);
+var Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
+
+var logger = new Logger__default('liwi:resources:query');
 var ClientQuery = /*#__PURE__*/function () {
   function ClientQuery(resourceName, transportClient, key, params) {
     this.resourceName = resourceName;
@@ -24,7 +27,7 @@ var ClientQuery = /*#__PURE__*/function () {
   };
 
   _proto.changePartialParams = function changePartialParams(params) {
-    this.params = _extends({}, this.params, params);
+    this.params = _extends__default({}, this.params, params);
   };
 
   _proto.getTransportPayload = function getTransportPayload() {

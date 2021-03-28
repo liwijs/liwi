@@ -2,15 +2,19 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
 var React = require('react');
-var React__default = _interopDefault(React);
-var _objectWithoutPropertiesLoose = _interopDefault(require('@babel/runtime/helpers/esm/objectWithoutPropertiesLoose'));
-var _extends = _interopDefault(require('@babel/runtime/helpers/esm/extends'));
-var Logger = _interopDefault(require('nightingale-logger'));
+var _objectWithoutPropertiesLoose = require('@babel/runtime/helpers/esm/objectWithoutPropertiesLoose');
+var _extends = require('@babel/runtime/helpers/esm/extends');
+var Logger = require('nightingale-logger');
 var lazy = require('mingo/lazy');
 var pipeline = require('mingo/operators/pipeline');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var _objectWithoutPropertiesLoose__default = /*#__PURE__*/_interopDefaultLegacy(_objectWithoutPropertiesLoose);
+var _extends__default = /*#__PURE__*/_interopDefaultLegacy(_extends);
+var Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
 
 var TransportClientContext = /*#__PURE__*/React.createContext(undefined);
 var TransportClientStateContext = /*#__PURE__*/React.createContext('opening');
@@ -18,7 +22,7 @@ var TransportClientReadyContext = /*#__PURE__*/React.createContext(false);
 function TransportClientProvider(_ref) {
   var createFn = _ref.createFn,
       children = _ref.children,
-      params = _objectWithoutPropertiesLoose(_ref, ["createFn", "children"]);
+      params = _objectWithoutPropertiesLoose__default(_ref, ["createFn", "children"]);
 
   var _useState = React.useState(function () {
     return createFn(params);
@@ -101,12 +105,12 @@ function reducer(state, action) {
       };
 
     case 'fetching':
-      return _extends({}, state, {
+      return _extends__default({}, state, {
         fetching: true
       });
 
     case 'error':
-      return _extends({}, state, {
+      return _extends__default({}, state, {
         fetching: false,
         error: action.error
       });
@@ -219,11 +223,8 @@ function useRetrieveResource(createQuery, params, skip, deps) {
 }
 
 function sortCollection(collection, sort) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return pipeline.$sort(lazy.Lazy(collection), sort, {
-    config: {
-      idKey: '_id'
-    }
+    idKey: '_id'
   }).value();
 }
 
@@ -285,7 +286,7 @@ function applyCollectionChanges(state, changes, queryMeta, queryInfo) {
     meta: queryMeta
   };
 
-  var newQueryMeta = _extends({}, queryMeta);
+  var newQueryMeta = _extends__default({}, queryMeta);
 
   return {
     // eslint-ignore-next-line unicorn/no-reduce
@@ -326,7 +327,7 @@ function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
     meta: queryMeta
   };
 
-  var newQueryMeta = _extends({}, queryMeta);
+  var newQueryMeta = _extends__default({}, queryMeta);
 
   return {
     // eslint-ignore-next-line unicorn/no-reduce
@@ -342,7 +343,7 @@ var defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
 
 };
-var logger = new Logger('react-liwi:useResourceAndSubscribe');
+var logger = new Logger__default('react-liwi:useResourceAndSubscribe');
 
 var isInitial = function isInitial(changes) {
   return changes.length === 1 && changes[0].type === 'initial';
@@ -555,7 +556,7 @@ function usePaginatedResource(createQuery, options, deps) {
     };
   }, [total, limit]);
   return React.useMemo(function () {
-    return _extends({}, result, {
+    return _extends__default({}, result, {
       pagination: pagination
     });
   }, [result, pagination]);

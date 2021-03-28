@@ -206,11 +206,8 @@ function useRetrieveResource(createQuery, params, skip, deps) {
 /* eslint-disable complexity */
 
 function sortCollection(collection, sort) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return $sort(Lazy(collection), sort, {
-    config: {
-      idKey: '_id'
-    }
+    idKey: '_id'
   }).value();
 }
 

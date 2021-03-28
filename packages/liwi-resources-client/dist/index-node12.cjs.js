@@ -2,12 +2,14 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-const Logger = _interopDefault(require('nightingale-logger'));
+const Logger = require('nightingale-logger');
 const liwiResources = require('liwi-resources');
 
-const logger = new Logger('liwi:resources:query');
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+
+const Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
+
+const logger = new Logger__default('liwi:resources:query');
 class ClientQuery {
   constructor(resourceName, transportClient, key, params) {
     this.resourceName = resourceName;

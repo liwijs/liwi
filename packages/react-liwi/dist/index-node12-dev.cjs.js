@@ -2,10 +2,11 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
 const React = require('react');
-const React__default = _interopDefault(React);
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+
+const React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 
 function useResource(createQuery, {
   params,

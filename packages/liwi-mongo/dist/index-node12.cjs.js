@@ -2,13 +2,16 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
 const mongodb = require('mongodb');
 const liwiStore = require('liwi-store');
 const liwiSubscribeStore = require('liwi-subscribe-store');
-const mingo = _interopDefault(require('mingo'));
-const Logger = _interopDefault(require('nightingale-logger'));
+const mingo = require('mingo');
+const Logger = require('nightingale-logger');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+
+const mingo__default = /*#__PURE__*/_interopDefaultLegacy(mingo);
+const Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
 
 class MongoCursor extends liwiStore.AbstractStoreCursor {
   // key in AbstractCursor
@@ -59,10 +62,10 @@ class MongoCursor extends liwiStore.AbstractStoreCursor {
 
 /* eslint-disable complexity, max-lines */
 
-const identityTransformer = model => model;
+const identityTransformer$1 = model => model;
 
 class MongoQueryCollection extends liwiSubscribeStore.AbstractSubscribableStoreQuery {
-  constructor(store, options, transformer = identityTransformer) {
+  constructor(store, options, transformer = identityTransformer$1) {
     super();
     this.store = store;
     this.options = options;
@@ -75,7 +78,7 @@ class MongoQueryCollection extends liwiSubscribeStore.AbstractSubscribableStoreQ
         return () => true;
       }
 
-      const mingoQuery = new mingo.Query(this.options.criteria);
+      const mingoQuery = new mingo__default.Query(this.options.criteria);
       this.testCriteria = mingoQuery.test.bind(mingoQuery);
     }
 
@@ -242,10 +245,10 @@ class MongoQueryCollection extends liwiSubscribeStore.AbstractSubscribableStoreQ
 
 }
 
-const identityTransformer$1 = model => model;
+const identityTransformer = model => model;
 
 class MongoQuerySingleItem extends liwiSubscribeStore.AbstractSubscribableStoreQuery {
-  constructor(store, options, transformer = identityTransformer$1) {
+  constructor(store, options, transformer = identityTransformer) {
     super();
     this.store = store;
     this.options = options;
@@ -260,7 +263,7 @@ class MongoQuerySingleItem extends liwiSubscribeStore.AbstractSubscribableStoreQ
         };
       }
 
-      this.mingoQuery = new mingo.Query(this.options.criteria);
+      this.mingoQuery = new mingo__default.Query(this.options.criteria);
     }
 
     return this.mingoQuery;
@@ -551,7 +554,7 @@ class MongoStore {
 
 }
 
-const logger = new Logger('liwi:mongo:MongoConnection');
+const logger = new Logger__default('liwi:mongo:MongoConnection');
 class MongoConnection extends liwiStore.AbstractConnection {
   // TODO interface
   constructor(config) {

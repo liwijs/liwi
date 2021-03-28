@@ -2,20 +2,23 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
 var extendedJson = require('extended-json');
 var liwiResourcesServer = require('liwi-resources-server');
-var Logger = _interopDefault(require('nightingale-logger'));
-var WebSocket = _interopDefault(require('ws'));
+var Logger = require('nightingale-logger');
+var WebSocket = require('ws');
 
-var logger = new Logger('liwi:resources-websocket-client');
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+
+var Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
+var WebSocket__default = /*#__PURE__*/_interopDefaultLegacy(WebSocket);
+
+var logger = new Logger__default('liwi:resources-websocket-client');
 var createWsServer = function createWsServer(server, path, resourcesServerService, getAuthenticatedUser) {
   if (path === void 0) {
     path = '/ws';
   }
 
-  var wss = new WebSocket.Server({
+  var wss = new WebSocket__default.Server({
     noServer: true
   });
   wss.on('connection', function (ws, authenticatedUser) {

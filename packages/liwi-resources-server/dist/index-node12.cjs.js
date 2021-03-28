@@ -2,10 +2,12 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
 const liwiResources = require('liwi-resources');
-const Logger = _interopDefault(require('nightingale-logger'));
+const Logger = require('nightingale-logger');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+
+const Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
 
 // import ResourceServerCursor from './ResourceServerCursor';
 // import { CursorResource } from './CursorResource';
@@ -54,7 +56,7 @@ class ResourcesServerService {
 }
 
 /* eslint-disable complexity, max-lines */
-const logger = new Logger('liwi:resources-websocket-client');
+const logger = new Logger__default('liwi:resources-websocket-client');
 
 const logUnexpectedError = (error, message, payload) => {
   if (!(error instanceof liwiResources.ResourcesServerError)) {

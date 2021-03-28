@@ -53,10 +53,10 @@ class MongoCursor extends AbstractStoreCursor {
 
 /* eslint-disable complexity, max-lines */
 
-const identityTransformer = model => model;
+const identityTransformer$1 = model => model;
 
 class MongoQueryCollection extends AbstractSubscribableStoreQuery {
-  constructor(store, options, transformer = identityTransformer) {
+  constructor(store, options, transformer = identityTransformer$1) {
     super();
     this.store = store;
     this.options = options;
@@ -236,10 +236,10 @@ class MongoQueryCollection extends AbstractSubscribableStoreQuery {
 
 }
 
-const identityTransformer$1 = model => model;
+const identityTransformer = model => model;
 
 class MongoQuerySingleItem extends AbstractSubscribableStoreQuery {
-  constructor(store, options, transformer = identityTransformer$1) {
+  constructor(store, options, transformer = identityTransformer) {
     super();
     this.store = store;
     this.options = options;

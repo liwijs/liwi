@@ -2,12 +2,17 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+var _regeneratorRuntime = require('@babel/runtime/regenerator');
+var _asyncToGenerator = require('@babel/runtime/helpers/esm/asyncToGenerator');
+var _createClass = require('@babel/runtime/helpers/esm/createClass');
+var _inheritsLoose = require('@babel/runtime/helpers/esm/inheritsLoose');
 
-var _regeneratorRuntime = _interopDefault(require('@babel/runtime/regenerator'));
-var _asyncToGenerator = _interopDefault(require('@babel/runtime/helpers/esm/asyncToGenerator'));
-var _createClass = _interopDefault(require('@babel/runtime/helpers/esm/createClass'));
-var _inheritsLoose = _interopDefault(require('@babel/runtime/helpers/esm/inheritsLoose'));
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+
+var _regeneratorRuntime__default = /*#__PURE__*/_interopDefaultLegacy(_regeneratorRuntime);
+var _asyncToGenerator__default = /*#__PURE__*/_interopDefaultLegacy(_asyncToGenerator);
+var _createClass__default = /*#__PURE__*/_interopDefaultLegacy(_createClass);
+var _inheritsLoose__default = /*#__PURE__*/_interopDefaultLegacy(_inheritsLoose);
 
 var AbstractConnection = function AbstractConnection() {};
 
@@ -31,10 +36,10 @@ var AbstractCursor = /*#__PURE__*/function () {
   };
 
   _proto.forEachKeys = /*#__PURE__*/function () {
-    var _forEachKeys = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(callback) {
+    var _forEachKeys = _asyncToGenerator__default( /*#__PURE__*/_regeneratorRuntime__default.mark(function _callee(callback) {
       var _key;
 
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime__default.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
@@ -82,8 +87,8 @@ var AbstractCursor = /*#__PURE__*/function () {
     });
   };
 
-  _proto.keysIterator = /*#__PURE__*/_regeneratorRuntime.mark(function keysIterator() {
-    return _regeneratorRuntime.wrap(function keysIterator$(_context2) {
+  _proto.keysIterator = /*#__PURE__*/_regeneratorRuntime__default.mark(function keysIterator() {
+    return _regeneratorRuntime__default.wrap(function keysIterator$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
@@ -101,12 +106,12 @@ var AbstractCursor = /*#__PURE__*/function () {
       }
     }, keysIterator, this);
   });
-  _proto[Symbol.iterator] = /*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
+  _proto[Symbol.iterator] = /*#__PURE__*/_regeneratorRuntime__default.mark(function _callee2() {
     var _this3 = this;
 
     var _iterator, _step, keyPromise;
 
-    return _regeneratorRuntime.wrap(function _callee2$(_context3) {
+    return _regeneratorRuntime__default.wrap(function _callee2$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
@@ -155,7 +160,7 @@ var AbstractCursor = /*#__PURE__*/function () {
 }();
 
 var AbstractStoreCursor = /*#__PURE__*/function (_AbstractCursor) {
-  _inheritsLoose(AbstractStoreCursor, _AbstractCursor);
+  _inheritsLoose__default(AbstractStoreCursor, _AbstractCursor);
 
   function AbstractStoreCursor(store) {
     var _this = _AbstractCursor.call(this) || this;
@@ -179,7 +184,7 @@ var AbstractStoreCursor = /*#__PURE__*/function (_AbstractCursor) {
     return this.store.deleteByKey(this.key);
   };
 
-  _createClass(AbstractStoreCursor, [{
+  _createClass__default(AbstractStoreCursor, [{
     key: "store",
     get: function get() {
       return this._store;

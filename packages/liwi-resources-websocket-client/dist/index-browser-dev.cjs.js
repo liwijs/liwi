@@ -2,14 +2,19 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var _extends = _interopDefault(require('@babel/runtime/helpers/esm/extends'));
-var _objectWithoutPropertiesLoose = _interopDefault(require('@babel/runtime/helpers/esm/objectWithoutPropertiesLoose'));
+var _extends = require('@babel/runtime/helpers/esm/extends');
+var _objectWithoutPropertiesLoose = require('@babel/runtime/helpers/esm/objectWithoutPropertiesLoose');
 var extendedJson = require('extended-json');
 var liwiResourcesClient = require('liwi-resources-client');
-var Logger = _interopDefault(require('nightingale-logger'));
-var Backoff = _interopDefault(require('backo2'));
+var Logger = require('nightingale-logger');
+var Backoff = require('backo2');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+
+var _extends__default = /*#__PURE__*/_interopDefaultLegacy(_extends);
+var _objectWithoutPropertiesLoose__default = /*#__PURE__*/_interopDefaultLegacy(_objectWithoutPropertiesLoose);
+var Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
+var Backoff__default = /*#__PURE__*/_interopDefaultLegacy(Backoff);
 
 /* eslint-disable unicorn/prefer-add-event-listener, max-lines */
 function createSimpleWebsocketClient(_ref) {
@@ -29,7 +34,7 @@ function createSimpleWebsocketClient(_ref) {
   var currentState = 'closed';
   var _isConnected = false;
   var stateChangeListeners = new Set();
-  var backoff = new Backoff({
+  var backoff = new Backoff__default({
     min: reconnectionDelayMin,
     max: reconnectionDelayMax,
     factor: 1.2
@@ -186,7 +191,7 @@ function createSimpleWebsocketClient(_ref) {
   };
 }
 
-var logger = new Logger('liwi:resources-websocket-client');
+var logger = new Logger__default('liwi:resources-websocket-client');
 
 var SubscribeResultPromise = /*#__PURE__*/function () {
   // readonly changePayload: TransportClientSubscribeResult<
@@ -225,7 +230,7 @@ var createSafeError = function createSafeError(error) {
 
 function createResourcesWebsocketClient(_ref2) {
   var url = _ref2.url,
-      options = _objectWithoutPropertiesLoose(_ref2, ["url"]);
+      options = _objectWithoutPropertiesLoose__default(_ref2, ["url"]);
 
   var currentId = 1;
   var currentSubscriptionId = 1;
@@ -280,7 +285,7 @@ function createResourcesWebsocketClient(_ref2) {
       }
     }
   };
-  var wsClient = createSimpleWebsocketClient(_extends({}, options, {
+  var wsClient = createSimpleWebsocketClient(_extends__default({}, options, {
     url: url,
     onMessage: function onMessage(event) {
       logger.debug('message', {
@@ -361,7 +366,7 @@ function createResourcesWebsocketClient(_ref2) {
       var id = currentId++;
       var subscriptionId = currentSubscriptionId++;
 
-      var message = _extends({}, messageWithoutSubscriptionId, {
+      var message = _extends__default({}, messageWithoutSubscriptionId, {
         subscriptionId: subscriptionId
       });
 
