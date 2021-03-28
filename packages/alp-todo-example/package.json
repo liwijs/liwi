@@ -1,7 +1,7 @@
 {
   "name": "alp-todo-example",
   "private": true,
-  "version": "8.1.0",
+  "version": "8.1.1",
   "description": "Todo, with alp, liwi, and react",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
   "license": "ISC",
@@ -29,7 +29,7 @@
     "alp-browser": "^3.1.2",
     "alp-node": "^3.2.0",
     "alp-react": "^18.1.2",
-    "liwi-mongo": "^8.1.0",
+    "liwi-mongo": "^8.1.1",
     "liwi-resources": "^8.1.0",
     "liwi-resources-client": "^8.1.0",
     "liwi-resources-direct-client": "^8.1.0",
