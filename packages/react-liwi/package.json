@@ -110,7 +110,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
-    "deep-equal": "^1.0.1",
     "liwi-resources-client": "^8.0.4",
     "liwi-types": "^8.0.4",
     "mingo": "^3.0.2",
