@@ -26,9 +26,9 @@
     "arrowParens": "always"
   },
   "dependencies": {
-    "alp-browser": "^2.1.0",
-    "alp-node": "^2.1.0",
-    "alp-react": "^16.1.2",
+    "alp-browser": "^3.1.2",
+    "alp-node": "^3.2.0",
+    "alp-react": "^18.1.2",
     "liwi-mongo": "^8.0.4",
     "liwi-resources": "^8.0.4",
     "liwi-resources-client": "^8.0.4",
@@ -39,17 +39,16 @@
     "liwi-subscribe-store": "^8.0.4",
     "nightingale-app-console": "11.6.0",
     "react": "16.11.0",
-    "react-alp-context": "^2.1.0",
-    "react-alp-translate": "^4.1.0",
+    "react-alp-context": "^3.1.2",
+    "react-alp-translate": "^5.1.2",
     "react-dom": "16.11.0",
-    "react-hot-loader": "^4.12.18",
+    "react-hot-loader": "^4.13.0",
     "react-liwi": "^8.0.4",
     "todomvc-app-css": "^2.3.0",
     "todomvc-common": "^1.0.5"
   },
   "devDependencies": {
-    "@hot-loader/react-dom": "16.11.0",
-    "@types/classnames": "^2.2.9",
-    "alp-dev": "^13.2.2"
+    "@types/classnames": "^2.2.11",
+    "alp-dev": "^15.3.0"
   }
 }
