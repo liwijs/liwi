@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/liwijs/liwi/compare/v8.0.4...v8.1.0) (2021-03-28)
+
+
+### Bug Fixes
+
+* remove unused @types/socket.io dependency ([af453d1](https://github.com/liwijs/liwi/commit/af453d1bd7d66ce1337e7f4e5ae1b2b7a04174a8))
+* remove unused deep-equal dependency ([dbd4d62](https://github.com/liwijs/liwi/commit/dbd4d62143fee4c4981c5ca28991bcd30b94603c))
+* update optional dependencies in liwi-resources-websocket-server ([3b3ab8f](https://github.com/liwijs/liwi/commit/3b3ab8f04020d60727e0be78474e33c76497a1ee))
+
+
+### Features
+
+* update mingo ([dbda259](https://github.com/liwijs/liwi/commit/dbda259098aafc688fa9c3d4f1ef8355a1832c98))
+* **react-liwi:** allow react 17 ([cc2cbe4](https://github.com/liwijs/liwi/commit/cc2cbe47fb5a19dad0da70a8e844d4cb5e4cf539))
+* update mongo ([20b7a59](https://github.com/liwijs/liwi/commit/20b7a59500c355d45ae490a4032a42a4bc13ecd7))
+* update nightingale ([ede1ef6](https://github.com/liwijs/liwi/commit/ede1ef66f10f3b631bcbf09687faed56e62f47ca))
+* update ws ([d57d8fe](https://github.com/liwijs/liwi/commit/d57d8fe7cb6ab1f89db0c23131d6f026afbe848f))
+
+
+
+
+
 ## [8.0.4](https://github.com/liwijs/liwi/compare/v8.0.3...v8.0.4) (2021-01-18)
 
 

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/liwijs/liwi/compare/v8.0.4...v8.1.0) (2021-03-28)
+
+
+### Bug Fixes
+
+* remove unused deep-equal dependency ([dbd4d62](https://github.com/liwijs/liwi/commit/dbd4d62143fee4c4981c5ca28991bcd30b94603c))
+
+
+### Features
+
+* update mingo ([dbda259](https://github.com/liwijs/liwi/commit/dbda259098aafc688fa9c3d4f1ef8355a1832c98))
+* **react-liwi:** allow react 17 ([cc2cbe4](https://github.com/liwijs/liwi/commit/cc2cbe47fb5a19dad0da70a8e844d4cb5e4cf539))
+* update nightingale ([ede1ef6](https://github.com/liwijs/liwi/commit/ede1ef66f10f3b631bcbf09687faed56e62f47ca))
+
+
+
+
+
 ## [8.0.4](https://github.com/liwijs/liwi/compare/v8.0.3...v8.0.4) (2021-01-18)
 
 
