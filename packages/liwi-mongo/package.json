@@ -59,12 +59,12 @@
     ]
   },
   "dependencies": {
-    "@types/mongodb": "^3.5.20",
+    "@types/mongodb": "^3.6.10",
     "liwi-store": "^8.0.4",
     "liwi-subscribe-store": "^8.0.4",
     "liwi-types": "^8.0.4",
     "mingo": "^3.0.2",
-    "mongodb": "^3.5.8",
+    "mongodb": "^3.6.5",
     "nightingale-logger": "^11.6.0"
   },
   "devDependencies": {
