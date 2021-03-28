@@ -6019,11 +6019,6 @@ eslint@7.23.0, eslint@^7.18.0:
     text-table "^0.2.0"
     v8-compile-cache "^2.0.3"
 
-esm@3.2.25:
-  version "3.2.25"
-  resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.25.tgz#342c18c29d56157688ba5ce31f8431fbb795cc10"
-  integrity sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==
-
 espree@^7.3.0, espree@^7.3.1:
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/espree/-/espree-7.3.1.tgz#f2df330b752c6f55019f8bd89b7660039c1bbbb6"
@@ -9260,12 +9255,10 @@ min-indent@^1.0.0:
   resolved "https://registry.yarnpkg.com/min-indent/-/min-indent-1.0.1.tgz#a63f681673b30571fbe8bc25686ae746eefa9869"
   integrity sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==
 
-mingo@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/mingo/-/mingo-3.0.2.tgz#8d1361e7610f671449a46d1e023fa34b02f94ba4"
-  integrity sha512-0aDdjZ5xbJNy+QG4Up7ebGzMeNswAttxDIa9pCFv7jWoF3zldQIjLKjDZV3XY5Lh9SWVCW7vu3woM1LQh5l9FQ==
-  dependencies:
-    esm "3.2.25"
+mingo@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/mingo/-/mingo-4.1.2.tgz#c8b96c6a78fe9b37b42ea1264d785c8e5cd9eb02"
+  integrity sha512-WQKhtFDV7nRIMlPP7tfo0Zx4bpvmhfBuHKvNPA9DbISjYJtrU4g1kacQPxPhMSEebJ6tGz7pHXDzQOyANpJ9jA==
 
 minimalistic-assert@^1.0.0, minimalistic-assert@^1.0.1:
   version "1.0.1"

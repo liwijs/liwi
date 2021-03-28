@@ -4,9 +4,11 @@ import { MongoStore, MongoConnection } from 'liwi-mongo';
 
 export { createMongoSubscribeStore } from 'liwi-mongo';
 
+type DbConfig = Map<'mongodb', Map<string, string | number>>;
+
 export const mongoConnection: MongoConnection = new MongoConnection(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-  config.get('db').get('mongodb'),
+  config.get<DbConfig>('db').get('mongodb')!,
 );
 
 export const createMongoStore = <Model extends MongoBaseModel>(

@@ -3,9 +3,8 @@ import type { Change, Changes, QueryInfo, QueryMeta } from 'liwi-types';
 import { Lazy } from 'mingo/lazy';
 import { $sort } from 'mingo/operators/pipeline';
 
-function sortCollection(collection: any, sort: any): any {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return $sort(Lazy(collection), sort, { config: { idKey: '_id' } }).value();
+function sortCollection<T>(collection: T[], sort: Record<string, 1 | -1>): T[] {
+  return $sort(Lazy(collection), sort, { idKey: '_id' }).value() as T[];
 }
 
 const copy = <Value>(state: Value[]): Value[] => [...state];
