@@ -1,6 +1,6 @@
 {
   "name": "react-liwi",
-  "version": "8.1.0",
+  "version": "8.1.2",
   "description": "react with liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -110,7 +110,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
-    "liwi-resources-client": "^8.1.0",
+    "liwi-resources-client": "^8.1.2",
     "liwi-types": "^8.0.4",
     "mingo": "^4.1.2",
     "nightingale-logger": "^11.6.0"

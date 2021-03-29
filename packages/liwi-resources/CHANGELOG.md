@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.2](https://github.com/liwijs/liwi/compare/v8.1.1...v8.1.2) (2021-03-29)
+
+
+### Bug Fixes
+
+* **liwi-resources:** build for browsers ([3c32141](https://github.com/liwijs/liwi/commit/3c32141695f6f7e355786d9cb37c2f6ba0aca48a))
+
+
+
+
+
 # [8.1.0](https://github.com/liwijs/liwi/compare/v8.0.4...v8.1.0) (2021-03-28)
 
 **Note:** Version bump only for package liwi-resources
