@@ -1,4 +1,9 @@
-import type { Query, QueryParams, QueryMeta } from 'liwi-resources-client';
+import type {
+  Query,
+  QueryParams,
+  QueryMeta,
+  ResourcesServerError,
+} from 'liwi-resources-client';
 import type { QueryInfo } from 'liwi-types';
 import type { State } from './reducer';
 
@@ -29,7 +34,7 @@ export interface ResourceResultInitialError<
   data: undefined;
   meta: undefined;
   queryInfo: undefined;
-  error: Error;
+  error: Error | ResourcesServerError;
 }
 
 export interface ResourceResultLoaded<
@@ -44,7 +49,7 @@ export interface ResourceResultLoaded<
   data: Data;
   meta: QueryMeta;
   queryInfo: QueryInfo<any>;
-  error: undefined | Error;
+  error: undefined | Error | ResourcesServerError;
 }
 
 export type ResourceResult<Data, Params extends QueryParams<Params>> =
