@@ -4,6 +4,7 @@ import _extends from '@babel/runtime/helpers/esm/extends';
 import Logger from 'nightingale-logger';
 import { Lazy } from 'mingo/lazy';
 import { $sort } from 'mingo/operators/pipeline';
+export { ResourcesServerError } from 'liwi-resources-client';
 
 var TransportClientContext = /*#__PURE__*/createContext(undefined);
 var TransportClientStateContext = /*#__PURE__*/createContext('opening');

@@ -9,3 +9,4 @@ export {
   TransportClientStateContext,
   TransportClientReadyContext,
 } from './TransportClientProvider';
+export { ResourcesServerError } from 'liwi-resources-client';

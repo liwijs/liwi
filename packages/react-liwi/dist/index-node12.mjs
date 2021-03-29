@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useCallback, createContext, useEffect } from 'react';
+export { ResourcesServerError } from 'liwi-resources-client';
 
 function useResource(createQuery, {
   params,

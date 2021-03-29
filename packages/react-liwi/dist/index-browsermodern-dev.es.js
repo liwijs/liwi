@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext, useRef, useCallb
 import Logger from 'nightingale-logger';
 import { Lazy } from 'mingo/lazy';
 import { $sort } from 'mingo/operators/pipeline';
+export { ResourcesServerError } from 'liwi-resources-client';
 
 const TransportClientContext = /*#__PURE__*/createContext(undefined);
 const TransportClientStateContext = /*#__PURE__*/createContext('opening');

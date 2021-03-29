@@ -3,6 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const React = require('react');
+const liwiResourcesClient = require('liwi-resources-client');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
 
@@ -109,6 +110,7 @@ function TransportClientProvider({
   }, children)));
 }
 
+exports.ResourcesServerError = liwiResourcesClient.ResourcesServerError;
 exports.TransportClientContext = TransportClientContext;
 exports.TransportClientProvider = TransportClientProvider;
 exports.TransportClientReadyContext = TransportClientReadyContext;

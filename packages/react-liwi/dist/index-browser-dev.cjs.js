@@ -8,6 +8,7 @@ var _extends = require('@babel/runtime/helpers/esm/extends');
 var Logger = require('nightingale-logger');
 var lazy = require('mingo/lazy');
 var pipeline = require('mingo/operators/pipeline');
+var liwiResourcesClient = require('liwi-resources-client');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
 
@@ -609,6 +610,7 @@ function useOperation(operationCall) {
   return [operationCallWrapper, state];
 }
 
+exports.ResourcesServerError = liwiResourcesClient.ResourcesServerError;
 exports.TransportClientContext = TransportClientContext;
 exports.TransportClientProvider = TransportClientProvider;
 exports.TransportClientReadyContext = TransportClientReadyContext;
