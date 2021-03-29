@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.5](https://github.com/liwijs/liwi/compare/v8.1.4...v8.1.5) (2021-03-29)
+
+
+### Bug Fixes
+
+* **react-liwi:** export ResourcesServerError ([41d5c13](https://github.com/liwijs/liwi/commit/41d5c13d8134c2165d8dd289310b1aa0ec686b45))
+
+
+
+
+
 ## [8.1.4](https://github.com/liwijs/liwi/compare/v8.1.3...v8.1.4) (2021-03-29)
 
 

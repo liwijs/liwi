@@ -1,7 +1,7 @@
 {
   "name": "alp-todo-example",
   "private": true,
-  "version": "8.1.4",
+  "version": "8.1.5",
   "description": "Todo, with alp, liwi, and react",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
   "license": "ISC",
@@ -43,7 +43,7 @@
     "react-alp-translate": "^5.1.2",
     "react-dom": "16.11.0",
     "react-hot-loader": "^4.13.0",
-    "react-liwi": "^8.1.4",
+    "react-liwi": "^8.1.5",
     "todomvc-app-css": "^2.3.0",
     "todomvc-common": "^1.0.5"
   },
