@@ -64,7 +64,9 @@ export default function createSimpleWebsocketClient({
     if (currentState === newState) return;
     currentState = newState;
     isConnected = currentState === 'connected';
-    stateChangeListeners.forEach((listener) => listener(newState));
+    stateChangeListeners.forEach((listener) => {
+      listener(newState);
+    });
   };
 
   const clearInternalTimeout = (timeoutKey: Timeouts): void => {
@@ -119,8 +121,11 @@ export default function createSimpleWebsocketClient({
     };
 
     webSocket.onerror = (event): void => {
-      console.error('ws error', event);
-      if (onError) onError(event);
+      if (onError) {
+        onError(event);
+      } else {
+        console.error('ws error', event);
+      }
       handleCloseOrError();
     };
   };

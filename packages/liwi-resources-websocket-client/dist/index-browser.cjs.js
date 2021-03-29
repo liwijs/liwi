@@ -50,7 +50,7 @@ function createSimpleWebsocketClient(_ref) {
     currentState = newState;
     _isConnected = currentState === 'connected';
     stateChangeListeners.forEach(function (listener) {
-      return listener(newState);
+      listener(newState);
     });
   };
 
@@ -110,8 +110,12 @@ function createSimpleWebsocketClient(_ref) {
     };
 
     webSocket.onerror = function (event) {
-      console.error('ws error', event);
-      if (onError) onError(event);
+      if (onError) {
+        onError(event);
+      } else {
+        console.error('ws error', event);
+      }
+
       handleCloseOrError();
     };
   };
