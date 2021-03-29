@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.4](https://github.com/liwijs/liwi/compare/v8.1.3...v8.1.4) (2021-03-29)
+
+
+### Bug Fixes
+
+* **react-liwi:** improve typings, error can be ResourcesServerError ([26fa437](https://github.com/liwijs/liwi/commit/26fa437547c9826f0db19cc233a8d46161e7d9a7))
+
+
+
+
+
 ## [8.1.2](https://github.com/liwijs/liwi/compare/v8.1.1...v8.1.2) (2021-03-29)
 
 **Note:** Version bump only for package react-liwi
