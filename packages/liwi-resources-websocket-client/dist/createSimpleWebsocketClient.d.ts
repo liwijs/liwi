@@ -10,6 +10,7 @@ export interface SimpleWebsocketClientOptions {
     reconnectionDelayMax?: number;
     reconnectionAttempts?: number;
     inactivityTimeout?: number;
+    thirdWebsocketArgument?: unknown;
     onMessage: (message: MessageEvent) => void;
     onError?: (event: Event) => void;
 }
@@ -21,6 +22,6 @@ export interface WebsocketTransport {
     sendMessage: (message: Message) => void;
     listenStateChange: StateChangeListenerCreator;
 }
-export default function createSimpleWebsocketClient({ url, protocols, reconnection, reconnectionDelayMin, reconnectionDelayMax, reconnectionAttempts, onMessage, onError, }: SimpleWebsocketClientOptions): WebsocketTransport;
+export default function createSimpleWebsocketClient({ url, protocols, reconnection, reconnectionDelayMin, reconnectionDelayMax, reconnectionAttempts, thirdWebsocketArgument, onMessage, onError, }: SimpleWebsocketClientOptions): WebsocketTransport;
 export {};
 //# sourceMappingURL=createSimpleWebsocketClient.d.ts.map

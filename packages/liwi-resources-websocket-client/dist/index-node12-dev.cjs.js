@@ -20,6 +20,7 @@ function createSimpleWebsocketClient({
   reconnectionDelayMin = 1000,
   reconnectionDelayMax = 30000,
   reconnectionAttempts = Infinity,
+  thirdWebsocketArgument,
   onMessage,
   onError
 }) {
@@ -70,7 +71,8 @@ function createSimpleWebsocketClient({
   let tryReconnect;
 
   const connect = () => {
-    const webSocket = new WebSocket(url, protocols);
+    const webSocket = thirdWebsocketArgument ? // @ts-expect-error third argument for react-native
+    new WebSocket(url, protocols, thirdWebsocketArgument) : new WebSocket(url, protocols);
     ws = webSocket;
     clearInternalTimeout('maxConnect');
     setCurrentState('connecting');

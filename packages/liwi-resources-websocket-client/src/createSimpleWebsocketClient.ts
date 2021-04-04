@@ -17,6 +17,7 @@ export interface SimpleWebsocketClientOptions {
   reconnectionDelayMax?: number;
   reconnectionAttempts?: number;
   inactivityTimeout?: number;
+  thirdWebsocketArgument?: unknown;
   onMessage: (message: MessageEvent) => void;
   onError?: (event: Event) => void;
 }
@@ -40,6 +41,7 @@ export default function createSimpleWebsocketClient({
   reconnectionDelayMin = 1000,
   reconnectionDelayMax = 30 * 1000,
   reconnectionAttempts = Infinity,
+  thirdWebsocketArgument,
   onMessage,
   onError,
 }: SimpleWebsocketClientOptions): WebsocketTransport {
@@ -90,7 +92,10 @@ export default function createSimpleWebsocketClient({
   let tryReconnect: (() => void) | undefined;
 
   const connect = (): void => {
-    const webSocket = new WebSocket(url, protocols);
+    const webSocket = thirdWebsocketArgument
+      ? // @ts-expect-error third argument for react-native
+        new WebSocket(url, protocols, thirdWebsocketArgument)
+      : new WebSocket(url, protocols);
     ws = webSocket;
     clearInternalTimeout('maxConnect');
     setCurrentState('connecting');
