@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.2.0](https://github.com/liwijs/liwi/compare/v8.1.5...v8.2.0) (2021-04-10)
+
+
+### Features
+
+* **liwi-resources-websocket-client:** add third argument for websocket in react-native ([8bff87a](https://github.com/liwijs/liwi/commit/8bff87aa300024b67deb20a7ed2c61907584cfee))
+
+
+
+
+
 ## [8.1.3](https://github.com/liwijs/liwi/compare/v8.1.2...v8.1.3) (2021-03-29)
 
 

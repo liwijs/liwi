@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.2.0](https://github.com/liwijs/liwi/compare/v8.1.5...v8.2.0) (2021-04-10)
+
+**Note:** Version bump only for package alp-todo-example
+
+
+
+
+
 ## [8.1.5](https://github.com/liwijs/liwi/compare/v8.1.4...v8.1.5) (2021-03-29)
 
 **Note:** Version bump only for package alp-todo-example
