@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import type http from 'http';
 import type net from 'net';
 import { encode, decode } from 'extended-json';
@@ -30,7 +31,7 @@ export interface ResourcesWebsocketServer {
   close: () => void;
 }
 
-const logger = new Logger('liwi:resources-websocket-client');
+const logger = new Logger('liwi:resources-websocket-server');
 
 export const createWsServer = <AuthenticatedUser>(
   server: http.Server,
@@ -60,6 +61,9 @@ export const createWsServer = <AuthenticatedUser>(
         if (error instanceof ResourcesServerError) {
           return { code: error.code, message: error.message };
         }
+
+        logger.error(error);
+
         return {
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Internal Server Error',
@@ -99,8 +103,12 @@ export const createWsServer = <AuthenticatedUser>(
           ).then(() => {});
         } else {
           return messageHandler(message, sendSubscriptionMessage)
-            .then((result) => sendAck(message.id, null, result))
-            .catch((err) => sendAck(message.id, err));
+            .then((result) => {
+              sendAck(message.id, null, result);
+            })
+            .catch((err) => {
+              sendAck(message.id, err);
+            });
         }
       };
 
@@ -146,7 +154,10 @@ export const createWsServer = <AuthenticatedUser>(
     wss.clients.forEach((ws: WebSocket) => {
       const extWs = ws as ExtendedWebSocket;
 
-      if (!extWs.isAlive) return ws.terminate();
+      if (!extWs.isAlive) {
+        ws.terminate();
+        return;
+      }
 
       extWs.isAlive = false;
       ws.ping(null, undefined);

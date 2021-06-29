@@ -3,7 +3,8 @@ import { createMessageHandler, ResourcesServerError } from 'liwi-resources-serve
 import Logger from 'nightingale-logger';
 import WebSocket from 'ws';
 
-var logger = new Logger('liwi:resources-websocket-client');
+/* eslint-disable max-lines */
+var logger = new Logger('liwi:resources-websocket-server');
 var createWsServer = function createWsServer(server, path, resourcesServerService, getAuthenticatedUser) {
   if (path === void 0) {
     path = '/ws';
@@ -34,6 +35,7 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
         };
       }
 
+      logger.error(error);
       return {
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Internal Server Error'
@@ -57,9 +59,9 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
         return messageHandler(message, sendSubscriptionMessage).then(function () {});
       } else {
         return messageHandler(message, sendSubscriptionMessage).then(function (result) {
-          return sendAck(message.id, null, result);
+          sendAck(message.id, null, result);
         }).catch(function (err) {
-          return sendAck(message.id, err);
+          sendAck(message.id, err);
         });
       }
     };
@@ -108,7 +110,12 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
   var interval = setInterval(function () {
     wss.clients.forEach(function (ws) {
       var extWs = ws;
-      if (!extWs.isAlive) return ws.terminate();
+
+      if (!extWs.isAlive) {
+        ws.terminate();
+        return;
+      }
+
       extWs.isAlive = false;
       ws.ping(null, undefined);
     });

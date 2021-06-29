@@ -12,7 +12,8 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 const Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
 const WebSocket__default = /*#__PURE__*/_interopDefaultLegacy(WebSocket);
 
-const logger = new Logger__default('liwi:resources-websocket-client');
+/* eslint-disable max-lines */
+const logger = new Logger__default('liwi:resources-websocket-server');
 const createWsServer = (server, path = '/ws', resourcesServerService, getAuthenticatedUser) => {
   const wss = new WebSocket__default.Server({
     noServer: true
@@ -39,6 +40,7 @@ const createWsServer = (server, path = '/ws', resourcesServerService, getAuthent
         };
       }
 
+      logger.error(error);
       return {
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Internal Server Error'
@@ -62,7 +64,11 @@ const createWsServer = (server, path = '/ws', resourcesServerService, getAuthent
       if (message.id == null) {
         return messageHandler(message, sendSubscriptionMessage).then(() => {});
       } else {
-        return messageHandler(message, sendSubscriptionMessage).then(result => sendAck(message.id, null, result)).catch(err => sendAck(message.id, err));
+        return messageHandler(message, sendSubscriptionMessage).then(result => {
+          sendAck(message.id, null, result);
+        }).catch(err => {
+          sendAck(message.id, err);
+        });
       }
     };
 
@@ -107,7 +113,12 @@ const createWsServer = (server, path = '/ws', resourcesServerService, getAuthent
   const interval = setInterval(() => {
     wss.clients.forEach(ws => {
       const extWs = ws;
-      if (!extWs.isAlive) return ws.terminate();
+
+      if (!extWs.isAlive) {
+        ws.terminate();
+        return;
+      }
+
       extWs.isAlive = false;
       ws.ping(null, undefined);
     });
