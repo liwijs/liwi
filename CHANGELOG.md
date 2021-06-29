@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.1](https://github.com/liwijs/liwi/compare/v8.2.0...v8.2.1) (2021-06-29)
+
+
+### Bug Fixes
+
+* log internal server error ([a2c176c](https://github.com/liwijs/liwi/commit/a2c176c0c13eb796c8bc5f968fa65adb9a132f32))
+
+
+
+
+
 # [8.2.0](https://github.com/liwijs/liwi/compare/v8.1.5...v8.2.0) (2021-04-10)
 
 

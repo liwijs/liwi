@@ -1,7 +1,7 @@
 {
   "name": "alp-todo-example",
   "private": true,
-  "version": "8.2.0",
+  "version": "8.2.1",
   "description": "Todo, with alp, liwi, and react",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
   "license": "ISC",
@@ -35,7 +35,7 @@
     "liwi-resources-direct-client": "^8.1.2",
     "liwi-resources-server": "^8.1.2",
     "liwi-resources-websocket-client": "^8.2.0",
-    "liwi-resources-websocket-server": "^8.1.2",
+    "liwi-resources-websocket-server": "^8.2.1",
     "liwi-subscribe-store": "^8.1.0",
     "nightingale-app-console": "11.6.0",
     "react": "16.11.0",
