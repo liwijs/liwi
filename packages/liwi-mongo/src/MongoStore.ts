@@ -128,7 +128,7 @@ export default class MongoStore<
 
     const collection = await this.collection;
     await collection.replaceOne({ _id: object._id }, object);
-    return object!;
+    return object;
   }
 
   async upsertOne<
