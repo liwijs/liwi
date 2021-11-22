@@ -16,9 +16,18 @@ const applyCollectionChange = <Value>(
   queryInfo: QueryInfo<Value>,
 ): Value[] => {
   switch (change.type) {
-    case 'initial':
-      return change.initial;
-
+    case 'initial': {
+      const keyPath = queryInfo.keyPath;
+      return !state
+        ? change.initial
+        : change.initial.map((value) => {
+            const existing = state.find((v) => v[keyPath] === value[keyPath]);
+            if (!existing) return value;
+            return JSON.stringify(existing) === JSON.stringify(value)
+              ? existing
+              : value;
+          });
+    }
     case 'inserted': {
       queryMeta.total += change.result.length;
 
