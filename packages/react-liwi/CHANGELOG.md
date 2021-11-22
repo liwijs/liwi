@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.3.0](https://github.com/liwijs/liwi/compare/v8.2.1...v8.3.0) (2021-11-22)
+
+
+### Bug Fixes
+
+* update pob-babel and bring back webpack 4 compat ([135caf3](https://github.com/liwijs/liwi/commit/135caf3c2d1693ae39d33e7527f16392720865a5))
+
+
+### Features
+
+* **react-liwi:** compare on initial if already have state to prevent overriding in progress changes in forms ([356bc89](https://github.com/liwijs/liwi/commit/356bc89c133d6faea4618946423a13951ede6ebd))
+
+
+
+
+
 ## [8.1.5](https://github.com/liwijs/liwi/compare/v8.1.4...v8.1.5) (2021-03-29)
 
 
