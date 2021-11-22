@@ -1,5 +1,5 @@
-import _regeneratorRuntime from '@babel/runtime/regenerator';
 import _asyncToGenerator from '@babel/runtime/helpers/esm/asyncToGenerator';
+import _regeneratorRuntime from '@babel/runtime/regenerator';
 import _createClass from '@babel/runtime/helpers/esm/createClass';
 import _inheritsLoose from '@babel/runtime/helpers/esm/inheritsLoose';
 

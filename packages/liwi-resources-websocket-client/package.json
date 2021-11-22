@@ -118,7 +118,7 @@
     "@types/backo2": "^1.0.1",
     "babel-preset-latest-node": "5.5.1",
     "babel-preset-modern-browsers": "15.0.2",
-    "pob-babel": "26.8.0",
+    "pob-babel": "28.5.0",
     "rollup": "2.43.1"
   }
 }

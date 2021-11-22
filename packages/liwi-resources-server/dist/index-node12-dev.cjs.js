@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 const liwiResources = require('liwi-resources');
 const Logger = require('nightingale-logger');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
 
 const Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
 

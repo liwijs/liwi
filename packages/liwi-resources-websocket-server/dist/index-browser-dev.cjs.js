@@ -7,7 +7,7 @@ var liwiResourcesServer = require('liwi-resources-server');
 var Logger = require('nightingale-logger');
 var WebSocket = require('ws');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
 
 var Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
 var WebSocket__default = /*#__PURE__*/_interopDefaultLegacy(WebSocket);

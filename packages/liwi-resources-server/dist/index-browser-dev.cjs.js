@@ -3,14 +3,14 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var liwiResources = require('liwi-resources');
-var _regeneratorRuntime = require('@babel/runtime/regenerator');
 var _asyncToGenerator = require('@babel/runtime/helpers/esm/asyncToGenerator');
+var _regeneratorRuntime = require('@babel/runtime/regenerator');
 var Logger = require('nightingale-logger');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
 
-var _regeneratorRuntime__default = /*#__PURE__*/_interopDefaultLegacy(_regeneratorRuntime);
 var _asyncToGenerator__default = /*#__PURE__*/_interopDefaultLegacy(_asyncToGenerator);
+var _regeneratorRuntime__default = /*#__PURE__*/_interopDefaultLegacy(_regeneratorRuntime);
 var Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
 
 // import ResourceServerCursor from './ResourceServerCursor';

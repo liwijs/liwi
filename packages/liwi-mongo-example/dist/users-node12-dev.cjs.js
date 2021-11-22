@@ -3,7 +3,7 @@
 const assert = require('assert');
 const liwiMongo = require('liwi-mongo');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
 
 const assert__default = /*#__PURE__*/_interopDefaultLegacy(assert);
 

@@ -225,7 +225,16 @@ var copy = function copy(state) {
 var applyCollectionChange = function applyCollectionChange(state, change, queryMeta, queryInfo) {
   switch (change.type) {
     case 'initial':
-      return change.initial;
+      {
+        var keyPath = queryInfo.keyPath;
+        return !state ? change.initial : change.initial.map(function (value) {
+          var existing = state.find(function (v) {
+            return v[keyPath] === value[keyPath];
+          });
+          if (!existing) return value;
+          return JSON.stringify(existing) === JSON.stringify(value) ? existing : value;
+        });
+      }
 
     case 'inserted':
       {
@@ -243,20 +252,20 @@ var applyCollectionChange = function applyCollectionChange(state, change, queryM
     case 'deleted':
       {
         queryMeta.total -= change.keys.length;
-        var keyPath = queryInfo.keyPath;
+        var _keyPath = queryInfo.keyPath;
         var deletedKeys = change.keys;
         return state.filter(function (value) {
-          return !deletedKeys.includes(value[keyPath]);
+          return !deletedKeys.includes(value[_keyPath]);
         });
       }
 
     case 'updated':
       {
-        var _keyPath = queryInfo.keyPath;
+        var _keyPath2 = queryInfo.keyPath;
         var newState = copy(state);
         change.result.forEach(function (newObject) {
           var index = newState.findIndex(function (o) {
-            return o[_keyPath] === newObject[_keyPath];
+            return o[_keyPath2] === newObject[_keyPath2];
           });
           if (index === -1) return;
           newState[index] = newObject;

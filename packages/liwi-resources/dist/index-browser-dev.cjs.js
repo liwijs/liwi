@@ -2,10 +2,10 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var _inheritsLoose = require('../../../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js');
-var _wrapNativeSuper = require('../../../node_modules/@babel/runtime/helpers/esm/wrapNativeSuper.js');
+var _inheritsLoose = require('@babel/runtime/helpers/esm/inheritsLoose');
+var _wrapNativeSuper = require('@babel/runtime/helpers/esm/wrapNativeSuper');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
 
 var _inheritsLoose__default = /*#__PURE__*/_interopDefaultLegacy(_inheritsLoose);
 var _wrapNativeSuper__default = /*#__PURE__*/_interopDefaultLegacy(_wrapNativeSuper);

@@ -1,7 +1,7 @@
 import { ResourcesServerError } from 'liwi-resources';
 export { ResourcesServerError } from 'liwi-resources';
-import _regeneratorRuntime from '@babel/runtime/regenerator';
 import _asyncToGenerator from '@babel/runtime/helpers/esm/asyncToGenerator';
+import _regeneratorRuntime from '@babel/runtime/regenerator';
 import Logger from 'nightingale-logger';
 
 // import ResourceServerCursor from './ResourceServerCursor';

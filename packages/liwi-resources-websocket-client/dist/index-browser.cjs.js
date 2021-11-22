@@ -9,7 +9,7 @@ var liwiResourcesClient = require('liwi-resources-client');
 var Logger = require('nightingale-logger');
 var Backoff = require('backo2');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
 
 var _extends__default = /*#__PURE__*/_interopDefaultLegacy(_extends);
 var _objectWithoutPropertiesLoose__default = /*#__PURE__*/_interopDefaultLegacy(_objectWithoutPropertiesLoose);

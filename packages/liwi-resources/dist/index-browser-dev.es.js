@@ -1,5 +1,5 @@
-import _inheritsLoose from '../../../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js';
-import _wrapNativeSuper from '../../../node_modules/@babel/runtime/helpers/esm/wrapNativeSuper.js';
+import _inheritsLoose from '@babel/runtime/helpers/esm/inheritsLoose';
+import _wrapNativeSuper from '@babel/runtime/helpers/esm/wrapNativeSuper';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 // export type ToServerSubscribeQueryChangePayload = ToServerQueryPayload;

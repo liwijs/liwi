@@ -7,7 +7,7 @@ const liwiResourcesClient = require('liwi-resources-client');
 const Logger = require('nightingale-logger');
 const Backoff = require('backo2');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
 
 const Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
 const Backoff__default = /*#__PURE__*/_interopDefaultLegacy(Backoff);

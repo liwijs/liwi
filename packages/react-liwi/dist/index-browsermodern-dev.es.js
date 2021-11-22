@@ -217,7 +217,14 @@ const copy = state => [...state];
 const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
   switch (change.type) {
     case 'initial':
-      return change.initial;
+      {
+        const keyPath = queryInfo.keyPath;
+        return !state ? change.initial : change.initial.map(value => {
+          const existing = state.find(v => v[keyPath] === value[keyPath]);
+          if (!existing) return value;
+          return JSON.stringify(existing) === JSON.stringify(value) ? existing : value;
+        });
+      }
 
     case 'inserted':
       {
@@ -509,9 +516,11 @@ function useResource(createQuery, {
 }
 
 function usePaginatedResource(createQuery, options, deps) {
+  var _result$meta, _result$queryInfo;
+
   const result = useResource(createQuery, options, deps);
-  const total = result.meta?.total;
-  const limit = result.queryInfo?.limit;
+  const total = (_result$meta = result.meta) === null || _result$meta === void 0 ? void 0 : _result$meta.total;
+  const limit = (_result$queryInfo = result.queryInfo) === null || _result$queryInfo === void 0 ? void 0 : _result$queryInfo.limit;
   const pagination = useMemo(() => {
     if (total === undefined) return undefined;
     return {

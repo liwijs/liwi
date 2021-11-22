@@ -8,7 +8,7 @@ const liwiSubscribeStore = require('liwi-subscribe-store');
 const mingo = require('mingo');
 const Logger = require('nightingale-logger');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e['default'] : e; }
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
 
 const mongodb__default = /*#__PURE__*/_interopDefaultLegacy(mongodb);
 const mingo__default = /*#__PURE__*/_interopDefaultLegacy(mingo);
