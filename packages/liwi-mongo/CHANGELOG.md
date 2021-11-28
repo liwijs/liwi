@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.3.1](https://github.com/liwijs/liwi/compare/v8.3.0...v8.3.1) (2021-11-28)
+
+
+### Bug Fixes
+
+* **liwi-mongo:** fix mingoQuery for MongoQuerySingleItem ([34c240f](https://github.com/liwijs/liwi/commit/34c240f5b8c2a4fa3f3190d634acb92ab5ea563c))
+
+
+
+
+
 # [8.3.0](https://github.com/liwijs/liwi/compare/v8.2.1...v8.3.0) (2021-11-22)
 
 
