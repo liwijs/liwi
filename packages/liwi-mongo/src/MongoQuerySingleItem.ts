@@ -28,9 +28,7 @@ const identityTransformer = <
   model: Model,
 ): Transformed => (model as unknown) as Transformed;
 
-interface TestCriteria {
-  test: (obj: any) => boolean;
-}
+type TestCriteria = (obj: any) => boolean;
 
 export default class MongoQuerySingleItem<
   Model extends MongoBaseModel<KeyValue>,
@@ -49,7 +47,7 @@ export default class MongoQuerySingleItem<
 
   private readonly options: QueryOptions<Model>;
 
-  private mingoQuery?: TestCriteria;
+  private testCriteria?: TestCriteria;
 
   private readonly transformer: Transformer<Model, Result>;
 
@@ -64,16 +62,17 @@ export default class MongoQuerySingleItem<
     this.transformer = transformer;
   }
 
-  createMingoQuery(): TestCriteria {
-    if (!this.mingoQuery) {
+  createMingoTestCriteria(): TestCriteria {
+    if (!this.testCriteria) {
       if (!this.options.criteria) {
-        return { test: () => true };
+        return () => true;
       }
 
-      this.mingoQuery = new mingo.Query(this.options.criteria);
+      const mingoQuery = new mingo.Query(this.options.criteria);
+      this.testCriteria = mingoQuery.test.bind(mingoQuery);
     }
 
-    return this.mingoQuery;
+    return this.testCriteria;
   }
 
   async fetch<T>(onFulfilled: (result: QueryResult<Result>) => T): Promise<T> {
@@ -98,7 +97,7 @@ export default class MongoQuerySingleItem<
     _includeInitial: boolean,
   ): QuerySubscription {
     const store = super.getSubscribeStore();
-    const mingoQuery: TestCriteria = this.createMingoQuery();
+    const testCriteria: TestCriteria = this.createMingoTestCriteria();
 
     const promise: Promise<void> = _includeInitial
       ? this.fetch(({ result, meta, info }: QueryResult<Result>) => {
@@ -117,7 +116,7 @@ export default class MongoQuerySingleItem<
       const changes: Changes<KeyValue, Result> = [];
       switch (action.type) {
         case 'inserted': {
-          const filtered = action.next.filter(mingoQuery.test);
+          const filtered = action.next.filter(testCriteria);
           if (filtered.length > 0) {
             changes.push({
               type: 'updated',
@@ -127,7 +126,7 @@ export default class MongoQuerySingleItem<
           break;
         }
         case 'deleted': {
-          const filtered = action.prev.filter(mingoQuery.test);
+          const filtered = action.prev.filter(testCriteria);
           if (filtered.length > 0) {
             changes.push({
               type: 'deleted',
@@ -138,7 +137,7 @@ export default class MongoQuerySingleItem<
         }
         case 'updated': {
           const filtered = action.changes.filter(([prev, next]) =>
-            mingoQuery.test(prev),
+            testCriteria(prev),
           );
           if (filtered.length > 0) {
             if (this.options.sort) {
@@ -155,7 +154,7 @@ export default class MongoQuerySingleItem<
               const [, next] = filtered[0];
               changes.push({
                 type: 'updated',
-                result: mingoQuery.test(next) ? this.transformer(next) : null!,
+                result: testCriteria(next) ? this.transformer(next) : null!,
               });
             }
           } else if (filtered.length === 0) {
