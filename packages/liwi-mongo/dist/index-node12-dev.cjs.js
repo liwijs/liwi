@@ -256,18 +256,17 @@ class MongoQuerySingleItem extends liwiSubscribeStore.AbstractSubscribableStoreQ
     this.transformer = transformer;
   }
 
-  createMingoQuery() {
-    if (!this.mingoQuery) {
+  createMingoTestCriteria() {
+    if (!this.testCriteria) {
       if (!this.options.criteria) {
-        return {
-          test: () => true
-        };
+        return () => true;
       }
 
-      this.mingoQuery = new mingo__default.Query(this.options.criteria);
+      const mingoQuery = new mingo__default.Query(this.options.criteria);
+      this.testCriteria = mingoQuery.test.bind(mingoQuery);
     }
 
-    return this.mingoQuery;
+    return this.testCriteria;
   }
 
   async fetch(onFulfilled) {
@@ -290,7 +289,7 @@ class MongoQuerySingleItem extends liwiSubscribeStore.AbstractSubscribableStoreQ
 
   _subscribe(callback, _includeInitial) {
     const store = super.getSubscribeStore();
-    const mingoQuery = this.createMingoQuery();
+    const testCriteria = this.createMingoTestCriteria();
     const promise = _includeInitial ? this.fetch(({
       result,
       meta,
@@ -309,7 +308,7 @@ class MongoQuerySingleItem extends liwiSubscribeStore.AbstractSubscribableStoreQ
       switch (action.type) {
         case 'inserted':
           {
-            const filtered = action.next.filter(mingoQuery.test);
+            const filtered = action.next.filter(testCriteria);
 
             if (filtered.length > 0) {
               changes.push({
@@ -323,7 +322,7 @@ class MongoQuerySingleItem extends liwiSubscribeStore.AbstractSubscribableStoreQ
 
         case 'deleted':
           {
-            const filtered = action.prev.filter(mingoQuery.test);
+            const filtered = action.prev.filter(testCriteria);
 
             if (filtered.length > 0) {
               changes.push({
@@ -337,7 +336,7 @@ class MongoQuerySingleItem extends liwiSubscribeStore.AbstractSubscribableStoreQ
 
         case 'updated':
           {
-            const filtered = action.changes.filter(([prev, next]) => mingoQuery.test(prev));
+            const filtered = action.changes.filter(([prev, next]) => testCriteria(prev));
 
             if (filtered.length > 0) {
               if (this.options.sort) {
@@ -354,7 +353,7 @@ class MongoQuerySingleItem extends liwiSubscribeStore.AbstractSubscribableStoreQ
                 const [, next] = filtered[0];
                 changes.push({
                   type: 'updated',
-                  result: mingoQuery.test(next) ? this.transformer(next) : null
+                  result: testCriteria(next) ? this.transformer(next) : null
                 });
               }
             } else if (filtered.length === 0) ;
