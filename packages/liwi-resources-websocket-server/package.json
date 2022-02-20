@@ -98,7 +98,7 @@
     "ws": "^8.4.2"
   },
   "devDependencies": {
-    "@babel/core": "7.17.3",
+    "@babel/core": "7.17.5",
     "@babel/preset-env": "7.16.11",
     "@types/ws": "8.2.3",
     "babel-preset-modern-browsers": "15.0.2",
