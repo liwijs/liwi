@@ -94,7 +94,7 @@
     "liwi-types": "^8.0.4"
   },
   "devDependencies": {
-    "@babel/core": "7.17.3",
+    "@babel/core": "7.17.5",
     "@babel/preset-env": "7.16.11",
     "babel-preset-modern-browsers": "15.0.2",
     "pob-babel": "32.1.0",
