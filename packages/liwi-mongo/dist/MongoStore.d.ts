@@ -23,14 +23,14 @@ export default class MongoStore<Model extends MongoBaseModel<KeyValue>, KeyValue
     upsertOne<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>): Promise<Model>;
     upsertOneWithInfo<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>): Promise<MongoUpsertResult<KeyValue, Model>>;
     replaceSeveral(objects: Model[]): Promise<Model[]>;
-    partialUpdateByKey(key: any, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
+    partialUpdateByKey(key: KeyValue, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateMany(criteria: Criteria<Model>, partialUpdate: Update<Model>): Promise<void>;
-    deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void>;
+    deleteByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<void>;
     deleteOne(object: Model): Promise<void>;
     deleteMany(selector: Criteria<Model>): Promise<void>;
     cursor<Result = Model>(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<MongoCursor<Model, Result, KeyValue>>;
-    findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined>;
+    findByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<Model | undefined>;
     findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
     findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;
 }

@@ -3,7 +3,7 @@
 // eslint-disable-next-line import/no-unresolved, import/extensions
 import { Namespace, Server, Socket } from 'socket.io';
 import { ResourcesServerService, SubscribeHook } from 'liwi-resources-server';
-import Logger from 'nightingale-logger';
+import { Logger } from 'nightingale-logger';
 import { encode, decode } from 'extended-json';
 import { ResourceOperationKey } from 'liwi-types';
 import { SubscribeResult } from 'liwi-store';

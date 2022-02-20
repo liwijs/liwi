@@ -1,5 +1,5 @@
 /* eslint-disable complexity, max-lines */
-import { PRODUCTION } from 'pob-babel';
+import 'pob-babel';
 import type {
   Query,
   QuerySubscription,
@@ -8,7 +8,7 @@ import type {
   ToServerQueryPayload,
 } from 'liwi-resources';
 import { ResourcesServerError } from 'liwi-resources';
-import Logger from 'nightingale-logger';
+import { Logger } from 'nightingale-logger';
 import type { ResourcesServerService } from './ResourcesServerService';
 import type { ServiceResource, SubscribeHook } from './ServiceResource';
 
@@ -32,15 +32,14 @@ export interface SubscriptionAndSubscribeHook {
 }
 
 const logUnexpectedError = (
-  error: Error,
+  error: Error | unknown,
   message: string,
-  payload: any,
+  payload: unknown,
 ): void => {
-  if (!PRODUCTION || !(error instanceof ResourcesServerError)) {
+  if (__DEV__ || !(error instanceof ResourcesServerError)) {
     logger.error(message, {
       error,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      payload: PRODUCTION ? 'redacted' : payload,
+      payload: !__DEV__ ? 'redacted' : payload,
     });
   }
 };
@@ -69,15 +68,17 @@ export const createMessageHandler = <AuthenticatedUser>(
     return resource;
   };
 
-  const createQuery = (
-    payload: ToServerQueryPayload,
-    resource: ServiceResource<any, any>,
+  const createQuery = <
+    Service extends ServiceResource<any, any>,
+    Key extends keyof Service['queries'] & string,
+  >(
+    payload: ToServerQueryPayload<Key>,
+    resource: Service,
   ): Query<any, any> => {
     if (!payload.key.startsWith('query')) {
       throw new Error('Invalid query key');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return resource.queries[payload.key](payload.params, authenticatedUser);
   };
 
@@ -193,9 +194,8 @@ export const createMessageHandler = <AuthenticatedUser>(
           }
           try {
             const { subscriptionId } = message.payload;
-            const SubscriptionAndSubscribeHook = openedSubscriptions.get(
-              subscriptionId,
-            );
+            const SubscriptionAndSubscribeHook =
+              openedSubscriptions.get(subscriptionId);
             if (!SubscriptionAndSubscribeHook) {
               logger.warn('tried to unsubscribe non existing watcher', {
                 subscriptionId,
@@ -223,8 +223,7 @@ export const createMessageHandler = <AuthenticatedUser>(
               );
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            return await operation(params, authenticatedUser);
+            return operation(params, authenticatedUser);
           } catch (err) {
             logUnexpectedError(err, message.type, message.payload);
             throw err;

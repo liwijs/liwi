@@ -1,4 +1,4 @@
-import Logger from 'nightingale-logger';
+import { Logger } from 'nightingale-logger';
 export { ResourcesServerError } from 'liwi-resources';
 
 const logger = new Logger('liwi:resources:query');

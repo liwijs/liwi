@@ -75,7 +75,7 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
   const firstEffectChangeParams = useRef(false);
 
   useEffect(() => {
-    if (firstEffectChangeParams.current === false) {
+    if (!firstEffectChangeParams.current) {
       firstEffectChangeParams.current = true;
       return;
     }

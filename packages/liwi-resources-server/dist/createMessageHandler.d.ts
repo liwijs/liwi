@@ -1,3 +1,4 @@
+import 'pob-babel';
 import type { QuerySubscription, ToServerMessage } from 'liwi-resources';
 import type { ResourcesServerService } from './ResourcesServerService';
 import type { SubscribeHook } from './ServiceResource';

@@ -1,0 +1,7 @@
+port: 4005
+availableLanguages:
+  - 'en'
+db:
+  'mongodb':
+    'database': 'todo-example'
+    'port': 27017

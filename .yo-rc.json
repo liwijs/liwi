@@ -9,20 +9,23 @@
       "typescript": true,
       "packageNames": [
         "extended-json",
-        "liwi-types",
         "liwi",
+        "liwi-types",
         "liwi-store",
         "liwi-resources",
         "liwi-subscribe-store",
         "liwi-mongo",
         "liwi-resources-client",
         "liwi-resources-server",
+        "@todo-example/modules",
         "liwi-mongo-example",
         "liwi-resources-direct-client",
+        "liwi-resources-void-client",
         "liwi-resources-websocket-client",
         "liwi-resources-websocket-server",
         "react-liwi",
-        "alp-todo-example"
+        "@todo-example/nextjs",
+        "@todo-example/server"
       ]
     },
     "renovate": {
@@ -30,7 +33,8 @@
     },
     "project": {
       "type": "lib",
-      "yarn2": false
+      "packageManager": "yarn",
+      "yarnNodeLinker": "node-modules"
     }
   }
 }

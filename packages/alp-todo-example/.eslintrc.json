@@ -1,5 +1,0 @@
-{
-  "root": true,
-  "extends": ["@pob/eslint-config/root", "@pob/eslint-config-node"],
-  "ignorePatterns": ["/dist", "/build", "/public", "/data"]
-}

@@ -1,9 +1,9 @@
 import { decode, encode } from 'extended-json';
 import { ResourcesServerError } from 'liwi-resources-client';
-import Logger from 'nightingale-logger';
+import { Logger } from 'nightingale-logger';
 import Backoff from 'backo2';
 
-/* eslint-disable unicorn/prefer-add-event-listener, max-lines */
+/* eslint-disable max-lines */
 function createSimpleWebsocketClient({
   url,
   protocols,
@@ -67,11 +67,10 @@ function createSimpleWebsocketClient({
     ws = webSocket;
     clearInternalTimeout('maxConnect');
     setCurrentState('connecting');
-
-    webSocket.onopen = () => {
+    webSocket.addEventListener('open', () => {
       backoff.reset();
       clearInternalTimeout('maxConnect');
-    };
+    });
 
     const handleCloseOrError = () => {
       if (currentState === 'closed') return;
@@ -85,17 +84,15 @@ function createSimpleWebsocketClient({
       }
     };
 
-    webSocket.onclose = handleCloseOrError;
-
-    webSocket.onmessage = message => {
+    webSocket.addEventListener('close', handleCloseOrError);
+    webSocket.addEventListener('message', message => {
       if (message.data === 'connection-ack') {
         setCurrentState('connected');
       } else {
         onMessage(message);
       }
-    };
-
-    webSocket.onerror = event => {
+    });
+    webSocket.addEventListener('error', event => {
       if (onError) {
         onError(event);
       } else {
@@ -103,7 +100,7 @@ function createSimpleWebsocketClient({
       }
 
       handleCloseOrError();
-    };
+    });
   };
 
   if (reconnection) {
@@ -125,7 +122,7 @@ function createSimpleWebsocketClient({
     };
   }
 
-  const visibilityChangHandler = !tryReconnect ? undefined : () => {
+  const visibilityChangeHandler = !tryReconnect ? undefined : () => {
     if (document.visibilityState === 'hidden') {
       if (currentState === 'reconnect-scheduled') {
         setCurrentState('wait-for-visibility');
@@ -146,8 +143,8 @@ function createSimpleWebsocketClient({
     }
   };
 
-  if (visibilityChangHandler) {
-    window.addEventListener('visibilitychange', visibilityChangHandler);
+  if (visibilityChangeHandler) {
+    window.addEventListener('visibilitychange', visibilityChangeHandler);
   }
 
   return {
@@ -162,8 +159,8 @@ function createSimpleWebsocketClient({
         closeWebsocket();
       }
 
-      if (visibilityChangHandler) {
-        window.removeEventListener('visibilitychange', visibilityChangHandler);
+      if (visibilityChangeHandler) {
+        window.removeEventListener('visibilitychange', visibilityChangeHandler);
       }
     },
 
@@ -198,7 +195,7 @@ class SubscribeResultPromise {
     stop
   }) {
     this.promise = new Promise((resolve, reject) => {
-      return executor(resolve, reject);
+      executor(resolve, reject);
     });
     this.stop = stop;
     this.cancel = stop; // this.changePayload = changePayload;
@@ -225,6 +222,26 @@ function createResourcesWebsocketClient({
   url,
   ...options
 }) {
+  const isSSR = typeof window === 'undefined';
+
+  if (isSSR) {
+    return {
+      connect: () => {},
+      close: () => {},
+      listenStateChange: () => {
+        return () => {};
+      },
+      send: () => {
+        const p = new Promise(() => {});
+        return p;
+      },
+      subscribe: () => {
+        const p = new Promise(() => {});
+        return p;
+      }
+    };
+  }
+
   let currentId = 1;
   let currentSubscriptionId = 1;
   const acks = new Map(); // TODO in progress / unsent / sending => find better name
@@ -293,14 +310,17 @@ function createResourcesWebsocketClient({
     }
   });
 
-  const sendMessage = (type, id, payload) => wsClient.sendMessage(encode([type, id, payload]));
+  const sendMessage = (type, id, payload) => {
+    wsClient.sendMessage(encode([type, id, payload]));
+  };
 
   const sendWithAck = (type, message) => {
     return new Promise((resolve, reject) => {
       const id = currentId++;
       acks.set(id, {
         resolve: result => {
-          acks.delete(id);
+          acks.delete(id); // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
           resolve(result);
         },
         reject: err => {
@@ -319,11 +339,16 @@ function createResourcesWebsocketClient({
   };
 
   const resourcesClient = {
-    connect: () => wsClient.connect(),
-    close: () => wsClient.close(),
+    connect: () => {
+      wsClient.connect();
+    },
+    close: () => {
+      wsClient.close();
+    },
     listenStateChange: wsClient.listenStateChange,
     send: sendThrowNotConnected,
     subscribe: (type, messageWithoutSubscriptionId, callback) => {
+      if (isSSR) throw new Error('subscribing is not allowed in SSR');
       const id = currentId++;
       const subscriptionId = currentSubscriptionId++;
       const message = { ...messageWithoutSubscriptionId,
@@ -341,6 +366,7 @@ function createResourcesWebsocketClient({
 
           if (wsClient.isConnected()) {
             // TODO reject should remove subscription ?
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             sendWithAck(type, message).then(resolve, reject);
           }
         },

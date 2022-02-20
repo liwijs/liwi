@@ -3,15 +3,12 @@
 
   "compilerOptions": {
     "noEmit": false,
+    "declaration": true,
+    "declarationMap": true,
     "emitDeclarationOnly": true,
-    "rootDirs": [],
-    "rootDir": "src",
     "outDir": "dist",
     "composite": true,
-    "tsBuildInfoFile": "dist/tsbuildinfo",
-    "isolatedModules": false,
-    "declaration": true,
-    "declarationMap": true
+    "tsBuildInfoFile": "dist/tsbuildinfo"
   },
 
   "exclude": [
@@ -20,5 +17,7 @@
     "src/**/*.test.tsx",
     "src/**/__tests__/**"
   ],
-  "references": [{ "path": "../liwi-resources-client/tsconfig.build.json" }]
+  "references": [
+    { "path": "../../packages/liwi-resources-client/tsconfig.json" }
+  ]
 }

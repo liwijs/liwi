@@ -40,9 +40,10 @@ export default class SubscribeStore<
     Model,
     ModelInsertType,
     Connection
-  >
+  >,
 > implements
-    StoreInterface<KeyPath, KeyValue, Model, ModelInsertType, Connection> {
+    StoreInterface<KeyPath, KeyValue, Model, ModelInsertType, Connection>
+{
   private readonly store: Store;
 
   private readonly listeners: Set<Listener<Model>> = new Set();
@@ -69,7 +70,7 @@ export default class SubscribeStore<
 
   createQuerySingleItem<
     Result extends Record<KeyPath, KeyValue>,
-    Params extends QueryParams<Params>
+    Params extends QueryParams<Params>,
   >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Result>,
@@ -95,7 +96,7 @@ export default class SubscribeStore<
 
   createQueryCollection<
     Item extends Record<KeyPath, KeyValue>,
-    Params extends QueryParams<Params>
+    Params extends QueryParams<Params>,
   >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Item>,
@@ -123,7 +124,10 @@ export default class SubscribeStore<
     return this.store.findAll(criteria, sort);
   }
 
-  findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined> {
+  findByKey(
+    key: KeyValue,
+    criteria?: Criteria<Model>,
+  ): Promise<Model | undefined> {
     return this.store.findByKey(key, criteria);
   }
 
@@ -156,7 +160,7 @@ export default class SubscribeStore<
   }
 
   async upsertOne<
-    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>
+    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
     setOnInsertPartialObject?: Pick<Model, K>,
@@ -169,7 +173,7 @@ export default class SubscribeStore<
   }
 
   async upsertOneWithInfo<
-    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>
+    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
     setOnInsertPartialObject?: Pick<Model, K>,
@@ -190,7 +194,7 @@ export default class SubscribeStore<
   }
 
   async partialUpdateByKey(
-    key: any,
+    key: KeyValue,
     partialUpdate: Update<Model>,
     criteria?: Criteria<Model>,
   ): Promise<Model> {
@@ -228,7 +232,7 @@ export default class SubscribeStore<
     this.callSubscribed({ type: 'updated', changes });
   }
 
-  async deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void> {
+  async deleteByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<void> {
     return this.deleteOne((await this.findByKey(key, criteria))!);
   }
 

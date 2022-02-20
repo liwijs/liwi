@@ -1,5 +1,8 @@
 {
   "root": true,
-  "extends": ["@pob/eslint-config/root", "@pob/eslint-config-node"],
-  "ignorePatterns": ["/dist"]
+  "extends": [
+    "@pob/eslint-config/root-module",
+    "@pob/eslint-config/root-module"
+  ],
+  "ignorePatterns": ["/rollup.config.mjs", "/build"]
 }

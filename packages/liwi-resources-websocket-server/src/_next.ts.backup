@@ -3,7 +3,7 @@ import { PRODUCTION } from 'pob-babel';
 // eslint-disable-next-line import/no-unresolved, import/extensions
 import { Server, Socket } from 'socket.io';
 import { RestService } from 'liwi-rest';
-import Logger from 'nightingale-logger';
+import { Logger } from 'nightingale-logger';
 
 const MAX_OPENED_CURSORS = 5;
 const logger = new Logger('liwi:rest-websocket');

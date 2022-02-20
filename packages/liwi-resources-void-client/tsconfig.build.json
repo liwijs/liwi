@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist",
+    "composite": true,
+    "tsBuildInfoFile": "dist/tsbuildinfo"
+  },
+
+  "exclude": ["dist/**", "src/**/*.test.ts", "src/**/__tests__/**"],
+  "references": [
+    { "path": "../../packages/liwi-resources-client/tsconfig.json" },
+    { "path": "../../packages/liwi-resources-server/tsconfig.json" }
+  ]
+}

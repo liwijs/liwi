@@ -1,12 +1,12 @@
 import { decode, encode } from 'extended-json';
 import { createMessageHandler, ResourcesServerError } from 'liwi-resources-server';
-import Logger from 'nightingale-logger';
-import WebSocket from 'ws';
+import { Logger } from 'nightingale-logger';
+import { WebSocketServer } from 'ws';
 
 /* eslint-disable max-lines */
 const logger = new Logger('liwi:resources-websocket-server');
-const createWsServer = (server, path = '/ws', resourcesServerService, getAuthenticatedUser) => {
-  const wss = new WebSocket.Server({
+const createWsServer = (server, path, resourcesServerService, getAuthenticatedUser) => {
+  const wss = new WebSocketServer({
     noServer: true
   });
   wss.on('connection', (ws, authenticatedUser) => {
@@ -66,10 +66,23 @@ const createWsServer = (server, path = '/ws', resourcesServerService, getAuthent
     ws.on('pong', () => {
       ws.isAlive = true;
     });
-    ws.on('close', () => {
+    ws.on('close', (code, data) => {
+      const reason = data.toString();
+      logger.debug('closed', {
+        code,
+        reason
+      });
       close();
     });
-    ws.on('message', message => {
+    ws.on('error', error => {
+      logger.error('ws error', {
+        error
+      });
+    });
+    ws.on('message', (data, isBinary) => {
+      if (isBinary) return; // eslint-disable-next-line @typescript-eslint/no-base-to-string
+
+      const message = data.toString();
       if (message === 'close') return;
 
       if (typeof message !== 'string') {
@@ -138,6 +151,11 @@ const createWsServer = (server, path = '/ws', resourcesServerService, getAuthent
 
     close() {
       wss.close();
+
+      for (const ws of wss.clients) {
+        ws.terminate();
+      }
+
       server.removeListener('upgrade', handleUpgrade);
       clearInterval(interval);
     }

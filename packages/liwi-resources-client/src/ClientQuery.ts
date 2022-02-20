@@ -6,13 +6,14 @@ import type {
   QueryResult,
   ToServerQueryPayload,
 } from 'liwi-resources';
-import Logger from 'nightingale-logger';
+import { Logger } from 'nightingale-logger';
 import type { TransportClient } from './TransportClient';
 
 const logger = new Logger('liwi:resources:query');
 
 export class ClientQuery<Result, Params extends QueryParams<Params>>
-  implements Query<Result, Params> {
+  implements Query<Result, Params>
+{
   private readonly resourceName: string;
 
   private readonly transportClient: TransportClient;

@@ -1,0 +1,5 @@
+
+# next.js paths
+/.next
+/out
+/build

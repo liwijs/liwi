@@ -1,0 +1,11 @@
+{
+  "pob": {
+    "app": {
+      "type": "alp-node",
+      "testing": false
+    },
+    "project": {
+      "type": "app"
+    }
+  }
+}

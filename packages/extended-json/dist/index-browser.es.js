@@ -14,11 +14,11 @@ function stringify(value, replacer, space) {
 }
 
 // eslint-disable-next-line unicorn/no-unsafe-regex
-const regexpStringDate = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
+var regexpStringDate = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
 
-const internalReviver = function (key, value) {
+var internalReviver = function internalReviver(key, value) {
   if (typeof value === 'string') {
-    const matchDate = regexpStringDate.exec(value);
+    var matchDate = regexpStringDate.exec(value);
 
     if (matchDate) {
       return new Date(Date.UTC(+matchDate[1], +matchDate[2] - 1, +matchDate[3], +matchDate[4], +matchDate[5], +matchDate[6]));
@@ -35,7 +35,9 @@ const internalReviver = function (key, value) {
 
 
 function parse(text, reviver) {
-  return JSON.parse(text, reviver == null ? internalReviver : (key, value) => reviver(key, internalReviver(key, value)));
+  return JSON.parse(text, reviver == null ? internalReviver : function (key, value) {
+    return reviver(key, internalReviver(key, value));
+  });
 }
 
 export { parse as decode, stringify as encode, parse, stringify };

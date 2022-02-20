@@ -11,7 +11,7 @@ import type {
   ToServerSubscribeMessages,
   AckError,
 } from 'liwi-resources-client';
-import Logger from 'nightingale-logger';
+import { Logger } from 'nightingale-logger';
 import type { SimpleWebsocketClientOptions } from './createSimpleWebsocketClient';
 import createSimpleWebsocketClient from './createSimpleWebsocketClient';
 
@@ -28,7 +28,7 @@ interface Ack<T> {
 interface Subscription<
   T extends keyof ToServerSubscribeMessages<any>,
   U,
-  Message extends { payload: any } = any
+  Message extends { payload: any } = any,
 > extends Ack<U> {
   type: T;
   message: Message;
@@ -50,10 +50,11 @@ type Handler<T> = (id: number, error: AckError | null, result: T) => void;
 
 class SubscribeResultPromise<
   Result,
-  Payload extends Record<keyof Payload & string, ExtendedJsonValue | undefined>
+  Payload extends Record<keyof Payload & string, ExtendedJsonValue | undefined>,
 > implements
     TransportClientSubscribeResult<Result, Payload>,
-    PromiseLike<Result> {
+    PromiseLike<Result>
+{
   private readonly promise: Promise<Result>;
 
   readonly stop: TransportClientSubscribeResult<Result, Payload>['stop'];
@@ -77,7 +78,7 @@ class SubscribeResultPromise<
     // >['changePayload'];
   }) {
     this.promise = new Promise<Result>((resolve, reject) => {
-      return executor(resolve, reject);
+      executor(resolve, reject);
     });
     this.stop = stop;
     this.cancel = stop;
@@ -119,6 +120,27 @@ export default function createResourcesWebsocketClient({
   url,
   ...options
 }: WebsocketTransportClientOptions): TransportClient {
+  const isSSR = typeof window === 'undefined';
+
+  if (isSSR) {
+    return {
+      connect: () => {},
+      close: () => {},
+      listenStateChange: () => {
+        return () => {};
+      },
+      send: (type, message) => {
+        const p = new Promise(() => {});
+        return p as any;
+      },
+
+      subscribe: (type, messageWithoutSubscriptionId, callback) => {
+        const p = new Promise(() => {});
+        return p as any;
+      },
+    };
+  }
+
   let currentId = 1;
   let currentSubscriptionId = 1;
   const acks = new Map<number, Ack<any>>(); // TODO in progress / unsent / sending => find better name
@@ -165,7 +187,9 @@ export default function createResourcesWebsocketClient({
     url,
     onMessage: (event) => {
       logger.debug('message', { data: event.data });
-      const [type, id, error, result] = decode<ToClientMessage>(event.data);
+      const [type, id, error, result] = decode<ToClientMessage>(
+        event.data as string,
+      );
       const handler = handlers[type];
 
       if (handler) {
@@ -178,7 +202,9 @@ export default function createResourcesWebsocketClient({
     type: T,
     id: number | null,
     payload: ToServerMessages[T][0],
-  ): void => wsClient.sendMessage(encode([type, id, payload as any]));
+  ): void => {
+    wsClient.sendMessage(encode([type, id, payload as any]));
+  };
 
   const sendWithAck = <T extends keyof ToServerMessages>(
     type: T,
@@ -189,6 +215,7 @@ export default function createResourcesWebsocketClient({
       acks.set(id, {
         resolve: (result) => {
           acks.delete(id);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           resolve(result);
         },
         reject: (err) => {
@@ -207,8 +234,12 @@ export default function createResourcesWebsocketClient({
   };
 
   const resourcesClient: TransportClient = {
-    connect: () => wsClient.connect(),
-    close: () => wsClient.close(),
+    connect: () => {
+      wsClient.connect();
+    },
+    close: () => {
+      wsClient.close();
+    },
     listenStateChange: wsClient.listenStateChange,
     send: sendThrowNotConnected,
 
@@ -216,7 +247,7 @@ export default function createResourcesWebsocketClient({
       T extends keyof ToServerSubscribeMessages<Payload>,
       Payload extends Record<keyof Payload & string, ExtendedJsonValue>,
       Result,
-      V extends ToServerSubscribeMessages<Payload>[T][2]
+      V extends ToServerSubscribeMessages<Payload>[T][2],
     >(
       type: T,
       messageWithoutSubscriptionId: Omit<
@@ -225,6 +256,7 @@ export default function createResourcesWebsocketClient({
       >,
       callback: TransportClientSubscribeCallback<V>,
     ): TransportClientSubscribeResult<Result, Payload> => {
+      if (isSSR) throw new Error('subscribing is not allowed in SSR');
       const id = currentId++;
       const subscriptionId = currentSubscriptionId++;
       const message = { ...messageWithoutSubscriptionId, subscriptionId };
@@ -240,6 +272,7 @@ export default function createResourcesWebsocketClient({
           });
           if (wsClient.isConnected()) {
             // TODO reject should remove subscription ?
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             sendWithAck(type, message).then(resolve as any, reject);
           }
         },

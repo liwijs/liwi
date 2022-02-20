@@ -35,12 +35,12 @@ export interface DoPayload {
     operationKey: string;
     params: Record<string, ExtendedJsonValue> | undefined;
 }
-export interface ToServerQueryPayload {
+export interface ToServerQueryPayload<Key extends string = string> {
     resourceName: string;
-    key: string;
+    key: Key;
     params: Record<string, ExtendedJsonValue> | undefined;
 }
-export interface ToServerSubscribeQueryPayload extends ToServerQueryPayload {
+export interface ToServerSubscribeQueryPayload<Key extends string = string> extends ToServerQueryPayload<Key> {
     subscriptionId: number;
 }
 export interface ToServerSubscribeClose {

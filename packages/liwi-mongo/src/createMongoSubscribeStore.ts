@@ -10,7 +10,7 @@ import type MongoStore from './MongoStore';
 
 export default function createMongoSubscribeStore<
   Model extends MongoBaseModel<KeyValue>,
-  KeyValue extends AllowedKeyValue = Model[MongoKeyPath]
+  KeyValue extends AllowedKeyValue = Model[MongoKeyPath],
 >(
   mongoStore: MongoStore<Model, KeyValue>,
 ): SubscribeStore<

@@ -2,72 +2,90 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var React = require('react');
-var Logger = require('nightingale-logger');
-var lazy = require('mingo/lazy');
-var pipeline = require('mingo/operators/pipeline');
+var react = require('react');
+var _objectWithoutPropertiesLoose = require('@babel/runtime/helpers/esm/objectWithoutPropertiesLoose');
+var jsxRuntime_js = require('react/jsx-runtime.js');
+var _extends = require('@babel/runtime/helpers/esm/extends');
+var nightingaleLogger = require('nightingale-logger');
+var lazy_js = require('mingo/lazy.js');
+var sort_js = require('mingo/operators/pipeline/sort.js');
 var liwiResourcesClient = require('liwi-resources-client');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
 
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var Logger__default = /*#__PURE__*/_interopDefaultLegacy(Logger);
+var _objectWithoutPropertiesLoose__default = /*#__PURE__*/_interopDefaultLegacy(_objectWithoutPropertiesLoose);
+var _extends__default = /*#__PURE__*/_interopDefaultLegacy(_extends);
 
-const TransportClientContext = /*#__PURE__*/React.createContext(undefined);
-const TransportClientStateContext = /*#__PURE__*/React.createContext('opening');
-const TransportClientReadyContext = /*#__PURE__*/React.createContext(false);
-function TransportClientProvider({
-  createFn,
-  children,
-  ...params
-}) {
-  const [client] = React.useState(() => {
+var _excluded = ["createFn", "children"];
+var TransportClientContext = /*#__PURE__*/react.createContext(undefined);
+var TransportClientStateContext = /*#__PURE__*/react.createContext('opening');
+var TransportClientReadyContext = /*#__PURE__*/react.createContext(false);
+var useTransportClientState = function useTransportClientState() {
+  return react.useContext(TransportClientStateContext);
+};
+var useTransportClientIsReady = function useTransportClientIsReady() {
+  return react.useContext(TransportClientReadyContext);
+};
+function TransportClientProvider(_ref) {
+  var createFn = _ref.createFn,
+      children = _ref.children,
+      params = _objectWithoutPropertiesLoose__default(_ref, _excluded);
+
+  var _useState = react.useState(function () {
     return createFn(params);
-  });
-  const [connectionState, setConnectionState] = React.useState('opening');
-  React.useEffect(() => {
-    const closeConnectionStateListener = client.listenStateChange(setConnectionState);
+  }),
+      client = _useState[0];
+
+  var _useState2 = react.useState('opening'),
+      connectionState = _useState2[0],
+      setConnectionState = _useState2[1];
+
+  react.useEffect(function () {
+    var closeConnectionStateListener = client.listenStateChange(setConnectionState);
     client.connect();
-    return () => {
+    return function () {
       closeConnectionStateListener();
       client.close();
     };
   }, [client]);
-  return /*#__PURE__*/React__default.createElement(TransportClientContext.Provider, {
-    value: client
-  }, /*#__PURE__*/React__default.createElement(TransportClientStateContext.Provider, {
-    value: connectionState
-  }, /*#__PURE__*/React__default.createElement(TransportClientReadyContext.Provider, {
-    value: connectionState === 'connected'
-  }, children)));
+  return /*#__PURE__*/jsxRuntime_js.jsx(TransportClientContext.Provider, {
+    value: client,
+    children: /*#__PURE__*/jsxRuntime_js.jsx(TransportClientStateContext.Provider, {
+      value: connectionState,
+      children: /*#__PURE__*/jsxRuntime_js.jsx(TransportClientReadyContext.Provider, {
+        value: connectionState === 'connected',
+        children: children
+      })
+    })
+  });
 }
 
-const createResourceResultFromState = state => ({
-  query: state.query,
-  initialLoading: !state.fetched && state.fetching,
-  initialError: !state.fetched && !!state.error,
-  fetched: state.fetched,
-  fetching: state.fetching,
-  data: !state.fetched ? undefined : state.result,
-  meta: !state.fetched ? undefined : state.meta,
-  queryInfo: !state.fetched ? undefined : state.queryInfo,
-  error: state.error
-});
+var createResourceResultFromState = function createResourceResultFromState(state) {
+  return {
+    query: state.query,
+    initialLoading: !state.fetched && state.fetching,
+    initialError: !state.fetched && !!state.error,
+    fetched: state.fetched,
+    fetching: state.fetching,
+    data: !state.fetched ? undefined : state.result,
+    meta: !state.fetched ? undefined : state.meta,
+    queryInfo: !state.fetched ? undefined : state.queryInfo,
+    error: state.error
+  };
+};
 
 function initReducer(initializer) {
-  const init = initializer();
-  const {
-    query,
-    promise
-  } = init;
+  var init = initializer();
+  var query = init.query,
+      promise = init.promise;
   return {
     fetched: false,
     fetching: true,
-    query,
+    query: query,
     result: undefined,
     meta: undefined,
     queryInfo: undefined,
-    promise,
+    promise: promise,
     error: undefined
   };
 }
@@ -97,15 +115,15 @@ function reducer(state, action) {
       };
 
     case 'fetching':
-      return { ...state,
+      return _extends__default({}, state, {
         fetching: true
-      };
+      });
 
     case 'error':
-      return { ...state,
+      return _extends__default({}, state, {
         fetching: false,
         error: action.error
-      };
+      });
 
     default:
       throw new Error('Invalid action');
@@ -113,62 +131,64 @@ function reducer(state, action) {
 }
 
 function useRetrieveResource(createQuery, params, skip, deps) {
-  const isTransportReady = React.useContext(TransportClientReadyContext);
-  const wasReady = React.useRef(isTransportReady);
-  const currentFetchId = React.useRef(0);
-  const fetch = React.useCallback((query, callback) => {
-    const fetchId = ++currentFetchId.current;
-    return query.fetch(result => {
+  var isTransportReady = react.useContext(TransportClientReadyContext);
+  var wasReady = react.useRef(isTransportReady);
+  var currentFetchId = react.useRef(0);
+  var fetch = react.useCallback(function (query, callback) {
+    var fetchId = ++currentFetchId.current;
+    return query.fetch(function (result) {
       if (currentFetchId.current === fetchId) {
         callback(result);
       }
     });
   }, []);
-  const [state, dispatch] = React.useReducer(reducer, () => {
-    const query = createQuery(params);
+
+  var _useReducer = react.useReducer(reducer, function () {
+    var query = createQuery(params);
     if (!isTransportReady || skip) return {
-      query
+      query: query
     };
     return {
-      query,
-      promise: fetch(query, ({
-        result,
-        meta,
-        info
-      }) => {
+      query: query,
+      promise: fetch(query, function (_ref) {
+        var result = _ref.result,
+            meta = _ref.meta,
+            info = _ref.info;
         dispatch({
           type: 'resolve',
-          result,
-          meta,
+          result: result,
+          meta: meta,
           queryInfo: info
         });
-      }).catch(err => {
+      })["catch"](function (err) {
         dispatch({
           type: 'error',
           error: err
         });
       })
     };
-  }, initReducer);
-  React.useEffect(() => {
+  }, initReducer),
+      state = _useReducer[0],
+      dispatch = _useReducer[1];
+
+  react.useEffect(function () {
     if (wasReady.current) return;
     if (!isTransportReady) return;
     if (skip) return;
     wasReady.current = true;
     dispatch({
       type: 'refetch',
-      promise: fetch(state.query, ({
-        result,
-        meta,
-        info
-      }) => {
+      promise: fetch(state.query, function (_ref2) {
+        var result = _ref2.result,
+            meta = _ref2.meta,
+            info = _ref2.info;
         dispatch({
           type: 'resolve',
-          result,
-          meta,
+          result: result,
+          meta: meta,
           queryInfo: info
         });
-      }).catch(err => {
+      })["catch"](function (err) {
         dispatch({
           type: 'error',
           error: err
@@ -176,9 +196,9 @@ function useRetrieveResource(createQuery, params, skip, deps) {
       })
     });
   }, [isTransportReady, fetch, skip, state.query]);
-  const firstEffectChangeParams = React.useRef(false);
-  React.useEffect(() => {
-    if (firstEffectChangeParams.current === false) {
+  var firstEffectChangeParams = react.useRef(false);
+  react.useEffect(function () {
+    if (!firstEffectChangeParams.current) {
       firstEffectChangeParams.current = true;
       return;
     }
@@ -191,45 +211,46 @@ function useRetrieveResource(createQuery, params, skip, deps) {
     if (!wasReady.current) return;
     dispatch({
       type: 'refetch',
-      promise: fetch(state.query, ({
-        result,
-        meta,
-        info
-      }) => {
+      promise: fetch(state.query, function (_ref3) {
+        var result = _ref3.result,
+            meta = _ref3.meta,
+            info = _ref3.info;
         dispatch({
           type: 'resolve',
-          result,
-          meta,
+          result: result,
+          meta: meta,
           queryInfo: info
         });
-      }).catch(err => {
+      })["catch"](function (err) {
         dispatch({
           type: 'error',
           error: err
         });
       })
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.query, skip, ...deps]);
+  }, [state.query, skip].concat(deps));
   return createResourceResultFromState(state);
 }
 
-/* eslint-disable complexity */
-
 function sortCollection(collection, sort) {
-  return pipeline.$sort(lazy.Lazy(collection), sort, {
+  return sort_js.$sort(lazy_js.Lazy(collection), sort, {
     idKey: '_id'
   }).value();
 }
 
-const copy = state => [...state];
+var copy = function copy(state) {
+  return [].concat(state);
+};
 
-const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
+var applyCollectionChange = function applyCollectionChange(state, change, queryMeta, queryInfo) {
   switch (change.type) {
     case 'initial':
       {
-        const keyPath = queryInfo.keyPath;
-        return !state ? change.initial : change.initial.map(value => {
-          const existing = state.find(v => v[keyPath] === value[keyPath]);
+        var keyPath = queryInfo.keyPath;
+        return !state ? change.initial : change.initial.map(function (value) {
+          var existing = state.find(function (v) {
+            return v[keyPath] === value[keyPath];
+          });
           if (!existing) return value;
           return JSON.stringify(existing) === JSON.stringify(value) ? existing : value;
         });
@@ -238,7 +259,7 @@ const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
     case 'inserted':
       {
         queryMeta.total += change.result.length;
-        let newCollection = [...change.result, ...state];
+        var newCollection = [].concat(change.result, state);
 
         if (queryInfo.sort) {
           newCollection = sortCollection(newCollection, queryInfo.sort);
@@ -251,17 +272,21 @@ const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
     case 'deleted':
       {
         queryMeta.total -= change.keys.length;
-        const keyPath = queryInfo.keyPath;
-        const deletedKeys = change.keys;
-        return state.filter(value => !deletedKeys.includes(value[keyPath]));
+        var _keyPath = queryInfo.keyPath;
+        var deletedKeys = change.keys;
+        return state.filter(function (value) {
+          return !deletedKeys.includes(value[_keyPath]);
+        });
       }
 
     case 'updated':
       {
-        const keyPath = queryInfo.keyPath;
-        const newState = copy(state);
-        change.result.forEach(newObject => {
-          const index = newState.findIndex(o => o[keyPath] === newObject[keyPath]);
+        var _keyPath2 = queryInfo.keyPath;
+        var newState = copy(state);
+        change.result.forEach(function (newObject) {
+          var index = newState.findIndex(function (o) {
+            return o[_keyPath2] === newObject[_keyPath2];
+          });
           if (index === -1) return;
           newState[index] = newObject;
         });
@@ -276,19 +301,22 @@ const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
 
 function applyCollectionChanges(state, changes, queryMeta, queryInfo) {
   if (state === undefined) return {
-    state,
+    state: state,
     meta: queryMeta
   };
-  const newQueryMeta = { ...queryMeta
-  };
+
+  var newQueryMeta = _extends__default({}, queryMeta);
+
   return {
-    // eslint-ignore-next-line unicorn/no-reduce
-    state: changes.reduce((result, change) => applyCollectionChange(result, change, queryMeta, queryInfo), state),
+    // eslint-disable-next-line unicorn/no-array-reduce
+    state: changes.reduce(function (result, change) {
+      return applyCollectionChange(result, change, queryMeta, queryInfo);
+    }, state),
     meta: newQueryMeta
   };
 }
 
-const applySingleItemChange = (state, change, queryMeta) => {
+var applySingleItemChange = function applySingleItemChange(state, change, queryMeta) {
   switch (change.type) {
     case 'initial':
       queryMeta.total = change.initial === null ? 0 : 1;
@@ -314,38 +342,44 @@ const applySingleItemChange = (state, change, queryMeta) => {
 
 function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
   if (state === undefined) return {
-    state,
+    state: state,
     meta: queryMeta
   };
-  const newQueryMeta = { ...queryMeta
-  };
+
+  var newQueryMeta = _extends__default({}, queryMeta);
+
   return {
-    // eslint-ignore-next-line unicorn/no-reduce
-    state: changes.reduce((result, change) => applySingleItemChange(result, change, queryMeta), state),
+    // eslint-disable-next-line unicorn/no-array-reduce
+    state: changes.reduce(function (result, change) {
+      return applySingleItemChange(result, change, queryMeta);
+    }, state),
     meta: newQueryMeta
   };
 }
 
 /* eslint-disable max-lines */
-const defaultOptions = {
+var defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
 
 };
-const logger = new Logger__default('react-liwi:useResourceAndSubscribe');
+var logger = new nightingaleLogger.Logger('react-liwi:useResourceAndSubscribe');
 
-const isInitial = changes => changes.length === 1 && changes[0].type === 'initial';
+var isInitial = function isInitial(changes) {
+  return changes.length === 1 && changes[0].type === 'initial';
+};
 
-function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
-  visibleTimeout
-} = defaultOptions) {
-  const querySubscriptionRef = React.useRef(undefined);
-  const timeoutRef = React.useRef(undefined);
-  const changeParamsRef = React.useRef(undefined);
-  const handleVisibilityChangeRef = React.useRef(undefined);
-  const skipRef = React.useRef(skip);
+function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp) {
+  var _ref = _temp === void 0 ? defaultOptions : _temp,
+      visibleTimeout = _ref.visibleTimeout;
+
+  var querySubscriptionRef = react.useRef(undefined);
+  var timeoutRef = react.useRef(undefined);
+  var changeParamsRef = react.useRef(undefined);
+  var handleVisibilityChangeRef = react.useRef(undefined);
+  var skipRef = react.useRef(skip);
   skipRef.current = skip;
 
-  const unsubscribe = () => {
+  var unsubscribe = function unsubscribe() {
     logger.info('unsubscribe'); // reset timeout to allow resubscribing
 
     timeoutRef.current = undefined;
@@ -356,30 +390,32 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
     }
   };
 
-  const [state, dispatch] = React.useReducer(reducer, () => {
-    const query = createQuery(params);
-    let applyChanges;
-    let currentResult;
-    let currentMeta;
-    let currentQueryInfo;
+  var _useReducer = react.useReducer(reducer, function () {
+    var query = createQuery(params);
+    var applyChanges;
+    var currentResult;
+    var currentMeta;
+    var currentQueryInfo;
     return {
-      query,
-      promise: new Promise(() => {
-        const queryLogger = logger.context({
+      query: query,
+      promise: new Promise(function () {
+        var queryLogger = logger.context({
           resourceName: query.resourceName,
           key: query.key
         });
         queryLogger.debug('init');
 
-        const subscribe = () => {
+        var subscribe = function subscribe() {
           queryLogger.debug('subscribing', {
             querySubscriptionRef: querySubscriptionRef.current,
             timeoutRef: timeoutRef.current
           });
-          querySubscriptionRef.current = query.fetchAndSubscribe((err, changes) => {
+          querySubscriptionRef.current = query.fetchAndSubscribe(function (err, changes) {
+            var _applyChanges, newResult, newMeta;
+
             queryLogger.debug('received changes', {
-              err,
-              changes
+              err: err,
+              changes: changes
             });
 
             if (err) {
@@ -391,7 +427,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
             }
 
             if (!currentResult && isInitial(changes)) {
-              const initialChange = changes[0];
+              var initialChange = changes[0];
               currentResult = initialChange.initial;
               currentMeta = initialChange.meta;
               currentQueryInfo = initialChange.queryInfo;
@@ -403,10 +439,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
               });
               applyChanges = Array.isArray(initialChange.initial) ? applyCollectionChanges : applySingleItemChanges;
             } else {
-              const {
-                state: newResult,
-                meta: newMeta
-              } = applyChanges(currentResult, changes, currentMeta, currentQueryInfo);
+              _applyChanges = applyChanges(currentResult, changes, currentMeta, currentQueryInfo), newResult = _applyChanges.state, newMeta = _applyChanges.meta;
 
               if (newResult && newResult !== currentResult) {
                 currentResult = newResult;
@@ -420,9 +453,9 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
               }
             }
           });
-          querySubscriptionRef.current.then(() => {
+          querySubscriptionRef.current.then(function () {
             queryLogger.success('subscribed');
-          }, err => {
+          }, function (err) {
             dispatch({
               type: 'error',
               error: err
@@ -430,17 +463,17 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
           });
         };
 
-        changeParamsRef.current = params => {
+        changeParamsRef.current = function (changedParams) {
           queryLogger.info('change params', {
             skip: skipRef.current,
-            params
+            params: changedParams
           });
 
           if (querySubscriptionRef.current) {
             querySubscriptionRef.current.stop();
           }
 
-          query.changeParams(params);
+          query.changeParams(changedParams);
 
           if (!document.hidden && !skipRef.current) {
             dispatch({
@@ -450,7 +483,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
           }
         };
 
-        const handleVisibilityChange = () => {
+        var handleVisibilityChange = function handleVisibilityChange() {
           if (skipRef.current) return;
 
           if (!document.hidden) {
@@ -482,10 +515,13 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
         }
       })
     };
-  }, initReducer);
-  const firstEffectChangeParams = React.useRef(false);
-  React.useEffect(() => {
-    if (firstEffectChangeParams.current === false) {
+  }, initReducer),
+      state = _useReducer[0],
+      dispatch = _useReducer[1];
+
+  var firstEffectChangeParams = react.useRef(false);
+  react.useEffect(function () {
+    if (!firstEffectChangeParams.current) {
       firstEffectChangeParams.current = true;
       return;
     }
@@ -494,9 +530,9 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
       changeParamsRef.current(params);
     } // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  }, [skip, ...deps]);
-  React.useEffect(() => {
-    return () => {
+  }, [skip].concat(deps));
+  react.useEffect(function () {
+    return function () {
       if (handleVisibilityChangeRef.current) {
         document.removeEventListener('visibilitychange', handleVisibilityChangeRef.current);
       }
@@ -509,16 +545,19 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
       unsubscribe();
     };
   }, []);
-  return React.useMemo(() => createResourceResultFromState(state), [state]);
+  return react.useMemo(function () {
+    return createResourceResultFromState(state);
+  }, [state]);
 }
 
-function useResource(createQuery, {
-  params,
-  skip = false,
-  subscribe,
-  subscribeOptions
-}, deps) {
-  const result = subscribe ? // eslint-disable-next-line react-hooks/rules-of-hooks
+var isSSR = typeof window === 'undefined';
+function useResource(createQuery, _ref, deps) {
+  var params = _ref.params,
+      _ref$skip = _ref.skip,
+      skip = _ref$skip === void 0 ? false : _ref$skip,
+      subscribe = _ref.subscribe,
+      subscribeOptions = _ref.subscribeOptions;
+  var result = subscribe && !isSSR ? // eslint-disable-next-line react-hooks/rules-of-hooks
   useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, subscribeOptions) : // eslint-disable-next-line react-hooks/rules-of-hooks
   useRetrieveResource(createQuery, params, skip, deps);
   return result;
@@ -527,39 +566,53 @@ function useResource(createQuery, {
 function usePaginatedResource(createQuery, options, deps) {
   var _result$meta, _result$queryInfo;
 
-  const result = useResource(createQuery, options, deps);
-  const total = (_result$meta = result.meta) == null ? void 0 : _result$meta.total;
-  const limit = (_result$queryInfo = result.queryInfo) == null ? void 0 : _result$queryInfo.limit;
-  const pagination = React.useMemo(() => {
+  var result = useResource(createQuery, options, deps);
+  var total = (_result$meta = result.meta) == null ? void 0 : _result$meta.total;
+  var limit = (_result$queryInfo = result.queryInfo) == null ? void 0 : _result$queryInfo.limit;
+  var pagination = react.useMemo(function () {
     if (total === undefined) return undefined;
     return {
       totalPages: limit ? Math.ceil(total / limit) : 1
     };
   }, [total, limit]);
-  return React.useMemo(() => ({ ...result,
-    pagination
-  }), [result, pagination]);
+  return react.useMemo(function () {
+    return _extends__default({}, result, {
+      pagination: pagination
+    });
+  }, [result, pagination]);
 }
 
 function useOperation(operationCall) {
-  const [state, setState] = React.useState(() => ({
-    loading: false,
-    error: undefined
-  }));
-  const operationCallWrapper = React.useCallback((...params) => {
+  var _useState = react.useState(function () {
+    return {
+      loading: false,
+      error: undefined
+    };
+  }),
+      state = _useState[0],
+      setState = _useState[1];
+
+  var operationCallWrapper = react.useCallback(function () {
+    var _len, params, _key;
+
     setState({
       loading: true,
       error: undefined
     });
 
     try {
-      return operationCall(...params).then(result => {
+      for (_len = arguments.length, params = new Array(_len), _key = 0; _key < _len; _key++) {
+        params[_key] = arguments[_key];
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      return operationCall.apply(void 0, params).then(function (result) {
         setState({
           loading: false,
           error: undefined
         });
         return [undefined, result];
-      }, err => {
+      }, function (err) {
         setState({
           loading: false,
           error: err
@@ -577,12 +630,32 @@ function useOperation(operationCall) {
   return [operationCallWrapper, state];
 }
 
+// eslint-disable-next-line complexity
+var transportClientStateToSimplifiedState = function transportClientStateToSimplifiedState(state) {
+  switch (state) {
+    case 'opening':
+    case 'connecting':
+    case 'reconnect-scheduled':
+    case 'wait-for-visibility':
+      return 'connecting';
+
+    case 'connected':
+      return 'connected';
+
+    case 'closed':
+      return 'disconnected';
+  }
+};
+
 exports.ResourcesServerError = liwiResourcesClient.ResourcesServerError;
 exports.TransportClientContext = TransportClientContext;
 exports.TransportClientProvider = TransportClientProvider;
 exports.TransportClientReadyContext = TransportClientReadyContext;
 exports.TransportClientStateContext = TransportClientStateContext;
+exports.transportClientStateToSimplifiedState = transportClientStateToSimplifiedState;
 exports.useOperation = useOperation;
 exports.usePaginatedResource = usePaginatedResource;
 exports.useResource = useResource;
+exports.useTransportClientIsReady = useTransportClientIsReady;
+exports.useTransportClientState = useTransportClientState;
 //# sourceMappingURL=index-browser.cjs.js.map

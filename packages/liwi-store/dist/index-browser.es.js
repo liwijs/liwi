@@ -1,35 +1,134 @@
-class AbstractConnection {}
+import _asyncToGenerator from '@babel/runtime/helpers/esm/asyncToGenerator';
+import _regeneratorRuntime from '@babel/runtime/regenerator';
+import _createClass from '@babel/runtime/helpers/esm/createClass';
+import _inheritsLoose from '@babel/runtime/helpers/esm/inheritsLoose';
 
-class AbstractCursor {
-  nextResult() {
-    return this.next().then(() => this.result());
-  }
+var AbstractConnection = function AbstractConnection() {};
 
-  async forEachKeys(callback) {
-    while (true) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const key = await this.next();
-      if (!key) return;
-      await callback(key);
-    }
-  }
+function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"], i; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-  forEach(callback) {
-    return this.forEachKeys(() => this.result().then(result => callback(result)));
-  }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-  *keysIterator() {
-    while (true) {
-      yield this.next();
-    }
-  }
+function _arrayLikeToArray(arr, len) { var i, arr2; if (len == null || len > arr.length) len = arr.length; for (i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-  *[Symbol.iterator]() {
-    for (const keyPromise of this.keysIterator()) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      yield keyPromise.then(key => key && this.result());
-    }
-  } // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
+var AbstractCursor = /*#__PURE__*/function (_Symbol$iterator) {
+  function AbstractCursor() {}
+
+  var _proto = AbstractCursor.prototype;
+
+  _proto.nextResult = function nextResult() {
+    var _this = this;
+
+    return this.next().then(function () {
+      return _this.result();
+    });
+  };
+
+  _proto.forEachKeys = /*#__PURE__*/function () {
+    var _forEachKeys = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(callback) {
+      var _key;
+
+      return _regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 3;
+              return this.next();
+
+            case 3:
+              _key = _context.sent;
+
+              if (_key) {
+                _context.next = 6;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 6:
+              _context.next = 8;
+              return callback(_key);
+
+            case 8:
+              _context.next = 0;
+              break;
+
+            case 10:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    return function forEachKeys() {
+      return _forEachKeys.apply(this, arguments);
+    };
+  }();
+
+  _proto.forEach = function forEach(callback) {
+    var _this2 = this;
+
+    return this.forEachKeys(function () {
+      return _this2.result().then(function (result) {
+        return callback(result);
+      });
+    });
+  };
+
+  _proto.keysIterator = /*#__PURE__*/_regeneratorRuntime.mark(function keysIterator() {
+    return _regeneratorRuntime.wrap(function keysIterator$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 3;
+            return this.next();
+
+          case 3:
+            _context2.next = 0;
+            break;
+
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, keysIterator, this);
+  });
+  _proto[_Symbol$iterator] = /*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
+    var _this3 = this;
+
+    var _iterator, _step, keyPromise;
+
+    return _regeneratorRuntime.wrap(function _callee2$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _iterator = _createForOfIteratorHelperLoose(this.keysIterator());
+
+          case 1:
+            if ((_step = _iterator()).done) {
+              _context3.next = 7;
+              break;
+            }
+
+            keyPromise = _step.value;
+            _context3.next = 5;
+            return keyPromise.then(function (key) {
+              return key && _this3.result();
+            });
+
+          case 5:
+            _context3.next = 1;
+            break;
+
+          case 7:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee2, this);
+  }) // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
 
   /*
     async *keysAsyncIterator() {
@@ -45,34 +144,44 @@ class AbstractCursor {
         }
      }
      */
+  ;
+  return AbstractCursor;
+}(Symbol.iterator);
 
+var AbstractStoreCursor = /*#__PURE__*/function (_AbstractCursor) {
+  _inheritsLoose(AbstractStoreCursor, _AbstractCursor);
 
-}
+  function AbstractStoreCursor(store) {
+    var _this = _AbstractCursor.call(this) || this;
 
-class AbstractStoreCursor extends AbstractCursor {
-  constructor(store) {
-    super();
+    _this._store = store;
+    return _this;
+  }
+
+  var _proto = AbstractStoreCursor.prototype;
+
+  _proto.overrideStore = function overrideStore(store) {
     this._store = store;
-  }
+  };
 
-  get store() {
-    return this._store;
-  }
-
-  overrideStore(store) {
-    this._store = store;
-  }
-
-  result() {
+  _proto.result = function result() {
     if (!this.key) throw new Error('Cannot call result() before next()');
     return this.store.findByKey(this.key);
-  }
+  };
 
-  delete() {
+  _proto["delete"] = function _delete() {
     return this.store.deleteByKey(this.key);
-  }
+  };
 
-}
+  _createClass(AbstractStoreCursor, [{
+    key: "store",
+    get: function get() {
+      return this._store;
+    }
+  }]);
+
+  return AbstractStoreCursor;
+}(AbstractCursor);
 
 export { AbstractConnection, AbstractCursor, AbstractStoreCursor };
 //# sourceMappingURL=index-browser.es.js.map

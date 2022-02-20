@@ -11,11 +11,10 @@
     "node": ">=8.3.0"
   },
   "main": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
   "scripts": {
+    "build:definitions": "tsc --noEmit ./lib/index.d.ts",
     "lint": "npm run typescript-check",
     "test": "echo \"No tests\"",
-    "build:definitions": "tsc --noEmit ./lib/index.d.ts",
     "typescript-check": "tsc --noEmit"
   },
   "prettier": {
@@ -23,7 +22,5 @@
     "singleQuote": true,
     "arrowParens": "always"
   },
-  "devDependencies": {
-    "eslint": "^7.18.0"
-  }
+  "typings": "./lib/index.d.ts"
 }

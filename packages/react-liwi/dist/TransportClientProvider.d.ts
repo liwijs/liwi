@@ -1,12 +1,13 @@
 import type { TransportClient, ConnectionStates } from 'liwi-resources-client';
-import type { ReactElement, ReactChild } from 'react';
-import React from 'react';
-export declare const TransportClientContext: React.Context<TransportClient>;
-export declare const TransportClientStateContext: React.Context<ConnectionStates>;
-export declare const TransportClientReadyContext: React.Context<boolean>;
+import type { ReactElement, ReactNode } from 'react';
+export declare const TransportClientContext: import("react").Context<TransportClient>;
+export declare const TransportClientStateContext: import("react").Context<ConnectionStates>;
+export declare const TransportClientReadyContext: import("react").Context<boolean>;
+export declare const useTransportClientState: () => ConnectionStates;
+export declare const useTransportClientIsReady: () => boolean;
 declare type TransportClientProviderProps<P extends Record<never, unknown>> = {
     createFn: (params: Omit<P, 'createFn' | 'children'>) => TransportClient;
-    children: ReactChild;
+    children: ReactNode;
 } & P;
 export declare function TransportClientProvider<P extends Record<never, unknown>>({ createFn, children, ...params }: TransportClientProviderProps<P>): ReactElement;
 export {};

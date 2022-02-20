@@ -28,7 +28,7 @@ const applySingleItemChange = <Value extends Record<keyof Value, any>>(
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 export function applySingleItemChanges<
-  Value extends Record<keyof Value, unknown>
+  Value extends Record<keyof Value, unknown>,
 >(
   state: undefined | Value | null,
   changes: Changes<any, Value | null>,
@@ -40,7 +40,7 @@ export function applySingleItemChanges<
   const newQueryMeta = { ...queryMeta };
 
   return {
-    // eslint-ignore-next-line unicorn/no-reduce
+    // eslint-disable-next-line unicorn/no-array-reduce
     state: changes.reduce<Value | null>(
       (result: Value | null, change: Change<any, Value | null>) =>
         applySingleItemChange<Value>(result, change, queryMeta, queryInfo),

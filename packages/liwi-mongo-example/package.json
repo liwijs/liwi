@@ -10,38 +10,33 @@
     "directory": "packages/liwi-mongo-example"
   },
   "homepage": "https://github.com/liwijs/liwi",
+  "type": "module",
   "engines": {
-    "node": ">=12.10.0"
+    "node": "^14.13.1 || >=16.0.0"
   },
-  "main": "./index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./package.json": "./package.json",
     "./users": {
       "node": {
-        "development": {
-          "import": "./dist/users-node12-dev.mjs",
-          "require": "./dist/users-node12-dev.cjs.js"
-        },
-        "import": "./dist/users-node12.mjs",
-        "require": "./dist/users-node12.cjs.js"
+        "import": "./dist/users-node14.mjs",
+        "require": "./dist/users-node14.cjs"
       }
     }
   },
-  "module:node": "./dist/index-node12.mjs",
-  "module:node-dev": "./dist/index-node12-dev.mjs",
+  "module:node": "./dist/index-node14.mjs",
   "module:aliases-node": {
-    "./users.js": "./dist/users-node12.es.js"
-  },
-  "module:aliases-node-dev": {
-    "./users.js": "./dist/users-node12-dev.es.js"
+    "./users.js": "./dist/users-node14.es.js"
   },
   "sideEffects": false,
   "scripts": {
-    "build": "pob-build && yarn run build:definitions",
+    "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
     "build:definitions": "tsc -p tsconfig.build.json",
+    "clean": "yarn clean:build",
+    "clean:build": "rm -Rf dist",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn --cwd ../.. run eslint --ext .js,.mjs,.ts --report-unused-disable-directives --quiet packages/liwi-mongo-example",
-    "watch": "pob-watch"
+    "lint:eslint": "cd ../.. && yarn run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet packages/liwi-mongo-example",
+    "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "prettier": {
     "trailingComma": "all",
@@ -52,7 +47,7 @@
     "babelEnvs": [
       {
         "target": "node",
-        "version": "12",
+        "version": "14",
         "formats": [
           "cjs",
           "es"
@@ -67,9 +62,8 @@
     "liwi-mongo": "^8.3.1"
   },
   "devDependencies": {
-    "@babel/core": "7.13.13",
-    "babel-preset-latest-node": "5.5.1",
-    "pob-babel": "28.6.0",
-    "rollup": "2.43.1"
+    "@babel/core": "7.17.3",
+    "pob-babel": "32.1.0",
+    "typescript": "4.5.5"
   }
 }

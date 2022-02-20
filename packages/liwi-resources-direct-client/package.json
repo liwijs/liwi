@@ -11,32 +11,31 @@
     "directory": "packages/liwi-resources-direct-client"
   },
   "homepage": "https://github.com/liwijs/liwi",
+  "type": "module",
   "engines": {
-    "node": ">=12.10.0"
+    "node": "^14.13.1 || >=16.0.0"
   },
-  "main": "./index.js",
+  "main": "./dist/index-node14.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "node": {
-        "development": {
-          "import": "./dist/index-node12-dev.mjs",
-          "require": "./dist/index-node12-dev.cjs.js"
-        },
-        "import": "./dist/index-node12.mjs",
-        "require": "./dist/index-node12.cjs.js"
+        "import": "./dist/index-node14.mjs",
+        "require": "./dist/index-node14.cjs"
       }
     }
   },
-  "module:node": "./dist/index-node12.mjs",
-  "module:node-dev": "./dist/index-node12-dev.mjs",
+  "module:node": "./dist/index-node14.mjs",
   "sideEffects": false,
   "scripts": {
-    "build": "pob-build && yarn run build:definitions",
+    "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
     "build:definitions": "tsc -p tsconfig.build.json",
+    "clean": "yarn clean:build",
+    "clean:build": "rm -Rf dist",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn --cwd ../.. run eslint --ext .js,.mjs,.ts --report-unused-disable-directives --quiet packages/liwi-resources-direct-client",
-    "watch": "pob-watch"
+    "lint:eslint": "cd ../.. && yarn run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet packages/liwi-resources-direct-client",
+    "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "prettier": {
     "trailingComma": "all",
@@ -47,7 +46,7 @@
     "babelEnvs": [
       {
         "target": "node",
-        "version": "12",
+        "version": "14",
         "formats": [
           "cjs",
           "es"
@@ -59,17 +58,16 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.13.10",
+    "@babel/runtime": "^7.17.2",
     "extended-json": "^8.3.1",
     "liwi-resources-client": "^8.3.1",
     "liwi-resources-server": "^8.3.1",
-    "nightingale-logger": "^11.6.0"
+    "nightingale-logger": "^12.1.4"
   },
   "devDependencies": {
-    "@babel/core": "7.13.13",
-    "@types/backo2": "^1.0.1",
-    "babel-preset-latest-node": "5.5.1",
-    "pob-babel": "28.6.0",
-    "rollup": "2.43.1"
+    "@babel/core": "7.17.3",
+    "@types/backo2": "1.0.1",
+    "pob-babel": "32.1.0",
+    "typescript": "4.5.5"
   }
 }

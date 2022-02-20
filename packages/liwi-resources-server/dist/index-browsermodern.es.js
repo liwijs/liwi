@@ -1,6 +1,6 @@
 import { ResourcesServerError } from 'liwi-resources';
 export { ResourcesServerError } from 'liwi-resources';
-import Logger from 'nightingale-logger';
+import { Logger } from 'nightingale-logger';
 
 // import ResourceServerCursor from './ResourceServerCursor';
 // import { CursorResource } from './CursorResource';
@@ -52,11 +52,10 @@ class ResourcesServerService {
 const logger = new Logger('liwi:resources-websocket-client');
 
 const logUnexpectedError = (error, message, payload) => {
-  if (!(error instanceof ResourcesServerError)) {
+  if ((process.env.NODE_ENV !== "production") || !(error instanceof ResourcesServerError)) {
     logger.error(message, {
       error,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      payload: 'redacted'
+      payload: !(process.env.NODE_ENV !== "production") ? 'redacted' : payload
     });
   }
 };
@@ -75,8 +74,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
   const createQuery = (payload, resource) => {
     if (!payload.key.startsWith('query')) {
       throw new Error('Invalid query key');
-    } // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-
+    }
 
     return resource.queries[payload.key](payload.params, authenticatedUser);
   };
@@ -102,7 +100,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
 
     const subscription = query[type]((error, result) => {
       if (error) {
-        logUnexpectedError(error, type);
+        logUnexpectedError(error, type, payload);
       }
 
       sendSubscriptionMessage(subscriptionId, error, result);
@@ -225,10 +223,9 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
 
               if (!operation) {
                 throw new ResourcesServerError('OPERATION_NOT_FOUND', `Operation not found: ${operationKey}`);
-              } // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+              }
 
-
-              return await operation(params, authenticatedUser);
+              return operation(params, authenticatedUser);
             } catch (err) {
               logUnexpectedError(err, message.type, message.payload);
               throw err;

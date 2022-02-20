@@ -1,6 +1,5 @@
-import type { ServiceInterface as ClientServiceInterface } from 'liwi-resources';
-
 export { createResourceClientService } from './createResourceClientService';
+export type { ServiceInterface as ClientServiceInterface } from 'liwi-resources';
 export { ResourcesServerError } from 'liwi-resources';
 export type {
   AckError,
@@ -26,5 +25,3 @@ export type {
   ConnectionStateChangeListenerCreator,
   ConnectionStates,
 } from './TransportClient';
-
-export type { ClientServiceInterface };

@@ -24,6 +24,7 @@ export function useOperation<T extends (...args: any) => Promise<any>>(
         error: undefined,
       });
       try {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         return operationCall(...(params as any)).then(
           (result) => {
             setState({
@@ -43,7 +44,7 @@ export function useOperation<T extends (...args: any) => Promise<any>>(
       } catch (err) {
         setState({
           loading: false,
-          error: err,
+          error: err as Error,
         });
         return Promise.resolve([err, undefined]);
       }

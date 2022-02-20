@@ -6,24 +6,27 @@
   "license": "ISC",
   "repository": "https://github.com/liwijs/liwi.git",
   "homepage": "https://github.com/liwijs/liwi",
+  "type": "module",
   "engines": {
-    "node": ">=12.10.0"
+    "node": ">=14.13.1"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "@todo-example/*"
   ],
   "scripts": {
-    "build": "lerna run --stream build && yarn run build:definitions",
+    "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
     "build:definitions": "tsc -b tsconfig.build.json",
+    "checks": "node scripts/check-packages.js",
     "clean": "rm -Rf docs dist test/node6 coverage",
+    "clean:build": "(rm -Rf packages/*/dist packages/*/build && rm -Rf @todo-example/*/dist @todo-example/*/build) || true",
     "lint": "yarn run lint:prettier && yarn run lint:eslint",
-    "lint:eslint": "eslint --report-unused-disable-directives --quiet --resolve-plugins-relative-to . --ext js,mjs,ts,tsx .",
+    "lint:eslint": "eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet .",
     "lint:prettier": "prettier --check .",
-    "preversion": "yarn run lint && yarn run build && repository-check-dirty",
-    "release": "cross-env GH_TOKEN=$POB_GITHUB_TOKEN lerna version --conventional-commits --conventional-graduate --create-release=github -m 'chore: release' && lerna publish from-git",
-    "test": "lerna run --stream test",
+    "postinstall": "pob-root-postinstall",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "tsc": "tsc -b",
-    "watch": "lerna run --parallel --ignore \"*-example\" watch"
+    "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "prettier": {
     "trailingComma": "all",
@@ -35,18 +38,32 @@
       "@pob/commitlint-config"
     ]
   },
+  "jest": {
+    "cacheDirectory": "./node_modules/.cache/jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/(packages|@todo-example)/*/(src|lib)/**/__tests__/**/*.(ts|js|cjs|mjs)?(x)",
+      "<rootDir>/(packages|@todo-example)/*/(src|lib)/**/*.test.(ts|js|cjs|mjs)?(x)"
+    ],
+    "extensionsToTreatAsEsm": [
+      ".ts",
+      ".tsx"
+    ]
+  },
   "devDependencies": {
-    "@pob/commitlint-config": "2.1.0",
-    "@pob/eslint-config": "43.2.0",
-    "@pob/eslint-config-node": "43.2.0",
-    "@pob/eslint-config-typescript": "43.2.0",
-    "@pob/eslint-config-typescript-node": "43.2.0",
-    "@pob/eslint-config-typescript-react": "43.2.0",
-    "@pob/lerna-light": "3.24.0",
-    "@pob/root": "3.2.0",
-    "eslint": "7.23.0",
-    "husky": "4.3.8",
-    "prettier": "2.2.1",
-    "typescript": "4.2.3"
+    "@babel/core": "7.17.3",
+    "@pob/commitlint-config": "4.1.0",
+    "@pob/eslint-config": "49.0.0",
+    "@pob/eslint-config-typescript": "49.0.0",
+    "@pob/eslint-config-typescript-react": "49.0.1",
+    "@pob/lerna-light": "5.1.0",
+    "@pob/root": "6.8.0",
+    "@types/jest": "27.4.0",
+    "check-package-dependencies": "3.2.0",
+    "eslint": "8.9.0",
+    "jest": "27.5.1",
+    "pob-babel": "32.1.0",
+    "prettier": "2.5.1",
+    "typescript": "4.5.5"
   }
 }

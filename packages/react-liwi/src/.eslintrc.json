@@ -2,10 +2,12 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "packages/react-liwi/tsconfig.json"
+    "project": "packages/react-liwi/tsconfig.eslint.json"
   },
   "plugins": ["@typescript-eslint"],
   "extends": [
+    "@pob/eslint-config-typescript",
+    "@pob/eslint-config-typescript-react",
     "@pob/eslint-config-typescript",
     "@pob/eslint-config-typescript-react"
   ],
@@ -16,5 +18,22 @@
     "@typescript-eslint/no-unsafe-member-access": "warn",
     "@typescript-eslint/no-unsafe-return": "warn",
     "@typescript-eslint/no-unsafe-call": "warn"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.{ts,tsx}", "__tests__/**/*.{ts,tsx}"],
+      "extends": ["@pob/eslint-config-typescript/test"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ]
+      }
+    }
+  ]
 }

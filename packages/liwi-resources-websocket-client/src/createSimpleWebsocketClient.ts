@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/prefer-add-event-listener, max-lines */
+/* eslint-disable max-lines */
 import Backoff from 'backo2';
 import type { ConnectionStates } from 'liwi-resources-client';
 
@@ -99,10 +99,11 @@ export default function createSimpleWebsocketClient({
     ws = webSocket;
     clearInternalTimeout('maxConnect');
     setCurrentState('connecting');
-    webSocket.onopen = (): void => {
+
+    webSocket.addEventListener('open', (): void => {
       backoff.reset();
       clearInternalTimeout('maxConnect');
-    };
+    });
 
     const handleCloseOrError = (): void => {
       if (currentState === 'closed') return;
@@ -115,24 +116,24 @@ export default function createSimpleWebsocketClient({
       }
     };
 
-    webSocket.onclose = handleCloseOrError;
+    webSocket.addEventListener('close', handleCloseOrError);
 
-    webSocket.onmessage = (message): void => {
+    webSocket.addEventListener('message', (message): void => {
       if (message.data === 'connection-ack') {
         setCurrentState('connected');
       } else {
         onMessage(message);
       }
-    };
+    });
 
-    webSocket.onerror = (event): void => {
+    webSocket.addEventListener('error', (event): void => {
       if (onError) {
         onError(event);
       } else {
         console.error('ws error', event);
       }
       handleCloseOrError();
-    };
+    });
   };
 
   if (reconnection) {
@@ -154,7 +155,7 @@ export default function createSimpleWebsocketClient({
     };
   }
 
-  const visibilityChangHandler: (() => void) | undefined = !tryReconnect
+  const visibilityChangeHandler: (() => void) | undefined = !tryReconnect
     ? undefined
     : () => {
         if (document.visibilityState === 'hidden') {
@@ -174,8 +175,8 @@ export default function createSimpleWebsocketClient({
         }
       };
 
-  if (visibilityChangHandler) {
-    window.addEventListener('visibilitychange', visibilityChangHandler);
+  if (visibilityChangeHandler) {
+    window.addEventListener('visibilitychange', visibilityChangeHandler);
   }
   const wsTransport: WebsocketTransport = {
     connect,
@@ -187,8 +188,8 @@ export default function createSimpleWebsocketClient({
         }
         closeWebsocket();
       }
-      if (visibilityChangHandler) {
-        window.removeEventListener('visibilitychange', visibilityChangHandler);
+      if (visibilityChangeHandler) {
+        window.removeEventListener('visibilitychange', visibilityChangeHandler);
       }
     },
 

@@ -1,5 +1,9 @@
 {
+  "search.exclude": {
+    "**/.yarn": true
+  },
   "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
 
   // save config
   "editor.formatOnSave": true,
@@ -9,11 +13,14 @@
     "source.organizeImports": false
   },
 
+  // jest
+  "jest.jestCommandLine": "NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest",
+
   // eslint config
   "eslint.workingDirectories": ["."],
   "eslint.options": {
     "resolvePluginsRelativeTo": ".",
-    "reportUnusedDisableDirectives": true
+    "reportUnusedDisableDirectives": "error"
   },
   "eslint.lintTask.enable": true,
 

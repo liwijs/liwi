@@ -2,6 +2,7 @@
 import type http from 'http';
 import type net from 'net';
 import { encode, decode } from 'extended-json';
+import type { ExtendedJsonValue } from 'extended-json/src/ExtendedJsonValue';
 import type {
   AckError,
   ToServerMessage,
@@ -13,10 +14,9 @@ import {
   ResourcesServerError,
   createMessageHandler,
 } from 'liwi-resources-server';
-import Logger from 'nightingale-logger';
-import WebSocket from 'ws';
-
-export type WebsocketServer = WebSocket.Server;
+import { Logger } from 'nightingale-logger';
+import type { WebSocket } from 'ws';
+import { WebSocketServer } from 'ws';
 
 type GetAuthenticatedUser<AuthenticatedUser> = (
   request: http.IncomingMessage,
@@ -27,7 +27,7 @@ interface ExtendedWebSocket extends WebSocket {
 }
 
 export interface ResourcesWebsocketServer {
-  wss: WebSocket.Server;
+  wss: WebSocketServer;
   close: () => void;
 }
 
@@ -35,11 +35,11 @@ const logger = new Logger('liwi:resources-websocket-server');
 
 export const createWsServer = <AuthenticatedUser>(
   server: http.Server,
-  path = '/ws',
+  path: string,
   resourcesServerService: ResourcesServerService,
   getAuthenticatedUser: GetAuthenticatedUser<AuthenticatedUser>,
 ): ResourcesWebsocketServer => {
-  const wss = new WebSocket.Server({ noServer: true });
+  const wss = new WebSocketServer({ noServer: true });
 
   wss.on(
     'connection',
@@ -70,14 +70,18 @@ export const createWsServer = <AuthenticatedUser>(
         };
       };
 
-      const sendAck = (id: number, error: null | Error, result?: any): void => {
+      const sendAck = (
+        id: number,
+        error: null | Error,
+        result?: ExtendedJsonValue,
+      ): void => {
         sendMessage('ack', id, error && createSafeError(error), result);
       };
 
       const sendSubscriptionMessage: SubscriptionCallback = (
         subscriptionId: number,
         error: null | Error,
-        result: any,
+        result: ExtendedJsonValue,
       ): void => {
         sendMessage(
           'subscription',
@@ -97,17 +101,16 @@ export const createWsServer = <AuthenticatedUser>(
         message: ToServerMessage,
       ): Promise<void> => {
         if (message.id == null) {
-          return messageHandler(
-            message,
-            sendSubscriptionMessage,
-          ).then(() => {});
+          return messageHandler(message, sendSubscriptionMessage).then(
+            () => {},
+          );
         } else {
           return messageHandler(message, sendSubscriptionMessage)
             .then((result) => {
-              sendAck(message.id, null, result);
+              sendAck(message.id, null, result as ExtendedJsonValue);
             })
             .catch((err) => {
-              sendAck(message.id, err);
+              sendAck(message.id, err as Error);
             });
         }
       };
@@ -116,11 +119,22 @@ export const createWsServer = <AuthenticatedUser>(
         ws.isAlive = true;
       });
 
-      ws.on('close', () => {
+      ws.on('close', (code, data) => {
+        const reason = data.toString();
+        logger.debug('closed', { code, reason });
         close();
       });
 
-      ws.on('message', (message: string): void => {
+      ws.on('error', (error) => {
+        logger.error('ws error', { error });
+      });
+
+      ws.on('message', (data, isBinary): void => {
+        if (isBinary) return;
+
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
+        const message = data.toString();
+
         if (message === 'close') return;
 
         if (typeof message !== 'string') {
@@ -128,13 +142,14 @@ export const createWsServer = <AuthenticatedUser>(
           return;
         }
 
-        const decoded = decode<
-          [
-            ToServerMessage['type'],
-            ToServerMessage['id'],
-            ToServerMessage['payload'],
-          ]
-        >(message);
+        const decoded =
+          decode<
+            [
+              ToServerMessage['type'],
+              ToServerMessage['id'],
+              ToServerMessage['payload'],
+            ]
+          >(message);
         try {
           const [type, id, payload] = decoded;
           logger.debug('received', { type, id, payload });
@@ -171,9 +186,8 @@ export const createWsServer = <AuthenticatedUser>(
   ): void => {
     if (request.url !== path) return;
 
-    const authenticatedUserPromise: Promise<AuthenticatedUser | null> = Promise.resolve(
-      getAuthenticatedUser(request),
-    );
+    const authenticatedUserPromise: Promise<AuthenticatedUser | null> =
+      Promise.resolve(getAuthenticatedUser(request));
     wss.handleUpgrade(request, socket, upgradeHead, (ws) => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       authenticatedUserPromise
@@ -197,6 +211,9 @@ export const createWsServer = <AuthenticatedUser>(
     wss,
     close(): void {
       wss.close();
+      for (const ws of wss.clients) {
+        ws.terminate();
+      }
       server.removeListener('upgrade', handleUpgrade);
       clearInterval(interval);
     },

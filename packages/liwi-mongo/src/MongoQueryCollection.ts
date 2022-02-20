@@ -24,10 +24,10 @@ import type MongoStore from './MongoStore';
 
 const identityTransformer = <
   Model extends MongoBaseModel<any>,
-  Transformed = Model
+  Transformed = Model,
 >(
   model: Model,
-): Transformed => (model as unknown) as Transformed;
+): Transformed => model as unknown as Transformed;
 
 type TestCriteria = (obj: any) => boolean;
 
@@ -35,7 +35,7 @@ export default class MongoQueryCollection<
   Model extends MongoBaseModel<KeyValue>,
   Params extends QueryParams<Params> = never,
   KeyValue extends AllowedKeyValue = Model['_id'],
-  Item extends Record<MongoKeyPath, KeyValue> = Model
+  Item extends Record<MongoKeyPath, KeyValue> = Model,
 > extends AbstractSubscribableStoreQuery<
   MongoKeyPath,
   KeyValue,
@@ -137,30 +137,27 @@ export default class MongoQueryCollection<
           break;
         }
         case 'updated': {
-          const { deleted, updated, inserted } = action.changes.reduce(
-            (
-              acc: {
-                deleted: KeyValue[];
-                updated: Item[];
-                inserted: Item[];
-              },
-              [prevObject, nextObject]: [Model, Model],
-              index: number,
-            ) => {
-              if (testCriteria(prevObject)) {
-                if (!testCriteria(nextObject)) {
-                  acc.deleted.push(prevObject[this.store.keyPath]);
-                } else {
-                  acc.updated.push(this.transformer(nextObject));
-                }
-              } else if (testCriteria(nextObject)) {
-                acc.inserted.push(this.transformer(nextObject));
-              }
+          const {
+            deleted,
+            updated,
+            inserted,
+          }: {
+            deleted: KeyValue[];
+            updated: Item[];
+            inserted: Item[];
+          } = { deleted: [], updated: [], inserted: [] };
 
-              return acc;
-            },
-            { deleted: [], updated: [], inserted: [] },
-          );
+          action.changes.forEach(([prevObject, nextObject]: [Model, Model]) => {
+            if (testCriteria(prevObject)) {
+              if (!testCriteria(nextObject)) {
+                deleted.push(prevObject[this.store.keyPath]);
+              } else {
+                updated.push(this.transformer(nextObject));
+              }
+            } else if (testCriteria(nextObject)) {
+              inserted.push(this.transformer(nextObject));
+            }
+          });
 
           if (deleted.length > 0) {
             changes.push({ type: 'deleted', keys: deleted });

@@ -1,0 +1,63 @@
+{
+  "name": "@todo-example/server",
+  "private": true,
+  "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": "^14.13.1 || >=16.0.0"
+  },
+  "main": "./build/index-node14.mjs",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "node": {
+        "import": "./build/index-node14.mjs"
+      }
+    }
+  },
+  "module:node": "./build/index-node14.mjs",
+  "scripts": {
+    "build": "yarn clean:build && rollup --config rollup.config.mjs",
+    "clean": "yarn clean:build",
+    "clean:build": "rm -Rf build",
+    "lint": "yarn run lint:eslint",
+    "lint:eslint": "cd ../.. && yarn run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/server",
+    "start": "yarn clean:build && rollup --config rollup.config.mjs --watch"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "pob": {
+    "babelEnvs": [
+      {
+        "target": "node",
+        "version": "14",
+        "formats": [
+          "es"
+        ]
+      }
+    ],
+    "entries": [
+      "index"
+    ]
+  },
+  "dependencies": {
+    "@todo-example/modules": "0.0.0",
+    "alp-node": "^4.1.0",
+    "alp-rollup-plugin-config": "0.0.1",
+    "liwi-mongo": "8.3.1",
+    "liwi-resources-server": "8.3.1",
+    "liwi-resources-websocket-server": "8.3.1",
+    "nightingale-app-console": "^12.1.4"
+  },
+  "devDependencies": {
+    "@babel/core": "7.17.3",
+    "alp-rollup-plugin-config": "0.0.1",
+    "pob-babel": "32.1.0",
+    "rollup-plugin-copy": "3.4.0",
+    "typescript": "4.5.5"
+  }
+}

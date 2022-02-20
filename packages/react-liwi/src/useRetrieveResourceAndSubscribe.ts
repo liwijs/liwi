@@ -5,7 +5,7 @@ import type {
   QuerySubscription,
 } from 'liwi-resources-client';
 import type { Changes, InitialChange, QueryInfo, QueryMeta } from 'liwi-types';
-import Logger from 'nightingale-logger';
+import { Logger } from 'nightingale-logger';
 import { useEffect, useReducer, useRef, useMemo } from 'react';
 import type { ApplyChanges } from './applyChanges/ApplyChanges';
 import { applyCollectionChanges } from './applyChanges/applyCollectionChanges';
@@ -35,7 +35,7 @@ const isInitial = <Result>(
 
 export function useRetrieveResourceAndSubscribe<
   Result,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params>,
 >(
   createQuery: (initialParams: Params) => Query<Result, Params>,
   params: Params,
@@ -51,7 +51,7 @@ export function useRetrieveResourceAndSubscribe<
     undefined,
   );
 
-  const handleVisibilityChangeRef = useRef<any>(undefined);
+  const handleVisibilityChangeRef = useRef<(() => void) | undefined>(undefined);
   const skipRef = useRef(skip);
   skipRef.current = skip;
 
@@ -117,9 +117,11 @@ export function useRetrieveResourceAndSubscribe<
                     meta: initialChange.meta,
                     queryInfo: currentQueryInfo,
                   });
-                  applyChanges = (Array.isArray(initialChange.initial)
-                    ? applyCollectionChanges
-                    : applySingleItemChanges) as ApplyChanges<Result, any>;
+                  applyChanges = (
+                    Array.isArray(initialChange.initial)
+                      ? applyCollectionChanges
+                      : applySingleItemChanges
+                  ) as ApplyChanges<Result, any>;
                 } else {
                   const { state: newResult, meta: newMeta } = applyChanges(
                     currentResult,
@@ -154,17 +156,17 @@ export function useRetrieveResourceAndSubscribe<
             );
           };
 
-          changeParamsRef.current = (params: Params): void => {
+          changeParamsRef.current = (changedParams: Params): void => {
             queryLogger.info('change params', {
               skip: skipRef.current,
-              params,
+              params: changedParams,
             });
 
             if (querySubscriptionRef.current) {
               querySubscriptionRef.current.stop();
             }
 
-            query.changeParams(params);
+            query.changeParams(changedParams);
 
             if (!document.hidden && !skipRef.current) {
               dispatch({
@@ -217,7 +219,7 @@ export function useRetrieveResourceAndSubscribe<
   const firstEffectChangeParams = useRef(false);
 
   useEffect(() => {
-    if (firstEffectChangeParams.current === false) {
+    if (!firstEffectChangeParams.current) {
       firstEffectChangeParams.current = true;
       return;
     }

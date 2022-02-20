@@ -1,38 +1,8 @@
-class AbstractSubscribableStoreQuery {
-  changeParams() {
-    throw new Error('Method not supported. Please create a new query.');
-  }
-
-  changePartialParams() {
-    throw new Error('Method not supported. Please create a new query.');
-  }
-
-  setSubscribeStore(store) {
-    this._subscribeStore = store;
-  }
-
-  getSubscribeStore() {
-    if (!this._subscribeStore) {
-      throw new Error('_subscribeStore is not initialized');
-    }
-
-    return this._subscribeStore;
-  }
-
-  fetchAndSubscribe(callback) {
-    return this._subscribe(callback, true);
-  }
-
-  subscribe(callback) {
-    return this._subscribe(callback, false);
-  }
-
-}
-
 /* eslint-disable max-lines */
 class SubscribeStore {
+  listeners = new Set();
+
   constructor(store) {
-    this.listeners = new Set();
     this.store = store;
     this.keyPath = store.keyPath;
   }
@@ -177,6 +147,37 @@ class SubscribeStore {
     const cursor = await this.store.cursor(criteria, sort);
     cursor.overrideStore(this);
     return cursor;
+  }
+
+}
+
+class AbstractSubscribableStoreQuery {
+  changeParams() {
+    throw new Error('Method not supported. Please create a new query.');
+  }
+
+  changePartialParams() {
+    throw new Error('Method not supported. Please create a new query.');
+  }
+
+  setSubscribeStore(store) {
+    this._subscribeStore = store;
+  }
+
+  getSubscribeStore() {
+    if (!this._subscribeStore) {
+      throw new Error('_subscribeStore is not initialized');
+    }
+
+    return this._subscribeStore;
+  }
+
+  fetchAndSubscribe(callback) {
+    return this._subscribe(callback, true);
+  }
+
+  subscribe(callback) {
+    return this._subscribe(callback, false);
   }
 
 }

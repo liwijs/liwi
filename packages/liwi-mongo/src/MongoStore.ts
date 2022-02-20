@@ -28,7 +28,7 @@ import MongoQuerySingleItem from './MongoQuerySingleItem';
 
 export interface MongoUpsertResult<
   KeyValue extends AllowedKeyValue,
-  Model extends MongoBaseModel<KeyValue>
+  Model extends MongoBaseModel<KeyValue>,
 > extends UpsertResult<Model> {
   object: Model;
   inserted: boolean;
@@ -36,7 +36,7 @@ export interface MongoUpsertResult<
 
 export default class MongoStore<
   Model extends MongoBaseModel<KeyValue>,
-  KeyValue extends AllowedKeyValue = Model[MongoKeyPath]
+  KeyValue extends AllowedKeyValue = Model[MongoKeyPath],
 > implements
     SubscribableStore<
       MongoKeyPath,
@@ -44,7 +44,8 @@ export default class MongoStore<
       Model,
       MongoInsertType<Model>,
       MongoConnection
-    > {
+    >
+{
   readonly keyPath: MongoKeyPath = '_id';
 
   readonly connection: MongoConnection;
@@ -80,7 +81,7 @@ export default class MongoStore<
 
   createQuerySingleItem<
     Result extends Record<MongoKeyPath, KeyValue> = Model,
-    Params extends QueryParams<Params> = never
+    Params extends QueryParams<Params> = never,
   >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Result>,
@@ -94,7 +95,7 @@ export default class MongoStore<
 
   createQueryCollection<
     Item extends Record<MongoKeyPath, KeyValue> = Model,
-    Params extends QueryParams<Params> = never
+    Params extends QueryParams<Params> = never,
   >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Item>,
@@ -108,6 +109,7 @@ export default class MongoStore<
 
   async insertOne(object: MongoInsertType<Model>): Promise<Model> {
     if (!object._id) {
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       object._id = new mongodb.ObjectID().toString() as Model['_id'];
     }
 
@@ -135,7 +137,7 @@ export default class MongoStore<
     K extends Exclude<
       keyof Model,
       MongoKeyPath | OptionalBaseModelKeysForInsert
-    >
+    >,
   >(
     object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>,
     setOnInsertPartialObject?: Pick<Model, K>,
@@ -151,7 +153,7 @@ export default class MongoStore<
     K extends Exclude<
       keyof Model,
       MongoKeyPath | OptionalBaseModelKeysForInsert
-    >
+    >,
   >(
     object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>,
     setOnInsertPartialObject?: Pick<Model, K>,
@@ -180,7 +182,7 @@ export default class MongoStore<
       Object.assign(object, $setOnInsert);
     }
 
-    return { object: (object as unknown) as Model, inserted: !!upsertedCount };
+    return { object: object as unknown as Model, inserted: !!upsertedCount };
   }
 
   replaceSeveral(objects: Model[]): Promise<Model[]> {
@@ -188,7 +190,7 @@ export default class MongoStore<
   }
 
   async partialUpdateByKey(
-    key: any,
+    key: KeyValue,
     partialUpdate: Update<Model>,
     criteria?: Criteria<Model>,
   ): Promise<Model> {
@@ -221,7 +223,7 @@ export default class MongoStore<
       .then((res) => undefined); // TODO return updated object
   }
 
-  deleteByKey(key: any, criteria?: Criteria<Model>): Promise<void> {
+  deleteByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<void> {
     return this.collection
       .then((collection) => collection.deleteOne({ _id: key, ...criteria }))
       .then(() => undefined);
@@ -247,7 +249,10 @@ export default class MongoStore<
       .then((cursor) => new MongoCursor(this, cursor));
   }
 
-  findByKey(key: any, criteria?: Criteria<Model>): Promise<Model | undefined> {
+  findByKey(
+    key: KeyValue,
+    criteria?: Criteria<Model>,
+  ): Promise<Model | undefined> {
     return this.collection
       .then((collection) => collection.findOne({ _id: key, ...criteria }))
       .then((result) => result || undefined);

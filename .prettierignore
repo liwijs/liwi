@@ -1,5 +1,10 @@
 CHANGELOG.md
+/.yarn/**/*
 /packages/*/dist
 /packages/*/build
-/packages/*/public
-/packages/*/data
+/packages/*/.next
+/packages/*/out
+/@todo-example/*/dist
+/@todo-example/*/build
+/@todo-example/*/.next
+/@todo-example/*/out

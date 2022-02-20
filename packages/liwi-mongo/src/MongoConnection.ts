@@ -1,6 +1,6 @@
 import { AbstractConnection } from 'liwi-store';
 import mongodb from 'mongodb';
-import Logger from 'nightingale-logger';
+import { Logger } from 'nightingale-logger';
 
 const logger = new Logger('liwi:mongo:MongoConnection');
 

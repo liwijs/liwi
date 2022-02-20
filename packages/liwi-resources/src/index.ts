@@ -22,13 +22,13 @@ export type ServiceQuery<Result, Params extends QueryParams<Params>> = (
 
 export type ServiceOperation<
   Result extends Promise<any>,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params>,
 > = (params: Params) => Result;
 
 type InferQueryResult<T> = T extends Query<infer R, any> ? R : never;
 
 type ServiceInterfaceQueries<
-  Queries extends Record<keyof Queries, ServiceQuery<any, any>>
+  Queries extends Record<keyof Queries, ServiceQuery<any, any>>,
 > = {
   [key in keyof Queries]: (
     params: QueryParams<Parameters<Queries[key]>[0]>,
@@ -39,7 +39,7 @@ type ServiceInterfaceQueries<
 };
 
 type ServiceInterfaceOperations<
-  Operations extends Record<keyof Operations, ServiceOperation<any, any>>
+  Operations extends Record<keyof Operations, ServiceOperation<any, any>>,
 > = {
   [key in keyof Operations]: (
     params: QueryParams<Parameters<Operations[key]>[0]>,
@@ -48,7 +48,7 @@ type ServiceInterfaceOperations<
 
 export interface ServiceInterface<
   Queries extends ServiceInterfaceQueries<Queries>,
-  Operations extends ServiceInterfaceOperations<Operations>
+  Operations extends ServiceInterfaceOperations<Operations>,
 > {
   queries: ServiceInterfaceQueries<Queries>;
   operations: ServiceInterfaceOperations<Operations>;
@@ -73,13 +73,14 @@ export interface DoPayload {
   params: Record<string, ExtendedJsonValue> | undefined;
 }
 
-export interface ToServerQueryPayload {
+export interface ToServerQueryPayload<Key extends string = string> {
   resourceName: string;
-  key: string;
+  key: Key;
   params: Record<string, ExtendedJsonValue> | undefined;
 }
 
-export interface ToServerSubscribeQueryPayload extends ToServerQueryPayload {
+export interface ToServerSubscribeQueryPayload<Key extends string = string>
+  extends ToServerQueryPayload<Key> {
   subscriptionId: number;
 }
 
@@ -99,7 +100,7 @@ type SubscribeMessage<
     params: Record<string, ExtendedJsonValue> | undefined;
   },
   ResponsePayload,
-  SubscribeCallbackMessage
+  SubscribeCallbackMessage,
 > = [RequestPayload, ResponsePayload, SubscribeCallbackMessage];
 
 export interface ToServerSimpleMessages {
@@ -114,7 +115,7 @@ export interface ToServerSimpleMessages {
 
 export interface ToServerSubscribeMessages<
   Params extends Record<keyof Params, ExtendedJsonValue> | undefined = never,
-  Result = unknown
+  Result = unknown,
 > {
   subscribe: SubscribeMessage<ToServerSubscribeQueryPayload, undefined, Result>;
   fetchAndSubscribe: SubscribeMessage<
