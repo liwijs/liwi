@@ -3054,7 +3054,7 @@ __metadata:
     react-dom: 17.0.2
     react-liwi: 8.3.1
     react-native-web: 0.17.5
-    todomvc-app-css: 2.4.1
+    todomvc-app-css: 2.4.2
     todomvc-common: 1.0.5
     typescript: 4.5.5
   languageName: unknown
@@ -12592,10 +12592,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"todomvc-app-css@npm:2.4.1":
-  version: 2.4.1
-  resolution: "todomvc-app-css@npm:2.4.1"
-  checksum: 06a45b65cbc232efe08406c40e6f54d7bc73105d2f8e7f62bbbe53837bcaa124fee3300e09fcc1e66694dbdd0cd475a4feb464b76bff531c14bd91d72887efe2
+"todomvc-app-css@npm:2.4.2":
+  version: 2.4.2
+  resolution: "todomvc-app-css@npm:2.4.2"
+  checksum: 642671ffcee6f0a335967855058a4fe55747424bedb91f0527c51bbc42711e07afd2f650a8db1a17b9c24f07089f2c13c4d246ffd32360ace0980987f50f460a
   languageName: node
   linkType: hard
 
