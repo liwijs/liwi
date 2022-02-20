@@ -414,18 +414,18 @@ class MongoStore {
 
   async insertOne(object) {
     if (!object._id) {
-      // eslint-disable-next-line @typescript-eslint/no-base-to-string
-      object._id = new mongodb.ObjectID().toString();
+      object._id = new mongodb.ObjectId().toString();
     }
 
     if (!object.created) object.created = new Date();
     if (!object.updated) object.updated = new Date();
     const collection = await this.collection;
     const {
-      result
-    } = await collection.insertOne(object);
+      acknowledged: isAcknowledged
+    } = await collection.insertOne( // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    object);
 
-    if (!result.ok || result.n !== 1) {
+    if (!isAcknowledged) {
       throw new Error('Fail to insert');
     }
 
@@ -492,7 +492,7 @@ class MongoStore {
       ...criteria
     }, partialUpdate);
 
-    if (!commandResult.result.ok) {
+    if (!commandResult.acknowledged) {
       console.error(commandResult);
       throw new Error('Update failed');
     }
@@ -506,7 +506,8 @@ class MongoStore {
   }
 
   partialUpdateMany(criteria, partialUpdate) {
-    return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(() => undefined); // TODO return updated object
+    return this.collection.then(collection => // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    collection.updateMany(criteria, partialUpdate)).then(() => undefined); // TODO return updated object
   }
 
   deleteByKey(key, criteria) {
@@ -525,7 +526,7 @@ class MongoStore {
   }
 
   cursor(criteria, sort) {
-    return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => new MongoCursor(this, cursor));
+    return this.collection.then(collection => criteria ? collection.find(criteria) : collection.find()).then(sort && (cursor => cursor.sort(sort))).then(cursor => new MongoCursor(this, cursor));
   }
 
   findByKey(key, criteria) {
@@ -540,7 +541,7 @@ class MongoStore {
   }
 
   findOne(criteria, sort) {
-    return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => cursor.limit(1).next());
+    return this.collection.then(collection => criteria ? collection.find(criteria) : collection.find()).then(sort && (cursor => cursor.sort(sort))).then(cursor => cursor.limit(1).next()).then(result => result || undefined);
   }
 
 }

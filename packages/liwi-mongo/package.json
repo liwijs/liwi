@@ -58,7 +58,6 @@
     ]
   },
   "dependencies": {
-    "@types/mongodb": "^4.0.0",
     "liwi-store": "^8.3.1",
     "liwi-subscribe-store": "^8.3.1",
     "liwi-types": "^8.0.4",

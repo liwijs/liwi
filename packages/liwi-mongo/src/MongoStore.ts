@@ -109,16 +109,18 @@ export default class MongoStore<
 
   async insertOne(object: MongoInsertType<Model>): Promise<Model> {
     if (!object._id) {
-      // eslint-disable-next-line @typescript-eslint/no-base-to-string
-      object._id = new mongodb.ObjectID().toString() as Model['_id'];
+      object._id = new mongodb.ObjectId().toString() as Model['_id'];
     }
 
     if (!object.created) object.created = new Date();
     if (!object.updated) object.updated = new Date();
 
     const collection = await this.collection;
-    const { result } = await collection.insertOne(object);
-    if (!result.ok || result.n !== 1) {
+    const { acknowledged: isAcknowledged } = await collection.insertOne(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      object as any,
+    );
+    if (!isAcknowledged) {
       throw new Error('Fail to insert');
     }
 
@@ -199,7 +201,7 @@ export default class MongoStore<
       { _id: key, ...criteria },
       partialUpdate,
     );
-    if (!commandResult.result.ok) {
+    if (!commandResult.acknowledged) {
       console.error(commandResult);
       throw new Error('Update failed');
     }
@@ -219,7 +221,10 @@ export default class MongoStore<
     partialUpdate: Update<Model>,
   ): Promise<void> {
     return this.collection
-      .then((collection) => collection.updateMany(criteria, partialUpdate))
+      .then((collection) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        collection.updateMany(criteria, partialUpdate as any),
+      )
       .then((res) => undefined); // TODO return updated object
   }
 
@@ -244,7 +249,9 @@ export default class MongoStore<
     sort?: Sort<Model>,
   ): Promise<MongoCursor<Model, Result, KeyValue>> {
     return this.collection
-      .then((collection) => collection.find(criteria))
+      .then((collection) =>
+        criteria ? collection.find(criteria) : collection.find(),
+      )
       .then(sort && ((cursor) => cursor.sort(sort)))
       .then((cursor) => new MongoCursor(this, cursor));
   }
@@ -254,7 +261,9 @@ export default class MongoStore<
     criteria?: Criteria<Model>,
   ): Promise<Model | undefined> {
     return this.collection
-      .then((collection) => collection.findOne({ _id: key, ...criteria }))
+      .then((collection) =>
+        collection.findOne<Model>({ _id: key, ...criteria }),
+      )
       .then((result) => result || undefined);
   }
 
@@ -269,8 +278,11 @@ export default class MongoStore<
     sort?: Sort<Model>,
   ): Promise<Model | undefined> {
     return this.collection
-      .then((collection) => collection.find(criteria))
+      .then((collection) =>
+        criteria ? collection.find(criteria) : collection.find(),
+      )
       .then(sort && ((cursor) => cursor.sort(sort)))
-      .then((cursor) => cursor.limit(1).next());
+      .then((cursor) => cursor.limit(1).next())
+      .then((result) => result || undefined) as Promise<Model | undefined>;
   }
 }
