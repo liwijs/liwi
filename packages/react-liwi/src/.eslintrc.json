@@ -7,8 +7,6 @@
   "plugins": ["@typescript-eslint"],
   "extends": [
     "@pob/eslint-config-typescript",
-    "@pob/eslint-config-typescript-react",
-    "@pob/eslint-config-typescript",
     "@pob/eslint-config-typescript-react"
   ],
   "ignorePatterns": ["*.d.ts"],

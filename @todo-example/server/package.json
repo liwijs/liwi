@@ -47,6 +47,7 @@
   "dependencies": {
     "@todo-example/modules": "0.0.0",
     "alp-node": "^4.1.0",
+    "alp-rollup-plugin-config": "1.0.2",
     "liwi-mongo": "8.3.1",
     "liwi-resources-server": "8.3.1",
     "liwi-resources-websocket-server": "8.3.1",
@@ -55,7 +56,7 @@
   "devDependencies": {
     "@babel/core": "7.17.5",
     "alp-rollup-plugin-config": "1.0.0",
-    "pob-babel": "32.1.0",
+    "pob-babel": "32.2.0",
     "rollup-plugin-copy": "3.4.0",
     "typescript": "4.5.5"
   }

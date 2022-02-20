@@ -101,7 +101,7 @@
     "@babel/preset-env": "7.16.11",
     "@types/backo2": "1.0.1",
     "babel-preset-modern-browsers": "15.0.2",
-    "pob-babel": "32.1.0",
+    "pob-babel": "32.2.0",
     "typescript": "4.5.5"
   }
 }

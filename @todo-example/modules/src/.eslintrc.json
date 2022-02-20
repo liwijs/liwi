@@ -5,7 +5,7 @@
     "project": "@todo-example/modules/tsconfig.eslint.json"
   },
   "plugins": ["@typescript-eslint"],
-  "extends": ["@pob/eslint-config-typescript", "@pob/eslint-config-typescript"],
+  "extends": ["@pob/eslint-config-typescript"],
   "settings": {
     "import/resolver": {
       "node": {

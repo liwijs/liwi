@@ -5,7 +5,7 @@
     "project": "packages/extended-json/tsconfig.eslint.json"
   },
   "plugins": ["@typescript-eslint"],
-  "extends": ["@pob/eslint-config-typescript", "@pob/eslint-config-typescript"],
+  "extends": ["@pob/eslint-config-typescript"],
   "ignorePatterns": ["*.d.ts"],
   "overrides": [
     {

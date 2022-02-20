@@ -5,7 +5,7 @@
     "project": "packages/liwi-resources-websocket-server/tsconfig.eslint.json"
   },
   "plugins": ["@typescript-eslint"],
-  "extends": ["@pob/eslint-config-typescript", "@pob/eslint-config-typescript"],
+  "extends": ["@pob/eslint-config-typescript"],
   "ignorePatterns": ["*.d.ts"],
   "rules": {
     "@typescript-eslint/no-floating-promises": "warn",
