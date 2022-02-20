@@ -74,11 +74,11 @@ export type State<Result, Params extends QueryParams<Params>> =
   | FetchedState<Result, Params>;
 export type ResourceReducer<
   Result,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params>,
 > = Reducer<State<Result, Params>, Action<Result>>;
 export interface ResourceReducerInitializerReturn<
   Result,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params>,
 > {
   query: Query<Result, Params>;
   promise?: Promise<void>;

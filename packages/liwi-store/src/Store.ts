@@ -19,7 +19,7 @@ export type UpsertPartialObject<
   KeyPath extends keyof Model,
   KeyValue extends AllowedKeyValue,
   Model extends BaseModel & Record<KeyPath, KeyValue>,
-  K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>
+  K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
 > = SetOptional<Model, K | KeyPath | OptionalBaseModelKeysForInsert>;
 
 export interface UpsertResult<Model extends BaseModel> {
@@ -31,7 +31,7 @@ export interface Store<
   KeyValue extends AllowedKeyValue,
   Model extends BaseModel & Record<KeyPath, KeyValue>,
   ModelInsertType extends InsertType<Model, KeyPath>,
-  Connection extends AbstractConnection
+  Connection extends AbstractConnection,
 > extends InternalCommonStoreClient<Model> {
   readonly connection: Connection;
 
@@ -39,7 +39,7 @@ export interface Store<
 
   createQuerySingleItem: <
     Result extends Record<KeyPath, KeyValue>,
-    Params extends QueryParams<Params>
+    Params extends QueryParams<Params>,
   >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Result>,
@@ -47,7 +47,7 @@ export interface Store<
 
   createQueryCollection: <
     Item extends Record<KeyPath, KeyValue>,
-    Params extends QueryParams<Params>
+    Params extends QueryParams<Params>,
   >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Item>,
@@ -77,14 +77,14 @@ export interface Store<
   replaceSeveral: (objects: Model[]) => Promise<Model[]>;
 
   upsertOne: <
-    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>
+    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
     setOnInsertPartialObject?: Pick<Model, K>,
   ) => Promise<Model>;
 
   upsertOneWithInfo: <
-    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>
+    K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
     setOnInsertPartialObject?: Pick<Model, K>,

@@ -7,7 +7,7 @@ import type MongoStore from './MongoStore';
 export default class MongoCursor<
   Model extends MongoBaseModel<KeyValue>,
   Result extends Partial<Model> = Model,
-  KeyValue extends AllowedKeyValue = Model['_id']
+  KeyValue extends AllowedKeyValue = Model['_id'],
 > extends AbstractStoreCursor<
   MongoStore<Model, KeyValue>,
   KeyValue,

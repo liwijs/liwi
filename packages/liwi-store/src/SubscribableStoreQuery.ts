@@ -8,7 +8,7 @@ export interface SubscribableStoreQuery<
   Model extends BaseModel & Record<KeyPath, KeyValue>,
   SubscribeStore extends SubscribableStore<KeyPath, KeyValue, Model, any, any>,
   Result,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params>,
 > extends Query<Result, Params, KeyValue> {
   setSubscribeStore: (store: SubscribeStore) => void;
 

@@ -6,7 +6,7 @@ export default abstract class AbstractStoreCursor<
   Store extends InternalCommonStoreClient<Model>,
   KeyValue extends AllowedKeyValue,
   Model extends BaseModel,
-  Result extends Partial<Model> = Model
+  Result extends Partial<Model> = Model,
 > extends AbstractCursor<Model, Result> {
   key: KeyValue | undefined;
 
@@ -27,7 +27,7 @@ export default abstract class AbstractStoreCursor<
 
   result(): Promise<Result> {
     if (!this.key) throw new Error('Cannot call result() before next()');
-    return (this.store.findByKey(this.key) as unknown) as Promise<Result>;
+    return this.store.findByKey(this.key) as unknown as Promise<Result>;
   }
 
   delete(): Promise<void> {

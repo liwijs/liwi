@@ -9,5 +9,5 @@ export interface MongoBaseModel<KeyValue extends AllowedKeyValue = string>
 
 export type MongoInsertType<
   Model extends MongoBaseModel<KeyValue>,
-  KeyValue extends AllowedKeyValue = Model[MongoKeyPath]
+  KeyValue extends AllowedKeyValue = Model[MongoKeyPath],
 > = InsertType<Model, MongoKeyPath>;

@@ -17,8 +17,8 @@ function stringify(value, replacer, space) {
   replacer, space);
 }
 
-// eslint-disable-next-line unicorn/no-unsafe-regex
-var regexpStringDate = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
+var regexpStringDate = // eslint-disable-next-line unicorn/no-unsafe-regex
+/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
 
 var internalReviver = function internalReviver(key, value) {
   if (typeof value === 'string') {

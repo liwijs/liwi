@@ -14,8 +14,9 @@ export default abstract class AbstractSubscribableStoreQuery<
   Model extends BaseModel & Record<KeyPath, KeyValue>,
   ModelInsertType extends InsertType<Model, KeyPath>,
   Params extends QueryParams<Params> = never,
-  Result = Model
-> implements Query<Result, Params, KeyValue> {
+  Result = Model,
+> implements Query<Result, Params, KeyValue>
+{
   changeParams(params: Params): never {
     throw new Error('Method not supported. Please create a new query.');
   }

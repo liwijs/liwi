@@ -14,7 +14,7 @@ export type AllowedKeyValue = string | number;
 
 export type InsertType<
   Model extends BaseModel & Record<KeyPath, unknown>,
-  KeyPath extends keyof Model
+  KeyPath extends keyof Model,
 > = SetOptional<Model, KeyPath | OptionalBaseModelKeysForInsert>;
 
 // export type InsertedType<T extends BaseModel> = T;

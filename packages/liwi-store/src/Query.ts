@@ -49,7 +49,7 @@ export interface QueryResult<Result> {
 export interface Query<
   Result,
   Params extends QueryParams<Params>,
-  KeyValue extends AllowedKeyValue = AllowedKeyValue
+  KeyValue extends AllowedKeyValue = AllowedKeyValue,
 > {
   changeParams: (params: Params) => void;
 

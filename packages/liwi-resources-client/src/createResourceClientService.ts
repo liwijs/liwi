@@ -7,7 +7,7 @@ const getKeys = <T extends Record<keyof T, unknown>>(o: T): (keyof T)[] =>
 
 interface CreateResourceClientOptions<
   QueryKeys extends keyof any,
-  OperationKeys extends keyof any
+  OperationKeys extends keyof any,
 > {
   queries: Record<QueryKeys, null>;
   operations: Record<OperationKeys, null>;
@@ -17,7 +17,7 @@ export const createResourceClientService = <
   Service extends ClientServiceInterface<
     Service['queries'],
     Service['operations']
-  >
+  >,
 >(
   resourceName: string,
   options: CreateResourceClientOptions<
@@ -48,9 +48,9 @@ export const createResourceClientService = <
         })) as any;
     });
 
-    return ({
+    return {
       queries,
       operations,
-    } as unknown) as Service;
+    } as unknown as Service;
   };
 };

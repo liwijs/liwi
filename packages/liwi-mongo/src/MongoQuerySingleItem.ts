@@ -23,10 +23,10 @@ import type MongoStore from './MongoStore';
 
 const identityTransformer = <
   Model extends MongoBaseModel<any>,
-  Transformed = Model
+  Transformed = Model,
 >(
   model: Model,
-): Transformed => (model as unknown) as Transformed;
+): Transformed => model as unknown as Transformed;
 
 type TestCriteria = (obj: any) => boolean;
 
@@ -34,7 +34,7 @@ export default class MongoQuerySingleItem<
   Model extends MongoBaseModel<KeyValue>,
   Params extends QueryParams<Params> = never,
   Result extends Record<MongoKeyPath, KeyValue> | null = Model | null,
-  KeyValue extends AllowedKeyValue = Model['_id']
+  KeyValue extends AllowedKeyValue = Model['_id'],
 > extends AbstractSubscribableStoreQuery<
   MongoKeyPath,
   KeyValue,

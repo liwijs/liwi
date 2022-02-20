@@ -15,11 +15,11 @@ export interface SubscribableStore<
   KeyValue extends AllowedKeyValue,
   Model extends BaseModel & Record<KeyPath, KeyValue>,
   ModelInsertType extends InsertType<Model, KeyPath>,
-  Connection extends AbstractConnection
+  Connection extends AbstractConnection,
 > extends Store<KeyPath, KeyValue, Model, ModelInsertType, Connection> {
   createQuerySingleItem: <
     Result extends Record<KeyPath, KeyValue>,
-    Params extends QueryParams<Params>
+    Params extends QueryParams<Params>,
   >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Result>,
@@ -27,7 +27,7 @@ export interface SubscribableStore<
 
   createQueryCollection: <
     Item extends Record<KeyPath, KeyValue>,
-    Params extends QueryParams<Params>
+    Params extends QueryParams<Params>,
   >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Item>,

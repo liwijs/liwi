@@ -9,7 +9,7 @@ import type { State } from './reducer';
 
 export interface ResourceResultInitialLoading<
   Data,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params>,
 > {
   query: Query<Data, Params>;
   initialLoading: true;
@@ -24,7 +24,7 @@ export interface ResourceResultInitialLoading<
 
 export interface ResourceResultInitialError<
   Data,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params>,
 > {
   query: Query<Data, Params>;
   initialLoading: false;
@@ -39,7 +39,7 @@ export interface ResourceResultInitialError<
 
 export interface ResourceResultLoaded<
   Data,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params>,
 > {
   query: Query<Data, Params>;
   initialLoading: false;
@@ -59,7 +59,7 @@ export type ResourceResult<Data, Params extends QueryParams<Params>> =
 
 export const createResourceResultFromState = <
   Result,
-  Params extends QueryParams<Params>
+  Params extends QueryParams<Params>,
 >(
   state: State<Result, Params>,
 ): ResourceResult<Result, Params> =>
