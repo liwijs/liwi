@@ -3053,7 +3053,7 @@ __metadata:
     react-alp-connection-state: 6.0.0
     react-dom: 17.0.2
     react-liwi: 8.3.1
-    react-native-web: 0.17.5
+    react-native-web: 0.17.6
     todomvc-app-css: 2.4.2
     todomvc-common: 1.0.5
     typescript: 4.5.5
@@ -11112,9 +11112,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-native-web@npm:0.17.5":
-  version: 0.17.5
-  resolution: "react-native-web@npm:0.17.5"
+"react-native-web@npm:0.17.6":
+  version: 0.17.6
+  resolution: "react-native-web@npm:0.17.6"
   dependencies:
     array-find-index: ^1.0.2
     create-react-class: ^15.7.0
@@ -11126,7 +11126,7 @@ __metadata:
   peerDependencies:
     react: ">=17.0.1"
     react-dom: ">=17.0.1"
-  checksum: 548cbba9f8fd081a08d0d882f7db9f5cd38e9706f2261c3f296a8406b2455beba0e80b294b5d052a927b0b2dcfbd5af59a3441ae78a7d407feee59e2f9487232
+  checksum: ab51377292d421429f49bbd9633936ee302b1c23bbdd838002cc49b687513c43f5c66c078c66905d1bd64c757b902782774aea3b0da44da260362f0a4f7a8b2b
   languageName: node
   linkType: hard
 
