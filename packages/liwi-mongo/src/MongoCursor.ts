@@ -1,6 +1,6 @@
 import { AbstractStoreCursor } from 'liwi-store';
 import type { AllowedKeyValue } from 'liwi-types';
-import type { Cursor } from 'mongodb';
+import type { FindCursor } from 'mongodb';
 import type { MongoBaseModel } from './MongoBaseModel';
 import type MongoStore from './MongoStore';
 
@@ -16,11 +16,11 @@ export default class MongoCursor<
 > {
   // key in AbstractCursor
 
-  private readonly cursor: Cursor;
+  private readonly cursor: FindCursor<Result>;
 
-  private _result?: Result;
+  private _result?: Result | null;
 
-  constructor(store: MongoStore<Model, KeyValue>, cursor: Cursor) {
+  constructor(store: MongoStore<Model, KeyValue>, cursor: FindCursor<Result>) {
     super(store);
     this.cursor = cursor;
   }
@@ -29,7 +29,7 @@ export default class MongoCursor<
     this.cursor.skip(count);
   }
 
-  next(): Promise<any> {
+  next(): Promise<KeyValue | undefined> {
     return this.cursor.next().then((value) => {
       this._result = value;
       this.key = value?._id;
@@ -40,10 +40,6 @@ export default class MongoCursor<
   limit(newLimit: number): Promise<this> {
     this.cursor.limit(newLimit);
     return Promise.resolve(this);
-  }
-
-  count(applySkipLimit = false): Promise<number> {
-    return this.cursor.count(applySkipLimit);
   }
 
   result(): Promise<Result> {

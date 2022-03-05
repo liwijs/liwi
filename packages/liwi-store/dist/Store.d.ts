@@ -16,12 +16,13 @@ export interface Store<KeyPath extends keyof Model, KeyValue extends AllowedKeyV
     findAll: (criteria?: Criteria<Model>, sort?: Sort<Model>) => Promise<Model[]>;
     findByKey: (key: KeyValue, criteria?: Criteria<Model>) => Promise<Model | undefined>;
     findOne: (criteria: Criteria<Model>, sort?: Sort<Model>) => Promise<Model | undefined>;
+    count: (criteria?: Criteria<Model>) => Promise<number>;
     cursor: <Result = Model>(criteria?: Criteria<Model>, sort?: Sort<Model>) => Promise<AbstractStoreCursor<any, KeyValue, Model, Result>>;
     insertOne: (object: ModelInsertType) => Promise<Model>;
     replaceOne: (object: Model) => Promise<Model>;
     replaceSeveral: (objects: Model[]) => Promise<Model[]>;
-    upsertOne: <K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>) => Promise<Model>;
-    upsertOneWithInfo: <K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>) => Promise<UpsertResult<Model>>;
+    upsertOne: <K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']) => Promise<Model>;
+    upsertOneWithInfo: <K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']) => Promise<UpsertResult<Model>>;
     partialUpdateByKey: (key: KeyValue, partialUpdate: Update<Model>, criteria?: Criteria<Model>) => Promise<Model>;
     partialUpdateOne: (object: Model, partialUpdate: Update<Model>) => Promise<Model>;
     partialUpdateMany: (criteria: Criteria<Model>, partialUpdate: Update<Model>) => Promise<void>;

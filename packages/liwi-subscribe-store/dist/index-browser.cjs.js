@@ -447,27 +447,48 @@ var SubscribeStore = /*#__PURE__*/function () {
     };
   }();
 
-  _proto.cursor = /*#__PURE__*/function () {
-    var _cursor = _asyncToGenerator__default( /*#__PURE__*/_regeneratorRuntime__default.mark(function _callee13(criteria, sort) {
-      var cursor;
+  _proto.count = /*#__PURE__*/function () {
+    var _count = _asyncToGenerator__default( /*#__PURE__*/_regeneratorRuntime__default.mark(function _callee13(criteria) {
       return _regeneratorRuntime__default.wrap(function _callee13$(_context13) {
         while (1) {
           switch (_context13.prev = _context13.next) {
             case 0:
-              _context13.next = 2;
-              return this.store.cursor(criteria, sort);
+              return _context13.abrupt("return", this.store.count(criteria));
 
-            case 2:
-              cursor = _context13.sent;
-              cursor.overrideStore(this);
-              return _context13.abrupt("return", cursor);
-
-            case 5:
+            case 1:
             case "end":
               return _context13.stop();
           }
         }
       }, _callee13, this);
+    }));
+
+    return function count() {
+      return _count.apply(this, arguments);
+    };
+  }();
+
+  _proto.cursor = /*#__PURE__*/function () {
+    var _cursor = _asyncToGenerator__default( /*#__PURE__*/_regeneratorRuntime__default.mark(function _callee14(criteria, sort) {
+      var cursor;
+      return _regeneratorRuntime__default.wrap(function _callee14$(_context14) {
+        while (1) {
+          switch (_context14.prev = _context14.next) {
+            case 0:
+              _context14.next = 2;
+              return this.store.cursor(criteria, sort);
+
+            case 2:
+              cursor = _context14.sent;
+              cursor.overrideStore(this);
+              return _context14.abrupt("return", cursor);
+
+            case 5:
+            case "end":
+              return _context14.stop();
+          }
+        }
+      }, _callee14, this);
     }));
 
     return function cursor() {

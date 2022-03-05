@@ -65,6 +65,8 @@ export interface Store<
     sort?: Sort<Model>,
   ) => Promise<Model | undefined>;
 
+  count: (criteria?: Criteria<Model>) => Promise<number>;
+
   cursor: <Result = Model>(
     criteria?: Criteria<Model>,
     sort?: Sort<Model>,
@@ -80,14 +82,14 @@ export interface Store<
     K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Pick<Model, K>,
+    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
   ) => Promise<Model>;
 
   upsertOneWithInfo: <
     K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Pick<Model, K>,
+    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
   ) => Promise<UpsertResult<Model>>;
 
   partialUpdateByKey: (

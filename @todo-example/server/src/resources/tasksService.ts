@@ -31,8 +31,8 @@ export const tasksService: ServiceResource<TasksService> = {
       if (!task) throw new Error('Invalid task');
 
       const update: Update<Task>['$set'] = {};
-      if ('completed' in patch) update.completed = patch.completed;
-      if ('label' in patch) update.label = patch.label;
+      if (patch.completed != null) update.completed = patch.completed;
+      if (patch.label != null) update.label = patch.label;
 
       return tasksStore.partialUpdateOne(task, { $set: update });
     },

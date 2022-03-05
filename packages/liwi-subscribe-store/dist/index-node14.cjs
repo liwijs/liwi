@@ -147,6 +147,10 @@ class SubscribeStore {
     });
   }
 
+  async count(criteria) {
+    return this.store.count(criteria);
+  }
+
   async cursor(criteria, sort) {
     const cursor = await this.store.cursor(criteria, sort);
     cursor.overrideStore(this);

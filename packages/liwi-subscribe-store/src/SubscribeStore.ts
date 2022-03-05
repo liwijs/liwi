@@ -163,7 +163,7 @@ export default class SubscribeStore<
     K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Pick<Model, K>,
+    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
   ): Promise<Model> {
     const result = await this.upsertOneWithInfo(
       object,
@@ -176,7 +176,7 @@ export default class SubscribeStore<
     K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Pick<Model, K>,
+    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
   ): Promise<UpsertResult<Model>> {
     const upsertedWithInfo = await this.store.upsertOneWithInfo(
       object,
@@ -246,6 +246,10 @@ export default class SubscribeStore<
     const prev: Model[] = await cursor.toArray();
     await this.store.deleteMany(criteria);
     this.callSubscribed({ type: 'deleted', prev });
+  }
+
+  async count(criteria?: Criteria<Model>): Promise<number> {
+    return this.store.count(criteria);
   }
 
   async cursor<Result = Model>(

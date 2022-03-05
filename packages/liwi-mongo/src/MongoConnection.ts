@@ -43,9 +43,7 @@ export default class MongoConnection extends AbstractConnection {
   connect(connectionString: string): void {
     logger.info('connecting', { connectionString });
 
-    const connectPromise = mongodb.MongoClient.connect(connectionString, {
-      useNewUrlParser: true,
-    })
+    const connectPromise = mongodb.MongoClient.connect(connectionString)
       .then((connection) => {
         logger.info('connected', { connectionString });
         connection.on('close', () => {

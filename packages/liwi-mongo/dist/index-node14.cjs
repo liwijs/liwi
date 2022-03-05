@@ -37,10 +37,6 @@ class MongoCursor extends liwiStore.AbstractStoreCursor {
     return Promise.resolve(this);
   }
 
-  count(applySkipLimit = false) {
-    return this.cursor.count(applySkipLimit);
-  }
-
   result() {
     if (!this._result) throw new Error('Cannot call result() before next()');
     return Promise.resolve(this._result);
@@ -86,8 +82,7 @@ class MongoQueryCollection extends liwiSubscribeStore.AbstractSubscribableStoreQ
   }
 
   async fetch(onFulfilled) {
-    const cursor = await this.createMongoCursor();
-    const [result, count] = await Promise.all([cursor.toArray(), cursor.count()]);
+    const [result, count] = await Promise.all([this.createMongoCursor().then(cursor => cursor.toArray()), this.store.count()]);
     return onFulfilled({
       result: result.map(this.transformer),
       meta: {
@@ -534,23 +529,37 @@ class MongoStore {
     return this.collection.then(collection => collection.deleteMany(selector)).then(() => undefined);
   }
 
-  cursor(criteria, sort) {
-    return this.collection.then(collection => criteria ? collection.find(criteria) : collection.find()).then(sort && (cursor => cursor.sort(sort))).then(cursor => new MongoCursor(this, cursor));
+  async count(filter) {
+    const collection = await this.collection;
+    return filter ? collection.countDocuments(filter) : collection.countDocuments();
   }
 
-  findByKey(key, criteria) {
-    return this.collection.then(collection => collection.findOne({
+  async cursor(filter, sort) {
+    const collection = await this.collection;
+    const findCursor = filter ? collection.find(filter) : collection.find();
+    if (sort) findCursor.sort(sort);
+    return new MongoCursor(this, findCursor);
+  }
+
+  async findByKey(key, criteria) {
+    const collection = await this.collection;
+    const result = await collection.findOne({
       _id: key,
       ...criteria
-    })).then(result => result || undefined);
+    });
+    return result || undefined;
   }
 
   findAll(criteria, sort) {
     return this.cursor(criteria, sort).then(cursor => cursor.toArray());
   }
 
-  findOne(criteria, sort) {
-    return this.collection.then(collection => criteria ? collection.find(criteria) : collection.find()).then(sort && (cursor => cursor.sort(sort))).then(cursor => cursor.limit(1).next()).then(result => result || undefined);
+  async findOne(filter, sort) {
+    const collection = await this.collection;
+    const result = await collection.findOne(filter, {
+      sort
+    });
+    return result || undefined;
   }
 
 }
@@ -581,9 +590,7 @@ class MongoConnection extends liwiStore.AbstractConnection {
     logger.info('connecting', {
       connectionString
     });
-    const connectPromise = mongodb__default.MongoClient.connect(connectionString, {
-      useNewUrlParser: true
-    }).then(connection => {
+    const connectPromise = mongodb__default.MongoClient.connect(connectionString).then(connection => {
       logger.info('connected', {
         connectionString
       });
