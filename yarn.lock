@@ -3052,7 +3052,7 @@ __metadata:
     next-compose-plugins: 2.2.1
     next-transpile-modules: 9.0.0
     react: 17.0.2
-    react-alp-connection-state: 6.0.0
+    react-alp-connection-state: 6.0.1
     react-dom: 17.0.2
     react-liwi: 8.3.1
     react-native-web: 0.17.6
@@ -11039,9 +11039,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-alp-connection-state@npm:6.0.0":
-  version: 6.0.0
-  resolution: "react-alp-connection-state@npm:6.0.0"
+"react-alp-connection-state@npm:6.0.1":
+  version: 6.0.1
+  resolution: "react-alp-connection-state@npm:6.0.1"
   dependencies:
     "@babel/runtime": ^7.17.2
   peerDependencies:
@@ -11050,7 +11050,7 @@ __metadata:
   peerDependenciesMeta:
     react-native:
       optional: true
-  checksum: 1a5a5bdfede6921da429cb070d112b098695ee2e7bea4432496238230ee44737c4f3a5d12dd52a312167344a2dcc0fe6bfea5aa2322a49d52d90228dffe09a8c
+  checksum: 167c60fb036907e16720f71cba4179af736d2fd2630b1baf708171129268a35617e86ec2685e38c04bf27cd3feb50f074266e383757cb87ee07af8b3b74a22ec
   languageName: node
   linkType: hard
 

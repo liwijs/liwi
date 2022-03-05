@@ -26,7 +26,7 @@
     "liwi-resources-websocket-client": "8.3.1",
     "next": "12.1.0",
     "react": "17.0.2",
-    "react-alp-connection-state": "6.0.0",
+    "react-alp-connection-state": "6.0.1",
     "react-dom": "17.0.2",
     "react-liwi": "8.3.1",
     "react-native-web": "0.17.6",
