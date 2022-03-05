@@ -224,7 +224,10 @@ const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
   switch (change.type) {
     case 'initial':
       {
-        const keyPath = queryInfo.keyPath;
+        const keyPath = queryInfo.keyPath; // update meta
+
+        Object.assign(queryMeta, change.meta); // update state if exists, keeping ref to avoid rerendering everything
+
         return !state ? change.initial : change.initial.map(value => {
           const existing = state.find(v => v[keyPath] === value[keyPath]);
           if (!existing) return value;
@@ -280,7 +283,7 @@ function applyCollectionChanges(state, changes, queryMeta, queryInfo) {
   };
   return {
     // eslint-disable-next-line unicorn/no-array-reduce
-    state: changes.reduce((result, change) => applyCollectionChange(result, change, queryMeta, queryInfo), state),
+    state: changes.reduce((result, change) => applyCollectionChange(result, change, newQueryMeta, queryInfo), state),
     meta: newQueryMeta
   };
 }

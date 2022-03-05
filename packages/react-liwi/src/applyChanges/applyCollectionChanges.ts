@@ -18,6 +18,11 @@ const applyCollectionChange = <Value>(
   switch (change.type) {
     case 'initial': {
       const keyPath = queryInfo.keyPath;
+
+      // update meta
+      Object.assign(queryMeta, change.meta);
+
+      // update state if exists, keeping ref to avoid rerendering everything
       return !state
         ? change.initial
         : change.initial.map((value) => {
@@ -83,7 +88,7 @@ export function applyCollectionChanges<Item>(
     // eslint-disable-next-line unicorn/no-array-reduce
     state: changes.reduce<Item[]>(
       (result: Item[], change: Change<any, Item[]>) =>
-        applyCollectionChange<Item>(result, change, queryMeta, queryInfo),
+        applyCollectionChange<Item>(result, change, newQueryMeta, queryInfo),
       state,
     ),
     meta: newQueryMeta,

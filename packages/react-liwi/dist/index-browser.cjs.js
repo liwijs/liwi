@@ -246,7 +246,10 @@ var applyCollectionChange = function applyCollectionChange(state, change, queryM
   switch (change.type) {
     case 'initial':
       {
-        var keyPath = queryInfo.keyPath;
+        var keyPath = queryInfo.keyPath; // update meta
+
+        Object.assign(queryMeta, change.meta); // update state if exists, keeping ref to avoid rerendering everything
+
         return !state ? change.initial : change.initial.map(function (value) {
           var existing = state.find(function (v) {
             return v[keyPath] === value[keyPath];
@@ -310,7 +313,7 @@ function applyCollectionChanges(state, changes, queryMeta, queryInfo) {
   return {
     // eslint-disable-next-line unicorn/no-array-reduce
     state: changes.reduce(function (result, change) {
-      return applyCollectionChange(result, change, queryMeta, queryInfo);
+      return applyCollectionChange(result, change, newQueryMeta, queryInfo);
     }, state),
     meta: newQueryMeta
   };
