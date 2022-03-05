@@ -3400,15 +3400,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mongodb@npm:^4.0.0":
-  version: 4.0.6
-  resolution: "@types/mongodb@npm:4.0.6"
-  dependencies:
-    mongodb: "*"
-  checksum: b0f138120920965b14f30f92d64979a8c6cce0dee195d028255441a3c9b42a5ed531ddbdfcdee04bf2021a007dc16467dd5d13e2158c16ada254b29d29569e1d
-  languageName: node
-  linkType: hard
-
 "@types/node-fetch@npm:^3.0.3":
   version: 3.0.3
   resolution: "@types/node-fetch@npm:3.0.3"
@@ -8887,7 +8878,6 @@ __metadata:
   resolution: "liwi-mongo@workspace:packages/liwi-mongo"
   dependencies:
     "@babel/core": 7.17.5
-    "@types/mongodb": ^4.0.0
     liwi-store: ^8.3.1
     liwi-subscribe-store: ^8.3.1
     liwi-types: ^8.0.4
@@ -9655,7 +9645,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb@npm:*, mongodb@npm:^4.0.0":
+"mongodb@npm:^4.0.0":
   version: 4.4.0
   resolution: "mongodb@npm:4.4.0"
   dependencies:
