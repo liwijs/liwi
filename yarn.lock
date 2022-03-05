@@ -3043,7 +3043,7 @@ __metadata:
     "@todo-example/modules": 0.0.0
     "@types/node": 17.0.15
     "@types/react": 17.0.39
-    "@types/react-native": 0.66.16
+    "@types/react-native": 0.67.2
     classnames: 2.3.1
     eslint-config-next: 12.1.0
     liwi-resources-void-client: 0.0.0
@@ -3493,12 +3493,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native@npm:0.66.16":
-  version: 0.66.16
-  resolution: "@types/react-native@npm:0.66.16"
+"@types/react-native@npm:0.67.2":
+  version: 0.67.2
+  resolution: "@types/react-native@npm:0.67.2"
   dependencies:
     "@types/react": "*"
-  checksum: c8f8783bea1ab51086240fa84008ff00a4996bb56c7e642dc78400b60ea2bc1f0adb04f30a1f7a89c6f83bfe028380e8749c923d7b179d89b7fb5e2c05065e09
+  checksum: c420c141586c893ec4014d9f17e8750a91097209e20369f65e0cb59e84bf26164cbe07104ab6f74041b0d780dec8708e63e660ce494c30c20253b2b51c82abcb
   languageName: node
   linkType: hard
 
