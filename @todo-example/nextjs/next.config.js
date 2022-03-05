@@ -1,11 +1,12 @@
 import withPlugins from 'next-compose-plugins';
 import withTM from 'next-transpile-modules';
+// import yoRcConfig from '../../.yo-rc.json';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   experimental: { esmExternals: true },
-  webpack: (config) => {
+  webpack: (config, context) => {
     config.resolve.alias = {
       ...config.resolve.alias,
       'react-native$': 'react-native-web',
@@ -14,8 +15,41 @@ const nextConfig = {
       `.web${ext}`,
       ext,
     ]);
+    config.plugins.push(
+      new context.webpack.DefinePlugin({
+        __POB_TARGET__: context.isServer ? '"node"' : '"browser"',
+      }),
+    );
+
     return config;
   },
 };
 
-export default withPlugins([withTM(['@todo-example/modules'])], nextConfig);
+export default withPlugins(
+  [
+    withTM([
+      'extended-json',
+      'liwi',
+      'liwi-types',
+      'liwi-store',
+      'liwi-resources',
+      'liwi-subscribe-store',
+      'liwi-mongo',
+      'liwi-resources-client',
+      'liwi-resources-server',
+      '@todo-example/modules',
+      'liwi-mongo-example',
+      'liwi-resources-direct-client',
+      'liwi-resources-void-client',
+      'liwi-resources-websocket-client',
+      'liwi-resources-websocket-server',
+      'react-liwi',
+      '@todo-example/nextjs',
+      '@todo-example/server',
+
+      // requires react-native-web
+      'react-alp-connection-state',
+    ]),
+  ],
+  nextConfig,
+);
