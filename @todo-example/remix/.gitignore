@@ -1,0 +1,5 @@
+
+# remix paths
+/.cache
+/build
+/public/build

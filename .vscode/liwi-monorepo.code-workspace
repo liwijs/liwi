@@ -9,7 +9,11 @@
   },
   "settings": {
     "search.exclude": {
-      "**/.yarn": true
+      "**/.yarn": true,
+      "**/dist": true,
+      "**/build": true,
+      "**/public": true,
+      "**/node_modules": true
     },
     "typescript.tsdk": "✨ root/node_modules/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true,

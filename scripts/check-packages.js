@@ -1,6 +1,8 @@
 import { createCheckPackageWithWorkspaces } from 'check-package-dependencies';
 
-createCheckPackageWithWorkspaces().checkRecommended({
+createCheckPackageWithWorkspaces(undefined, {
+  tryToAutoFix: true,
+}).checkRecommended({
   isLibrary: () => true,
   peerDependenciesOnlyWarnsFor: ['eslint'],
 });
