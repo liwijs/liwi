@@ -31,28 +31,28 @@ export type $CurrentDateSpec =
 
 export interface Update<Model extends BaseModel> {
   /* Field Update Operators */
-  $currentDate?: { [P in keyof Model]?: $CurrentDateSpec } & {
-    [field: string]: $CurrentDateSpec;
+  $currentDate?: { [P in Join<NestedPaths<Model>, '.'>]?: $CurrentDateSpec };
+  $inc?: { [P in Join<NestedPaths<Model>, '.'>]?: number };
+  $min?: { [P in Join<NestedPaths<Model>, '.'>]?: number };
+  $max?: { [P in Join<NestedPaths<Model>, '.'>]?: number };
+  $mul?: { [P in Join<NestedPaths<Model>, '.'>]?: number };
+  $rename?: { [P in Join<NestedPaths<Model>, '.'>]?: string };
+  $set?: Partial<Model> & {
+    [P in Join<NestedPaths<Model>, '.'>]?: PropertyType<Model, P>;
   };
-  $inc?: { [P in keyof Model]?: number } & { [field: string]: number };
-  $min?: { [P in keyof Model]?: number } & { [field: string]: number };
-  $max?: { [P in keyof Model]?: number } & { [field: string]: number };
-  $mul?: { [P in keyof Model]?: number } & { [field: string]: number };
-  $rename?: { [P in keyof Model]?: string } & { [field: string]: string };
-  $set?: Partial<Model> & { [field: string]: any };
-  $setOnInsert?: Partial<Model> & { [field: string]: any };
-  $unset?: { [P in keyof Model]?: any } & { [field: string]: any };
+  $setOnInsert?: Partial<Model> & {
+    [P in Join<NestedPaths<Model>, '.'>]?: PropertyType<Model, P>;
+  };
+  $unset?: { [P in Join<NestedPaths<Model>, '.'>]?: '' | true | 1 };
 
   /* Array Update Operators */
   // Model[P] is Array ? never :
-  $addToSet?: { [P in keyof Model]?: any } & { [field: string]: any };
-  $pop?: { [P in keyof Model]?: 1 | -1 } & { [field: string]: 1 | -1 };
-  $pull?: { [P in keyof Model]?: any } & { [field: string]: any };
+  $addToSet?: { [P in Join<NestedPaths<Model>, '.'>]?: any };
+  $pop?: { [P in Join<NestedPaths<Model>, '.'>]?: 1 | -1 };
+  $pull?: { [P in Join<NestedPaths<Model>, '.'>]?: any };
   /** The $push operator appends a specified value to an array. */
-  $push?: { [P in keyof Model]?: any } & { [field: string]: any };
-  $pullAll?: { [P in keyof Model]?: Array<any> } & {
-    [field: string]: Array<any>;
-  };
+  $push?: { [P in Join<NestedPaths<Model>, '.'>]?: any };
+  $pullAll?: { [P in Join<NestedPaths<Model>, '.'>]?: Array<any> };
 }
 
 export type ExcludeOnlyFields<Model extends BaseModel> = {
@@ -65,7 +65,82 @@ export type Fields<Model extends BaseModel> =
   | ExcludeOnlyFields<Model>
   | IncludeOnlyFields<Model>;
 
+type Join<T extends unknown[], D extends string> = T extends []
+  ? ''
+  : T extends [string | number]
+  ? `${T[0]}`
+  : T extends [string | number, ...infer R]
+  ? `${T[0]}${D}${Join<R, D>}`
+  : string;
+type NestedPaths<Type> = Type extends
+  | string
+  | number
+  | boolean
+  | Date
+  | RegExp
+  | Buffer
+  | Uint8Array
+  | ((...args: any[]) => any)
+  | {
+      _bsontype: string;
+    }
+  ? []
+  : Type extends ReadonlyArray<infer ArrayType>
+  ? [number, ...NestedPaths<ArrayType>]
+  : Type extends Map<string, any>
+  ? [string]
+  : Type extends object
+  ? {
+      [Key in Extract<keyof Type, string>]: Type[Key] extends Type
+        ? [Key]
+        : Type extends Type[Key]
+        ? [Key]
+        : Type[Key] extends ReadonlyArray<infer ArrayType>
+        ? Type extends ArrayType
+          ? [Key]
+          : ArrayType extends Type
+          ? [Key]
+          : [Key, ...NestedPaths<Type[Key]>]
+        : [Key, ...NestedPaths<Type[Key]>];
+    }[Extract<keyof Type, string>]
+  : [];
+
+type PropertyType<Type, Property extends string> = string extends Property
+  ? unknown
+  : Property extends keyof Type
+  ? Type[Property]
+  : Property extends `${number}`
+  ? Type extends ReadonlyArray<infer ArrayType>
+    ? ArrayType
+    : unknown
+  : Property extends `${infer Key}.${infer Rest}`
+  ? Key extends `${number}`
+    ? Type extends ReadonlyArray<infer ArrayType>
+      ? PropertyType<ArrayType, Rest>
+      : unknown
+    : Key extends keyof Type
+    ? Type[Key] extends Map<string, infer MapType>
+      ? MapType
+      : PropertyType<Type[Key], Rest>
+    : unknown
+  : unknown;
+
 export type Criteria<Model extends BaseModel> = { [P in keyof Model]?: any } & {
+  [Property in Join<NestedPaths<Model>, '.'>]?: Condition<
+    PropertyType<Model, Property>
+  >;
+} & {
+  $and?: Criteria<TSchema>[];
+  $nor?: Criteria<TSchema>[];
+  $or?: Criteria<TSchema>[];
+  $text?: {
+    $search: string;
+    $language?: string;
+    $caseSensitive?: boolean;
+    $diacriticSensitive?: boolean;
+  };
+  $where?: string | ((this: TSchema) => boolean);
+  $comment?: string | Document;
   [key: string]: any;
 };
 

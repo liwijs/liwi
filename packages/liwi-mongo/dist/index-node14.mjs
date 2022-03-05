@@ -28,10 +28,6 @@ class MongoCursor extends AbstractStoreCursor {
     return Promise.resolve(this);
   }
 
-  count(applySkipLimit = false) {
-    return this.cursor.count(applySkipLimit);
-  }
-
   result() {
     if (!this._result) throw new Error('Cannot call result() before next()');
     return Promise.resolve(this._result);
@@ -77,8 +73,7 @@ class MongoQueryCollection extends AbstractSubscribableStoreQuery {
   }
 
   async fetch(onFulfilled) {
-    const cursor = await this.createMongoCursor();
-    const [result, count] = await Promise.all([cursor.toArray(), cursor.count()]);
+    const [result, count] = await Promise.all([this.createMongoCursor().then(cursor => cursor.toArray()), this.store.count()]);
     return onFulfilled({
       result: result.map(this.transformer),
       meta: {
@@ -414,18 +409,18 @@ class MongoStore {
 
   async insertOne(object) {
     if (!object._id) {
-      // eslint-disable-next-line @typescript-eslint/no-base-to-string
-      object._id = new mongodb.ObjectID().toString();
+      object._id = new mongodb.ObjectId().toString();
     }
 
     if (!object.created) object.created = new Date();
     if (!object.updated) object.updated = new Date();
     const collection = await this.collection;
     const {
-      result
-    } = await collection.insertOne(object);
+      acknowledged: isAcknowledged
+    } = await collection.insertOne( // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    object);
 
-    if (!result.ok || result.n !== 1) {
+    if (!isAcknowledged) {
       throw new Error('Fail to insert');
     }
 
@@ -492,7 +487,7 @@ class MongoStore {
       ...criteria
     }, partialUpdate);
 
-    if (!commandResult.result.ok) {
+    if (!commandResult.acknowledged) {
       console.error(commandResult);
       throw new Error('Update failed');
     }
@@ -506,7 +501,8 @@ class MongoStore {
   }
 
   partialUpdateMany(criteria, partialUpdate) {
-    return this.collection.then(collection => collection.updateMany(criteria, partialUpdate)).then(() => undefined); // TODO return updated object
+    return this.collection.then(collection => // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    collection.updateMany(criteria, partialUpdate)).then(() => undefined); // TODO return updated object
   }
 
   deleteByKey(key, criteria) {
@@ -524,23 +520,37 @@ class MongoStore {
     return this.collection.then(collection => collection.deleteMany(selector)).then(() => undefined);
   }
 
-  cursor(criteria, sort) {
-    return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => new MongoCursor(this, cursor));
+  async count(filter) {
+    const collection = await this.collection;
+    return filter ? collection.countDocuments(filter) : collection.countDocuments();
   }
 
-  findByKey(key, criteria) {
-    return this.collection.then(collection => collection.findOne({
+  async cursor(filter, sort) {
+    const collection = await this.collection;
+    const findCursor = filter ? collection.find(filter) : collection.find();
+    if (sort) findCursor.sort(sort);
+    return new MongoCursor(this, findCursor);
+  }
+
+  async findByKey(key, criteria) {
+    const collection = await this.collection;
+    const result = await collection.findOne({
       _id: key,
       ...criteria
-    })).then(result => result || undefined);
+    });
+    return result || undefined;
   }
 
   findAll(criteria, sort) {
     return this.cursor(criteria, sort).then(cursor => cursor.toArray());
   }
 
-  findOne(criteria, sort) {
-    return this.collection.then(collection => collection.find(criteria)).then(sort && (cursor => cursor.sort(sort))).then(cursor => cursor.limit(1).next());
+  async findOne(filter, sort) {
+    const collection = await this.collection;
+    const result = await collection.findOne(filter, {
+      sort
+    });
+    return result || undefined;
   }
 
 }
@@ -571,9 +581,7 @@ class MongoConnection extends AbstractConnection {
     logger.info('connecting', {
       connectionString
     });
-    const connectPromise = mongodb.MongoClient.connect(connectionString, {
-      useNewUrlParser: true
-    }).then(connection => {
+    const connectPromise = mongodb.MongoClient.connect(connectionString).then(connection => {
       logger.info('connected', {
         connectionString
       });

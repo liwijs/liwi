@@ -14,8 +14,6 @@ export default abstract class AbstractCursor<
 
   abstract limit(newLimit: number): Promise<this>;
 
-  abstract count(applyLimit: boolean /*  = false */): Promise<number>;
-
   abstract toArray(): Promise<Result[]>;
 
   abstract result(): Promise<Result>;

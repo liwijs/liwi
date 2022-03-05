@@ -27,14 +27,15 @@ export default class SubscribeStore<KeyPath extends keyof Model, KeyValue extend
     insertOne(object: ModelInsertType): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
     replaceSeveral(objects: Model[]): Promise<Model[]>;
-    upsertOne<K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>): Promise<Model>;
-    upsertOneWithInfo<K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>): Promise<UpsertResult<Model>>;
+    upsertOne<K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']): Promise<Model>;
+    upsertOneWithInfo<K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']): Promise<UpsertResult<Model>>;
     partialUpdateByKey(key: KeyValue, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateMany(criteria: Criteria<Model>, partialUpdate: Update<Model>): Promise<void>;
     deleteByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<void>;
     deleteOne(object: Model): Promise<void>;
     deleteMany(criteria: Criteria<Model>): Promise<void>;
+    count(criteria?: Criteria<Model>): Promise<number>;
     cursor<Result = Model>(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<AbstractStoreCursor<any, KeyValue, Model, Result>>;
 }
 //# sourceMappingURL=SubscribeStore.d.ts.map

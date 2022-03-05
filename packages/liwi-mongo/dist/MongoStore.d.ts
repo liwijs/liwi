@@ -15,13 +15,13 @@ export default class MongoStore<Model extends MongoBaseModel<KeyValue>, KeyValue
     readonly connection: MongoConnection;
     private _collection;
     constructor(connection: MongoConnection, collectionName: string);
-    get collection(): Promise<Collection>;
+    get collection(): Promise<Collection<Model>>;
     createQuerySingleItem<Result extends Record<MongoKeyPath, KeyValue> = Model, Params extends QueryParams<Params> = never>(options: QueryOptions<Model>, transformer?: Transformer<Model, Result>): MongoQuerySingleItem<Model, Params, Result, KeyValue>;
     createQueryCollection<Item extends Record<MongoKeyPath, KeyValue> = Model, Params extends QueryParams<Params> = never>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): MongoQueryCollection<Model, Params, Model['_id'], Item>;
     insertOne(object: MongoInsertType<Model>): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
-    upsertOne<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>): Promise<Model>;
-    upsertOneWithInfo<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Pick<Model, K>): Promise<MongoUpsertResult<KeyValue, Model>>;
+    upsertOne<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']): Promise<Model>;
+    upsertOneWithInfo<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']): Promise<MongoUpsertResult<KeyValue, Model>>;
     replaceSeveral(objects: Model[]): Promise<Model[]>;
     partialUpdateByKey(key: KeyValue, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
@@ -29,9 +29,10 @@ export default class MongoStore<Model extends MongoBaseModel<KeyValue>, KeyValue
     deleteByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<void>;
     deleteOne(object: Model): Promise<void>;
     deleteMany(selector: Criteria<Model>): Promise<void>;
-    cursor<Result = Model>(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<MongoCursor<Model, Result, KeyValue>>;
+    count(filter?: Criteria<Model>): Promise<number>;
+    cursor<Result = Model>(filter?: Criteria<Model>, sort?: Sort<Model>): Promise<MongoCursor<Model, Result, KeyValue>>;
     findByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<Model | undefined>;
     findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
-    findOne(criteria: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;
+    findOne(filter: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;
 }
 //# sourceMappingURL=MongoStore.d.ts.map

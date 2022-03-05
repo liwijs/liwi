@@ -76,10 +76,9 @@ export default class MongoQueryCollection<
   }
 
   async fetch<T>(onFulfilled: (result: QueryResult<Item[]>) => T): Promise<T> {
-    const cursor = await this.createMongoCursor();
     const [result, count] = await Promise.all([
-      cursor.toArray(),
-      cursor.count(),
+      this.createMongoCursor().then((cursor) => cursor.toArray()),
+      this.store.count(),
     ]);
 
     return onFulfilled({

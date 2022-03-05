@@ -14,7 +14,12 @@ import type {
   AllowedKeyValue,
   OptionalBaseModelKeysForInsert,
 } from 'liwi-types';
-import type { Collection, MongoClient } from 'mongodb';
+import type {
+  Collection,
+  FindCursor,
+  MongoClient,
+  UpdateFilter,
+} from 'mongodb';
 import mongodb from 'mongodb';
 import type {
   MongoBaseModel,
@@ -50,7 +55,7 @@ export default class MongoStore<
 
   readonly connection: MongoConnection;
 
-  private _collection: Collection | Promise<Collection>;
+  private _collection: Collection<Model> | Promise<Collection<Model>>;
 
   constructor(connection: MongoConnection, collectionName: string) {
     this.connection = connection;
@@ -71,7 +76,7 @@ export default class MongoStore<
     );
   }
 
-  get collection(): Promise<Collection> {
+  get collection(): Promise<Collection<Model>> {
     if (this.connection.connectionFailed) {
       return Promise.reject(new Error('MongoDB connection failed'));
     }
@@ -109,16 +114,18 @@ export default class MongoStore<
 
   async insertOne(object: MongoInsertType<Model>): Promise<Model> {
     if (!object._id) {
-      // eslint-disable-next-line @typescript-eslint/no-base-to-string
-      object._id = new mongodb.ObjectID().toString() as Model['_id'];
+      object._id = new mongodb.ObjectId().toString() as Model['_id'];
     }
 
     if (!object.created) object.created = new Date();
     if (!object.updated) object.updated = new Date();
 
     const collection = await this.collection;
-    const { result } = await collection.insertOne(object);
-    if (!result.ok || result.n !== 1) {
+    const { acknowledged: isAcknowledged } = await collection.insertOne(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      object as any,
+    );
+    if (!isAcknowledged) {
       throw new Error('Fail to insert');
     }
 
@@ -129,7 +136,7 @@ export default class MongoStore<
     if (!object.updated) object.updated = new Date();
 
     const collection = await this.collection;
-    await collection.replaceOne({ _id: object._id }, object);
+    await collection.replaceOne({ _id: object._id } as Criteria<Model>, object);
     return object;
   }
 
@@ -140,7 +147,7 @@ export default class MongoStore<
     >,
   >(
     object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Pick<Model, K>,
+    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
   ): Promise<Model> {
     const result = await this.upsertOneWithInfo(
       object,
@@ -156,7 +163,7 @@ export default class MongoStore<
     >,
   >(
     object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Pick<Model, K>,
+    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
   ): Promise<MongoUpsertResult<KeyValue, Model>> {
     const $setOnInsert = {
       created: object.created || new Date(),
@@ -173,8 +180,8 @@ export default class MongoStore<
     const collection = await this.collection;
 
     const { upsertedCount } = await collection.updateOne(
-      { _id: object._id },
-      { $set, $setOnInsert },
+      { _id: object._id } as Criteria<Model>,
+      { $set, $setOnInsert } as UpdateFilter<Model>,
       { upsert: true },
     );
 
@@ -196,10 +203,10 @@ export default class MongoStore<
   ): Promise<Model> {
     const collection = await this.collection;
     const commandResult = await collection.updateOne(
-      { _id: key, ...criteria },
-      partialUpdate,
+      { _id: key, ...criteria } as Criteria<Model>,
+      partialUpdate as UpdateFilter<Model>,
     );
-    if (!commandResult.result.ok) {
+    if (!commandResult.acknowledged) {
       console.error(commandResult);
       throw new Error('Update failed');
     }
@@ -219,13 +226,18 @@ export default class MongoStore<
     partialUpdate: Update<Model>,
   ): Promise<void> {
     return this.collection
-      .then((collection) => collection.updateMany(criteria, partialUpdate))
+      .then((collection) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        collection.updateMany(criteria, partialUpdate as any),
+      )
       .then((res) => undefined); // TODO return updated object
   }
 
   deleteByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<void> {
     return this.collection
-      .then((collection) => collection.deleteOne({ _id: key, ...criteria }))
+      .then((collection) =>
+        collection.deleteOne({ _id: key, ...criteria } as Criteria<Model>),
+      )
       .then(() => undefined);
   }
 
@@ -239,23 +251,35 @@ export default class MongoStore<
       .then(() => undefined);
   }
 
-  cursor<Result = Model>(
-    criteria?: Criteria<Model>,
-    sort?: Sort<Model>,
-  ): Promise<MongoCursor<Model, Result, KeyValue>> {
-    return this.collection
-      .then((collection) => collection.find(criteria))
-      .then(sort && ((cursor) => cursor.sort(sort)))
-      .then((cursor) => new MongoCursor(this, cursor));
+  async count(filter?: Criteria<Model>): Promise<number> {
+    const collection = await this.collection;
+    return filter
+      ? collection.countDocuments(filter)
+      : collection.countDocuments();
   }
 
-  findByKey(
+  async cursor<Result = Model>(
+    filter?: Criteria<Model>,
+    sort?: Sort<Model>,
+  ): Promise<MongoCursor<Model, Result, KeyValue>> {
+    const collection = await this.collection;
+    const findCursor = filter
+      ? collection.find<Result>(filter)
+      : (collection.find() as unknown as FindCursor<Result>);
+    if (sort) findCursor.sort(sort);
+    return new MongoCursor<Model, Result, KeyValue>(this, findCursor);
+  }
+
+  async findByKey(
     key: KeyValue,
     criteria?: Criteria<Model>,
   ): Promise<Model | undefined> {
-    return this.collection
-      .then((collection) => collection.findOne({ _id: key, ...criteria }))
-      .then((result) => result || undefined);
+    const collection = await this.collection;
+    const result = await collection.findOne<Model>({
+      _id: key,
+      ...criteria,
+    } as Criteria<Model>);
+    return result || undefined;
   }
 
   findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]> {
@@ -264,13 +288,14 @@ export default class MongoStore<
     );
   }
 
-  findOne(
-    criteria: Criteria<Model>,
+  async findOne(
+    filter: Criteria<Model>,
     sort?: Sort<Model>,
   ): Promise<Model | undefined> {
-    return this.collection
-      .then((collection) => collection.find(criteria))
-      .then(sort && ((cursor) => cursor.sort(sort)))
-      .then((cursor) => cursor.limit(1).next());
+    const collection = await this.collection;
+    const result = await collection.findOne<Model>(filter, {
+      sort,
+    });
+    return result || undefined;
   }
 }

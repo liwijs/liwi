@@ -4,7 +4,6 @@ export default abstract class AbstractCursor<Model extends BaseModel, Result ext
     abstract next(): Promise<any>;
     nextResult(): Promise<Result>;
     abstract limit(newLimit: number): Promise<this>;
-    abstract count(applyLimit: boolean): Promise<number>;
     abstract toArray(): Promise<Result[]>;
     abstract result(): Promise<Result>;
     forEachKeys(callback: (key: any) => Promise<void> | void): Promise<void>;
