@@ -1,6 +1,7 @@
 {
   "name": "@todo-example/nextjs",
   "private": true,
+  "version": "9.0.0",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "type": "module",
@@ -20,15 +21,15 @@
     "arrowParens": "always"
   },
   "dependencies": {
-    "@todo-example/modules": "0.0.0",
+    "@todo-example/modules": "9.0.0",
     "classnames": "2.3.1",
-    "liwi-resources-void-client": "0.0.0",
-    "liwi-resources-websocket-client": "8.3.1",
+    "liwi-resources-void-client": "9.0.0",
+    "liwi-resources-websocket-client": "9.0.0",
     "next": "12.1.0",
     "react": "17.0.2",
     "react-alp-connection-state": "6.0.1",
     "react-dom": "17.0.2",
-    "react-liwi": "8.3.1",
+    "react-liwi": "9.0.0",
     "react-native-web": "0.17.6",
     "todomvc-app-css": "2.4.2",
     "todomvc-common": "1.0.5"

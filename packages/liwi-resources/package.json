@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources",
-  "version": "8.3.1",
+  "version": "9.0.0",
   "description": "resources for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -89,9 +89,9 @@
     ]
   },
   "dependencies": {
-    "extended-json": "^8.3.1",
-    "liwi-store": "^8.3.1",
-    "liwi-types": "^8.0.4"
+    "extended-json": "9.0.0",
+    "liwi-store": "9.0.0",
+    "liwi-types": "9.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.17.5",

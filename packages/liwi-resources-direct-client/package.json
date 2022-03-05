@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-direct-client",
-  "version": "8.3.1",
+  "version": "9.0.0",
   "description": "direct client implementation for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -59,9 +59,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.17.2",
-    "extended-json": "^8.3.1",
-    "liwi-resources-client": "^8.3.1",
-    "liwi-resources-server": "^8.3.1",
+    "extended-json": "9.0.0",
+    "liwi-resources-client": "9.0.0",
+    "liwi-resources-server": "9.0.0",
     "nightingale-logger": "^12.1.4"
   },
   "devDependencies": {
