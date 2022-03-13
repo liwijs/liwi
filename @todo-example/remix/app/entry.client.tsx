@@ -5,7 +5,7 @@ import { ReactNativeStylesContext } from './rn-styles';
 
 AppRegistry.registerComponent('App', () => RemixBrowser);
 
-// @ts-ignore
+// @ts-expect-error error
 const { getStyleElement } = AppRegistry.getApplication('App');
 
 hydrate(

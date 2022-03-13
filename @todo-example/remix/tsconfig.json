@@ -13,6 +13,7 @@
     "paths": {
       "~/*": ["./app/*"],
       "app/*": ["./app/*"],
+      "@todo-example/modules": ["../modules/src/index.ts"],
       "@todo-example/modules/*": ["../modules/src/*"]
     },
 

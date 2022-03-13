@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import type { Change, Changes, QueryInfo, QueryMeta } from 'liwi-types';
 import { Lazy } from 'mingo/lazy.js';
 import { $sort } from 'mingo/operators/pipeline/sort.js';

@@ -1,3 +1,14 @@
+import type { LinksFunction } from '@remix-run/react/routeModules';
+import { createVoidTransportClient } from 'liwi-resources-void-client';
+import type { WebsocketTransportClientOptions } from 'liwi-resources-websocket-client';
+import { createWebsocketTransportClient } from 'liwi-resources-websocket-client';
+import type { ReactElement } from 'react';
+import { ConnectionState } from 'react-alp-connection-state';
+import {
+  TransportClientProvider,
+  transportClientStateToSimplifiedState,
+  useTransportClientState,
+} from 'react-liwi';
 import {
   Links,
   LiveReload,
@@ -7,20 +18,9 @@ import {
   ScrollRestoration,
 } from 'remix';
 import type { MetaFunction } from 'remix';
-import { createVoidTransportClient } from 'liwi-resources-void-client';
-import type { WebsocketTransportClientOptions } from 'liwi-resources-websocket-client';
-import { createWebsocketTransportClient } from 'liwi-resources-websocket-client';
-import { ConnectionState } from 'react-alp-connection-state';
-import {
-  TransportClientProvider,
-  transportClientStateToSimplifiedState,
-  useTransportClientState,
-} from 'react-liwi';
-import { TodoServicesProvider } from './services/TodoServicesProvider';
-import { ReactElement } from 'react';
-import sharedStyles from './shared.css';
-import { LinksFunction } from '@remix-run/react/routeModules';
 import { useReactNativeStyles } from './rn-styles';
+import { TodoServicesProvider } from './services/TodoServicesProvider';
+import sharedStyles from './shared.css';
 
 function AppConnectionState(): ReactElement {
   const transportClientState = useTransportClientState();
@@ -41,7 +41,7 @@ export default function App() {
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
+        <meta charSet="utf8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />

@@ -20,7 +20,6 @@ export type SimplifiedConnectionState =
   | 'connected'
   | 'disconnected';
 
-// eslint-disable-next-line complexity
 export const transportClientStateToSimplifiedState = (
   state: ConnectionStates,
 ): SimplifiedConnectionState => {

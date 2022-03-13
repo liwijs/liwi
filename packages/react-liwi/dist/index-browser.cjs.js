@@ -633,7 +633,6 @@ function useOperation(operationCall) {
   return [operationCallWrapper, state];
 }
 
-// eslint-disable-next-line complexity
 var transportClientStateToSimplifiedState = function transportClientStateToSimplifiedState(state) {
   switch (state) {
     case 'opening':

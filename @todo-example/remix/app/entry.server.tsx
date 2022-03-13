@@ -1,7 +1,7 @@
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
+import { AppRegistry } from 'react-native';
 import { RemixServer } from 'remix';
 import type { EntryContext } from 'remix';
-import { AppRegistry } from 'react-native';
 import { ReplaceWithStylesSSRTag } from './rn-styles';
 
 export default function handleRequest(
@@ -18,7 +18,7 @@ export default function handleRequest(
     <RemixServer context={remixContext} url={request.url} />,
   );
 
-  // @ts-ignore
+  // @ts-expect-error error
   const { getStyleElement } = AppRegistry.getApplication('App', {});
   const stylesMarkup = renderToStaticMarkup(getStyleElement());
 
@@ -29,7 +29,7 @@ export default function handleRequest(
 
   responseHeaders.set('Content-Type', 'text/html');
 
-  return new Response('<!DOCTYPE html>' + markup, {
+  return new Response(`<!DOCTYPE html>${markup}`, {
     status: responseStatusCode,
     headers: responseHeaders,
   });

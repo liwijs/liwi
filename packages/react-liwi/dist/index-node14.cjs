@@ -111,7 +111,6 @@ function TransportClientProvider({
   });
 }
 
-// eslint-disable-next-line complexity
 const transportClientStateToSimplifiedState = state => {
   switch (state) {
     case 'opening':

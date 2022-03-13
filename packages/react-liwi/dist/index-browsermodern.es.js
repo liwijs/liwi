@@ -210,8 +210,6 @@ function useRetrieveResource(createQuery, params, skip, deps) {
   return createResourceResultFromState(state);
 }
 
-/* eslint-disable complexity */
-
 function sortCollection(collection, sort) {
   return $sort(Lazy(collection), sort, {
     idKey: '_id'
@@ -579,7 +577,6 @@ function useOperation(operationCall) {
   return [operationCallWrapper, state];
 }
 
-// eslint-disable-next-line complexity
 const transportClientStateToSimplifiedState = state => {
   switch (state) {
     case 'opening':

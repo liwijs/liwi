@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable complexity */
 import type { Task } from '@todo-example/modules';
 import type { ReactElement } from 'react';
 import { useContext, useMemo, useState } from 'react';
@@ -106,7 +105,10 @@ export default function Main(): ReactElement | null {
           <button
             type="button"
             className="clear-completed"
-            onClick={() => clearCompleted()}
+            onClick={() => {
+              // eslint-disable-next-line @typescript-eslint/no-floating-promises
+              clearCompleted();
+            }}
           >
             Clear completed
           </button>

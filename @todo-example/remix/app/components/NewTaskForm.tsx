@@ -1,7 +1,7 @@
 import type { ReactElement, FormEventHandler } from 'react';
 import { useState, useContext, useEffect } from 'react';
 import { useOperation, TransportClientReadyContext } from 'react-liwi';
-import { TodoServicesContext } from '~/services/TodoServicesProvider';
+import { TodoServicesContext } from '../services/TodoServicesProvider';
 
 export function NewTaskForm(): ReactElement {
   const [newTaskInput, setNewTaskInput] = useState('');

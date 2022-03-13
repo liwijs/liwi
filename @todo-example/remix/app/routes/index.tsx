@@ -1,9 +1,10 @@
+import type { ReactElement } from 'react';
+import indexStyles from 'todomvc-app-css/index.css';
+import baseStyles from 'todomvc-common/base.css';
 import Info from '../components/Info';
 import Main from '../components/Main';
 import { NewTaskForm } from '../components/NewTaskForm';
 import Paginated from '../components/Paginated';
-import baseStyles from 'todomvc-common/base.css';
-import indexStyles from 'todomvc-app-css/index.css';
 
 export function links() {
   return [
@@ -12,7 +13,7 @@ export function links() {
   ];
 }
 
-export default function Index() {
+export default function Index(): ReactElement {
   return (
     <div>
       <section className="todoapp">

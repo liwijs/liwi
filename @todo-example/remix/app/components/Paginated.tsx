@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { useContext, useState } from 'react';
 import { usePaginatedResource } from 'react-liwi';
-import { TodoServicesContext } from '~/services/TodoServicesProvider';
+import { TodoServicesContext } from '../services/TodoServicesProvider';
 
 interface PaginatedProps {
   subscribe: boolean;
