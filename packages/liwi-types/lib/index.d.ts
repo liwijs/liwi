@@ -49,7 +49,7 @@ export interface Update<Model extends BaseModel> {
   // Model[P] is Array ? never :
   $addToSet?: { [P in Join<NestedPaths<Model>, '.'>]?: any };
   $pop?: { [P in Join<NestedPaths<Model>, '.'>]?: 1 | -1 };
-  $pull?: { [P in Join<NestedPaths<Model>, '.'>]?: any };
+  $pull?: { [P in Join<NestedPaths<Model>, '.'> | keyof Model]?: any };
   /** The $push operator appends a specified value to an array. */
   $push?: { [P in Join<NestedPaths<Model>, '.'>]?: any };
   $pullAll?: { [P in Join<NestedPaths<Model>, '.'>]?: Array<any> };
