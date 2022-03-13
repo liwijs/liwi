@@ -4,5 +4,12 @@ createCheckPackageWithWorkspaces(undefined, {
   tryToAutoFix: true,
 }).checkRecommended({
   isLibrary: () => true,
-  peerDependenciesOnlyWarnsFor: ['eslint'],
+  onlyWarnsForInMonorepoPackagesDependencies: {
+    '@todo-example/nextjs': {
+      'eslint-config-next': {
+        // we don't need eslint as it's present in monorepo
+        missingPeerDependency: ['eslint'],
+      },
+    },
+  },
 });

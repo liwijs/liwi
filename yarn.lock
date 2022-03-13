@@ -5439,9 +5439,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-package-dependencies@npm:3.3.0":
-  version: 3.3.0
-  resolution: "check-package-dependencies@npm:3.3.0"
+"check-package-dependencies@npm:3.5.2":
+  version: 3.5.2
+  resolution: "check-package-dependencies@npm:3.5.2"
   dependencies:
     chalk: ^4.1.0
     glob: ^7.1.6
@@ -5449,7 +5449,7 @@ __metadata:
     type-fest: ^2.0.0
   bin:
     check-package-dependencies: bin/check-package-dependencies.js
-  checksum: 66bcd3cb91fda47bb322057ab9433a6732d8e7560931145e72a7e93b1e17bc4e698bdaf38a4e0375f6c5099740088f83a38b95955bc6d6343f84ffe0935a6ca8
+  checksum: 5af08118fa8cefec8267a29c0e2ec801dca0b64f8aebcfb97be7cdb5e89912ac913f3a18228542cfbae7fa4cca75e4209c12e678391832ff16c9a6956a6d398b
   languageName: node
   linkType: hard
 
@@ -10339,7 +10339,7 @@ __metadata:
     "@pob/lerna-light": 5.1.0
     "@pob/root": 6.12.0
     "@types/jest": 27.4.1
-    check-package-dependencies: 3.3.0
+    check-package-dependencies: 3.5.2
     eslint: 8.10.0
     jest: 27.5.1
     pob-babel: 32.2.0
