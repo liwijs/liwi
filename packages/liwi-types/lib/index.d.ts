@@ -51,7 +51,7 @@ export interface Update<Model extends BaseModel> {
   $pop?: { [P in Join<NestedPaths<Model>, '.'>]?: 1 | -1 };
   $pull?: { [P in Join<NestedPaths<Model>, '.'> | keyof Model]?: any };
   /** The $push operator appends a specified value to an array. */
-  $push?: { [P in Join<NestedPaths<Model>, '.'>]?: any };
+  $push?: { [P in Join<NestedPaths<Model>, '.'> | keyof Model]?: any };
   $pullAll?: { [P in Join<NestedPaths<Model>, '.'>]?: Array<any> };
 }
 
