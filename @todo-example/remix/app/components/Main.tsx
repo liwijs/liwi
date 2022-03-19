@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import type { Task } from '@todo-example/modules';
 import type { ReactElement } from 'react';
 import { useContext, useMemo, useState } from 'react';
