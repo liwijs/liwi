@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@types/node": "17.0.15",
-    "@types/react": "17.0.39",
+    "@types/react": "17.0.42",
     "@types/react-native": "0.67.2",
     "eslint-config-next": "12.1.0",
     "next-compose-plugins": "2.2.1",
