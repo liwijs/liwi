@@ -97,7 +97,7 @@
     "nightingale-logger": "^12.1.4"
   },
   "devDependencies": {
-    "@babel/core": "7.17.5",
+    "@babel/core": "7.17.9",
     "@babel/preset-env": "7.16.11",
     "@types/backo2": "1.0.1",
     "babel-preset-modern-browsers": "15.0.2",
