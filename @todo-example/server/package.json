@@ -54,7 +54,7 @@
     "nightingale-app-console": "^12.1.4"
   },
   "devDependencies": {
-    "@babel/core": "7.17.5",
+    "@babel/core": "7.17.9",
     "alp-rollup-plugin-config": "1.0.2",
     "pob-babel": "32.2.0",
     "rollup-plugin-copy": "3.4.0",
