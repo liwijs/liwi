@@ -1,11 +1,11 @@
 {
   "pob": {
-    "project": {
-      "type": "app"
-    },
     "app": {
       "type": "remix",
       "testing": false
+    },
+    "project": {
+      "type": "app"
     }
   }
 }

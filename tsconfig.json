@@ -17,6 +17,7 @@
     { "path": "packages/liwi-resources-websocket-server/tsconfig.json" },
     { "path": "packages/react-liwi/tsconfig.json" },
     { "path": "@todo-example/nextjs/tsconfig.json" },
+    { "path": "@todo-example/remix/tsconfig.json" },
     { "path": "@todo-example/server/tsconfig.json" }
   ]
 }

@@ -28,6 +28,7 @@ This repository is a monorepo that we manage using [Lerna](https://github.com/le
 | [react-liwi](packages/react-liwi)                                           | <a href="https://npmjs.org/package/react-liwi"><img src="https://img.shields.io/npm/v/react-liwi.svg?style=flat-square"></a>                                           | react with liwi                                    |
 | [@todo-example/modules](@todo-example/modules)                              |                                                                                                                                                                        |
 | [@todo-example/nextjs](@todo-example/nextjs)                                |                                                                                                                                                                        |
+| [@todo-example/remix](@todo-example/remix)                                  |                                                                                                                                                                        |
 | [@todo-example/server](@todo-example/server)                                |                                                                                                                                                                        |
 
 ## Install

@@ -4,7 +4,11 @@ CHANGELOG.md
 /packages/*/build
 /packages/*/.next
 /packages/*/out
+/packages/*/.cache
+/packages/*/public/build
 /@todo-example/*/dist
 /@todo-example/*/build
 /@todo-example/*/.next
 /@todo-example/*/out
+/@todo-example/*/.cache
+/@todo-example/*/public/build

@@ -25,6 +25,7 @@
         "liwi-resources-websocket-server",
         "react-liwi",
         "@todo-example/nextjs",
+        "@todo-example/remix",
         "@todo-example/server"
       ]
     },
