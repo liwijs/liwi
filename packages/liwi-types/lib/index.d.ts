@@ -130,16 +130,16 @@ export type Criteria<Model extends BaseModel> = { [P in keyof Model]?: any } & {
     PropertyType<Model, Property>
   >;
 } & {
-  $and?: Criteria<TSchema>[];
-  $nor?: Criteria<TSchema>[];
-  $or?: Criteria<TSchema>[];
+  $and?: Criteria<Model>[];
+  $nor?: Criteria<Model>[];
+  $or?: Criteria<Model>[];
   $text?: {
     $search: string;
     $language?: string;
     $caseSensitive?: boolean;
     $diacriticSensitive?: boolean;
   };
-  $where?: string | ((this: TSchema) => boolean);
+  $where?: string | ((this: Model) => boolean);
   $comment?: string | Document;
   [key: string]: any;
 };
