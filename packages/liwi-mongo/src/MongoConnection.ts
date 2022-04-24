@@ -25,11 +25,17 @@ export default class MongoConnection extends AbstractConnection {
       throw new Error('Missing config database');
     }
 
-    const connectionString =
+    const buildConnectionString = (redactCredentials: boolean): string =>
       `mongodb://${
         config.has('user')
-          ? `${config.get('user') as string}:${
-              config.get('password') as string
+          ? `${
+              redactCredentials
+                ? `${(config.get('user') as string).slice(0, 2)}[redacted]`
+                : (config.get('user') as string)
+            }:${
+              redactCredentials
+                ? '[redacted]'
+                : (config.get('password') as string)
             }@`
           : ''
       }` +
@@ -37,36 +43,39 @@ export default class MongoConnection extends AbstractConnection {
         config.get('database') as string
       }`;
 
-    this.connect(connectionString);
+    const connectionString = buildConnectionString(false);
+    const connectionStringRedacted = buildConnectionString(true);
+
+    this.connect(connectionString, connectionStringRedacted);
   }
 
-  connect(connectionString: string): void {
-    logger.info('connecting', { connectionString });
+  connect(connectionString: string, connectionStringRedacted: string): void {
+    logger.info('connecting', { connectionStringRedacted });
 
     const connectPromise = mongodb.MongoClient.connect(connectionString)
       .then((connection) => {
-        logger.info('connected', { connectionString });
+        logger.info('connected', { connectionStringRedacted });
         connection.on('close', () => {
-          logger.warn('close', { connectionString });
+          logger.warn('close', { connectionStringRedacted });
           this.connectionFailed = true;
           this.getConnection = () => {
             throw new Error('MongoDB connection closed');
           };
         });
         connection.on('timeout', () => {
-          logger.warn('timeout', { connectionString });
+          logger.warn('timeout', { connectionStringRedacted });
           this.connectionFailed = true;
           this.getConnection = () => {
             throw new Error('MongoDB connection timeout');
           };
         });
         connection.on('reconnect', () => {
-          logger.warn('reconnect', { connectionString });
+          logger.warn('reconnect', { connectionStringRedacted });
           this.connectionFailed = false;
           this.getConnection = () => Promise.resolve(this._connection!);
         });
         connection.on('error', (err) => {
-          logger.warn('error', { connectionString, err });
+          logger.warn('error', { connectionStringRedacted, err });
         });
 
         this._connection = connection;
@@ -75,7 +84,7 @@ export default class MongoConnection extends AbstractConnection {
         return connection;
       })
       .catch((err) => {
-        logger.info('not connected', { connectionString });
+        logger.info('not connected', { connectionStringRedacted });
         console.error(err.message || err);
         // throw err;
         process.nextTick(() => {

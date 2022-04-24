@@ -582,21 +582,24 @@ class MongoConnection extends liwiStore.AbstractConnection {
       throw new Error('Missing config database');
     }
 
-    const connectionString = `mongodb://${config.has('user') ? `${config.get('user')}:${config.get('password')}@` : ''}` + `${config.get('host')}:${config.get('port')}/${config.get('database')}`;
-    this.connect(connectionString);
+    const buildConnectionString = redactCredentials => `mongodb://${config.has('user') ? `${redactCredentials ? `${config.get('user').slice(0, 2)}[redacted]` : config.get('user')}:${redactCredentials ? '[redacted]' : config.get('password')}@` : ''}` + `${config.get('host')}:${config.get('port')}/${config.get('database')}`;
+
+    const connectionString = buildConnectionString(false);
+    const connectionStringRedacted = buildConnectionString(true);
+    this.connect(connectionString, connectionStringRedacted);
   }
 
-  connect(connectionString) {
+  connect(connectionString, connectionStringRedacted) {
     logger.info('connecting', {
-      connectionString
+      connectionStringRedacted
     });
     const connectPromise = mongodb__default.MongoClient.connect(connectionString).then(connection => {
       logger.info('connected', {
-        connectionString
+        connectionStringRedacted
       });
       connection.on('close', () => {
         logger.warn('close', {
-          connectionString
+          connectionStringRedacted
         });
         this.connectionFailed = true;
 
@@ -606,7 +609,7 @@ class MongoConnection extends liwiStore.AbstractConnection {
       });
       connection.on('timeout', () => {
         logger.warn('timeout', {
-          connectionString
+          connectionStringRedacted
         });
         this.connectionFailed = true;
 
@@ -616,7 +619,7 @@ class MongoConnection extends liwiStore.AbstractConnection {
       });
       connection.on('reconnect', () => {
         logger.warn('reconnect', {
-          connectionString
+          connectionStringRedacted
         });
         this.connectionFailed = false;
 
@@ -624,7 +627,7 @@ class MongoConnection extends liwiStore.AbstractConnection {
       });
       connection.on('error', err => {
         logger.warn('error', {
-          connectionString,
+          connectionStringRedacted,
           err
         });
       });
@@ -636,7 +639,7 @@ class MongoConnection extends liwiStore.AbstractConnection {
       return connection;
     }).catch(err => {
       logger.info('not connected', {
-        connectionString
+        connectionStringRedacted
       });
       console.error(err.message || err); // throw err;
 

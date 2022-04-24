@@ -5,7 +5,7 @@ export default class MongoConnection extends AbstractConnection {
     _connecting?: Promise<mongodb.MongoClient>;
     connectionFailed?: boolean;
     constructor(config: Map<string, string | number>);
-    connect(connectionString: string): void;
+    connect(connectionString: string, connectionStringRedacted: string): void;
     getConnection(): Promise<mongodb.MongoClient>;
     close(): Promise<void>;
 }
