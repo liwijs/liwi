@@ -3332,7 +3332,7 @@ __metadata:
     "@todo-example/modules": 9.0.0
     "@types/node": 17.0.15
     "@types/react": 17.0.45
-    "@types/react-native": 0.67.3
+    "@types/react-native": 0.67.7
     classnames: 2.3.1
     liwi-resources-void-client: 9.0.0
     liwi-resources-websocket-client: 9.0.0
@@ -3947,12 +3947,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native@npm:0.67.3":
-  version: 0.67.3
-  resolution: "@types/react-native@npm:0.67.3"
+"@types/react-native@npm:0.67.7":
+  version: 0.67.7
+  resolution: "@types/react-native@npm:0.67.7"
   dependencies:
     "@types/react": "*"
-  checksum: b38a9ce339e8623e5227c524941fc9894a77a2e7ca3a0cd57f2dcaca4d59fcdad98d57024d8af0c3f09e345398adf8cce2e1462bff97f114e159790129e9730f
+  checksum: 28f5bdfb4463e5cbcbaa842674ae0b4640bf1f829a6dc650d879e4e7d326b9dd9146e18ce82264289a6a22b4f844746ccba95c3c2e9daf49d5a0548f1741695b
   languageName: node
   linkType: hard
 
