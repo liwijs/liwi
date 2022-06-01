@@ -4033,12 +4033,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ws@npm:8.5.2":
-  version: 8.5.2
-  resolution: "@types/ws@npm:8.5.2"
+"@types/ws@npm:8.5.3":
+  version: 8.5.3
+  resolution: "@types/ws@npm:8.5.3"
   dependencies:
     "@types/node": "*"
-  checksum: 3182db3a84474636cd990482b451c1e247bb2c4524eb85f937e3734c9600af34dfc07f9a2d973d4a39dfe433339f9afd8c5824e32a597e7cffba475cbbd487c9
+  checksum: 0ce46f850d41383fcdc2149bcacc86d7232fa7a233f903d2246dff86e31701a02f8566f40af5f8b56d1834779255c04ec6ec78660fe0f9b2a69cf3d71937e4ae
   languageName: node
   linkType: hard
 
@@ -10178,7 +10178,7 @@ __metadata:
     "@babel/core": 7.18.2
     "@babel/preset-env": 7.18.2
     "@babel/runtime": ^7.18.3
-    "@types/ws": 8.5.2
+    "@types/ws": 8.5.3
     babel-preset-modern-browsers: 15.0.2
     bufferutil: ^4.0.3
     extended-json: 9.0.0
