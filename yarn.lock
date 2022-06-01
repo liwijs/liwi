@@ -3331,7 +3331,7 @@ __metadata:
     "@todo-example/babel-preset-nextjs-babel-config": 1.0.0
     "@todo-example/modules": 9.0.0
     "@types/node": 17.0.15
-    "@types/react": 17.0.43
+    "@types/react": 17.0.45
     "@types/react-native": 0.67.3
     classnames: 2.3.1
     liwi-resources-void-client: 9.0.0
@@ -3359,7 +3359,7 @@ __metadata:
     "@remix-run/react": ^1.2.3
     "@remix-run/serve": ^1.2.3
     "@todo-example/modules": 9.0.0
-    "@types/react": 17.0.43
+    "@types/react": 17.0.45
     "@types/react-dom": 17.0.14
     classnames: 2.3.1
     cross-env: ^7.0.3
@@ -3956,14 +3956,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:17.0.43":
-  version: 17.0.43
-  resolution: "@types/react@npm:17.0.43"
+"@types/react@npm:*, @types/react@npm:17.0.45":
+  version: 17.0.45
+  resolution: "@types/react@npm:17.0.45"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 981b0993f5b3ea9d3488b8cc883201e8ae47ba7732929f788f450a79fd72829e658080d5084e67caa008e58d989b0abc1d5f36ff0a1cda09315ea3a3c0c9dc11
+  checksum: 3cc13a02824c13f6fa4807a83abd065ac1d9943359e76bd995cc7cd2b4148c1176ebd54a30a9f4eb8a0f141ff359d712876f256c4fee707e4290607ef8410b3e
   languageName: node
   linkType: hard
 
@@ -13009,7 +13009,7 @@ __metadata:
     "@babel/preset-env": 7.18.2
     "@babel/preset-react": 7.17.12
     "@babel/runtime": ^7.18.3
-    "@types/react": 17.0.43
+    "@types/react": 17.0.45
     babel-preset-modern-browsers: 15.0.2
     liwi-resources-client: 9.0.0
     liwi-types: 9.0.0
