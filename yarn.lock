@@ -3056,9 +3056,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/eslint-config@npm:1.2.3":
-  version: 1.2.3
-  resolution: "@remix-run/eslint-config@npm:1.2.3"
+"@remix-run/eslint-config@npm:1.5.1":
+  version: 1.5.1
+  resolution: "@remix-run/eslint-config@npm:1.5.1"
   dependencies:
     "@babel/core": ^7.17.5
     "@babel/eslint-parser": ^7.17.0
@@ -3077,13 +3077,14 @@ __metadata:
     eslint-plugin-react-hooks: ^4.3.0
     eslint-plugin-testing-library: ^5.0.5
   peerDependencies:
-    eslint: ">=8.1.0"
-    react: ">=17.0.0"
-    react-dom: ">=17.0.0"
+    eslint: ^8.0.0
+    react: ^17.0.0 || ^18.0.0
+    react-dom: ^17.0.0 || ^18.0.0
+    typescript: ^4.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 34581f8d8b2dbd23d5ae772bf239bb18299f18834676b06f84cbdd177535c7f0aae4f3aadf7a0c9061acfbd59c71311a8740b0ae2869db9a1bb3482a93a063f3
+  checksum: 1fdd5c6e167b0098b3e291bd02c8f7e7d82a77277961dcafca5d2835400d432a4d115293af044dd7af9877ea87ee9a131ee883ddd60cb60541bf2ee95c638704
   languageName: node
   linkType: hard
 
@@ -3355,7 +3356,7 @@ __metadata:
   resolution: "@todo-example/remix@workspace:@todo-example/remix"
   dependencies:
     "@remix-run/dev": 1.2.3
-    "@remix-run/eslint-config": 1.2.3
+    "@remix-run/eslint-config": 1.5.1
     "@remix-run/react": ^1.2.3
     "@remix-run/serve": ^1.2.3
     "@todo-example/modules": 9.0.0
