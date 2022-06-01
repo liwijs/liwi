@@ -9,11 +9,7 @@
   },
   "settings": {
     "search.exclude": {
-      "**/.yarn": true,
-      "**/dist": true,
-      "**/build": true,
-      "**/public": true,
-      "**/node_modules": true
+      "**/.yarn": true
     },
     "typescript.tsdk": "✨ root/node_modules/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true,
@@ -34,8 +30,10 @@
     "eslint.format.enable": false,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "jest.disabledWorkspaceFolders": [
+      "@todo-example/babel-preset-nextjs-babel-config",
       "@todo-example/modules",
       "@todo-example/nextjs",
+      "@todo-example/remix",
       "@todo-example/server",
       "extended-json",
       "liwi",
@@ -60,12 +58,20 @@
       "path": ".."
     },
     {
+      "name": "@todo-example/babel-preset-nextjs-babel-config",
+      "path": "../@todo-example/babel-preset-nextjs-babel-config"
+    },
+    {
       "name": "@todo-example/modules",
       "path": "../@todo-example/modules"
     },
     {
       "name": "@todo-example/nextjs",
       "path": "../@todo-example/nextjs"
+    },
+    {
+      "name": "@todo-example/remix",
+      "path": "../@todo-example/remix"
     },
     {
       "name": "@todo-example/server",

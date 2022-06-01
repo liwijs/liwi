@@ -8,6 +8,9 @@
 
 <p align="center">
   <a href="https://npmjs.org/package/liwi-subscribe-store"><img src="https://img.shields.io/npm/v/liwi-subscribe-store.svg?style=flat-square"></a>
+  <a href="https://npmjs.org/package/liwi-subscribe-store"><img src="https://img.shields.io/npm/dw/liwi-subscribe-store.svg?style=flat-square"></a>
+  <a href="https://npmjs.org/package/liwi-subscribe-store"><img src="https://img.shields.io/node/v/liwi-subscribe-store.svg?style=flat-square"></a>
+  <a href="https://npmjs.org/package/liwi-subscribe-store"><img src="https://img.shields.io/npm/types/liwi-subscribe-store.svg?style=flat-square"></a>
 </p>
 
 ## Install

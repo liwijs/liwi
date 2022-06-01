@@ -1,7 +1,7 @@
 import { ResourcesServerError } from 'liwi-resources';
 export { ResourcesServerError } from 'liwi-resources';
+import _regeneratorRuntime from '@babel/runtime/helpers/esm/regeneratorRuntime';
 import _asyncToGenerator from '@babel/runtime/helpers/esm/asyncToGenerator';
-import _regeneratorRuntime from '@babel/runtime/regenerator';
 import { Logger } from 'nightingale-logger';
 
 // import ResourceServerCursor from './ResourceServerCursor';
@@ -56,7 +56,7 @@ var ResourcesServerService = /*#__PURE__*/function () {
 var logger = new Logger('liwi:resources-websocket-client');
 
 var logUnexpectedError = function logUnexpectedError(error, message, payload) {
-  if ((process.env.NODE_ENV !== "production") || !(error instanceof ResourcesServerError)) {
+  if (process.env.NODE_ENV !== "production" || !(error instanceof ResourcesServerError)) {
     logger.error(message, {
       error: error,
       payload: !(process.env.NODE_ENV !== "production") ? 'redacted' : payload
@@ -141,10 +141,10 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
       }
     },
     messageHandler: function () {
-      var _messageHandler = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(message, subscriptionCallback) {
+      var _messageHandler = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(message, subscriptionCallback) {
         var resource, query, _resource, _query, _resource2, _query2, _subscriptionId, _SubscriptionAndSubscribeHook, _resource3, _message$payload, operationKey, params, operation;
 
-        return _regeneratorRuntime.wrap(function _callee$(_context) {
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:

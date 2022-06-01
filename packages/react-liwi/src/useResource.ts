@@ -1,4 +1,4 @@
-import 'pob-babel';
+import { POB_TARGET } from 'pob-babel';
 import type { Query, QueryParams } from 'liwi-resources-client';
 import type { SetOptional } from 'liwi-types';
 import type { ResourceResult } from './createResourceResultFromState';
@@ -30,7 +30,7 @@ export function useResource<Result, Params extends QueryParams<Params>>(
   }: UseResourceOptions<Params>,
   deps: any[],
 ): ResourceResult<Result, Params> {
-  if (__POB_TARGET__ === 'node') {
+  if (POB_TARGET === 'node') {
     return {
       query: undefined as any,
       initialLoading: true,

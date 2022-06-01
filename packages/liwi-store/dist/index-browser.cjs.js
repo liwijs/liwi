@@ -2,25 +2,21 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var _createForOfIteratorHelperLoose = require('@babel/runtime/helpers/esm/createForOfIteratorHelperLoose');
+var _regeneratorRuntime = require('@babel/runtime/helpers/esm/regeneratorRuntime');
 var _asyncToGenerator = require('@babel/runtime/helpers/esm/asyncToGenerator');
-var _regeneratorRuntime = require('@babel/runtime/regenerator');
 var _createClass = require('@babel/runtime/helpers/esm/createClass');
 var _inheritsLoose = require('@babel/runtime/helpers/esm/inheritsLoose');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
 
-var _asyncToGenerator__default = /*#__PURE__*/_interopDefaultLegacy(_asyncToGenerator);
+var _createForOfIteratorHelperLoose__default = /*#__PURE__*/_interopDefaultLegacy(_createForOfIteratorHelperLoose);
 var _regeneratorRuntime__default = /*#__PURE__*/_interopDefaultLegacy(_regeneratorRuntime);
+var _asyncToGenerator__default = /*#__PURE__*/_interopDefaultLegacy(_asyncToGenerator);
 var _createClass__default = /*#__PURE__*/_interopDefaultLegacy(_createClass);
 var _inheritsLoose__default = /*#__PURE__*/_interopDefaultLegacy(_inheritsLoose);
 
 var AbstractConnection = function AbstractConnection() {};
-
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"], i; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { var i, arr2; if (len == null || len > arr.length) len = arr.length; for (i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 var AbstractCursor = /*#__PURE__*/function (_Symbol$iterator) {
   function AbstractCursor() {}
@@ -28,18 +24,16 @@ var AbstractCursor = /*#__PURE__*/function (_Symbol$iterator) {
   var _proto = AbstractCursor.prototype;
 
   _proto.nextResult = function nextResult() {
-    var _this = this;
-
     return this.next().then(function () {
-      return _this.result();
+      return this.result();
     });
   };
 
   _proto.forEachKeys = /*#__PURE__*/function () {
-    var _forEachKeys = _asyncToGenerator__default( /*#__PURE__*/_regeneratorRuntime__default.mark(function _callee(callback) {
+    var _forEachKeys = _asyncToGenerator__default( /*#__PURE__*/_regeneratorRuntime__default().mark(function _callee(callback) {
       var _key;
 
-      return _regeneratorRuntime__default.wrap(function _callee$(_context) {
+      return _regeneratorRuntime__default().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
@@ -78,17 +72,15 @@ var AbstractCursor = /*#__PURE__*/function (_Symbol$iterator) {
   }();
 
   _proto.forEach = function forEach(callback) {
-    var _this2 = this;
-
     return this.forEachKeys(function () {
-      return _this2.result().then(function (result) {
+      return this.result().then(function (result) {
         return callback(result);
       });
     });
   };
 
-  _proto.keysIterator = /*#__PURE__*/_regeneratorRuntime__default.mark(function keysIterator() {
-    return _regeneratorRuntime__default.wrap(function keysIterator$(_context2) {
+  _proto.keysIterator = /*#__PURE__*/_regeneratorRuntime__default().mark(function keysIterator() {
+    return _regeneratorRuntime__default().wrap(function keysIterator$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
@@ -106,16 +98,14 @@ var AbstractCursor = /*#__PURE__*/function (_Symbol$iterator) {
       }
     }, keysIterator, this);
   });
-  _proto[_Symbol$iterator] = /*#__PURE__*/_regeneratorRuntime__default.mark(function _callee2() {
-    var _this3 = this;
-
+  _proto[_Symbol$iterator] = /*#__PURE__*/_regeneratorRuntime__default().mark(function _callee2() {
     var _iterator, _step, keyPromise;
 
-    return _regeneratorRuntime__default.wrap(function _callee2$(_context3) {
+    return _regeneratorRuntime__default().wrap(function _callee2$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _iterator = _createForOfIteratorHelperLoose(this.keysIterator());
+            _iterator = _createForOfIteratorHelperLoose__default(this.keysIterator());
 
           case 1:
             if ((_step = _iterator()).done) {
@@ -126,7 +116,7 @@ var AbstractCursor = /*#__PURE__*/function (_Symbol$iterator) {
             keyPromise = _step.value;
             _context3.next = 5;
             return keyPromise.then(function (key) {
-              return key && _this3.result();
+              return key && this.result();
             });
 
           case 5:

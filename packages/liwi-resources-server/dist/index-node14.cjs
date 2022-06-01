@@ -55,7 +55,7 @@ class ResourcesServerService {
 const logger = new nightingaleLogger.Logger('liwi:resources-websocket-client');
 
 const logUnexpectedError = (error, message, payload) => {
-  if ((process.env.NODE_ENV !== "production") || !(error instanceof liwiResources.ResourcesServerError)) {
+  if (process.env.NODE_ENV !== "production" || !(error instanceof liwiResources.ResourcesServerError)) {
     logger.error(message, {
       error,
       payload: !(process.env.NODE_ENV !== "production") ? 'redacted' : payload

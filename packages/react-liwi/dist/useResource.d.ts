@@ -1,4 +1,3 @@
-import 'pob-babel';
 import type { Query, QueryParams } from 'liwi-resources-client';
 import type { SetOptional } from 'liwi-types';
 import type { ResourceResult } from './createResourceResultFromState';

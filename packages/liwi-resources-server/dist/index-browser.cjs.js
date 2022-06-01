@@ -3,14 +3,14 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var liwiResources = require('liwi-resources');
+var _regeneratorRuntime = require('@babel/runtime/helpers/esm/regeneratorRuntime');
 var _asyncToGenerator = require('@babel/runtime/helpers/esm/asyncToGenerator');
-var _regeneratorRuntime = require('@babel/runtime/regenerator');
 var nightingaleLogger = require('nightingale-logger');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
 
-var _asyncToGenerator__default = /*#__PURE__*/_interopDefaultLegacy(_asyncToGenerator);
 var _regeneratorRuntime__default = /*#__PURE__*/_interopDefaultLegacy(_regeneratorRuntime);
+var _asyncToGenerator__default = /*#__PURE__*/_interopDefaultLegacy(_asyncToGenerator);
 
 // import ResourceServerCursor from './ResourceServerCursor';
 // import { CursorResource } from './CursorResource';
@@ -64,7 +64,7 @@ var ResourcesServerService = /*#__PURE__*/function () {
 var logger = new nightingaleLogger.Logger('liwi:resources-websocket-client');
 
 var logUnexpectedError = function logUnexpectedError(error, message, payload) {
-  if ((process.env.NODE_ENV !== "production") || !(error instanceof liwiResources.ResourcesServerError)) {
+  if (process.env.NODE_ENV !== "production" || !(error instanceof liwiResources.ResourcesServerError)) {
     logger.error(message, {
       error: error,
       payload: !(process.env.NODE_ENV !== "production") ? 'redacted' : payload
@@ -149,10 +149,10 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
       }
     },
     messageHandler: function () {
-      var _messageHandler = _asyncToGenerator__default( /*#__PURE__*/_regeneratorRuntime__default.mark(function _callee(message, subscriptionCallback) {
+      var _messageHandler = _asyncToGenerator__default( /*#__PURE__*/_regeneratorRuntime__default().mark(function _callee(message, subscriptionCallback) {
         var resource, query, _resource, _query, _resource2, _query2, _subscriptionId, _SubscriptionAndSubscribeHook, _resource3, _message$payload, operationKey, params, operation;
 
-        return _regeneratorRuntime__default.wrap(function _callee$(_context) {
+        return _regeneratorRuntime__default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:

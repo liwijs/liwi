@@ -10,7 +10,7 @@
   "engines": {
     "node": ">=14.13.1"
   },
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@3.2.1",
   "workspaces": [
     "packages/*",
     "@todo-example/*"
@@ -23,7 +23,8 @@
     "clean:build": "(rm -Rf packages/*/dist packages/*/build && rm -Rf @todo-example/*/dist @todo-example/*/build) || true",
     "lint": "yarn run lint:prettier && yarn run lint:eslint",
     "lint:eslint": "eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet .",
-    "lint:prettier": "prettier --check .",
+    "lint:prettier": "pob-root-prettier --check .",
+    "lint:prettier:fix": "pob-root-prettier --write .",
     "postinstall": "pob-root-postinstall",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "tsc": "tsc -b",
@@ -52,18 +53,18 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "7.17.9",
-    "@pob/commitlint-config": "4.1.0",
+    "@babel/core": "7.18.2",
+    "@pob/commitlint-config": "4.3.0",
     "@pob/eslint-config": "49.1.0",
-    "@pob/eslint-config-typescript": "49.2.1",
-    "@pob/eslint-config-typescript-react": "49.2.0",
-    "@pob/lerna-light": "5.1.0",
-    "@pob/root": "6.15.0",
-    "@types/jest": "27.4.1",
+    "@pob/eslint-config-typescript": "49.3.0",
+    "@pob/eslint-config-typescript-react": "49.3.1",
+    "@pob/lerna-light": "5.2.0",
+    "@pob/root": "6.20.0",
+    "@types/jest": "27.5.2",
     "check-package-dependencies": "3.5.2",
-    "eslint": "8.12.0",
-    "jest": "27.5.1",
-    "pob-babel": "32.2.0",
-    "typescript": "4.6.3"
+    "eslint": "8.16.0",
+    "jest": "28.1.0",
+    "pob-babel": "33.5.0",
+    "typescript": "4.7.2"
   }
 }

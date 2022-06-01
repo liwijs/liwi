@@ -15,11 +15,6 @@ const nextConfig = {
       `.web${ext}`,
       ext,
     ]);
-    config.plugins.push(
-      new context.webpack.DefinePlugin({
-        __POB_TARGET__: context.isServer ? '"node"' : '"browser"',
-      }),
-    );
 
     return config;
   },

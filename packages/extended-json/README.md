@@ -8,6 +8,10 @@
 
 <p align="center">
   <a href="https://npmjs.org/package/extended-json"><img src="https://img.shields.io/npm/v/extended-json.svg?style=flat-square"></a>
+  <a href="https://npmjs.org/package/extended-json"><img src="https://img.shields.io/npm/dw/extended-json.svg?style=flat-square"></a>
+  <a href="https://npmjs.org/package/extended-json"><img src="https://img.shields.io/node/v/extended-json.svg?style=flat-square"></a>
+  <a href="https://npmjs.org/package/extended-json"><img src="https://img.shields.io/npm/types/extended-json.svg?style=flat-square"></a>
+  <a href="https://codecov.io/gh/liwijs/liwi"><img src="https://img.shields.io/codecov/c/github/liwijs/liwi/master.svg?style=flat-square"></a>
 </p>
 
 ## Install

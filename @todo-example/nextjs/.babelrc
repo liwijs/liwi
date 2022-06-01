@@ -1,14 +1,3 @@
 {
-  "presets": ["next/babel"],
-  "plugins": [
-    [
-      "babel-plugin-discard-module-references",
-      {
-        "targets": [
-          // used to import typings
-          "pob-babel"
-        ]
-      }
-    ]
-  ]
+  "presets": ["@todo-example/nextjs-babel-config"]
 }

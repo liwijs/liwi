@@ -1,7 +1,7 @@
 import _extends from '@babel/runtime/helpers/esm/extends';
+import _regeneratorRuntime from '@babel/runtime/helpers/esm/regeneratorRuntime';
 import _asyncToGenerator from '@babel/runtime/helpers/esm/asyncToGenerator';
 import _createClass from '@babel/runtime/helpers/esm/createClass';
-import _regeneratorRuntime from '@babel/runtime/regenerator';
 
 /* eslint-disable max-lines */
 var SubscribeStore = /*#__PURE__*/function () {
@@ -14,11 +14,9 @@ var SubscribeStore = /*#__PURE__*/function () {
   var _proto = SubscribeStore.prototype;
 
   _proto.subscribe = function subscribe(callback) {
-    var _this = this;
-
     this.listeners.add(callback);
     return function () {
-      return _this.listeners["delete"](callback);
+      return this.listeners["delete"](callback);
     };
   };
 
@@ -53,9 +51,9 @@ var SubscribeStore = /*#__PURE__*/function () {
   };
 
   _proto.insertOne = /*#__PURE__*/function () {
-    var _insertOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(object) {
+    var _insertOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(object) {
       var inserted;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
@@ -84,9 +82,9 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.replaceOne = /*#__PURE__*/function () {
-    var _replaceOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2(object) {
+    var _replaceOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(object) {
       var replaced;
-      return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
@@ -115,9 +113,9 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.replaceSeveral = /*#__PURE__*/function () {
-    var _replaceSeveral = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee3(objects) {
+    var _replaceSeveral = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(objects) {
       var replacedObjects;
-      return _regeneratorRuntime.wrap(function _callee3$(_context3) {
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
@@ -148,9 +146,9 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.upsertOne = /*#__PURE__*/function () {
-    var _upsertOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee4(object, setOnInsertPartialObject) {
+    var _upsertOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(object, setOnInsertPartialObject) {
       var result;
-      return _regeneratorRuntime.wrap(function _callee4$(_context4) {
+      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
@@ -175,9 +173,9 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.upsertOneWithInfo = /*#__PURE__*/function () {
-    var _upsertOneWithInfo = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee5(object, setOnInsertPartialObject) {
+    var _upsertOneWithInfo = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(object, setOnInsertPartialObject) {
       var upsertedWithInfo;
-      return _regeneratorRuntime.wrap(function _callee5$(_context5) {
+      return _regeneratorRuntime().wrap(function _callee5$(_context5) {
         while (1) {
           switch (_context5.prev = _context5.next) {
             case 0:
@@ -219,10 +217,10 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.partialUpdateByKey = /*#__PURE__*/function () {
-    var _partialUpdateByKey = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee6(key, partialUpdate, criteria) {
+    var _partialUpdateByKey = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(key, partialUpdate, criteria) {
       var _extends2;
 
-      return _regeneratorRuntime.wrap(function _callee6$(_context6) {
+      return _regeneratorRuntime().wrap(function _callee6$(_context6) {
         while (1) {
           switch (_context6.prev = _context6.next) {
             case 0:
@@ -249,9 +247,9 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.partialUpdateOne = /*#__PURE__*/function () {
-    var _partialUpdateOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee7(object, partialUpdate) {
+    var _partialUpdateOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(object, partialUpdate) {
       var updated;
-      return _regeneratorRuntime.wrap(function _callee7$(_context7) {
+      return _regeneratorRuntime().wrap(function _callee7$(_context7) {
         while (1) {
           switch (_context7.prev = _context7.next) {
             case 0:
@@ -280,11 +278,11 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.partialUpdateMany = /*#__PURE__*/function () {
-    var _partialUpdateMany = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee9(criteria, partialUpdate) {
+    var _partialUpdateMany = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(criteria, partialUpdate) {
       var _this2 = this;
 
       var cursor, changes;
-      return _regeneratorRuntime.wrap(function _callee9$(_context9) {
+      return _regeneratorRuntime().wrap(function _callee9$(_context9) {
         while (1) {
           switch (_context9.prev = _context9.next) {
             case 0:
@@ -296,9 +294,9 @@ var SubscribeStore = /*#__PURE__*/function () {
               changes = [];
               _context9.next = 6;
               return cursor.forEach( /*#__PURE__*/function () {
-                var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee8(model) {
+                var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(model) {
                   var key, updated;
-                  return _regeneratorRuntime.wrap(function _callee8$(_context8) {
+                  return _regeneratorRuntime().wrap(function _callee8$(_context8) {
                     while (1) {
                       switch (_context8.prev = _context8.next) {
                         case 0:
@@ -343,8 +341,8 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.deleteByKey = /*#__PURE__*/function () {
-    var _deleteByKey = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee10(key, criteria) {
-      return _regeneratorRuntime.wrap(function _callee10$(_context10) {
+    var _deleteByKey = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(key, criteria) {
+      return _regeneratorRuntime().wrap(function _callee10$(_context10) {
         while (1) {
           switch (_context10.prev = _context10.next) {
             case 0:
@@ -370,8 +368,8 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.deleteOne = /*#__PURE__*/function () {
-    var _deleteOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee11(object) {
-      return _regeneratorRuntime.wrap(function _callee11$(_context11) {
+    var _deleteOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(object) {
+      return _regeneratorRuntime().wrap(function _callee11$(_context11) {
         while (1) {
           switch (_context11.prev = _context11.next) {
             case 0:
@@ -398,9 +396,9 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.deleteMany = /*#__PURE__*/function () {
-    var _deleteMany = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee12(criteria) {
+    var _deleteMany = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(criteria) {
       var cursor, prev;
-      return _regeneratorRuntime.wrap(function _callee12$(_context12) {
+      return _regeneratorRuntime().wrap(function _callee12$(_context12) {
         while (1) {
           switch (_context12.prev = _context12.next) {
             case 0:
@@ -437,8 +435,8 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.count = /*#__PURE__*/function () {
-    var _count = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee13(criteria) {
-      return _regeneratorRuntime.wrap(function _callee13$(_context13) {
+    var _count = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(criteria) {
+      return _regeneratorRuntime().wrap(function _callee13$(_context13) {
         while (1) {
           switch (_context13.prev = _context13.next) {
             case 0:
@@ -458,9 +456,9 @@ var SubscribeStore = /*#__PURE__*/function () {
   }();
 
   _proto.cursor = /*#__PURE__*/function () {
-    var _cursor = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee14(criteria, sort) {
+    var _cursor = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(criteria, sort) {
       var cursor;
-      return _regeneratorRuntime.wrap(function _callee14$(_context14) {
+      return _regeneratorRuntime().wrap(function _callee14$(_context14) {
         while (1) {
           switch (_context14.prev = _context14.next) {
             case 0:
