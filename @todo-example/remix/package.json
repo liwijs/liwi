@@ -32,7 +32,7 @@
     "todomvc-common": "1.0.5"
   },
   "devDependencies": {
-    "@remix-run/dev": "1.2.3",
+    "@remix-run/dev": "1.5.1",
     "@remix-run/eslint-config": "1.2.3",
     "@types/react": "17.0.45",
     "@types/react-dom": "17.0.17",
