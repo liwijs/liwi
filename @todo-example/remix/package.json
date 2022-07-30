@@ -26,7 +26,7 @@
     "react-alp-connection-state": "6.1.0",
     "react-dom": "^17.0.2",
     "react-liwi": "9.0.0",
-    "react-native": "npm:react-native-web@0.17.7",
+    "react-native": "npm:react-native-web@0.18.7",
     "remix": "^1.2.3",
     "todomvc-app-css": "2.4.2",
     "todomvc-common": "1.0.5"
