@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/node": "17.0.15",
-    "@types/react": "17.0.47",
+    "@types/react": "17.0.48",
     "@types/react-native": "0.69.4",
     "next-compose-plugins": "2.2.1",
     "next-transpile-modules": "9.0.0",
