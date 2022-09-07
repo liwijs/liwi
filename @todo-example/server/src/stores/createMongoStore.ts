@@ -6,8 +6,13 @@ export { createMongoSubscribeStore } from 'liwi-mongo';
 
 type DbConfig = Map<'mongodb', Map<string, string | number>>;
 
+const mongoConfig = config.get<DbConfig>('db').get('mongodb');
+if (!mongoConfig) throw new Error('Invalid mongo config (db.mongodb)');
+
+if (process.env.MONGO_PORT) mongoConfig.set('port', process.env.MONGO_PORT);
+
 export const mongoConnection: MongoConnection = new MongoConnection(
-  config.get<DbConfig>('db').get('mongodb')!,
+  mongoConfig,
 );
 
 export const createMongoStore = <Model extends MongoBaseModel>(

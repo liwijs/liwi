@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Info from './components/Info';
-import Main from './components/Main';
-import { NewTaskForm } from './components/NewTaskForm';
-import Paginated from './components/Paginated';
+import Info from '../components/Info';
+import Main from '../components/Main';
+import { NewTaskForm } from '../components/NewTaskForm';
+import Paginated from '../components/Paginated';
 
 const Home: NextPage = () => {
   return (
