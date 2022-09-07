@@ -5,7 +5,20 @@ import withTM from 'next-transpile-modules';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: { esmExternals: true },
+  // eslint code checking is done outside nextjs
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  // typescript code checking is done outside nextjs
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  experimental: {
+    esmExternals: true,
+    images: {
+      unoptimized: true,
+    },
+  },
   webpack: (config, context) => {
     config.resolve.alias = {
       ...config.resolve.alias,
