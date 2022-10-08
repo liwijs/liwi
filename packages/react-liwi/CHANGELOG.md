@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.1.0](https://github.com/liwijs/liwi/compare/v9.0.0...v9.1.0) (2022-10-08)
+
+
+### Bug Fixes
+
+* fix not subscribing when skip is true ([cd346e7](https://github.com/liwijs/liwi/commit/cd346e7f5afdd31b593cc36b21bcb2401cd46231))
+* update dev dependencies, fix ts remix, fix next babel config ([fadb30e](https://github.com/liwijs/liwi/commit/fadb30e9620fbbcb99cfbc6a7db78d9ef2dad5e2))
+
+
+
+
+
 # [9.0.0](https://github.com/liwijs/liwi/compare/v8.3.1...v9.0.0) (2022-03-05)
 
 

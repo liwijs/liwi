@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.1.0](https://github.com/liwijs/liwi/compare/v9.0.0...v9.1.0) (2022-10-08)
+
+
+### Bug Fixes
+
+* add missing keyof Model in $pull operator ([47062d9](https://github.com/liwijs/liwi/commit/47062d9e4b9bfb3d55adae8aeb77ac8abd04dc20))
+* add missing keyof Model in $push operator ([be7f0e1](https://github.com/liwijs/liwi/commit/be7f0e1e4da40b035528c94ebe98a373135ac066))
+* **liwi-types:** fix Criteria generic in Criteria ([4e3ed4d](https://github.com/liwijs/liwi/commit/4e3ed4d63f3267b5c2770ade8ceab1b2a5b64b48))
+
+
+
+
+
 # [9.0.0](https://github.com/liwijs/liwi/compare/v8.3.1...v9.0.0) (2022-03-05)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-server",
-  "version": "9.0.0",
+  "version": "9.1.0",
   "description": "resources server for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -86,9 +86,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.19.0",
-    "extended-json": "9.0.0",
-    "liwi-resources": "9.0.0",
-    "liwi-types": "9.0.0",
+    "extended-json": "9.1.0",
+    "liwi-resources": "9.1.0",
+    "liwi-types": "9.1.0",
     "nightingale-logger": "^12.1.4"
   },
   "devDependencies": {

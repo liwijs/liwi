@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.1.0](https://github.com/liwijs/liwi/compare/v9.0.0...v9.1.0) (2022-10-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency react-native-web to v0.17.7 ([#32](https://github.com/liwijs/liwi/issues/32)) ([4ff8199](https://github.com/liwijs/liwi/commit/4ff81994b5c3462e376382a9aea8e1d86463a382))
+* update dev dependencies, fix ts remix, fix next babel config ([fadb30e](https://github.com/liwijs/liwi/commit/fadb30e9620fbbcb99cfbc6a7db78d9ef2dad5e2))
+
+
+### Features
+
+* add example with remix ([9d1e631](https://github.com/liwijs/liwi/commit/9d1e631f4bc178258f3d888eb0c673e41f1e98ef))
+* **deps:** update dependency next to v12.2.5 ([#77](https://github.com/liwijs/liwi/issues/77)) ([f7d5650](https://github.com/liwijs/liwi/commit/f7d5650317bbbb010638e42777d0924f34914c36))
+* **deps:** update dependency react-native to v0.18.7 ([#68](https://github.com/liwijs/liwi/issues/68)) ([b7ddc9a](https://github.com/liwijs/liwi/commit/b7ddc9a60a5a09cc2ba77950842c0bfd4348cdb8))
+
+
+
+
+
 # [9.0.0](https://github.com/liwijs/liwi/compare/v8.3.1...v9.0.0) (2022-03-05)
 
 
