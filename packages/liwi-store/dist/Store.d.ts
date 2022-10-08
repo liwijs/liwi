@@ -17,7 +17,7 @@ export interface Store<KeyPath extends keyof Model, KeyValue extends AllowedKeyV
     findByKey: (key: KeyValue, criteria?: Criteria<Model>) => Promise<Model | undefined>;
     findOne: (criteria: Criteria<Model>, sort?: Sort<Model>) => Promise<Model | undefined>;
     count: (criteria?: Criteria<Model>) => Promise<number>;
-    cursor: <Result = Model>(criteria?: Criteria<Model>, sort?: Sort<Model>) => Promise<AbstractStoreCursor<any, KeyValue, Model, Result>>;
+    cursor: <Result extends Partial<Model> = Model>(criteria?: Criteria<Model>, sort?: Sort<Model>) => Promise<AbstractStoreCursor<any, KeyValue, Model, Result>>;
     insertOne: (object: ModelInsertType) => Promise<Model>;
     replaceOne: (object: Model) => Promise<Model>;
     replaceSeveral: (objects: Model[]) => Promise<Model[]>;

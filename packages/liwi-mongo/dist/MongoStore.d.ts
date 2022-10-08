@@ -30,7 +30,7 @@ export default class MongoStore<Model extends MongoBaseModel<KeyValue>, KeyValue
     deleteOne(object: Model): Promise<void>;
     deleteMany(selector: Criteria<Model>): Promise<void>;
     count(filter?: Criteria<Model>): Promise<number>;
-    cursor<Result = Model>(filter?: Criteria<Model>, sort?: Sort<Model>): Promise<MongoCursor<Model, Result, KeyValue>>;
+    cursor<Result extends Partial<Model> = Model>(filter?: Criteria<Model>, sort?: Sort<Model>): Promise<MongoCursor<Model, Result, KeyValue>>;
     findByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<Model | undefined>;
     findAll(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<Model[]>;
     findOne(filter: Criteria<Model>, sort?: Sort<Model>): Promise<Model | undefined>;

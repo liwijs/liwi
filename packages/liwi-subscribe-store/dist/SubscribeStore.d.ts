@@ -36,6 +36,6 @@ export default class SubscribeStore<KeyPath extends keyof Model, KeyValue extend
     deleteOne(object: Model): Promise<void>;
     deleteMany(criteria: Criteria<Model>): Promise<void>;
     count(criteria?: Criteria<Model>): Promise<number>;
-    cursor<Result = Model>(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<AbstractStoreCursor<any, KeyValue, Model, Result>>;
+    cursor<Result extends Partial<Model> = Model>(criteria?: Criteria<Model>, sort?: Sort<Model>): Promise<AbstractStoreCursor<any, KeyValue, Model, Result>>;
 }
 //# sourceMappingURL=SubscribeStore.d.ts.map
