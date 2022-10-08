@@ -1,5 +1,5 @@
 import { useMemo, useState, useCallback, createContext, useContext, useEffect } from 'react';
-import { jsx } from 'react/jsx-runtime.js';
+import { jsx } from 'react/jsx-runtime';
 export { ResourcesServerError } from 'liwi-resources-client';
 
 function useResource(createQuery, {

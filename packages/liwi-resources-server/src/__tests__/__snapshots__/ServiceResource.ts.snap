@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should transpile without error on simple queries 1`] = `
-Object {
-  "diagnostics": Array [],
-  "outputText": "\\"use strict\\";
-Object.defineProperty(exports, \\"__esModule\\", { value: true });
+{
+  "diagnostics": [],
+  "outputText": ""use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsResource1 = void 0;
 exports.postsResource1 = {
     queries: {

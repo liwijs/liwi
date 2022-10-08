@@ -6,7 +6,7 @@
   },
   "plugins": ["@typescript-eslint"],
   "extends": [
-    "@pob/eslint-config-typescript",
+    "@pob/eslint-config-typescript/app",
     "@pob/eslint-config-typescript/node"
   ],
   "settings": {

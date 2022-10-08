@@ -21,16 +21,12 @@
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs",
     "clean": "yarn clean:build",
-    "clean:build": "rm -Rf build",
+    "clean:build": "pob-babel-clean-out build",
     "lint": "yarn run lint:eslint",
     "lint:eslint": "cd ../.. && yarn run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/server",
     "start": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
-  "prettier": {
-    "trailingComma": "all",
-    "singleQuote": true,
-    "arrowParens": "always"
-  },
+  "prettier": "@pob/root/prettier-config",
   "pob": {
     "babelEnvs": [
       {
@@ -54,10 +50,10 @@
     "nightingale-app-console": "^12.1.4"
   },
   "devDependencies": {
-    "@babel/core": "7.18.10",
+    "@babel/core": "7.19.3",
     "alp-rollup-plugin-config": "1.0.2",
-    "pob-babel": "33.5.0",
+    "pob-babel": "34.2.0",
     "rollup-plugin-copy": "3.4.0",
-    "typescript": "4.7.4"
+    "typescript": "4.8.4"
   }
 }

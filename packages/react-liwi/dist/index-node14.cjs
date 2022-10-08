@@ -3,7 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const react = require('react');
-const jsxRuntime_js = require('react/jsx-runtime.js');
+const jsxRuntime = require('react/jsx-runtime');
 const liwiResourcesClient = require('liwi-resources-client');
 
 function useResource(createQuery, {
@@ -99,11 +99,11 @@ function TransportClientProvider({
       client.close();
     };
   }, [client]);
-  return /*#__PURE__*/jsxRuntime_js.jsx(TransportClientContext.Provider, {
+  return /*#__PURE__*/jsxRuntime.jsx(TransportClientContext.Provider, {
     value: client,
-    children: /*#__PURE__*/jsxRuntime_js.jsx(TransportClientStateContext.Provider, {
+    children: /*#__PURE__*/jsxRuntime.jsx(TransportClientStateContext.Provider, {
       value: connectionState,
-      children: /*#__PURE__*/jsxRuntime_js.jsx(TransportClientReadyContext.Provider, {
+      children: /*#__PURE__*/jsxRuntime.jsx(TransportClientReadyContext.Provider, {
         value: connectionState === 'connected',
         children: children
       })

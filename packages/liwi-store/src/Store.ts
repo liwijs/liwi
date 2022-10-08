@@ -67,7 +67,7 @@ export interface Store<
 
   count: (criteria?: Criteria<Model>) => Promise<number>;
 
-  cursor: <Result = Model>(
+  cursor: <Result extends Partial<Model> = Model>(
     criteria?: Criteria<Model>,
     sort?: Sort<Model>,
   ) => Promise<AbstractStoreCursor<any, KeyValue, Model, Result>>;

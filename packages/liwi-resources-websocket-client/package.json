@@ -49,16 +49,12 @@
     "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
     "build:definitions": "tsc -p tsconfig.build.json",
     "clean": "yarn clean:build",
-    "clean:build": "rm -Rf dist",
+    "clean:build": "pob-babel-clean-out dist",
     "lint": "yarn run lint:eslint",
     "lint:eslint": "cd ../.. && yarn run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet packages/liwi-resources-websocket-client",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
-  "prettier": {
-    "trailingComma": "all",
-    "singleQuote": true,
-    "arrowParens": "always"
-  },
+  "prettier": "@pob/root/prettier-config",
   "pob": {
     "babelEnvs": [
       {
@@ -89,7 +85,7 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.18.3",
+    "@babel/runtime": "^7.19.0",
     "backo2": "^1.0.2",
     "extended-json": "9.0.0",
     "liwi-resources-client": "9.0.0",
@@ -97,11 +93,11 @@
     "nightingale-logger": "^12.1.4"
   },
   "devDependencies": {
-    "@babel/core": "7.18.10",
-    "@babel/preset-env": "7.18.10",
+    "@babel/core": "7.19.3",
+    "@babel/preset-env": "7.19.3",
     "@types/backo2": "1.0.1",
     "babel-preset-modern-browsers": "15.0.2",
-    "pob-babel": "33.5.0",
-    "typescript": "4.7.4"
+    "pob-babel": "34.2.0",
+    "typescript": "4.8.4"
   }
 }

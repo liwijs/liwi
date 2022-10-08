@@ -252,7 +252,7 @@ export default class SubscribeStore<
     return this.store.count(criteria);
   }
 
-  async cursor<Result = Model>(
+  async cursor<Result extends Partial<Model> = Model>(
     criteria?: Criteria<Model>,
     sort?: Sort<Model>,
   ): Promise<AbstractStoreCursor<any, KeyValue, Model, Result>> {

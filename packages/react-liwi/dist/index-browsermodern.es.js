@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback, useReducer, useMemo } from 'react';
-import { jsx } from 'react/jsx-runtime.js';
+import { jsx } from 'react/jsx-runtime';
 import { Logger } from 'nightingale-logger';
 import { Lazy } from 'mingo/lazy.js';
 import { $sort } from 'mingo/operators/pipeline/sort.js';

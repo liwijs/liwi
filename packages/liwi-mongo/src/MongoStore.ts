@@ -258,7 +258,7 @@ export default class MongoStore<
       : collection.countDocuments();
   }
 
-  async cursor<Result = Model>(
+  async cursor<Result extends Partial<Model> = Model>(
     filter?: Criteria<Model>,
     sort?: Sort<Model>,
   ): Promise<MongoCursor<Model, Result, KeyValue>> {

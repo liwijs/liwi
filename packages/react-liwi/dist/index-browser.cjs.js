@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var react = require('react');
 var _objectWithoutPropertiesLoose = require('@babel/runtime/helpers/esm/objectWithoutPropertiesLoose');
-var jsxRuntime_js = require('react/jsx-runtime.js');
+var jsxRuntime = require('react/jsx-runtime');
 var _extends = require('@babel/runtime/helpers/esm/extends');
 var nightingaleLogger = require('nightingale-logger');
 var lazy_js = require('mingo/lazy.js');
@@ -48,11 +48,11 @@ function TransportClientProvider(_ref) {
       client.close();
     };
   }, [client]);
-  return /*#__PURE__*/jsxRuntime_js.jsx(TransportClientContext.Provider, {
+  return /*#__PURE__*/jsxRuntime.jsx(TransportClientContext.Provider, {
     value: client,
-    children: /*#__PURE__*/jsxRuntime_js.jsx(TransportClientStateContext.Provider, {
+    children: /*#__PURE__*/jsxRuntime.jsx(TransportClientStateContext.Provider, {
       value: connectionState,
-      children: /*#__PURE__*/jsxRuntime_js.jsx(TransportClientReadyContext.Provider, {
+      children: /*#__PURE__*/jsxRuntime.jsx(TransportClientReadyContext.Provider, {
         value: connectionState === 'connected',
         children: children
       })

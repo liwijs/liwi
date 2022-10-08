@@ -1,10 +1,6 @@
 {
   "search.exclude": {
-    "**/.yarn": true,
-    "**/dist": true,
-    "**/build": true,
-    "**/public": true,
-    "**/node_modules": true
+    "**/.yarn": true
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,

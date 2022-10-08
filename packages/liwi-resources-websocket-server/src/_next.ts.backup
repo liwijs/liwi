@@ -1,6 +1,5 @@
 /* eslint-disable complexity */
 import { PRODUCTION } from 'pob-babel';
-// eslint-disable-next-line import/no-unresolved, import/extensions
 import { Server, Socket } from 'socket.io';
 import { RestService } from 'liwi-rest';
 import { Logger } from 'nightingale-logger';

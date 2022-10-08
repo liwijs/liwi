@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback, useReducer, useMemo } from 'react';
 import _objectWithoutPropertiesLoose from '@babel/runtime/helpers/esm/objectWithoutPropertiesLoose';
-import { jsx } from 'react/jsx-runtime.js';
+import { jsx } from 'react/jsx-runtime';
 import _extends from '@babel/runtime/helpers/esm/extends';
 import { Logger } from 'nightingale-logger';
 import { Lazy } from 'mingo/lazy.js';

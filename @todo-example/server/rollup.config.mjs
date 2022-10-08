@@ -1,3 +1,5 @@
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import config from 'alp-rollup-plugin-config';
 import createRollupConfig from 'pob-babel/createRollupConfig.js';
 import run from 'pob-babel/plugin-run.cjs';
@@ -5,7 +7,7 @@ import run from 'pob-babel/plugin-run.cjs';
 const watch = process.env.ROLLUP_WATCH === 'true';
 
 export default createRollupConfig({
-  cwd: new URL('.', import.meta.url).pathname,
+  cwd: dirname(fileURLToPath(import.meta.url)),
   outDirectory: 'build',
   plugins: [
     config({
