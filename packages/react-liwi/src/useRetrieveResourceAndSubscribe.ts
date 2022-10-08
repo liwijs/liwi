@@ -207,7 +207,7 @@ export function useRetrieveResourceAndSubscribe<
             false,
           );
 
-          if (!document.hidden) {
+          if (!document.hidden && !skipRef.current) {
             subscribe();
           }
         }),

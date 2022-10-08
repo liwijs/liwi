@@ -513,7 +513,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
         handleVisibilityChangeRef.current = handleVisibilityChange;
         document.addEventListener('visibilitychange', handleVisibilityChange, false);
 
-        if (!document.hidden) {
+        if (!document.hidden && !skipRef.current) {
           subscribe();
         }
       })
