@@ -33,7 +33,6 @@
       "@todo-example/babel-preset-nextjs-babel-config",
       "@todo-example/modules",
       "@todo-example/nextjs",
-      "@todo-example/remix",
       "@todo-example/server",
       "extended-json",
       "liwi",
@@ -68,10 +67,6 @@
     {
       "name": "@todo-example/nextjs",
       "path": "../@todo-example/nextjs"
-    },
-    {
-      "name": "@todo-example/remix",
-      "path": "../@todo-example/remix"
     },
     {
       "name": "@todo-example/server",

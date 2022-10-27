@@ -29,7 +29,6 @@ This repository is a monorepo that we manage using [Lerna](https://github.com/le
 | [@todo-example/babel-preset-nextjs-babel-config](@todo-example/babel-preset-nextjs-babel-config) |                                                                                                                                                                        |
 | [@todo-example/modules](@todo-example/modules)                                                   |                                                                                                                                                                        |
 | [@todo-example/nextjs](@todo-example/nextjs)                                                     |                                                                                                                                                                        |
-| [@todo-example/remix](@todo-example/remix)                                                       |                                                                                                                                                                        |
 | [@todo-example/server](@todo-example/server)                                                     |                                                                                                                                                                        |
 
 ## Install
