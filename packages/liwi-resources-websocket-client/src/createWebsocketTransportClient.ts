@@ -130,13 +130,11 @@ export default function createResourcesWebsocketClient({
         return () => {};
       },
       send: (type, message) => {
-        const p = new Promise(() => {});
-        return p as any;
+        throw new Error('Cannot work on SSR.');
       },
 
       subscribe: (type, messageWithoutSubscriptionId, callback) => {
-        const p = new Promise(() => {});
-        return p as any;
+        throw new Error('Cannot work on SSR.');
       },
     };
   }
@@ -235,9 +233,11 @@ export default function createResourcesWebsocketClient({
 
   const resourcesClient: TransportClient = {
     connect: () => {
+      logger.debug('connect');
       wsClient.connect();
     },
     close: () => {
+      logger.debug('close');
       wsClient.close();
     },
     listenStateChange: wsClient.listenStateChange,

@@ -245,12 +245,10 @@ function createResourcesWebsocketClient(_ref2) {
         return function () {};
       },
       send: function send() {
-        var p = new Promise(function () {});
-        return p;
+        throw new Error('Cannot work on SSR.');
       },
       subscribe: function subscribe() {
-        var p = new Promise(function () {});
-        return p;
+        throw new Error('Cannot work on SSR.');
       }
     };
   }
@@ -379,9 +377,11 @@ function createResourcesWebsocketClient(_ref2) {
 
   var resourcesClient = {
     connect: function connect() {
+      logger.debug('connect');
       wsClient.connect();
     },
     close: function close() {
+      logger.debug('close');
       wsClient.close();
     },
     listenStateChange: wsClient.listenStateChange,

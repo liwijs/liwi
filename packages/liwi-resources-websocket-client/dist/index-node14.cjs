@@ -240,12 +240,10 @@ function createResourcesWebsocketClient({
         return () => {};
       },
       send: () => {
-        const p = new Promise(() => {});
-        return p;
+        throw new Error('Cannot work on SSR.');
       },
       subscribe: () => {
-        const p = new Promise(() => {});
-        return p;
+        throw new Error('Cannot work on SSR.');
       }
     };
   }
@@ -348,9 +346,11 @@ function createResourcesWebsocketClient({
 
   const resourcesClient = {
     connect: () => {
+      logger.debug('connect');
       wsClient.connect();
     },
     close: () => {
+      logger.debug('close');
       wsClient.close();
     },
     listenStateChange: wsClient.listenStateChange,
