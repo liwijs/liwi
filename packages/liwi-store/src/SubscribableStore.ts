@@ -1,14 +1,14 @@
+import type AbstractConnection from './AbstractConnection';
+import type { QueryParams } from './Query';
+import type { Store } from './Store';
+import type { SubscribableStoreQuery } from './SubscribableStoreQuery';
 import type {
   BaseModel,
   InsertType,
   QueryOptions,
   Transformer,
   AllowedKeyValue,
-} from 'liwi-types';
-import type AbstractConnection from './AbstractConnection';
-import type { QueryParams } from './Query';
-import type { Store } from './Store';
-import type { SubscribableStoreQuery } from './SubscribableStoreQuery';
+} from './types';
 
 export interface SubscribableStore<
   KeyPath extends keyof Model,

@@ -1,6 +1,6 @@
-import type { AllowedKeyValue, BaseModel } from 'liwi-types';
 import type { Query, QueryParams } from './Query';
 import type { SubscribableStore } from './SubscribableStore';
+import type { AllowedKeyValue, BaseModel } from './types';
 
 export interface SubscribableStoreQuery<
   KeyPath extends keyof Model,

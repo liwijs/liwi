@@ -11,24 +11,29 @@
     "emitDeclarationOnly": true,
     "outDir": "node_modules/.cache/tsc",
     "tsBuildInfoFile": "node_modules/.cache/tsc/tsbuildinfo",
+
     /* No need to check .d.ts files */
     "skipLibCheck": true,
+
     "target": "esnext" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */,
     "module": "esnext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
     "lib": [
       "dom",
       "esnext"
     ] /* Polyfills are imported either by babel or with polyfill.io */,
-    "jsx": "preserve" /* 'react-jsx' is used with react/jsx-runtime (react >=17 || >= 16.14.0 | >= 15.7.0) */,
+    "jsx": "react-jsx" /* 'react-jsx' is used with react/jsx-runtime (react >=17 || >= 16.14.0 | >= 15.7.0) */,
     "isolatedModules": true /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */,
+
     /* Enable all strict type-checking options. */
     "strict": true,
+
     /* Additional Checks */
     "noUnusedLocals": true /* Report errors on unused locals. */,
     "noUnusedParameters": false /* Report errors on unused parameters. */,
     "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
     "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
     "forceConsistentCasingInFileNames": true,
+
     /* Module Resolution Options */
     "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
     "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
@@ -36,6 +41,12 @@
     "resolveJsonModule": true,
     "baseUrl": "./src" /* Base directory to resolve non-absolute module names. */,
     "paths": {
+      "@todo-example/babel-preset-nextjs-babel-config": [
+        "../../../@todo-example/babel-preset-nextjs-babel-config/lib"
+      ],
+      "@todo-example/babel-preset-nextjs-babel-config/*": [
+        "../../../@todo-example/babel-preset-nextjs-babel-config/lib/*"
+      ],
       "@todo-example/modules": ["../../../@todo-example/modules/src"],
       "@todo-example/modules/*": ["../../../@todo-example/modules/src/*"],
       "liwi-resources-void-client": [
@@ -52,22 +63,12 @@
       ],
       "react-liwi": ["../../../packages/react-liwi/src"],
       "react-liwi/*": ["../../../packages/react-liwi/src/*"]
-    },
-    "allowJs": true
+    }
   },
   "references": [
-    {
-      "path": "../../@todo-example/modules/tsconfig.json"
-    },
-    {
-      "path": "../../packages/liwi-resources-void-client/tsconfig.json"
-    },
-    {
-      "path": "../../packages/liwi-resources-websocket-client/tsconfig.json"
-    },
-    {
-      "path": "../../packages/react-liwi/tsconfig.json"
-    }
-  ],
-  "exclude": ["node_modules"]
+    { "path": "../../@todo-example/modules/tsconfig.json" },
+    { "path": "../../packages/liwi-resources-void-client/tsconfig.json" },
+    { "path": "../../packages/liwi-resources-websocket-client/tsconfig.json" },
+    { "path": "../../packages/react-liwi/tsconfig.json" }
+  ]
 }

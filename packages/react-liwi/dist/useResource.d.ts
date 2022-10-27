@@ -1,5 +1,5 @@
 import type { Query, QueryParams } from 'liwi-resources-client';
-import type { SetOptional } from 'liwi-types';
+import type { SetOptional } from 'liwi-store';
 import type { ResourceResult } from './createResourceResultFromState';
 import type { UseResourceAndSubscribeOptions } from './useRetrieveResourceAndSubscribe';
 interface UseResourceOptionsRequiredParams<Params extends QueryParams<Params>> {

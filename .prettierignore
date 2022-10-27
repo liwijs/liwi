@@ -5,12 +5,8 @@ CHANGELOG.md
 /packages/*/.next
 /packages/*/out
 /packages/*/.env.local
-/packages/*/.cache
-/packages/*/public/build
 /@todo-example/*/dist
 /@todo-example/*/build
 /@todo-example/*/.next
 /@todo-example/*/out
 /@todo-example/*/.env.local
-/@todo-example/*/.cache
-/@todo-example/*/public/build

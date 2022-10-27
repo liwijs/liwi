@@ -39,8 +39,6 @@
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     "baseUrl": "./src" /* Base directory to resolve non-absolute module names. */,
     "paths": {
-      "liwi-types": ["../../../packages/liwi-types/lib"],
-      "liwi-types/*": ["../../../packages/liwi-types/lib/*"],
       "liwi-store": ["../../../packages/liwi-store/src"],
       "liwi-store/*": ["../../../packages/liwi-store/src/*"],
       "liwi-subscribe-store": ["../../../packages/liwi-subscribe-store/src"],
@@ -48,7 +46,6 @@
     }
   },
   "references": [
-    { "path": "../../packages/liwi-types/tsconfig.json" },
     { "path": "../../packages/liwi-store/tsconfig.json" },
     { "path": "../../packages/liwi-subscribe-store/tsconfig.json" }
   ]

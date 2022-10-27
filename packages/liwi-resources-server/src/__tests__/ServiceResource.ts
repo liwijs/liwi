@@ -2,7 +2,7 @@ import ts from 'typescript';
 
 const common = `
 import { OperationDescription, QueryDescription } from 'liwi-resources';
-import { BaseModel } from 'liwi-types';
+import { BaseModel } from 'liwi-store';
 import ServiceResource from '../ServiceResource';
 
 interface Post extends BaseModel {

@@ -4,8 +4,6 @@ import type {
   SubscribableStore,
   QueryParams,
   UpsertPartialObject,
-} from 'liwi-store';
-import type {
   Criteria,
   Sort,
   Update,
@@ -13,7 +11,7 @@ import type {
   Transformer,
   AllowedKeyValue,
   OptionalBaseModelKeysForInsert,
-} from 'liwi-types';
+} from 'liwi-store';
 import type {
   Collection,
   FindCursor,

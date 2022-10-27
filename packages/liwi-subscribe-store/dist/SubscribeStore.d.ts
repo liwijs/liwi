@@ -1,5 +1,4 @@
-import type { Store as StoreInterface, AbstractConnection, UpsertResult, SubscribableStoreQuery, AbstractStoreCursor, SubscribableStore, QueryParams, UpsertPartialObject } from 'liwi-store';
-import type { BaseModel, InsertType, Update, Criteria, Sort, QueryOptions, Transformer, AllowedKeyValue, OptionalBaseModelKeysForInsert } from 'liwi-types';
+import type { Store as StoreInterface, AbstractConnection, UpsertResult, SubscribableStoreQuery, AbstractStoreCursor, SubscribableStore, QueryParams, UpsertPartialObject, BaseModel, InsertType, Update, Criteria, Sort, QueryOptions, Transformer, AllowedKeyValue, OptionalBaseModelKeysForInsert } from 'liwi-store';
 export declare type Actions<Model> = {
     type: 'inserted';
     next: Model[];

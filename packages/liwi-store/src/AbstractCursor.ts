@@ -1,4 +1,4 @@
-import type { BaseModel } from 'liwi-types';
+import type { BaseModel } from './types';
 
 export default abstract class AbstractCursor<
   Model extends BaseModel,

@@ -1,4 +1,4 @@
-import type { BaseModel } from 'liwi-types';
+import type { BaseModel } from './types';
 export default abstract class AbstractCursor<Model extends BaseModel, Result extends Partial<Model> = Model> {
     abstract close(): Promise<void> | void;
     abstract next(): Promise<any>;

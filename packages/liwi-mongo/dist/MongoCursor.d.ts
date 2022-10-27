@@ -1,5 +1,5 @@
 import { AbstractStoreCursor } from 'liwi-store';
-import type { AllowedKeyValue } from 'liwi-types';
+import type { AllowedKeyValue } from 'liwi-store';
 import type { FindCursor } from 'mongodb';
 import type { MongoBaseModel } from './MongoBaseModel';
 import type MongoStore from './MongoStore';

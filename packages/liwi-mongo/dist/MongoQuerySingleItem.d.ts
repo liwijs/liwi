@@ -1,6 +1,5 @@
-import type { QuerySubscription, SubscribeCallback, QueryResult, QueryParams } from 'liwi-store';
+import type { QuerySubscription, SubscribeCallback, QueryResult, QueryParams, QueryOptions, Transformer, AllowedKeyValue } from 'liwi-store';
 import { AbstractSubscribableStoreQuery } from 'liwi-subscribe-store';
-import type { QueryOptions, Transformer, AllowedKeyValue } from 'liwi-types';
 import type { MongoBaseModel, MongoInsertType, MongoKeyPath } from './MongoBaseModel';
 import type MongoStore from './MongoStore';
 declare type TestCriteria = (obj: any) => boolean;

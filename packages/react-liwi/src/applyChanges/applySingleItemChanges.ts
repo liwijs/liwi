@@ -1,4 +1,4 @@
-import type { Change, Changes, QueryInfo, QueryMeta } from 'liwi-types';
+import type { Change, Changes, QueryInfo, QueryMeta } from 'liwi-store';
 
 const applySingleItemChange = <Value extends Record<keyof Value, any>>(
   state: Value | null,

@@ -2,8 +2,6 @@ export { default as AbstractConnection } from './AbstractConnection';
 export { default as AbstractCursor } from './AbstractCursor';
 export { default as AbstractStoreCursor } from './AbstractStoreCursor';
 
-export type { Update } from 'liwi-types';
-
 export type { InternalCommonStoreClient } from './InternalCommonStoreClient';
 
 export type { SubscribableStore } from './SubscribableStore';
@@ -16,7 +14,7 @@ export type {
   QuerySubscription,
   QueryParams,
   QueryResult,
-  QueryMeta,
-  QueryInfo,
   SubscribeCallback,
 } from './Query';
+
+export * from './types';

@@ -1,5 +1,4 @@
-import type { BaseModel, Changes, Fields, Criteria, Sort, AllowedKeyValue, QueryMeta, QueryInfo } from 'liwi-types';
-export type { QueryMeta, QueryInfo } from 'liwi-types';
+import type { BaseModel, Changes, Fields, Criteria, Sort, AllowedKeyValue, QueryMeta, QueryInfo } from './types';
 export interface QueryOptions<Model extends BaseModel> {
     fields?: Fields<Model>;
     criteria?: Criteria<Model>;

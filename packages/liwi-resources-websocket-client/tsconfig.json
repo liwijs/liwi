@@ -42,8 +42,6 @@
     "paths": {
       "extended-json": ["../../../packages/extended-json/src"],
       "extended-json/*": ["../../../packages/extended-json/src/*"],
-      "liwi-types": ["../../../packages/liwi-types/lib"],
-      "liwi-types/*": ["../../../packages/liwi-types/lib/*"],
       "liwi-resources-client": ["../../../packages/liwi-resources-client/src"],
       "liwi-resources-client/*": [
         "../../../packages/liwi-resources-client/src/*"
@@ -52,7 +50,6 @@
   },
   "references": [
     { "path": "../../packages/extended-json/tsconfig.json" },
-    { "path": "../../packages/liwi-types/tsconfig.json" },
     { "path": "../../packages/liwi-resources-client/tsconfig.json" }
   ]
 }

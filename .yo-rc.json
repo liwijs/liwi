@@ -11,7 +11,6 @@
         "@todo-example/babel-preset-nextjs-babel-config",
         "extended-json",
         "liwi",
-        "liwi-types",
         "liwi-store",
         "liwi-resources",
         "liwi-subscribe-store",

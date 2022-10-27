@@ -1,4 +1,4 @@
-import type { Changes, QueryInfo, QueryMeta } from 'liwi-types';
+import type { Changes, QueryInfo, QueryMeta } from 'liwi-store';
 
 export type ApplyChanges<Result, Value> = (
   state: undefined | Result,

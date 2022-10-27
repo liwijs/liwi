@@ -4,8 +4,10 @@ import type {
   QuerySubscription,
   QueryResult,
   QueryParams,
+  BaseModel,
+  InsertType,
+  AllowedKeyValue,
 } from 'liwi-store';
-import type { BaseModel, InsertType, AllowedKeyValue } from 'liwi-types';
 import type SubscribeStore from './SubscribeStore';
 
 export default abstract class AbstractSubscribableStoreQuery<

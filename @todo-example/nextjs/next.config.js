@@ -38,7 +38,6 @@ export default withPlugins(
     withTM([
       'extended-json',
       'liwi',
-      'liwi-types',
       'liwi-store',
       'liwi-resources',
       'liwi-subscribe-store',

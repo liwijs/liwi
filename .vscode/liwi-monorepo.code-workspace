@@ -47,7 +47,6 @@
       "liwi-resources-websocket-server",
       "liwi-store",
       "liwi-subscribe-store",
-      "liwi-types",
       "react-liwi"
     ]
   },
@@ -123,10 +122,6 @@
     {
       "name": "liwi-subscribe-store",
       "path": "../packages/liwi-subscribe-store"
-    },
-    {
-      "name": "liwi-types",
-      "path": "../packages/liwi-types"
     },
     {
       "name": "react-liwi",

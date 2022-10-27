@@ -4,7 +4,7 @@ import { Namespace, Server, Socket } from 'socket.io';
 import { ResourcesServerService, SubscribeHook } from 'liwi-resources-server';
 import { Logger } from 'nightingale-logger';
 import { encode, decode } from 'extended-json';
-import { ResourceOperationKey } from 'liwi-types';
+import { ResourceOperationKey } from 'liwi-store';
 import { SubscribeResult } from 'liwi-store';
 
 const logger = new Logger('liwi:rest-websocket');

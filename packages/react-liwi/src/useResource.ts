@@ -1,6 +1,6 @@
 import { POB_TARGET } from 'pob-babel';
 import type { Query, QueryParams } from 'liwi-resources-client';
-import type { SetOptional } from 'liwi-types';
+import type { SetOptional } from 'liwi-store';
 import type { ResourceResult } from './createResourceResultFromState';
 import { useRetrieveResource } from './useRetrieveResource';
 import type { UseResourceAndSubscribeOptions } from './useRetrieveResourceAndSubscribe';

@@ -8,8 +8,6 @@ import type {
   SubscribableStore,
   QueryParams,
   UpsertPartialObject,
-} from 'liwi-store';
-import type {
   BaseModel,
   InsertType,
   Update,
@@ -19,7 +17,7 @@ import type {
   Transformer,
   AllowedKeyValue,
   OptionalBaseModelKeysForInsert,
-} from 'liwi-types';
+} from 'liwi-store';
 
 export type Actions<Model> =
   | { type: 'inserted'; next: Model[] }
@@ -199,7 +197,10 @@ export default class SubscribeStore<
     criteria?: Criteria<Model>,
   ): Promise<Model> {
     return this.partialUpdateOne(
-      (await this.findOne({ [this.store.keyPath]: key, ...criteria }))!,
+      (await this.findOne({
+        [this.store.keyPath]: key,
+        ...criteria,
+      } as Criteria<Model>))!,
       partialUpdate,
     );
   }

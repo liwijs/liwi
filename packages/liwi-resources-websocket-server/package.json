@@ -89,7 +89,6 @@
     "extended-json": "9.1.0",
     "liwi-resources-server": "9.1.0",
     "liwi-store": "9.1.0",
-    "liwi-types": "9.1.0",
     "nightingale-logger": "^12.1.4",
     "ws": "^8.4.2"
   },
@@ -98,7 +97,7 @@
     "@babel/preset-env": "7.19.3",
     "@types/ws": "8.5.3",
     "babel-preset-modern-browsers": "15.0.2",
-    "pob-babel": "34.2.0",
+    "pob-babel": "34.3.0",
     "typescript": "4.8.4"
   },
   "optionalDependencies": {

@@ -3,6 +3,7 @@ import { createVoidTransportClient } from 'liwi-resources-void-client';
 import type { WebsocketTransportClientOptions } from 'liwi-resources-websocket-client';
 import { createWebsocketTransportClient } from 'liwi-resources-websocket-client';
 import type { AppProps } from 'next/app';
+import { appLogger } from 'nightingale-app-console';
 import type { ReactElement } from 'react';
 import { ConnectionState } from 'react-alp-connection-state';
 import {
@@ -11,7 +12,6 @@ import {
   useTransportClientState,
 } from 'react-liwi';
 import { TodoServicesProvider } from 'app/services/TodoServicesProvider';
-import { appLogger } from 'nightingale-app-console';
 
 appLogger.debug('Loading _app.tsx');
 

@@ -1,5 +1,5 @@
 import { AbstractCursor } from 'liwi-store';
-import { BaseModel, QueryOptions } from 'liwi-types';
+import { BaseModel, QueryOptions } from 'liwi-store';
 import Client from './Client';
 
 export default class ClientCursor<

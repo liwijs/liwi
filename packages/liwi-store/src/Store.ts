@@ -1,3 +1,7 @@
+import type AbstractConnection from './AbstractConnection';
+import type AbstractStoreCursor from './AbstractStoreCursor';
+import type { InternalCommonStoreClient } from './InternalCommonStoreClient';
+import type { Query, QueryParams } from './Query';
 import type {
   BaseModel,
   Criteria,
@@ -9,11 +13,7 @@ import type {
   AllowedKeyValue,
   SetOptional,
   OptionalBaseModelKeysForInsert,
-} from 'liwi-types';
-import type AbstractConnection from './AbstractConnection';
-import type AbstractStoreCursor from './AbstractStoreCursor';
-import type { InternalCommonStoreClient } from './InternalCommonStoreClient';
-import type { Query, QueryParams } from './Query';
+} from './types';
 
 export type UpsertPartialObject<
   KeyPath extends keyof Model,

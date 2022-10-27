@@ -4,8 +4,9 @@
   "parserOptions": {
     "project": "@todo-example/nextjs/tsconfig.eslint.json"
   },
-  "plugins": ["@typescript-eslint", "import"],
+  "plugins": ["@typescript-eslint"],
   "extends": [
+    "@pob/eslint-config-typescript",
     "@pob/eslint-config-typescript/app",
     "@pob/eslint-config-typescript-react/react-native-web"
   ],
@@ -30,6 +31,21 @@
     {
       "files": ["**/*.test.{ts,tsx}", "__tests__/**/*.{ts,tsx}"],
       "extends": ["@pob/eslint-config-typescript/test"]
+    },
+    {
+      "files": ["**/*.test.{ts,tsx}", "__tests__/**/*.{ts,tsx}"],
+      "extends": ["@pob/eslint-config-typescript/test"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ]
+      }
     }
   ]
 }

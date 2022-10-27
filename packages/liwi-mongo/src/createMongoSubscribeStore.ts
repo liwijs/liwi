@@ -1,5 +1,5 @@
+import type { AllowedKeyValue } from 'liwi-store';
 import { SubscribeStore } from 'liwi-subscribe-store';
-import type { AllowedKeyValue } from 'liwi-types';
 import type {
   MongoBaseModel,
   MongoInsertType,

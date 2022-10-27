@@ -4,7 +4,7 @@ import type {
   QueryMeta,
   ResourcesServerError,
 } from 'liwi-resources-client';
-import type { QueryInfo } from 'liwi-types';
+import type { QueryInfo } from 'liwi-store';
 import type { State } from './reducer';
 
 export interface ResourceResultInitialLoading<

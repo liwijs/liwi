@@ -3,15 +3,13 @@ import type {
   SubscribeCallback,
   QueryResult,
   QueryParams,
-} from 'liwi-store';
-import type { Actions } from 'liwi-subscribe-store';
-import { AbstractSubscribableStoreQuery } from 'liwi-subscribe-store';
-import type {
   Changes,
   QueryOptions,
   Transformer,
   AllowedKeyValue,
-} from 'liwi-types';
+} from 'liwi-store';
+import type { Actions } from 'liwi-subscribe-store';
+import { AbstractSubscribableStoreQuery } from 'liwi-subscribe-store';
 import mingo from 'mingo';
 import type {
   MongoBaseModel,

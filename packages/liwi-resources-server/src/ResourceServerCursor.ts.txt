@@ -1,5 +1,5 @@
 import { AbstractStoreCursor } from 'liwi-store';
-import { BaseModel, AllowedKeyValue } from 'liwi-types';
+import { BaseModel, AllowedKeyValue } from 'liwi-store';
 import { CursorResource } from './CursorResource';
 
 export default class ResourceServerCursor<

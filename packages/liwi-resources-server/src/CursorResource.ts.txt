@@ -1,4 +1,4 @@
-import { BaseModel, Criteria, Sort } from 'liwi-types';
+import { BaseModel, Criteria, Sort } from 'liwi-store';
 import { Store } from 'liwi-store';
 
 export interface CursorResource<

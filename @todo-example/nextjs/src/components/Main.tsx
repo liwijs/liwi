@@ -46,7 +46,7 @@ export default function Main(): ReactElement | null {
       case '#/completed':
         return completedTasks;
       default:
-        return !tasksResourceResult.data ? [] : tasksResourceResult.data;
+        return tasksResourceResult.data || [];
     }
   }, [activeTasks, completedTasks, hash, tasksResourceResult.data]);
 
