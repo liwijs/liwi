@@ -4,22 +4,32 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "TODO Example - App Start",
+      "label": "TODO Example - Nextjs App Start",
       "command": "yarn",
       "args": ["start"],
-      "group": "build",
+      "presentation": {
+        "panel": "dedicated",
+        "group": "start",
+        "clear": true
+      },
       "options": {
         "cwd": "${workspaceFolder}/@todo-example/nextjs"
-      }
+      },
+      "problemMatcher": []
     },
     {
       "label": "TODO Example - Server Start",
       "command": "yarn",
       "args": ["start"],
-      "group": "build",
+      "presentation": {
+        "panel": "dedicated",
+        "group": "start",
+        "clear": true
+      },
       "options": {
         "cwd": "${workspaceFolder}/@todo-example/server"
-      }
+      },
+      "problemMatcher": []
     },
     {
       "label": "TODO Example - Start",
