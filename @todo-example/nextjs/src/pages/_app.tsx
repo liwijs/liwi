@@ -11,6 +11,9 @@ import {
   useTransportClientState,
 } from 'react-liwi';
 import { TodoServicesProvider } from 'app/services/TodoServicesProvider';
+import { appLogger } from 'nightingale-app-console';
+
+appLogger.debug('Loading _app.tsx');
 
 function AppConnectionState(): ReactElement {
   const transportClientState = useTransportClientState();

@@ -43,37 +43,41 @@ export default function Paginated({
       </div>
       {tasksResourceResult.initialLoading ? (
         'Loading...'
-      ) : tasksResourceResult.initialError ? (
-        'Error!'
       ) : (
         <>
           {tasksResourceResult.error ? <b>Error!</b> : null}
-          <ul>
-            {tasksResourceResult.data.map((task) => (
-              <li key={task._id}>{task.label}</li>
-            ))}
-          </ul>
-          Total: {tasksResourceResult.meta.total} ; Page: {page}
-          {tasksResourceResult.pagination.totalPages > 1 ? (
-            <div>
-              {Array.from({ length: tasksResourceResult.pagination.totalPages })
-                .fill(null)
-                .map((v, i) => {
-                  return (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <span key={i}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setPage(i + 1);
-                        }}
-                      >
-                        {i + 1}
-                      </button>{' '}
-                    </span>
-                  );
-                })}
-            </div>
+          {tasksResourceResult.data ? (
+            <>
+              <ul>
+                {tasksResourceResult.data.map((task) => (
+                  <li key={task._id}>{task.label}</li>
+                ))}
+              </ul>
+              Total: {tasksResourceResult.meta.total} ; Page: {page}
+              {tasksResourceResult.pagination.totalPages > 1 ? (
+                <div>
+                  {Array.from({
+                    length: tasksResourceResult.pagination.totalPages,
+                  })
+                    .fill(null)
+                    .map((v, i) => {
+                      return (
+                        // eslint-disable-next-line react/no-array-index-key
+                        <span key={i}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPage(i + 1);
+                            }}
+                          >
+                            {i + 1}
+                          </button>{' '}
+                        </span>
+                      );
+                    })}
+                </div>
+              ) : null}
+            </>
           ) : null}
         </>
       )}

@@ -4,7 +4,7 @@ import withTM from 'next-transpile-modules';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false, // TODO to enable
   // eslint code checking is done outside nextjs
   eslint: {
     ignoreDuringBuilds: true,

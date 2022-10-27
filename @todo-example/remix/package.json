@@ -17,16 +17,15 @@
   "dependencies": {
     "@remix-run/react": "1.6.0",
     "@remix-run/serve": "1.6.0",
-    "@todo-example/modules": "9.0.0",
+    "@todo-example/modules": "9.1.0",
     "classnames": "2.3.1",
-    "cross-env": "^7.0.3",
-    "liwi-resources-void-client": "9.0.0",
-    "liwi-resources-websocket-client": "9.0.0",
-    "react": "^17.0.2",
-    "react-alp-connection-state": "6.1.0",
-    "react-dom": "^17.0.2",
-    "react-liwi": "9.0.0",
-    "react-native": "npm:react-native-web@0.18.7",
+    "liwi-resources-void-client": "9.1.0",
+    "liwi-resources-websocket-client": "9.1.0",
+    "react": "18.2.0",
+    "react-alp-connection-state": "6.2.1",
+    "react-dom": "18.2.0",
+    "react-liwi": "9.1.0",
+    "react-native": "npm:react-native-web@0.18.9",
     "remix": "^1.2.3",
     "todomvc-app-css": "2.4.2",
     "todomvc-common": "1.0.5"
@@ -36,6 +35,7 @@
     "@remix-run/eslint-config": "1.2.3",
     "@types/react": "17.0.48",
     "@types/react-dom": "17.0.17",
+    "cross-env": "7.0.3",
     "eslint": "8.25.0",
     "typescript": "4.8.4"
   }
