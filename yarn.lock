@@ -3186,7 +3186,7 @@ __metadata:
     mongodb-memory-server: 8.9.1
     next: 13.0.0
     next-compose-plugins: 2.2.1
-    next-transpile-modules: 9.0.0
+    next-transpile-modules: 9.1.0
     nightingale-app-console: 12.1.4
     react: 18.2.0
     react-alp-connection-state: 6.2.1
@@ -5788,13 +5788,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.7.0":
-  version: 5.8.3
-  resolution: "enhanced-resolve@npm:5.8.3"
+"enhanced-resolve@npm:^5.10.0":
+  version: 5.10.0
+  resolution: "enhanced-resolve@npm:5.10.0"
   dependencies:
     graceful-fs: ^4.2.4
     tapable: ^2.2.0
-  checksum: d79fbe531106448b768bb0673fb623ec0202d7ee70373ab7d4f4745d5dfe0806f38c9db7e7da8c941288fe475ab3d538db3791fce522056eeea40ca398c9e287
+  checksum: 0bb9830704db271610f900e8d79d70a740ea16f251263362b0c91af545576d09fe50103496606c1300a05e588372d6f9780a9bc2e30ce8ef9b827ec8f44687ff
   languageName: node
   linkType: hard
 
@@ -9455,13 +9455,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-transpile-modules@npm:9.0.0":
-  version: 9.0.0
-  resolution: "next-transpile-modules@npm:9.0.0"
+"next-transpile-modules@npm:9.1.0":
+  version: 9.1.0
+  resolution: "next-transpile-modules@npm:9.1.0"
   dependencies:
-    enhanced-resolve: ^5.7.0
+    enhanced-resolve: ^5.10.0
     escalade: ^3.1.1
-  checksum: 9a5d86d80cedc2404b2b1d5bd4994f2f7bf60e5e20f24e8cc5cfec34da1418b4a439916f37a95ca336bcf6d81094c3647354ac6a0c6737b3df59e62b6380507d
+  checksum: 8cc46196db3c2d2063fb29fe5b4d03c21065ab08130085b24d61e4ed512d99c12083d28179771cf02f70f8bf5970db0781a228aacf6cc61662dbdcabaddfc472
   languageName: node
   linkType: hard
 
