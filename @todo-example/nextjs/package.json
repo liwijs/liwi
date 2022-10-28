@@ -23,7 +23,7 @@
     "classnames": "2.3.2",
     "liwi-resources-void-client": "9.1.0",
     "liwi-resources-websocket-client": "9.1.0",
-    "next": "12.2.5",
+    "next": "13.0.0",
     "nightingale-app-console": "12.1.4",
     "react": "18.2.0",
     "react-alp-connection-state": "6.2.1",
@@ -40,7 +40,7 @@
     "@types/react-native": "0.70.6",
     "mongodb-memory-server": "8.9.1",
     "next-compose-plugins": "2.2.1",
-    "next-transpile-modules": "9.0.0",
+    "next-transpile-modules": "9.1.0",
     "springbokjs-daemon": "8.1.0",
     "typescript": "4.8.4"
   }
