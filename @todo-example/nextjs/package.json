@@ -38,7 +38,7 @@
     "@types/node": "17.0.15",
     "@types/react": "18.0.21",
     "@types/react-native": "0.70.6",
-    "mongodb-memory-server": "8.9.1",
+    "mongodb-memory-server": "8.9.3",
     "next-compose-plugins": "2.2.1",
     "next-transpile-modules": "9.1.0",
     "springbokjs-daemon": "8.1.0",

@@ -3183,7 +3183,7 @@ __metadata:
     classnames: 2.3.2
     liwi-resources-void-client: 9.1.0
     liwi-resources-websocket-client: 9.1.0
-    mongodb-memory-server: 8.9.1
+    mongodb-memory-server: 8.9.3
     next: 13.0.0
     next-compose-plugins: 2.2.1
     next-transpile-modules: 9.1.0
@@ -9328,9 +9328,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb-memory-server-core@npm:8.9.1":
-  version: 8.9.1
-  resolution: "mongodb-memory-server-core@npm:8.9.1"
+"mongodb-memory-server-core@npm:8.9.3":
+  version: 8.9.3
+  resolution: "mongodb-memory-server-core@npm:8.9.3"
   dependencies:
     "@types/tmp": ^0.2.3
     async-mutex: ^0.3.2
@@ -9348,17 +9348,17 @@ __metadata:
     tslib: ^2.4.0
     uuid: ^8.3.1
     yauzl: ^2.10.0
-  checksum: 2610c90f66803046af993907ecbebbac6cdd1b5b653ecfc56e185f668a1bc46c21d5c64b65caa81fe8488831cb64156fbbab7fea5d43407ef175f08fa928493b
+  checksum: 2a8669253bd5fcb4431c013db41e4afed68d56a57002e45dde1f6a894ae79cfb237c09408b1aa5c15306b6db296ee4bbf0568313cd708f096266e925732a2665
   languageName: node
   linkType: hard
 
-"mongodb-memory-server@npm:8.9.1":
-  version: 8.9.1
-  resolution: "mongodb-memory-server@npm:8.9.1"
+"mongodb-memory-server@npm:8.9.3":
+  version: 8.9.3
+  resolution: "mongodb-memory-server@npm:8.9.3"
   dependencies:
-    mongodb-memory-server-core: 8.9.1
+    mongodb-memory-server-core: 8.9.3
     tslib: ^2.4.0
-  checksum: d594ca8c389a643a32d8b3e453ebd837b7a089c4e8401532f9e760a6e049fc5e6253ff8b28616df45d3c39251f65b972d92c0ba15b70d3daf6996ec1f92634fe
+  checksum: a3181256ba987d2c78f45632242e4aa71e1b4d7c95c3330315fa56c38e15f75874a90adaea54591b25d817d0e9da65da55908e2c883258655ccb7a03ba8a9448
   languageName: node
   linkType: hard
 
