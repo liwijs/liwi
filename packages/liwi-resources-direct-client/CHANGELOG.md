@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.2.0](https://github.com/liwijs/liwi/compare/v9.1.0...v9.2.0) (2022-10-29)
+
+**Note:** Version bump only for package liwi-resources-direct-client
+
+
+
+
+
 # [9.1.0](https://github.com/liwijs/liwi/compare/v9.0.0...v9.1.0) (2022-10-08)
 
 

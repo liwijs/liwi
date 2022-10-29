@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.2.0](https://github.com/liwijs/liwi/compare/v9.1.0...v9.2.0) (2022-10-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency classnames to v2.3.2 ([#102](https://github.com/liwijs/liwi/issues/102)) ([51b5ed2](https://github.com/liwijs/liwi/commit/51b5ed27d027789eeaf4db3e1957096f8d66fda4))
+
+
+### Features
+
+* update to nextjs 13 ([6c0b136](https://github.com/liwijs/liwi/commit/6c0b136090645f6c66a94305cd86c6f3bcfe3849))
+* update to react 18 ([1c8ea60](https://github.com/liwijs/liwi/commit/1c8ea60004d01fee8ca784f1e10213ff69835015))
+
+
+
+
+
 # [9.1.0](https://github.com/liwijs/liwi/compare/v9.0.0...v9.1.0) (2022-10-08)
 
 

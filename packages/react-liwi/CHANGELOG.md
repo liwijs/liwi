@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.2.0](https://github.com/liwijs/liwi/compare/v9.1.0...v9.2.0) (2022-10-29)
+
+
+### Features
+
+* update to react 18 ([1c8ea60](https://github.com/liwijs/liwi/commit/1c8ea60004d01fee8ca784f1e10213ff69835015))
+
+
+
+
+
 # [9.1.0](https://github.com/liwijs/liwi/compare/v9.0.0...v9.1.0) (2022-10-08)
 
 

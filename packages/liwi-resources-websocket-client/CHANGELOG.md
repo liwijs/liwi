@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.2.0](https://github.com/liwijs/liwi/compare/v9.1.0...v9.2.0) (2022-10-29)
+
+
+### Bug Fixes
+
+* **liwi-resources-websocket-client:** throw on ssr to avoid leaks ([871c668](https://github.com/liwijs/liwi/commit/871c668d0a25065c067a737326a5f94f21db2c60))
+
+
+
+
+
 # [9.1.0](https://github.com/liwijs/liwi/compare/v9.0.0...v9.1.0) (2022-10-08)
 
 
