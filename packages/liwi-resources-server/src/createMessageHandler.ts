@@ -36,10 +36,16 @@ const logUnexpectedError = (
   message: string,
   payload: unknown,
 ): void => {
-  if (__DEV__ || !(error instanceof ResourcesServerError)) {
+  if (!(error instanceof ResourcesServerError)) {
     logger.error(message, {
       error,
       payload: !__DEV__ ? 'redacted' : payload,
+    });
+  } else if (__DEV__) {
+    logger.info(`ResourcesServerError in ${message}`, {
+      code: error.code,
+      message: error.message,
+      payload,
     });
   }
 };

@@ -64,10 +64,16 @@ var ResourcesServerService = /*#__PURE__*/function () {
 var logger = new nightingaleLogger.Logger('liwi:resources-websocket-client');
 
 var logUnexpectedError = function logUnexpectedError(error, message, payload) {
-  if (process.env.NODE_ENV !== "production" || !(error instanceof liwiResources.ResourcesServerError)) {
+  if (!(error instanceof liwiResources.ResourcesServerError)) {
     logger.error(message, {
       error: error,
       payload: !(process.env.NODE_ENV !== "production") ? 'redacted' : payload
+    });
+  } else if (process.env.NODE_ENV !== "production") {
+    logger.info("ResourcesServerError in " + message, {
+      code: error.code,
+      message: error.message,
+      payload: payload
     });
   }
 };

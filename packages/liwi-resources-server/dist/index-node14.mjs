@@ -52,10 +52,16 @@ class ResourcesServerService {
 const logger = new Logger('liwi:resources-websocket-client');
 
 const logUnexpectedError = (error, message, payload) => {
-  if (process.env.NODE_ENV !== "production" || !(error instanceof ResourcesServerError)) {
+  if (!(error instanceof ResourcesServerError)) {
     logger.error(message, {
       error,
       payload: !(process.env.NODE_ENV !== "production") ? 'redacted' : payload
+    });
+  } else if (process.env.NODE_ENV !== "production") {
+    logger.info(`ResourcesServerError in ${message}`, {
+      code: error.code,
+      message: error.message,
+      payload
     });
   }
 };
