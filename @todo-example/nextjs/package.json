@@ -36,7 +36,7 @@
   "devDependencies": {
     "@playwright/test": "1.27.1",
     "@types/node": "18.11.9",
-    "@types/react": "18.0.24",
+    "@types/react": "18.0.25",
     "@types/react-native": "0.70.6",
     "mongodb-memory-server": "8.9.3",
     "next-compose-plugins": "2.2.1",
