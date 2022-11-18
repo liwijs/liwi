@@ -56,7 +56,7 @@ describe('test e2e', () => {
     daemonServer = createDaemon({
       command: process.argv0,
       cwd: cwdServer,
-      args: ['build/index-node14.mjs'],
+      args: ['build/index-node16.mjs'],
       env: {
         NODE_ENV: 'test',
         MONGO_PORT: String(mongod.instanceInfo?.port),

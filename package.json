@@ -48,6 +48,12 @@
       ".tsx"
     ]
   },
+  "resolutions": {
+    "next@13.0.3": "patch:next@npm%3A13.0.3#./.yarn/patches/next-npm-13.0.3-fb87a1424a.patch"
+  },
+  "resolutionsExplained": {
+    "next@13.0.3": "Patch next to prevent it to change tsconfig.json"
+  },
   "devDependencies": {
     "@babel/core": "7.20.2",
     "@pob/commitlint-config": "5.1.0",

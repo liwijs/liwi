@@ -16,9 +16,9 @@ const nextConfig = {
   experimental: {
     appDir: false,
     esmExternals: true,
-    images: {
-      unoptimized: true,
-    },
+  },
+  images: {
+    unoptimized: true,
   },
   webpack: (config, context) => {
     config.resolve.alias = {
