@@ -6,7 +6,7 @@
   "license": "ISC",
   "type": "module",
   "engines": {
-    "node": "^14.13.1 || >=16.0.0"
+    "node": ">=16.0.0"
   },
   "browserslist": [
     "defaults",
@@ -15,14 +15,14 @@
     "not safari < 10",
     "not ios_saf < 10"
   ],
-  "main": "./build/index-node14.mjs",
+  "main": "./build/index-node16.mjs",
   "module": "./build/index-browser.es.js",
   "browser": "./build/index-browser.es.js",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "node": {
-        "import": "./build/index-node14.mjs"
+        "import": "./build/index-node16.mjs"
       },
       "browser": {
         "browser:modern": {
@@ -32,14 +32,12 @@
       }
     }
   },
-  "module:node": "./build/index-node14.mjs",
-  "module:modern-browsers": "./build/index-browsermodern.es.js",
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs",
     "clean": "yarn clean:build",
     "clean:build": "pob-babel-clean-out build",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "cd ../.. && yarn run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/modules",
+    "lint:eslint": "yarn ../.. run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/modules",
     "start": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "prettier": "@pob/root/prettier-config",
@@ -47,23 +45,14 @@
     "babelEnvs": [
       {
         "target": "node",
-        "version": "14",
-        "formats": [
-          "es"
-        ]
+        "version": "16"
       },
       {
         "target": "browser",
-        "version": "modern",
-        "formats": [
-          "es"
-        ]
+        "version": "modern"
       },
       {
-        "target": "browser",
-        "formats": [
-          "es"
-        ]
+        "target": "browser"
       }
     ],
     "entries": [
@@ -75,10 +64,10 @@
     "liwi-resources-client": "9.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.19.3",
-    "@babel/preset-env": "7.19.3",
+    "@babel/core": "7.20.2",
+    "@babel/preset-env": "7.20.2",
     "babel-preset-modern-browsers": "15.0.2",
-    "pob-babel": "34.3.0",
-    "typescript": "4.8.4"
+    "pob-babel": "35.3.0",
+    "typescript": "4.9.3"
   }
 }

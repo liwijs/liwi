@@ -4,19 +4,20 @@
   "version": "9.1.0",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "engines": {
-    "node": "^14.13.1 || >=16.0.0"
+    "node": ">=16.0.0"
   },
-  "main": "./lib/index.js",
+  "main": "./lib/index.cjs",
   "exports": {
-    ".": "./lib/index.js",
+    ".": "./lib/index.cjs",
     "./package.json": "./package.json"
   },
   "sideEffects": false,
   "scripts": {
+    "clean:build": "true",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "cd ../.. && yarn run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/babel-preset-nextjs-babel-config"
+    "lint:eslint": "yarn ../.. run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/babel-preset-nextjs-babel-config"
   },
   "prettier": "@pob/root/prettier-config",
   "pob": {}

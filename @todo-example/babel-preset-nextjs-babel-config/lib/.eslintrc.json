@@ -1,6 +1,6 @@
 {
   "root": true,
-  "extends": ["@pob/eslint-config/node-commonjs"],
+  "extends": ["@pob/eslint-config/node-module"],
   "overrides": [
     {
       "files": ["**/*.test.{cjs,js}", "__tests__/**/*.{cjs,js}"],

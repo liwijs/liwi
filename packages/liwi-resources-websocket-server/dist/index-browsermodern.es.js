@@ -11,7 +11,6 @@ const createWsServer = (server, path, resourcesServerService, getAuthenticatedUs
   });
   wss.on('connection', (ws, authenticatedUser) => {
     ws.isAlive = true;
-
     const sendMessage = (type, id, error, result) => {
       if (!id) throw new Error('Invalid id');
       logger.debug('sendMessage', {
@@ -22,7 +21,6 @@ const createWsServer = (server, path, resourcesServerService, getAuthenticatedUs
       });
       ws.send(encode([type, id, error, result]));
     };
-
     const createSafeError = error => {
       if (error instanceof ResourcesServerError) {
         return {
@@ -30,27 +28,22 @@ const createWsServer = (server, path, resourcesServerService, getAuthenticatedUs
           message: error.message
         };
       }
-
       logger.error(error);
       return {
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Internal Server Error'
       };
     };
-
     const sendAck = (id, error, result) => {
       sendMessage('ack', id, error && createSafeError(error), result);
     };
-
     const sendSubscriptionMessage = (subscriptionId, error, result) => {
       sendMessage('subscription', subscriptionId, error && createSafeError(error), result);
     };
-
     const {
       messageHandler,
       close
     } = createMessageHandler(resourcesServerService, authenticatedUser, true);
-
     const handleDecodedMessage = message => {
       if (message.id == null) {
         return messageHandler(message, sendSubscriptionMessage).then(() => {});
@@ -62,7 +55,6 @@ const createWsServer = (server, path, resourcesServerService, getAuthenticatedUs
         });
       }
     };
-
     ws.on('pong', () => {
       ws.isAlive = true;
     });
@@ -80,26 +72,24 @@ const createWsServer = (server, path, resourcesServerService, getAuthenticatedUs
       });
     });
     ws.on('message', (data, isBinary) => {
-      if (isBinary) return; // eslint-disable-next-line @typescript-eslint/no-base-to-string
+      if (isBinary) return;
 
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       const message = data.toString();
       if (message === 'close') return;
-
       if (typeof message !== 'string') {
         logger.warn('got non string message');
         return;
       }
-
       const decoded = decode(message);
-
       try {
         const [type, id, payload] = decoded;
         logger.debug('received', {
           type,
           id,
           payload
-        }); // eslint-disable-next-line @typescript-eslint/no-floating-promises
-
+        });
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         handleDecodedMessage({
           type,
           id,
@@ -112,29 +102,28 @@ const createWsServer = (server, path, resourcesServerService, getAuthenticatedUs
       }
     });
     ws.send('connection-ack');
-  }); // https://www.npmjs.com/package/ws#how-to-detect-and-close-broken-connections
+  });
 
+  // https://www.npmjs.com/package/ws#how-to-detect-and-close-broken-connections
   const interval = setInterval(() => {
     wss.clients.forEach(ws => {
       const extWs = ws;
-
       if (!extWs.isAlive) {
         ws.terminate();
         return;
       }
-
       extWs.isAlive = false;
       ws.ping(null, undefined);
     });
   }, 60000);
-
   const handleUpgrade = (request, socket, upgradeHead) => {
     if (request.url !== path) return;
     const authenticatedUserPromise = Promise.resolve(getAuthenticatedUser(request));
     wss.handleUpgrade(request, socket, upgradeHead, ws => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       authenticatedUserPromise.catch(err => {
-        logger.warn('getAuthenticatedUser threw an error, return null instead.', // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        logger.warn('getAuthenticatedUser threw an error, return null instead.',
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         {
           err
         });
@@ -144,22 +133,17 @@ const createWsServer = (server, path, resourcesServerService, getAuthenticatedUs
       });
     });
   };
-
   server.on('upgrade', handleUpgrade);
   return {
     wss,
-
     close() {
       wss.close();
-
       for (const ws of wss.clients) {
         ws.terminate();
       }
-
       server.removeListener('upgrade', handleUpgrade);
       clearInterval(interval);
     }
-
   };
 };
 

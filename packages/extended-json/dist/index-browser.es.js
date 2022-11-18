@@ -9,31 +9,29 @@
  * @return {string}
  */
 function stringify(value, replacer, space) {
-  return JSON.stringify(value, // replacer == null ? internalReplacer : (key, value) => replacer(key, internalReplacer(value)),
+  return JSON.stringify(value,
+  // replacer == null ? internalReplacer : (key, value) => replacer(key, internalReplacer(value)),
   replacer, space);
 }
 
-var regexpStringDate = // eslint-disable-next-line unicorn/no-unsafe-regex
+var regexpStringDate =
+// eslint-disable-next-line unicorn/no-unsafe-regex
 /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
-
 var internalReviver = function internalReviver(key, value) {
   if (typeof value === 'string') {
     var matchDate = regexpStringDate.exec(value);
-
     if (matchDate) {
       return new Date(Date.UTC(+matchDate[1], +matchDate[2] - 1, +matchDate[3], +matchDate[4], +matchDate[5], +matchDate[6]));
     }
   }
-
   return value;
 };
+
 /**
  * @param  {string}   text      The string to parse as JSON
  * @param  {function} [reviver] If a function, prescribes how the value originally produced by parsing is transformed, before being returned
  * @return {*}
  */
-
-
 function parse(text, reviver) {
   return JSON.parse(text, reviver == null ? internalReviver : function (key, value) {
     return reviver(key, internalReviver(key, value));

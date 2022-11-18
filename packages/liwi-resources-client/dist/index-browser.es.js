@@ -10,17 +10,13 @@ var ClientQuery = /*#__PURE__*/function () {
     this.key = key;
     this.params = params;
   }
-
   var _proto = ClientQuery.prototype;
-
   _proto.changeParams = function changeParams(params) {
     this.params = params;
   };
-
   _proto.changePartialParams = function changePartialParams(params) {
     this.params = _extends({}, this.params, params);
   };
-
   _proto.getTransportPayload = function getTransportPayload() {
     return {
       resourceName: this.resourceName,
@@ -28,7 +24,6 @@ var ClientQuery = /*#__PURE__*/function () {
       params: this.params
     };
   };
-
   _proto.fetch = function fetch(onFulfilled) {
     logger.debug('fetch', {
       resourceName: this.resourceName,
@@ -36,7 +31,6 @@ var ClientQuery = /*#__PURE__*/function () {
     });
     return this.transportClient.send('fetch', this.getTransportPayload()).then(onFulfilled);
   };
-
   _proto.fetchAndSubscribe = function fetchAndSubscribe(callback) {
     logger.debug('fetchAndSubscribe', {
       resourceName: this.resourceName,
@@ -44,7 +38,6 @@ var ClientQuery = /*#__PURE__*/function () {
     });
     return this.transportClient.subscribe('fetchAndSubscribe', this.getTransportPayload(), callback);
   };
-
   _proto.subscribe = function subscribe(callback) {
     logger.debug('subscribe', {
       resourceName: this.resourceName,
@@ -52,14 +45,12 @@ var ClientQuery = /*#__PURE__*/function () {
     });
     return this.transportClient.subscribe('subscribe', this.getTransportPayload(), callback);
   };
-
   return ClientQuery;
 }();
 
 var getKeys = function getKeys(o) {
   return Object.keys(o);
 };
-
 var createResourceClientService = function createResourceClientService(resourceName, options) {
   return function (transportClient) {
     var queries = {};

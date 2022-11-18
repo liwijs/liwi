@@ -4,7 +4,6 @@ class AbstractCursor {
   nextResult() {
     return this.next().then(() => this.result());
   }
-
   async forEachKeys(callback) {
     while (true) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -13,24 +12,22 @@ class AbstractCursor {
       await callback(key);
     }
   }
-
   forEach(callback) {
     return this.forEachKeys(() => this.result().then(result => callback(result)));
   }
-
   *keysIterator() {
     while (true) {
       yield this.next();
     }
   }
-
   *[Symbol.iterator]() {
     for (const keyPromise of this.keysIterator()) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       yield keyPromise.then(key => key && this.result());
     }
-  } // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
+  }
 
+  // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356
   /*
     async *keysAsyncIterator() {
         while (true) {
@@ -45,8 +42,6 @@ class AbstractCursor {
         }
      }
      */
-
-
 }
 
 class AbstractStoreCursor extends AbstractCursor {
@@ -54,24 +49,19 @@ class AbstractStoreCursor extends AbstractCursor {
     super();
     this._store = store;
   }
-
   get store() {
     return this._store;
   }
-
   overrideStore(store) {
     this._store = store;
   }
-
   result() {
     if (!this.key) throw new Error('Cannot call result() before next()');
     return this.store.findByKey(this.key);
   }
-
   delete() {
     return this.store.deleteByKey(this.key);
   }
-
 }
 
 export { AbstractConnection, AbstractCursor, AbstractStoreCursor };

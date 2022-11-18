@@ -19,18 +19,15 @@ var useTransportClientIsReady = function useTransportClientIsReady() {
 };
 function TransportClientProvider(_ref) {
   var createFn = _ref.createFn,
-      children = _ref.children,
-      params = _objectWithoutPropertiesLoose(_ref, _excluded);
-
+    children = _ref.children,
+    params = _objectWithoutPropertiesLoose(_ref, _excluded);
   var _useState = useState(function () {
-    return createFn(params);
-  }),
-      client = _useState[0];
-
+      return createFn(params);
+    }),
+    client = _useState[0];
   var _useState2 = useState('opening'),
-      connectionState = _useState2[0],
-      setConnectionState = _useState2[1];
-
+    connectionState = _useState2[0],
+    setConnectionState = _useState2[1];
   useEffect(function () {
     var closeConnectionStateListener = client.listenStateChange(setConnectionState);
     client.connect();
@@ -68,7 +65,7 @@ var createResourceResultFromState = function createResourceResultFromState(state
 function initReducer(initializer) {
   var init = initializer();
   var query = init.query,
-      promise = init.promise;
+    promise = init.promise;
   return {
     fetched: false,
     fetching: true,
@@ -92,7 +89,6 @@ function reducer(state, action) {
         queryInfo: action.queryInfo,
         error: undefined
       };
-
     case 'refetch':
       return {
         fetched: state.fetched,
@@ -104,18 +100,15 @@ function reducer(state, action) {
         promise: action.promise,
         error: state.error
       };
-
     case 'fetching':
       return _extends({}, state, {
         fetching: true
       });
-
     case 'error':
       return _extends({}, state, {
         fetching: false,
         error: action.error
       });
-
     default:
       throw new Error('Invalid action');
   }
@@ -133,35 +126,33 @@ function useRetrieveResource(createQuery, params, skip, deps) {
       }
     });
   }, []);
-
   var _useReducer = useReducer(reducer, function () {
-    var query = createQuery(params);
-    if (!isTransportReady || skip) return {
-      query: query
-    };
-    return {
-      query: query,
-      promise: fetch(query, function (_ref) {
-        var result = _ref.result,
+      var query = createQuery(params);
+      if (!isTransportReady || skip) return {
+        query: query
+      };
+      return {
+        query: query,
+        promise: fetch(query, function (_ref) {
+          var result = _ref.result,
             meta = _ref.meta,
             info = _ref.info;
-        dispatch({
-          type: 'resolve',
-          result: result,
-          meta: meta,
-          queryInfo: info
-        });
-      })["catch"](function (err) {
-        dispatch({
-          type: 'error',
-          error: err
-        });
-      })
-    };
-  }, initReducer),
-      state = _useReducer[0],
-      dispatch = _useReducer[1];
-
+          dispatch({
+            type: 'resolve',
+            result: result,
+            meta: meta,
+            queryInfo: info
+          });
+        })["catch"](function (err) {
+          dispatch({
+            type: 'error',
+            error: err
+          });
+        })
+      };
+    }, initReducer),
+    state = _useReducer[0],
+    dispatch = _useReducer[1];
   useEffect(function () {
     if (wasReady.current) return;
     if (!isTransportReady) return;
@@ -171,8 +162,8 @@ function useRetrieveResource(createQuery, params, skip, deps) {
       type: 'refetch',
       promise: fetch(state.query, function (_ref2) {
         var result = _ref2.result,
-            meta = _ref2.meta,
-            info = _ref2.info;
+          meta = _ref2.meta,
+          info = _ref2.info;
         dispatch({
           type: 'resolve',
           result: result,
@@ -193,19 +184,17 @@ function useRetrieveResource(createQuery, params, skip, deps) {
       firstEffectChangeParams.current = true;
       return;
     }
-
     if (skip) {
       return;
     }
-
     state.query.changeParams(params);
     if (!wasReady.current) return;
     dispatch({
       type: 'refetch',
       promise: fetch(state.query, function (_ref3) {
         var result = _ref3.result,
-            meta = _ref3.meta,
-            info = _ref3.info;
+          meta = _ref3.meta,
+          info = _ref3.info;
         dispatch({
           type: 'resolve',
           result: result,
@@ -218,7 +207,8 @@ function useRetrieveResource(createQuery, params, skip, deps) {
           error: err
         });
       })
-    }); // eslint-disable-next-line react-hooks/exhaustive-deps
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.query, skip].concat(deps));
   return createResourceResultFromState(state);
 }
@@ -228,19 +218,19 @@ function sortCollection(collection, sort) {
     idKey: '_id'
   }).value();
 }
-
 var copy = function copy(state) {
   return [].concat(state);
 };
-
 var applyCollectionChange = function applyCollectionChange(state, change, queryMeta, queryInfo) {
   switch (change.type) {
     case 'initial':
       {
-        var keyPath = queryInfo.keyPath; // update meta
+        var keyPath = queryInfo.keyPath;
 
-        Object.assign(queryMeta, change.meta); // update state if exists, keeping ref to avoid rerendering everything
+        // update meta
+        Object.assign(queryMeta, change.meta);
 
+        // update state if exists, keeping ref to avoid rerendering everything
         return !state ? change.initial : change.initial.map(function (value) {
           var existing = state.find(function (v) {
             return v[keyPath] === value[keyPath];
@@ -249,20 +239,16 @@ var applyCollectionChange = function applyCollectionChange(state, change, queryM
           return JSON.stringify(existing) === JSON.stringify(value) ? existing : value;
         });
       }
-
     case 'inserted':
       {
         queryMeta.total += change.result.length;
         var newCollection = [].concat(change.result, state);
-
         if (queryInfo.sort) {
           newCollection = sortCollection(newCollection, queryInfo.sort);
         }
-
         if (!queryInfo.limit) return newCollection;
         return newCollection.slice(0, queryInfo.limit - change.result.length);
       }
-
     case 'deleted':
       {
         queryMeta.total -= change.keys.length;
@@ -272,7 +258,6 @@ var applyCollectionChange = function applyCollectionChange(state, change, queryM
           return !deletedKeys.includes(value[_keyPath]);
         });
       }
-
     case 'updated':
       {
         var _keyPath2 = queryInfo.keyPath;
@@ -286,21 +271,18 @@ var applyCollectionChange = function applyCollectionChange(state, change, queryM
         });
         return newState;
       }
-
     default:
       throw new Error('Invalid type');
   }
-}; // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
+};
 
-
+// https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 function applyCollectionChanges(state, changes, queryMeta, queryInfo) {
   if (state === undefined) return {
     state: state,
     meta: queryMeta
   };
-
   var newQueryMeta = _extends({}, queryMeta);
-
   return {
     // eslint-disable-next-line unicorn/no-array-reduce
     state: changes.reduce(function (result, change) {
@@ -315,33 +297,28 @@ var applySingleItemChange = function applySingleItemChange(state, change, queryM
     case 'initial':
       queryMeta.total = change.initial === null ? 0 : 1;
       return change.initial;
-
     case 'updated':
       {
         queryMeta.total = change.result === null ? 0 : 1;
         return change.result;
       }
-
     case 'deleted':
       {
         queryMeta.total = 0;
         return null;
       }
-
     default:
       throw new Error('Invalid type');
   }
-}; // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
+};
 
-
+// https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
   if (state === undefined) return {
     state: state,
     meta: queryMeta
   };
-
   var newQueryMeta = _extends({}, queryMeta);
-
   return {
     // eslint-disable-next-line unicorn/no-array-reduce
     state: changes.reduce(function (result, change) {
@@ -354,188 +331,164 @@ function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
 /* eslint-disable max-lines */
 var defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
-
 };
-var logger = new Logger('react-liwi:useResourceAndSubscribe');
 
+var logger = new Logger('react-liwi:useResourceAndSubscribe');
 var isInitial = function isInitial(changes) {
   return changes.length === 1 && changes[0].type === 'initial';
 };
-
 function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp) {
   var _ref = _temp === void 0 ? defaultOptions : _temp,
-      visibleTimeout = _ref.visibleTimeout;
-
+    visibleTimeout = _ref.visibleTimeout;
   var querySubscriptionRef = useRef(undefined);
   var timeoutRef = useRef(undefined);
   var changeParamsRef = useRef(undefined);
   var handleVisibilityChangeRef = useRef(undefined);
   var skipRef = useRef(skip);
   skipRef.current = skip;
-
   var unsubscribe = function unsubscribe() {
-    logger.info('unsubscribe'); // reset timeout to allow resubscribing
+    logger.info('unsubscribe');
 
+    // reset timeout to allow resubscribing
     timeoutRef.current = undefined;
-
     if (querySubscriptionRef.current) {
       querySubscriptionRef.current.stop();
       querySubscriptionRef.current = undefined;
     }
   };
-
   var _useReducer = useReducer(reducer, function () {
-    var query = createQuery(params);
-    var applyChanges;
-    var currentResult;
-    var currentMeta;
-    var currentQueryInfo;
-    return {
-      query: query,
-      promise: new Promise(function () {
-        var queryLogger = logger.context({
-          resourceName: query.resourceName,
-          key: query.key
-        });
-        queryLogger.debug('init');
-
-        var subscribe = function subscribe() {
-          queryLogger.debug('subscribing', {
-            querySubscriptionRef: querySubscriptionRef.current,
-            timeoutRef: timeoutRef.current
+      var query = createQuery(params);
+      var applyChanges;
+      var currentResult;
+      var currentMeta;
+      var currentQueryInfo;
+      return {
+        query: query,
+        promise: new Promise(function () {
+          var queryLogger = logger.context({
+            resourceName: query.resourceName,
+            key: query.key
           });
-          querySubscriptionRef.current = query.fetchAndSubscribe(function (err, changes) {
-            var _applyChanges, newResult, newMeta;
-
-            queryLogger.debug('received changes', {
-              err: err,
-              changes: changes
+          queryLogger.debug('init');
+          var subscribe = function subscribe() {
+            queryLogger.debug('subscribing', {
+              querySubscriptionRef: querySubscriptionRef.current,
+              timeoutRef: timeoutRef.current
             });
-
-            if (err) {
+            querySubscriptionRef.current = query.fetchAndSubscribe(function (err, changes) {
+              var _applyChanges, newResult, newMeta;
+              queryLogger.debug('received changes', {
+                err: err,
+                changes: changes
+              });
+              if (err) {
+                dispatch({
+                  type: 'error',
+                  error: err
+                });
+                return;
+              }
+              if (!currentResult && isInitial(changes)) {
+                var initialChange = changes[0];
+                currentResult = initialChange.initial;
+                currentMeta = initialChange.meta;
+                currentQueryInfo = initialChange.queryInfo;
+                dispatch({
+                  type: 'resolve',
+                  result: initialChange.initial,
+                  meta: initialChange.meta,
+                  queryInfo: currentQueryInfo
+                });
+                applyChanges = Array.isArray(initialChange.initial) ? applyCollectionChanges : applySingleItemChanges;
+              } else {
+                _applyChanges = applyChanges(currentResult, changes, currentMeta, currentQueryInfo), newResult = _applyChanges.state, newMeta = _applyChanges.meta;
+                if (newResult && newResult !== currentResult) {
+                  currentResult = newResult;
+                  currentMeta = newMeta;
+                  dispatch({
+                    type: 'resolve',
+                    result: newResult,
+                    meta: newMeta,
+                    queryInfo: currentQueryInfo
+                  });
+                }
+              }
+            });
+            querySubscriptionRef.current.then(function () {
+              queryLogger.success('subscribed');
+            }, function (err) {
               dispatch({
                 type: 'error',
                 error: err
               });
-              return;
-            }
-
-            if (!currentResult && isInitial(changes)) {
-              var initialChange = changes[0];
-              currentResult = initialChange.initial;
-              currentMeta = initialChange.meta;
-              currentQueryInfo = initialChange.queryInfo;
-              dispatch({
-                type: 'resolve',
-                result: initialChange.initial,
-                meta: initialChange.meta,
-                queryInfo: currentQueryInfo
-              });
-              applyChanges = Array.isArray(initialChange.initial) ? applyCollectionChanges : applySingleItemChanges;
-            } else {
-              _applyChanges = applyChanges(currentResult, changes, currentMeta, currentQueryInfo), newResult = _applyChanges.state, newMeta = _applyChanges.meta;
-
-              if (newResult && newResult !== currentResult) {
-                currentResult = newResult;
-                currentMeta = newMeta;
-                dispatch({
-                  type: 'resolve',
-                  result: newResult,
-                  meta: newMeta,
-                  queryInfo: currentQueryInfo
-                });
-              }
-            }
-          });
-          querySubscriptionRef.current.then(function () {
-            queryLogger.success('subscribed');
-          }, function (err) {
-            dispatch({
-              type: 'error',
-              error: err
             });
-          });
-        };
-
-        changeParamsRef.current = function (changedParams) {
-          queryLogger.info('change params', {
-            skip: skipRef.current,
-            params: changedParams
-          });
-
-          if (querySubscriptionRef.current) {
-            querySubscriptionRef.current.stop();
-          }
-
-          query.changeParams(changedParams);
-
-          if (!document.hidden && !skipRef.current) {
-            dispatch({
-              type: 'fetching'
+          };
+          changeParamsRef.current = function (changedParams) {
+            queryLogger.info('change params', {
+              skip: skipRef.current,
+              params: changedParams
             });
-            subscribe();
-          }
-        };
-
-        var handleVisibilityChange = function handleVisibilityChange() {
-          if (skipRef.current) return;
-
-          if (!document.hidden) {
-            if (timeoutRef.current !== undefined) {
-              queryLogger.debug('timeout cleared');
-              clearTimeout(timeoutRef.current);
-              timeoutRef.current = undefined;
-            } else if (!querySubscriptionRef.current) {
-              queryLogger.info('resubscribe');
+            if (querySubscriptionRef.current) {
+              querySubscriptionRef.current.stop();
+            }
+            query.changeParams(changedParams);
+            if (!document.hidden && !skipRef.current) {
               dispatch({
                 type: 'fetching'
               });
               subscribe();
             }
-
-            return;
+          };
+          var handleVisibilityChange = function handleVisibilityChange() {
+            if (skipRef.current) return;
+            if (!document.hidden) {
+              if (timeoutRef.current !== undefined) {
+                queryLogger.debug('timeout cleared');
+                clearTimeout(timeoutRef.current);
+                timeoutRef.current = undefined;
+              } else if (!querySubscriptionRef.current) {
+                queryLogger.info('resubscribe');
+                dispatch({
+                  type: 'fetching'
+                });
+                subscribe();
+              }
+              return;
+            }
+            if (querySubscriptionRef.current === undefined) return;
+            queryLogger.debug('timeout visible');
+            timeoutRef.current = setTimeout(unsubscribe, visibleTimeout);
+          };
+          handleVisibilityChangeRef.current = handleVisibilityChange;
+          document.addEventListener('visibilitychange', handleVisibilityChange, false);
+          if (!document.hidden && !skipRef.current) {
+            subscribe();
           }
-
-          if (querySubscriptionRef.current === undefined) return;
-          queryLogger.debug('timeout visible');
-          timeoutRef.current = setTimeout(unsubscribe, visibleTimeout);
-        };
-
-        handleVisibilityChangeRef.current = handleVisibilityChange;
-        document.addEventListener('visibilitychange', handleVisibilityChange, false);
-
-        if (!document.hidden && !skipRef.current) {
-          subscribe();
-        }
-      })
-    };
-  }, initReducer),
-      state = _useReducer[0],
-      dispatch = _useReducer[1];
-
+        })
+      };
+    }, initReducer),
+    state = _useReducer[0],
+    dispatch = _useReducer[1];
   var firstEffectChangeParams = useRef(false);
   useEffect(function () {
     if (!firstEffectChangeParams.current) {
       firstEffectChangeParams.current = true;
       return;
     }
-
     if (changeParamsRef.current) {
       changeParamsRef.current(params);
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skip].concat(deps));
   useEffect(function () {
     return function () {
       if (handleVisibilityChangeRef.current) {
         document.removeEventListener('visibilitychange', handleVisibilityChangeRef.current);
       }
-
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = undefined;
       }
-
       unsubscribe();
     };
   }, []);
@@ -547,19 +500,20 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
 var isSSR = typeof window === 'undefined';
 function useResource(createQuery, _ref, deps) {
   var params = _ref.params,
-      _ref$skip = _ref.skip,
-      skip = _ref$skip === void 0 ? false : _ref$skip,
-      subscribe = _ref.subscribe,
-      subscribeOptions = _ref.subscribeOptions;
-  var result = subscribe && !isSSR ? // eslint-disable-next-line react-hooks/rules-of-hooks
-  useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, subscribeOptions) : // eslint-disable-next-line react-hooks/rules-of-hooks
+    _ref$skip = _ref.skip,
+    skip = _ref$skip === void 0 ? false : _ref$skip,
+    subscribe = _ref.subscribe,
+    subscribeOptions = _ref.subscribeOptions;
+  var result = subscribe && !isSSR ?
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, subscribeOptions) :
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useRetrieveResource(createQuery, params, skip, deps);
   return result;
 }
 
 function usePaginatedResource(createQuery, options, deps) {
   var _result$meta, _result$queryInfo;
-
   var result = useResource(createQuery, options, deps);
   var total = (_result$meta = result.meta) == null ? void 0 : _result$meta.total;
   var limit = (_result$queryInfo = result.queryInfo) == null ? void 0 : _result$queryInfo.limit;
@@ -578,27 +532,23 @@ function usePaginatedResource(createQuery, options, deps) {
 
 function useOperation(operationCall) {
   var _useState = useState(function () {
-    return {
-      loading: false,
-      error: undefined
-    };
-  }),
-      state = _useState[0],
-      setState = _useState[1];
-
+      return {
+        loading: false,
+        error: undefined
+      };
+    }),
+    state = _useState[0],
+    setState = _useState[1];
   var operationCallWrapper = useCallback(function () {
     var _len, params, _key;
-
     setState({
       loading: true,
       error: undefined
     });
-
     try {
       for (_len = arguments.length, params = new Array(_len), _key = 0; _key < _len; _key++) {
         params[_key] = arguments[_key];
       }
-
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       return operationCall.apply(void 0, params).then(function (result) {
         setState({
@@ -631,10 +581,8 @@ var transportClientStateToSimplifiedState = function transportClientStateToSimpl
     case 'reconnect-scheduled':
     case 'wait-for-visibility':
       return 'connecting';
-
     case 'connected':
       return 'connected';
-
     case 'closed':
       return 'disconnected';
   }

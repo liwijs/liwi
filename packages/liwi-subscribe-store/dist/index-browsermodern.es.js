@@ -1,49 +1,40 @@
 /* eslint-disable max-lines */
+
 class SubscribeStore {
   listeners = new Set();
-
   constructor(store) {
     this.store = store;
     this.keyPath = store.keyPath;
   }
-
   get connection() {
     return this.store.connection;
   }
-
   subscribe(callback) {
     this.listeners.add(callback);
     return () => this.listeners.delete(callback);
   }
-
   callSubscribed(action) {
     this.listeners.forEach(listener => listener(action));
   }
-
   createQuerySingleItem(options, transformer) {
     const query = this.store.createQuerySingleItem(options, transformer);
     query.setSubscribeStore(this);
     return query;
   }
-
   createQueryCollection(options, transformer) {
     const query = this.store.createQueryCollection(options, transformer);
     query.setSubscribeStore(this);
     return query;
   }
-
   findAll(criteria, sort) {
     return this.store.findAll(criteria, sort);
   }
-
   findByKey(key, criteria) {
     return this.store.findByKey(key, criteria);
   }
-
   findOne(criteria, sort) {
     return this.store.findOne(criteria, sort);
   }
-
   async insertOne(object) {
     const inserted = await this.store.insertOne(object);
     this.callSubscribed({
@@ -52,7 +43,6 @@ class SubscribeStore {
     });
     return inserted;
   }
-
   async replaceOne(object) {
     const replaced = await this.store.replaceOne(object);
     this.callSubscribed({
@@ -61,7 +51,6 @@ class SubscribeStore {
     });
     return replaced;
   }
-
   async replaceSeveral(objects) {
     const replacedObjects = await this.store.replaceSeveral(objects);
     this.callSubscribed({
@@ -70,15 +59,12 @@ class SubscribeStore {
     });
     return replacedObjects;
   }
-
   async upsertOne(object, setOnInsertPartialObject) {
     const result = await this.upsertOneWithInfo(object, setOnInsertPartialObject);
     return result.object;
   }
-
   async upsertOneWithInfo(object, setOnInsertPartialObject) {
     const upsertedWithInfo = await this.store.upsertOneWithInfo(object, setOnInsertPartialObject);
-
     if (upsertedWithInfo.inserted) {
       this.callSubscribed({
         type: 'inserted',
@@ -87,17 +73,14 @@ class SubscribeStore {
     } else {
       throw new Error('TODO');
     }
-
     return upsertedWithInfo;
   }
-
   async partialUpdateByKey(key, partialUpdate, criteria) {
     return this.partialUpdateOne(await this.findOne({
       [this.store.keyPath]: key,
       ...criteria
     }), partialUpdate);
   }
-
   async partialUpdateOne(object, partialUpdate) {
     const updated = await this.store.partialUpdateOne(object, partialUpdate);
     this.callSubscribed({
@@ -106,7 +89,6 @@ class SubscribeStore {
     });
     return updated;
   }
-
   async partialUpdateMany(criteria, partialUpdate) {
     const cursor = await this.store.cursor(criteria);
     const changes = [];
@@ -120,11 +102,9 @@ class SubscribeStore {
       changes
     });
   }
-
   async deleteByKey(key, criteria) {
     return this.deleteOne(await this.findByKey(key, criteria));
   }
-
   async deleteOne(object) {
     await this.store.deleteOne(object);
     this.callSubscribed({
@@ -132,7 +112,6 @@ class SubscribeStore {
       prev: [object]
     });
   }
-
   async deleteMany(criteria) {
     const cursor = await this.store.cursor(criteria);
     const prev = await cursor.toArray();
@@ -142,48 +121,38 @@ class SubscribeStore {
       prev
     });
   }
-
   async count(criteria) {
     return this.store.count(criteria);
   }
-
   async cursor(criteria, sort) {
     const cursor = await this.store.cursor(criteria, sort);
     cursor.overrideStore(this);
     return cursor;
   }
-
 }
 
 class AbstractSubscribableStoreQuery {
   changeParams() {
     throw new Error('Method not supported. Please create a new query.');
   }
-
   changePartialParams() {
     throw new Error('Method not supported. Please create a new query.');
   }
-
   setSubscribeStore(store) {
     this._subscribeStore = store;
   }
-
   getSubscribeStore() {
     if (!this._subscribeStore) {
       throw new Error('_subscribeStore is not initialized');
     }
-
     return this._subscribeStore;
   }
-
   fetchAndSubscribe(callback) {
     return this._subscribe(callback, true);
   }
-
   subscribe(callback) {
     return this._subscribe(callback, false);
   }
-
 }
 
 export { AbstractSubscribableStoreQuery, SubscribeStore };

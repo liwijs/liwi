@@ -6,24 +6,23 @@
   "license": "ISC",
   "type": "module",
   "engines": {
-    "node": "^14.13.1 || >=16.0.0"
+    "node": ">=16.0.0"
   },
-  "main": "./build/index-node14.mjs",
+  "main": "./build/index-node16.mjs",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "node": {
-        "import": "./build/index-node14.mjs"
+        "import": "./build/index-node16.mjs"
       }
     }
   },
-  "module:node": "./build/index-node14.mjs",
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs",
     "clean": "yarn clean:build",
     "clean:build": "pob-babel-clean-out build",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "cd ../.. && yarn run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/server",
+    "lint:eslint": "yarn ../.. run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/server",
     "start": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "prettier": "@pob/root/prettier-config",
@@ -31,10 +30,7 @@
     "babelEnvs": [
       {
         "target": "node",
-        "version": "14",
-        "formats": [
-          "es"
-        ]
+        "version": "16"
       }
     ],
     "entries": [
@@ -50,11 +46,11 @@
     "nightingale-app-console": "^12.1.4"
   },
   "devDependencies": {
-    "@babel/core": "7.19.3",
-    "alp-rollup-plugin-config": "1.1.1",
-    "pob-babel": "34.3.0",
-    "rollup": "2.79.1",
+    "@babel/core": "7.20.2",
+    "alp-rollup-plugin-config": "1.2.0",
+    "pob-babel": "35.3.0",
+    "rollup": "3.3.0",
     "rollup-plugin-copy": "3.4.0",
-    "typescript": "4.8.4"
+    "typescript": "4.9.3"
   }
 }

@@ -2,7 +2,7 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "packages/liwi-resources-websocket-server/tsconfig.eslint.json"
+    "project": "packages/liwi-resources-websocket-server/tsconfig.json"
   },
   "plugins": ["@typescript-eslint"],
   "extends": ["@pob/eslint-config-typescript"],

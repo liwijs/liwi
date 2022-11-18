@@ -12,30 +12,29 @@
   "homepage": "https://github.com/liwijs/liwi",
   "type": "module",
   "engines": {
-    "node": "^14.13.1 || >=16.0.0"
+    "node": ">=16.0.0"
   },
-  "types": "./dist/index.d.ts",
+  "types": "./dist/definitions/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     "./users": {
       "node": {
-        "import": "./dist/users-node14.mjs",
-        "require": "./dist/users-node14.cjs"
+        "import": "./dist/users-node16.mjs",
+        "require": "./dist/users-node16.cjs"
       }
     }
   },
-  "module:node": "./dist/index-node14.mjs",
   "module:aliases-node": {
-    "./users.js": "./dist/users-node14.es.js"
+    "./users.js": "./dist/users-node16.es.js"
   },
   "sideEffects": false,
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
-    "build:definitions": "tsc -p tsconfig.build.json",
+    "build:definitions": "tsc -p",
     "clean": "yarn clean:build",
     "clean:build": "pob-babel-clean-out dist",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "cd ../.. && yarn run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet packages/liwi-mongo-example",
+    "lint:eslint": "yarn ../.. run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet packages/liwi-mongo-example",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "prettier": "@pob/root/prettier-config",
@@ -43,11 +42,7 @@
     "babelEnvs": [
       {
         "target": "node",
-        "version": "14",
-        "formats": [
-          "cjs",
-          "es"
-        ]
+        "version": "16"
       }
     ],
     "entries": [
@@ -58,8 +53,8 @@
     "liwi-mongo": "9.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.19.3",
-    "pob-babel": "34.3.0",
-    "typescript": "4.8.4"
+    "@babel/core": "7.20.2",
+    "pob-babel": "35.3.0",
+    "typescript": "4.9.3"
   }
 }

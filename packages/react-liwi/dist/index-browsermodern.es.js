@@ -80,7 +80,6 @@ function reducer(state, action) {
         queryInfo: action.queryInfo,
         error: undefined
       };
-
     case 'refetch':
       return {
         fetched: state.fetched,
@@ -92,18 +91,17 @@ function reducer(state, action) {
         promise: action.promise,
         error: state.error
       };
-
     case 'fetching':
-      return { ...state,
+      return {
+        ...state,
         fetching: true
       };
-
     case 'error':
-      return { ...state,
+      return {
+        ...state,
         fetching: false,
         error: action.error
       };
-
     default:
       throw new Error('Invalid action');
   }
@@ -179,11 +177,9 @@ function useRetrieveResource(createQuery, params, skip, deps) {
       firstEffectChangeParams.current = true;
       return;
     }
-
     if (skip) {
       return;
     }
-
     state.query.changeParams(params);
     if (!wasReady.current) return;
     dispatch({
@@ -205,7 +201,8 @@ function useRetrieveResource(createQuery, params, skip, deps) {
           error: err
         });
       })
-    }); // eslint-disable-next-line react-hooks/exhaustive-deps
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.query, skip, ...deps]);
   return createResourceResultFromState(state);
 }
@@ -215,37 +212,33 @@ function sortCollection(collection, sort) {
     idKey: '_id'
   }).value();
 }
-
 const copy = state => [...state];
-
 const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
   switch (change.type) {
     case 'initial':
       {
-        const keyPath = queryInfo.keyPath; // update meta
+        const keyPath = queryInfo.keyPath;
 
-        Object.assign(queryMeta, change.meta); // update state if exists, keeping ref to avoid rerendering everything
+        // update meta
+        Object.assign(queryMeta, change.meta);
 
+        // update state if exists, keeping ref to avoid rerendering everything
         return !state ? change.initial : change.initial.map(value => {
           const existing = state.find(v => v[keyPath] === value[keyPath]);
           if (!existing) return value;
           return JSON.stringify(existing) === JSON.stringify(value) ? existing : value;
         });
       }
-
     case 'inserted':
       {
         queryMeta.total += change.result.length;
         let newCollection = [...change.result, ...state];
-
         if (queryInfo.sort) {
           newCollection = sortCollection(newCollection, queryInfo.sort);
         }
-
         if (!queryInfo.limit) return newCollection;
         return newCollection.slice(0, queryInfo.limit - change.result.length);
       }
-
     case 'deleted':
       {
         queryMeta.total -= change.keys.length;
@@ -253,7 +246,6 @@ const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
         const deletedKeys = change.keys;
         return state.filter(value => !deletedKeys.includes(value[keyPath]));
       }
-
     case 'updated':
       {
         const keyPath = queryInfo.keyPath;
@@ -265,19 +257,19 @@ const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
         });
         return newState;
       }
-
     default:
       throw new Error('Invalid type');
   }
-}; // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
+};
 
-
+// https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 function applyCollectionChanges(state, changes, queryMeta, queryInfo) {
   if (state === undefined) return {
     state,
     meta: queryMeta
   };
-  const newQueryMeta = { ...queryMeta
+  const newQueryMeta = {
+    ...queryMeta
   };
   return {
     // eslint-disable-next-line unicorn/no-array-reduce
@@ -291,31 +283,29 @@ const applySingleItemChange = (state, change, queryMeta) => {
     case 'initial':
       queryMeta.total = change.initial === null ? 0 : 1;
       return change.initial;
-
     case 'updated':
       {
         queryMeta.total = change.result === null ? 0 : 1;
         return change.result;
       }
-
     case 'deleted':
       {
         queryMeta.total = 0;
         return null;
       }
-
     default:
       throw new Error('Invalid type');
   }
-}; // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
+};
 
-
+// https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
   if (state === undefined) return {
     state,
     meta: queryMeta
   };
-  const newQueryMeta = { ...queryMeta
+  const newQueryMeta = {
+    ...queryMeta
   };
   return {
     // eslint-disable-next-line unicorn/no-array-reduce
@@ -327,12 +317,10 @@ function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
 /* eslint-disable max-lines */
 const defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
-
 };
+
 const logger = new Logger('react-liwi:useResourceAndSubscribe');
-
 const isInitial = changes => changes.length === 1 && changes[0].type === 'initial';
-
 function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
   visibleTimeout
 } = defaultOptions) {
@@ -342,18 +330,16 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
   const handleVisibilityChangeRef = useRef(undefined);
   const skipRef = useRef(skip);
   skipRef.current = skip;
-
   const unsubscribe = () => {
-    logger.info('unsubscribe'); // reset timeout to allow resubscribing
+    logger.info('unsubscribe');
 
+    // reset timeout to allow resubscribing
     timeoutRef.current = undefined;
-
     if (querySubscriptionRef.current) {
       querySubscriptionRef.current.stop();
       querySubscriptionRef.current = undefined;
     }
   };
-
   const [state, dispatch] = useReducer(reducer, () => {
     const query = createQuery(params);
     let applyChanges;
@@ -368,7 +354,6 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
           key: query.key
         });
         queryLogger.debug('init');
-
         const subscribe = () => {
           queryLogger.debug('subscribing', {
             querySubscriptionRef: querySubscriptionRef.current,
@@ -379,7 +364,6 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
               err,
               changes
             });
-
             if (err) {
               dispatch({
                 type: 'error',
@@ -387,7 +371,6 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
               });
               return;
             }
-
             if (!currentResult && isInitial(changes)) {
               const initialChange = changes[0];
               currentResult = initialChange.initial;
@@ -405,7 +388,6 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
                 state: newResult,
                 meta: newMeta
               } = applyChanges(currentResult, changes, currentMeta, currentQueryInfo);
-
               if (newResult && newResult !== currentResult) {
                 currentResult = newResult;
                 currentMeta = newMeta;
@@ -427,19 +409,15 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
             });
           });
         };
-
         changeParamsRef.current = changedParams => {
           queryLogger.info('change params', {
             skip: skipRef.current,
             params: changedParams
           });
-
           if (querySubscriptionRef.current) {
             querySubscriptionRef.current.stop();
           }
-
           query.changeParams(changedParams);
-
           if (!document.hidden && !skipRef.current) {
             dispatch({
               type: 'fetching'
@@ -447,10 +425,8 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
             subscribe();
           }
         };
-
         const handleVisibilityChange = () => {
           if (skipRef.current) return;
-
           if (!document.hidden) {
             if (timeoutRef.current !== undefined) {
               queryLogger.debug('timeout cleared');
@@ -463,18 +439,14 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
               });
               subscribe();
             }
-
             return;
           }
-
           if (querySubscriptionRef.current === undefined) return;
           queryLogger.debug('timeout visible');
           timeoutRef.current = setTimeout(unsubscribe, visibleTimeout);
         };
-
         handleVisibilityChangeRef.current = handleVisibilityChange;
         document.addEventListener('visibilitychange', handleVisibilityChange, false);
-
         if (!document.hidden && !skipRef.current) {
           subscribe();
         }
@@ -487,23 +459,20 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
       firstEffectChangeParams.current = true;
       return;
     }
-
     if (changeParamsRef.current) {
       changeParamsRef.current(params);
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skip, ...deps]);
   useEffect(() => {
     return () => {
       if (handleVisibilityChangeRef.current) {
         document.removeEventListener('visibilitychange', handleVisibilityChangeRef.current);
       }
-
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = undefined;
       }
-
       unsubscribe();
     };
   }, []);
@@ -517,15 +486,16 @@ function useResource(createQuery, {
   subscribe,
   subscribeOptions
 }, deps) {
-  const result = subscribe && !isSSR ? // eslint-disable-next-line react-hooks/rules-of-hooks
-  useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, subscribeOptions) : // eslint-disable-next-line react-hooks/rules-of-hooks
+  const result = subscribe && !isSSR ?
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, subscribeOptions) :
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useRetrieveResource(createQuery, params, skip, deps);
   return result;
 }
 
 function usePaginatedResource(createQuery, options, deps) {
   var _result$meta, _result$queryInfo;
-
   const result = useResource(createQuery, options, deps);
   const total = (_result$meta = result.meta) === null || _result$meta === void 0 ? void 0 : _result$meta.total;
   const limit = (_result$queryInfo = result.queryInfo) === null || _result$queryInfo === void 0 ? void 0 : _result$queryInfo.limit;
@@ -535,7 +505,8 @@ function usePaginatedResource(createQuery, options, deps) {
       totalPages: limit ? Math.ceil(total / limit) : 1
     };
   }, [total, limit]);
-  return useMemo(() => ({ ...result,
+  return useMemo(() => ({
+    ...result,
     pagination
   }), [result, pagination]);
 }
@@ -550,7 +521,6 @@ function useOperation(operationCall) {
       loading: true,
       error: undefined
     });
-
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       return operationCall(...params).then(result => {
@@ -584,10 +554,8 @@ const transportClientStateToSimplifiedState = state => {
     case 'reconnect-scheduled':
     case 'wait-for-visibility':
       return 'connecting';
-
     case 'connected':
       return 'connected';
-
     case 'closed':
       return 'disconnected';
   }

@@ -14,6 +14,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   experimental: {
+    appDir: false,
     esmExternals: true,
     images: {
       unoptimized: true,

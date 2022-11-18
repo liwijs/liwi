@@ -1,3 +1,3 @@
 {
-  "presets": ["@todo-example/nextjs-babel-config"]
+  "presets": ["@todo-example/babel-preset-nextjs-babel-config"]
 }

@@ -2,7 +2,7 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "packages/liwi-mongo/tsconfig.eslint.json"
+    "project": "packages/liwi-mongo/tsconfig.json"
   },
   "plugins": ["@typescript-eslint"],
   "extends": [

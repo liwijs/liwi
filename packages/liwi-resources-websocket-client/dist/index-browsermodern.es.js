@@ -29,7 +29,6 @@ function createSimpleWebsocketClient({
     tryReconnect: null,
     inactivity: null
   };
-
   const setCurrentState = newState => {
     if (currentState === newState) return;
     currentState = newState;
@@ -38,19 +37,15 @@ function createSimpleWebsocketClient({
       listener(newState);
     });
   };
-
   const clearInternalTimeout = timeoutKey => {
     const timeout = timeouts[timeoutKey];
-
     if (timeout) {
       clearTimeout(timeout);
       timeouts[timeoutKey] = null;
     }
   };
-
   const closeWebsocket = () => {
     clearInternalTimeout('inactivity');
-
     if (ws) {
       clearInternalTimeout('maxConnect');
       clearInternalTimeout('tryReconnect');
@@ -58,11 +53,10 @@ function createSimpleWebsocketClient({
       setCurrentState('closed');
     }
   };
-
   let tryReconnect;
-
   const connect = () => {
-    const webSocket = thirdWebsocketArgument ? // @ts-expect-error third argument for react-native
+    const webSocket = thirdWebsocketArgument ?
+    // @ts-expect-error third argument for react-native
     new WebSocket(url, protocols, thirdWebsocketArgument) : new WebSocket(url, protocols);
     ws = webSocket;
     clearInternalTimeout('maxConnect');
@@ -71,10 +65,8 @@ function createSimpleWebsocketClient({
       backoff.reset();
       clearInternalTimeout('maxConnect');
     });
-
     const handleCloseOrError = () => {
       if (currentState === 'closed') return;
-
       if (!tryReconnect) {
         closeWebsocket();
       } else if (document.visibilityState === 'hidden') {
@@ -83,7 +75,6 @@ function createSimpleWebsocketClient({
         tryReconnect();
       }
     };
-
     webSocket.addEventListener('close', handleCloseOrError);
     webSocket.addEventListener('message', message => {
       if (message.data === 'connection-ack') {
@@ -98,21 +89,17 @@ function createSimpleWebsocketClient({
       } else {
         console.error('ws error', event);
       }
-
       handleCloseOrError();
     });
   };
-
   if (reconnection) {
     tryReconnect = () => {
       if (backoff.attempts >= reconnectionAttempts) {
         return;
       }
-
       if (currentState === 'reconnect-scheduled') {
         return;
       }
-
       setCurrentState('reconnect-scheduled');
       clearInternalTimeout('tryReconnect');
       const delay = backoff.duration();
@@ -121,58 +108,45 @@ function createSimpleWebsocketClient({
       }, delay);
     };
   }
-
   const visibilityChangeHandler = !tryReconnect ? undefined : () => {
     if (document.visibilityState === 'hidden') {
       if (currentState === 'reconnect-scheduled') {
         setCurrentState('wait-for-visibility');
-
         if (timeouts.tryReconnect !== null) {
           clearTimeout(timeouts.tryReconnect);
         }
       }
-
       return;
     }
-
     if (currentState !== 'wait-for-visibility') return;
-
     if (tryReconnect) {
       backoff.reset();
       tryReconnect();
     }
   };
-
   if (visibilityChangeHandler) {
     window.addEventListener('visibilitychange', visibilityChangeHandler);
   }
-
   return {
     connect,
-
     close() {
       if (ws) {
         if (currentState === 'connected') {
           ws.send('close');
         }
-
         closeWebsocket();
       }
-
       if (visibilityChangeHandler) {
         window.removeEventListener('visibilitychange', visibilityChangeHandler);
       }
     },
-
     isConnected() {
       return isConnected;
     },
-
     sendMessage(message) {
       if (!ws) throw new Error('Cannot send message');
       ws.send(message);
     },
-
     listenStateChange: listener => {
       stateChangeListeners.add(listener);
       return () => {
@@ -184,12 +158,12 @@ function createSimpleWebsocketClient({
 
 /* eslint-disable max-lines */
 const logger = new Logger('liwi:resources-websocket-client');
-
 class SubscribeResultPromise {
   // readonly changePayload: TransportClientSubscribeResult<
   //   Result,
   //   Payload
   // >['changePayload'];
+
   constructor({
     executor,
     stop
@@ -198,32 +172,30 @@ class SubscribeResultPromise {
       executor(resolve, reject);
     });
     this.stop = stop;
-    this.cancel = stop; // this.changePayload = changePayload;
+    this.cancel = stop;
+    // this.changePayload = changePayload;
   }
 
   then(onfulfilled, onrejected) {
     return this.promise.then(onfulfilled, onrejected);
   }
-
   catch(onrejected) {
     return this.promise.catch(onrejected);
   }
+}
 
-} // TODO handle resubscriptions after reconnect (or in useEffect ?)
+// TODO handle resubscriptions after reconnect (or in useEffect ?)
 // TODO handle send before connected
 // TODO reject on connection close OR keep promise hang ?
-
 
 const createSafeError = error => {
   return new ResourcesServerError(error.code, error.message);
 };
-
 function createResourcesWebsocketClient({
   url,
   ...options
 }) {
   const isSSR = typeof window === 'undefined';
-
   if (isSSR) {
     return {
       connect: () => {},
@@ -239,17 +211,13 @@ function createResourcesWebsocketClient({
       }
     };
   }
-
   let currentId = 1;
   let currentSubscriptionId = 1;
   const acks = new Map(); // TODO in progress / unsent / sending => find better name
-
   const subscriptions = new Map();
-
   if (!url) {
     url = `ws${window.location.protocol === 'https:' ? 's' : ''}://${window.location.host}/ws`;
   }
-
   logger.info('create', {
     url
   });
@@ -259,7 +227,6 @@ function createResourcesWebsocketClient({
         id
       });
       const ack = acks.get(id);
-
       if (!ack) {
         logger.warn('no ack found', {
           id
@@ -275,7 +242,6 @@ function createResourcesWebsocketClient({
         id
       });
       const subscription = subscriptions.get(id);
-
       if (!subscription) {
         if (id < currentSubscriptionId) {
           logger.warn('subscription previously closed', {
@@ -293,7 +259,8 @@ function createResourcesWebsocketClient({
       }
     }
   };
-  const wsClient = createSimpleWebsocketClient({ ...options,
+  const wsClient = createSimpleWebsocketClient({
+    ...options,
     url,
     onMessage: event => {
       logger.debug('message', {
@@ -301,24 +268,21 @@ function createResourcesWebsocketClient({
       });
       const [type, id, error, result] = decode(event.data);
       const handler = handlers[type];
-
       if (handler) {
         handler(id, error, result);
       }
     }
   });
-
   const sendMessage = (type, id, payload) => {
     wsClient.sendMessage(encode([type, id, payload]));
   };
-
   const sendWithAck = (type, message) => {
     return new Promise((resolve, reject) => {
       const id = currentId++;
       acks.set(id, {
         resolve: result => {
-          acks.delete(id); // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-
+          acks.delete(id);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           resolve(result);
         },
         reject: err => {
@@ -329,13 +293,11 @@ function createResourcesWebsocketClient({
       sendMessage(type, id, message);
     });
   };
-
   const sendThrowNotConnected = () => {
     const error = new Error('Websocket not connected');
     error.name = 'NetworkError';
     throw error;
   };
-
   const resourcesClient = {
     connect: () => {
       logger.debug('connect');
@@ -351,7 +313,8 @@ function createResourcesWebsocketClient({
       if (isSSR) throw new Error('subscribing is not allowed in SSR');
       const id = currentId++;
       const subscriptionId = currentSubscriptionId++;
-      const message = { ...messageWithoutSubscriptionId,
+      const message = {
+        ...messageWithoutSubscriptionId,
         subscriptionId
       };
       return new SubscribeResultPromise({
@@ -363,7 +326,6 @@ function createResourcesWebsocketClient({
             reject,
             callback
           });
-
           if (wsClient.isConnected()) {
             // TODO reject should remove subscription ?
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -372,14 +334,16 @@ function createResourcesWebsocketClient({
         },
         stop: () => {
           acks.delete(id);
-          subscriptions.delete(subscriptionId); // TODO what if reconnect (backend keeps subscription) and closed at this time ?
-
+          subscriptions.delete(subscriptionId);
+          // TODO what if reconnect (backend keeps subscription) and closed at this time ?
           if (wsClient.isConnected()) {
             sendMessage('subscribe:close', null, {
               subscriptionId
             });
           }
-        } // changePayload: (payload: Payload): Promise<void> => {
+        }
+
+        // changePayload: (payload: Payload): Promise<void> => {
         //   return new Promise((resolve, reject) => {
         //     const subscription = subscriptions.get(subscriptionId);
         //     if (!subscription) return reject(new Error('Invalid subscription'));
@@ -394,15 +358,14 @@ function createResourcesWebsocketClient({
         //     }
         //   });
         // },
-
       });
     }
   };
+
   wsClient.listenStateChange(newState => {
     logger.info('newState', {
       newState
     });
-
     if (newState === 'connected') {
       resourcesClient.send = sendWithAck;
       subscriptions.forEach(subscription => {
@@ -414,7 +377,6 @@ function createResourcesWebsocketClient({
         ack.reject(new Error(`Failed to get ack, connection state is now ${newState}`));
       });
       acks.clear();
-
       if (newState === 'closed') {
         subscriptions.forEach(subscription => {
           subscription.reject(new Error('Subscription closed'));

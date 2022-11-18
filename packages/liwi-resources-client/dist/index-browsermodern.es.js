@@ -9,17 +9,15 @@ class ClientQuery {
     this.key = key;
     this.params = params;
   }
-
   changeParams(params) {
     this.params = params;
   }
-
   changePartialParams(params) {
-    this.params = { ...this.params,
+    this.params = {
+      ...this.params,
       ...params
     };
   }
-
   getTransportPayload() {
     return {
       resourceName: this.resourceName,
@@ -27,7 +25,6 @@ class ClientQuery {
       params: this.params
     };
   }
-
   fetch(onFulfilled) {
     logger.debug('fetch', {
       resourceName: this.resourceName,
@@ -35,7 +32,6 @@ class ClientQuery {
     });
     return this.transportClient.send('fetch', this.getTransportPayload()).then(onFulfilled);
   }
-
   fetchAndSubscribe(callback) {
     logger.debug('fetchAndSubscribe', {
       resourceName: this.resourceName,
@@ -43,7 +39,6 @@ class ClientQuery {
     });
     return this.transportClient.subscribe('fetchAndSubscribe', this.getTransportPayload(), callback);
   }
-
   subscribe(callback) {
     logger.debug('subscribe', {
       resourceName: this.resourceName,
@@ -51,11 +46,9 @@ class ClientQuery {
     });
     return this.transportClient.subscribe('subscribe', this.getTransportPayload(), callback);
   }
-
 }
 
 const getKeys = o => Object.keys(o);
-
 const createResourceClientService = (resourceName, options) => {
   return transportClient => {
     const queries = {};

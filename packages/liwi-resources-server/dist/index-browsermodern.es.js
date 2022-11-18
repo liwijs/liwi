@@ -3,34 +3,42 @@ export { ResourcesServerError } from 'liwi-resources';
 import { Logger } from 'nightingale-logger';
 
 // import ResourceServerCursor from './ResourceServerCursor';
+
 // import { CursorResource } from './CursorResource';
+
 class ResourcesServerService {
   // readonly cursorResources: Map<string, CursorResource<any, any, any>>;
+
   constructor({
     serviceResources = new Map()
   }) {
-    this.serviceResources = serviceResources; // this.cursorResources = cursorResources;
+    this.serviceResources = serviceResources;
+    // this.cursorResources = cursorResources;
   }
 
   addResource(key, resource) {
     this.serviceResources.set(key, resource);
-  } // addCursorResource(
+  }
+
+  // addCursorResource(
   //   key: string,
   //   cursorResource: CursorResource<any, any, any>,
   // ) {
   //   this.cursorResources.set(key, cursorResource);
   // }
 
-
   getServiceResource(key) {
     const resource = this.serviceResources.get(key);
     if (!resource) throw new Error(`Invalid service resource: "${key}"`);
     return resource;
-  } // getCursorResource(key: string) {
+  }
+
+  // getCursorResource(key: string) {
   //   const resource = this.cursorResources.get(key);
   //   if (!resource) throw new Error(`Invalid cursor resource: "${key}"`);
   //   return resource;
   // }
+
   // async createCursor<Model extends BaseModel, Transformed, ConnectedUser>(
   //   resource: CursorResource<Model, Transformed, ConnectedUser>,
   //   connectedUser: ConnectedUser,
@@ -44,13 +52,10 @@ class ResourcesServerService {
   //   if (limit) cursor.limit(limit);
   //   return new ResourceServerCursor(resource, cursor, connectedUser);
   // }
-
-
 }
 
 /* eslint-disable complexity, max-lines */
 const logger = new Logger('liwi:resources-websocket-client');
-
 const logUnexpectedError = (error, message, payload) => {
   if (!(error instanceof ResourcesServerError)) {
     logger.error(message, {
@@ -65,10 +70,8 @@ const logUnexpectedError = (error, message, payload) => {
     });
   }
 };
-
 const createMessageHandler = (resourcesServerService, authenticatedUser, allowSubscriptions) => {
   const openedSubscriptions = allowSubscriptions ? new Map() : null;
-
   const getResource = payload => {
     logger.debug('resource', {
       resourceName: payload.resourceName
@@ -76,26 +79,20 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
     const resource = resourcesServerService.getServiceResource(payload.resourceName);
     return resource;
   };
-
   const createQuery = (payload, resource) => {
     if (!payload.key.startsWith('query')) {
       throw new Error('Invalid query key');
     }
-
     return resource.queries[payload.key](payload.params, authenticatedUser);
   };
-
   const createSubscription = (type, payload, resource, query, sendSubscriptionMessage) => {
     var _resource$subscribeHo;
-
     if (!openedSubscriptions) {
       throw new Error('Subscriptions not allowed');
     }
-
     const {
       subscriptionId
     } = payload;
-
     if (openedSubscriptions.has(subscriptionId)) {
       logger.warn("Already have a watcher for this id. Cannot add a new one", {
         subscriptionId,
@@ -103,12 +100,10 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
       });
       throw new ResourcesServerError('ALREADY_HAVE_WATCHER', "Already have a watcher for this id. Cannot add a new one");
     }
-
     const subscription = query[type]((error, result) => {
       if (error) {
         logUnexpectedError(error, type, payload);
       }
-
       sendSubscriptionMessage(subscriptionId, error, result);
     });
     const subscribeHook = (_resource$subscribeHo = resource.subscribeHooks) === null || _resource$subscribeHo === void 0 ? void 0 : _resource$subscribeHo[payload.key];
@@ -117,26 +112,21 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
       subscribeHook,
       params: subscribeHook ? payload.params : undefined
     });
-
     if (subscribeHook) {
       subscribeHook.subscribed(authenticatedUser, payload.params);
     }
-
     return subscription.then(() => null);
   };
-
   const unsubscribeSubscription = ({
     subscription,
     subscribeHook,
     params
   }) => {
     subscription.stop();
-
     if (subscribeHook) {
       subscribeHook.unsubscribed(authenticatedUser, params);
     }
   };
-
   return {
     close: () => {
       if (openedSubscriptions) {
@@ -155,10 +145,8 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               logUnexpectedError(err, message.type, message.payload);
               throw err;
             }
-
             return;
           }
-
         case 'fetchAndSubscribe':
           {
             try {
@@ -169,10 +157,8 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               logUnexpectedError(err, message.type, message.payload);
               throw err;
             }
-
             return;
           }
-
         case 'subscribe':
           {
             try {
@@ -183,25 +169,21 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               logUnexpectedError(err, message.type, message.payload);
               throw err;
             }
-
             return;
           }
         // case 'subscribe:changePayload': {
         //   break;
         // }
-
         case 'subscribe:close':
           {
             if (!openedSubscriptions) {
               throw new Error('Subscriptions not allowed');
             }
-
             try {
               const {
                 subscriptionId
               } = message.payload;
               const SubscriptionAndSubscribeHook = openedSubscriptions.get(subscriptionId);
-
               if (!SubscriptionAndSubscribeHook) {
                 logger.warn('tried to unsubscribe non existing watcher', {
                   subscriptionId
@@ -213,10 +195,8 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
             } catch (err) {
               logUnexpectedError(err, message.type, message.payload);
             }
-
             return;
           }
-
         case 'do':
           {
             try {
@@ -226,11 +206,9 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
                 params
               } = message.payload;
               const operation = resource.operations[operationKey];
-
               if (!operation) {
                 throw new ResourcesServerError('OPERATION_NOT_FOUND', `Operation not found: ${operationKey}`);
               }
-
               return operation(params, authenticatedUser);
             } catch (err) {
               logUnexpectedError(err, message.type, message.payload);
