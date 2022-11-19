@@ -76,7 +76,7 @@
     "extended-json": "9.2.0",
     "liwi-resources-server": "9.2.0",
     "liwi-store": "9.2.0",
-    "nightingale-logger": "^12.1.4",
+    "nightingale-logger": "^13.0.0",
     "ws": "^8.4.2"
   },
   "devDependencies": {

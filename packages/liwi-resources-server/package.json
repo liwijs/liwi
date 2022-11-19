@@ -76,7 +76,7 @@
     "@babel/runtime": "^7.20.1",
     "extended-json": "9.2.0",
     "liwi-resources": "9.2.0",
-    "nightingale-logger": "^12.1.4"
+    "nightingale-logger": "^13.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.20.2",
