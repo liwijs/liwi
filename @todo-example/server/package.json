@@ -43,7 +43,7 @@
     "liwi-mongo": "9.2.0",
     "liwi-resources-server": "9.2.0",
     "liwi-resources-websocket-server": "9.2.0",
-    "nightingale-app-console": "^12.1.4"
+    "nightingale-app-console": "^13.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.20.2",

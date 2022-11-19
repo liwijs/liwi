@@ -79,7 +79,7 @@
     "@babel/runtime": "^7.20.1",
     "liwi-resources-client": "9.2.0",
     "mingo": "^6.0.3",
-    "nightingale-logger": "^12.1.4"
+    "nightingale-logger": "^13.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.20.2",
