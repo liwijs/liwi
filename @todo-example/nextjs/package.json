@@ -34,7 +34,7 @@
     "todomvc-common": "1.0.5"
   },
   "devDependencies": {
-    "@playwright/test": "1.27.1",
+    "@playwright/test": "1.28.0",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-native": "0.70.6",
