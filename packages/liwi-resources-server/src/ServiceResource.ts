@@ -16,7 +16,9 @@ export interface ServiceResource<
     [P in keyof ClientService['queries']]: (
       params: Parameters<ClientService['queries'][P]>[0],
       connectedUser: undefined | ConnectedUser,
-    ) => ReturnType<ClientService['queries'][P]>;
+    ) =>
+      | ReturnType<ClientService['queries'][P]>
+      | Promise<ReturnType<ClientService['queries'][P]>>;
   };
   subscribeHooks?: {
     [P in keyof ClientService['queries']]?: SubscribeHook<

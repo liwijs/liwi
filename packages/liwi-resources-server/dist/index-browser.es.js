@@ -82,12 +82,30 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
     var resource = resourcesServerService.getServiceResource(payload.resourceName);
     return resource;
   };
-  var createQuery = function createQuery(payload, resource) {
-    if (!payload.key.startsWith('query')) {
-      throw new Error('Invalid query key');
-    }
-    return resource.queries[payload.key](payload.params, authenticatedUser);
-  };
+  var createQuery = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(payload, resource) {
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (payload.key.startsWith('query')) {
+                _context.next = 2;
+                break;
+              }
+              throw new Error('Invalid query key');
+            case 2:
+              return _context.abrupt("return", resource.queries[payload.key](payload.params, authenticatedUser));
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return function createQuery() {
+      return _ref.apply(this, arguments);
+    };
+  }();
   var createSubscription = function createSubscription(type, payload, resource, query, sendSubscriptionMessage) {
     var _resource$subscribeHo;
     if (!openedSubscriptions) {
@@ -120,10 +138,10 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
       return null;
     });
   };
-  var unsubscribeSubscription = function unsubscribeSubscription(_ref) {
-    var subscription = _ref.subscription,
-      subscribeHook = _ref.subscribeHook,
-      params = _ref.params;
+  var unsubscribeSubscription = function unsubscribeSubscription(_ref2) {
+    var subscription = _ref2.subscription,
+      subscribeHook = _ref2.subscribeHook,
+      params = _ref2.params;
     subscription.stop();
     if (subscribeHook) {
       subscribeHook.unsubscribed(authenticatedUser, params);
@@ -136,70 +154,79 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
       }
     },
     messageHandler: function () {
-      var _messageHandler = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(message, subscriptionCallback) {
+      var _messageHandler = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(message, subscriptionCallback) {
         var resource, query, _resource, _query, _resource2, _query2, _subscriptionId, _SubscriptionAndSubscribeHook, _resource3, _message$payload, operationKey, params, operation;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                _context.t0 = message.type;
-                _context.next = _context.t0 === 'fetch' ? 3 : _context.t0 === 'fetchAndSubscribe' ? 16 : _context.t0 === 'subscribe' ? 29 : _context.t0 === 'subscribe:close' ? 41 : _context.t0 === 'do' ? 45 : 58;
+                _context2.t0 = message.type;
+                _context2.next = _context2.t0 === 'fetch' ? 3 : _context2.t0 === 'fetchAndSubscribe' ? 18 : _context2.t0 === 'subscribe' ? 33 : _context2.t0 === 'subscribe:close' ? 47 : _context2.t0 === 'do' ? 51 : 64;
                 break;
               case 3:
-                _context.prev = 3;
+                _context2.prev = 3;
                 resource = getResource(message.payload);
-                query = createQuery(message.payload, resource);
-                _context.next = 8;
+                _context2.next = 7;
+                return createQuery(message.payload, resource);
+              case 7:
+                query = _context2.sent;
+                _context2.next = 10;
                 return query.fetch(function (result) {
                   return result;
                 });
-              case 8:
-                return _context.abrupt("return", _context.sent);
-              case 11:
-                _context.prev = 11;
-                _context.t1 = _context["catch"](3);
-                logUnexpectedError(_context.t1, message.type, message.payload);
-                throw _context.t1;
-              case 15:
-                return _context.abrupt("return");
-              case 16:
-                _context.prev = 16;
+              case 10:
+                return _context2.abrupt("return", _context2.sent);
+              case 13:
+                _context2.prev = 13;
+                _context2.t1 = _context2["catch"](3);
+                logUnexpectedError(_context2.t1, message.type, message.payload);
+                throw _context2.t1;
+              case 17:
+                return _context2.abrupt("return");
+              case 18:
+                _context2.prev = 18;
                 _resource = getResource(message.payload);
-                _query = createQuery(message.payload, _resource);
-                _context.next = 21;
+                _context2.next = 22;
+                return createQuery(message.payload, _resource);
+              case 22:
+                _query = _context2.sent;
+                _context2.next = 25;
                 return createSubscription('fetchAndSubscribe', message.payload, _resource, _query, subscriptionCallback);
-              case 21:
-                return _context.abrupt("return", _context.sent);
-              case 24:
-                _context.prev = 24;
-                _context.t2 = _context["catch"](16);
-                logUnexpectedError(_context.t2, message.type, message.payload);
-                throw _context.t2;
+              case 25:
+                return _context2.abrupt("return", _context2.sent);
               case 28:
-                return _context.abrupt("return");
-              case 29:
-                _context.prev = 29;
+                _context2.prev = 28;
+                _context2.t2 = _context2["catch"](18);
+                logUnexpectedError(_context2.t2, message.type, message.payload);
+                throw _context2.t2;
+              case 32:
+                return _context2.abrupt("return");
+              case 33:
+                _context2.prev = 33;
                 _resource2 = getResource(message.payload);
-                _query2 = createQuery(message.payload, _resource2);
-                _context.next = 34;
+                _context2.next = 37;
+                return createQuery(message.payload, _resource2);
+              case 37:
+                _query2 = _context2.sent;
+                _context2.next = 40;
                 return createSubscription('subscribe', message.payload, _resource2, _query2, subscriptionCallback);
-              case 34:
-                _context.next = 40;
-                break;
-              case 36:
-                _context.prev = 36;
-                _context.t3 = _context["catch"](29);
-                logUnexpectedError(_context.t3, message.type, message.payload);
-                throw _context.t3;
               case 40:
-                return _context.abrupt("return");
-              case 41:
+                _context2.next = 46;
+                break;
+              case 42:
+                _context2.prev = 42;
+                _context2.t3 = _context2["catch"](33);
+                logUnexpectedError(_context2.t3, message.type, message.payload);
+                throw _context2.t3;
+              case 46:
+                return _context2.abrupt("return");
+              case 47:
                 if (openedSubscriptions) {
-                  _context.next = 43;
+                  _context2.next = 49;
                   break;
                 }
                 throw new Error('Subscriptions not allowed');
-              case 43:
+              case 49:
                 try {
                   _subscriptionId = message.payload.subscriptionId;
                   _SubscriptionAndSubscribeHook = openedSubscriptions.get(_subscriptionId);
@@ -214,30 +241,30 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
                 } catch (err) {
                   logUnexpectedError(err, message.type, message.payload);
                 }
-                return _context.abrupt("return");
-              case 45:
-                _context.prev = 45;
+                return _context2.abrupt("return");
+              case 51:
+                _context2.prev = 51;
                 _resource3 = getResource(message.payload);
                 _message$payload = message.payload, operationKey = _message$payload.operationKey, params = _message$payload.params;
                 operation = _resource3.operations[operationKey];
                 if (operation) {
-                  _context.next = 51;
+                  _context2.next = 57;
                   break;
                 }
                 throw new ResourcesServerError('OPERATION_NOT_FOUND', "Operation not found: " + operationKey);
-              case 51:
-                return _context.abrupt("return", operation(params, authenticatedUser));
-              case 54:
-                _context.prev = 54;
-                _context.t4 = _context["catch"](45);
-                logUnexpectedError(_context.t4, message.type, message.payload);
-                throw _context.t4;
-              case 58:
+              case 57:
+                return _context2.abrupt("return", operation(params, authenticatedUser));
+              case 60:
+                _context2.prev = 60;
+                _context2.t4 = _context2["catch"](51);
+                logUnexpectedError(_context2.t4, message.type, message.payload);
+                throw _context2.t4;
+              case 64:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, null, [[3, 11], [16, 24], [29, 36], [45, 54]]);
+        }, _callee2, null, [[3, 13], [18, 28], [33, 42], [51, 60]]);
       }));
       return function messageHandler() {
         return _messageHandler.apply(this, arguments);

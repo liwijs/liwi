@@ -5,7 +5,7 @@ export interface SubscribeHook<ConnectedUser = any, P = any> {
 }
 export interface ServiceResource<ClientService extends ServiceInterface<ClientService['queries'], ClientService['operations']>, ConnectedUser = unknown> {
     queries: {
-        [P in keyof ClientService['queries']]: (params: Parameters<ClientService['queries'][P]>[0], connectedUser: undefined | ConnectedUser) => ReturnType<ClientService['queries'][P]>;
+        [P in keyof ClientService['queries']]: (params: Parameters<ClientService['queries'][P]>[0], connectedUser: undefined | ConnectedUser) => ReturnType<ClientService['queries'][P]> | Promise<ReturnType<ClientService['queries'][P]>>;
     };
     subscribeHooks?: {
         [P in keyof ClientService['queries']]?: SubscribeHook<ConnectedUser, Parameters<ClientService['queries'][P]>[0]>;

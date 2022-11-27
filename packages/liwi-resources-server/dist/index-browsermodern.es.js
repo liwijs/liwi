@@ -79,7 +79,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
     const resource = resourcesServerService.getServiceResource(payload.resourceName);
     return resource;
   };
-  const createQuery = (payload, resource) => {
+  const createQuery = async (payload, resource) => {
     if (!payload.key.startsWith('query')) {
       throw new Error('Invalid query key');
     }
@@ -139,7 +139,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
           {
             try {
               const resource = getResource(message.payload);
-              const query = createQuery(message.payload, resource);
+              const query = await createQuery(message.payload, resource);
               return await query.fetch(result => result);
             } catch (err) {
               logUnexpectedError(err, message.type, message.payload);
@@ -151,7 +151,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
           {
             try {
               const resource = getResource(message.payload);
-              const query = createQuery(message.payload, resource);
+              const query = await createQuery(message.payload, resource);
               return await createSubscription('fetchAndSubscribe', message.payload, resource, query, subscriptionCallback);
             } catch (err) {
               logUnexpectedError(err, message.type, message.payload);
@@ -163,7 +163,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
           {
             try {
               const resource = getResource(message.payload);
-              const query = createQuery(message.payload, resource);
+              const query = await createQuery(message.payload, resource);
               await createSubscription('subscribe', message.payload, resource, query, subscriptionCallback);
             } catch (err) {
               logUnexpectedError(err, message.type, message.payload);

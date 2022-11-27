@@ -15,7 +15,12 @@ export const tasksService: ServiceResource<TasksService> = {
       });
     },
 
-    queryWithoutParams: () => {
+    queryWithoutParams: async () => {
+      // check async/await
+      await new Promise((resolve) => {
+        resolve(undefined);
+      });
+
       return tasksStore.createQueryCollection({
         sort: { created: 1 },
         limit: 100,

@@ -74,13 +74,13 @@ export const createMessageHandler = <AuthenticatedUser>(
     return resource;
   };
 
-  const createQuery = <
+  const createQuery = async <
     Service extends ServiceResource<any, any>,
     Key extends keyof Service['queries'] & string,
   >(
     payload: ToServerQueryPayload<Key>,
     resource: Service,
-  ): Query<any, any> => {
+  ): Promise<Query<any, any>> => {
     if (!payload.key.startsWith('query')) {
       throw new Error('Invalid query key');
     }
@@ -148,7 +148,7 @@ export const createMessageHandler = <AuthenticatedUser>(
         case 'fetch': {
           try {
             const resource = getResource(message.payload);
-            const query = createQuery(message.payload, resource);
+            const query = await createQuery(message.payload, resource);
             return await query.fetch((result) => result);
           } catch (err) {
             logUnexpectedError(err, message.type, message.payload);
@@ -159,7 +159,7 @@ export const createMessageHandler = <AuthenticatedUser>(
         case 'fetchAndSubscribe': {
           try {
             const resource = getResource(message.payload);
-            const query = createQuery(message.payload, resource);
+            const query = await createQuery(message.payload, resource);
 
             return await createSubscription(
               'fetchAndSubscribe',
@@ -177,7 +177,7 @@ export const createMessageHandler = <AuthenticatedUser>(
         case 'subscribe': {
           try {
             const resource = getResource(message.payload);
-            const query = createQuery(message.payload, resource);
+            const query = await createQuery(message.payload, resource);
             await createSubscription(
               'subscribe',
               message.payload,
