@@ -1,7 +1,7 @@
 {
   "name": "@todo-example/nextjs",
   "private": true,
-  "version": "10.0.0",
+  "version": "10.1.0",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "type": "module",
@@ -21,7 +21,7 @@
     "@todo-example/babel-preset-nextjs-babel-config": "10.0.0",
     "@todo-example/modules": "10.0.0",
     "classnames": "2.3.2",
-    "liwi-resources-void-client": "10.0.0",
+    "liwi-resources-void-client": "10.1.0",
     "liwi-resources-websocket-client": "10.0.0",
     "next": "13.0.4",
     "nightingale-app-console": "13.0.0",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.1.0](https://github.com/liwijs/liwi/compare/v10.0.0...v10.1.0) (2022-11-27)
+
+
+### Features
+
+* allow async query in server service resource ([e153310](https://github.com/liwijs/liwi/commit/e15331086638176ba45258fda206ea337ccdae0c))
+
+
+
+
+
 # [10.0.0](https://github.com/liwijs/liwi/compare/v9.2.0...v10.0.0) (2022-11-27)
 
 

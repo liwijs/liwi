@@ -1,7 +1,7 @@
 {
   "name": "@todo-example/server",
   "private": true,
-  "version": "10.0.0",
+  "version": "10.1.0",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "type": "module",
@@ -41,8 +41,8 @@
     "@todo-example/modules": "10.0.0",
     "alp-node": "^4.1.0",
     "liwi-mongo": "10.0.0",
-    "liwi-resources-server": "10.0.0",
-    "liwi-resources-websocket-server": "10.0.0",
+    "liwi-resources-server": "10.1.0",
+    "liwi-resources-websocket-server": "10.1.0",
     "nightingale-app-console": "^13.0.0"
   },
   "devDependencies": {
