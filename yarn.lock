@@ -3183,7 +3183,7 @@ __metadata:
     "@types/react": 18.0.25
     "@types/react-native": 0.70.7
     classnames: 2.3.2
-    liwi-resources-void-client: 10.0.0
+    liwi-resources-void-client: 10.1.0
     liwi-resources-websocket-client: 10.0.0
     mongodb-memory-server: 8.9.3
     next: 13.0.4
@@ -3211,8 +3211,8 @@ __metadata:
     alp-node: ^4.1.0
     alp-rollup-plugin-config: 1.2.0
     liwi-mongo: 10.0.0
-    liwi-resources-server: 10.0.0
-    liwi-resources-websocket-server: 10.0.0
+    liwi-resources-server: 10.1.0
+    liwi-resources-websocket-server: 10.1.0
     nightingale-app-console: ^13.0.0
     pob-babel: 35.3.0
     rollup: 3.3.0
@@ -4882,17 +4882,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-package-dependencies@npm:3.10.0":
-  version: 3.10.0
-  resolution: "check-package-dependencies@npm:3.10.0"
+"check-package-dependencies@npm:3.11.0":
+  version: 3.11.0
+  resolution: "check-package-dependencies@npm:3.11.0"
   dependencies:
     chalk: ^4.1.0
     glob: ^8.0.0
     semver: ^7.3.4
-    type-fest: ^2.0.0
+    type-fest: ^3.0.0
   bin:
     check-package-dependencies: bin/check-package-dependencies.js
-  checksum: 1774a8852a4e89716325a59965c4babfeafb4ad3f28c2a4c56c7b57a1a5aeed83ef701c4b05dccfda86551d1f1244c673217016858d4838d984bfa116c981201
+  checksum: b6c64ab4b59e294e6d25c2fb3132fcd09154d10810972dd5ae42f9877cf1d2f7b8fade2cab8802c952fde7dccbbc86665976427d0ee797178e9b9690a553cb34
   languageName: node
   linkType: hard
 
@@ -8647,7 +8647,7 @@ __metadata:
     "@pob/lerna-light": 6.1.0
     "@pob/root": 7.2.0
     "@types/jest": 29.2.3
-    check-package-dependencies: 3.10.0
+    check-package-dependencies: 3.11.0
     eslint: 8.28.0
     jest: 29.3.1
     pob-babel: 35.3.0
@@ -8681,14 +8681,14 @@ __metadata:
     "@types/backo2": 1.0.1
     extended-json: 10.0.0
     liwi-resources-client: 10.0.0
-    liwi-resources-server: 10.0.0
+    liwi-resources-server: 10.1.0
     nightingale-logger: ^13.0.0
     pob-babel: 35.3.0
     typescript: 4.9.3
   languageName: unknown
   linkType: soft
 
-"liwi-resources-server@10.0.0, liwi-resources-server@workspace:packages/liwi-resources-server":
+"liwi-resources-server@10.1.0, liwi-resources-server@workspace:packages/liwi-resources-server":
   version: 0.0.0-use.local
   resolution: "liwi-resources-server@workspace:packages/liwi-resources-server"
   dependencies:
@@ -8704,7 +8704,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"liwi-resources-void-client@10.0.0, liwi-resources-void-client@workspace:packages/liwi-resources-void-client":
+"liwi-resources-void-client@10.1.0, liwi-resources-void-client@workspace:packages/liwi-resources-void-client":
   version: 0.0.0-use.local
   resolution: "liwi-resources-void-client@workspace:packages/liwi-resources-void-client"
   dependencies:
@@ -8712,7 +8712,7 @@ __metadata:
     "@babel/preset-env": 7.20.2
     babel-preset-modern-browsers: 15.0.2
     liwi-resources-client: 10.0.0
-    liwi-resources-server: 10.0.0
+    liwi-resources-server: 10.1.0
     pob-babel: 35.3.0
     typescript: 4.9.3
   languageName: unknown
@@ -8736,7 +8736,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"liwi-resources-websocket-server@10.0.0, liwi-resources-websocket-server@workspace:packages/liwi-resources-websocket-server":
+"liwi-resources-websocket-server@10.1.0, liwi-resources-websocket-server@workspace:packages/liwi-resources-websocket-server":
   version: 0.0.0-use.local
   resolution: "liwi-resources-websocket-server@workspace:packages/liwi-resources-websocket-server"
   dependencies:
@@ -8747,7 +8747,7 @@ __metadata:
     babel-preset-modern-browsers: 15.0.2
     bufferutil: ^4.0.3
     extended-json: 10.0.0
-    liwi-resources-server: 10.0.0
+    liwi-resources-server: 10.1.0
     liwi-store: 10.0.0
     nightingale-logger: ^13.0.0
     pob-babel: 35.3.0
@@ -12270,10 +12270,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^2.0.0":
-  version: 2.11.1
-  resolution: "type-fest@npm:2.11.1"
-  checksum: fcbf57ab65eafa517432ba4ec60e83e283ab88e21e3ac60d6081be515a6488de322660a86048f13ec5f0ba655092d680ced780e0cb86dd6fec59e04b4b6061b5
+"type-fest@npm:^3.0.0":
+  version: 3.2.0
+  resolution: "type-fest@npm:3.2.0"
+  checksum: 2668b62e8df6ae39074c93cb1e2c267c5f8a16d0d1bb693e71f2ea0b80da14eca5442edbcc5609d1099c49a4aaecda960d7fede3d3253b4126d2c6dfeb41b8c3
   languageName: node
   linkType: hard
 
