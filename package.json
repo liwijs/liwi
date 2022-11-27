@@ -28,6 +28,7 @@
     "postinstall": "pob-root-postinstall",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "tsc": "tsc -b",
+    "version": "YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn && git add yarn.lock",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "prettier": "@pob/root/prettier-config",

@@ -3183,7 +3183,7 @@ __metadata:
     "@types/react": 18.0.25
     "@types/react-native": 0.70.7
     classnames: 2.3.2
-    liwi-resources-void-client: 10.0.0
+    liwi-resources-void-client: 10.1.0
     liwi-resources-websocket-client: 10.0.0
     mongodb-memory-server: 8.9.3
     next: 13.0.4
@@ -3211,8 +3211,8 @@ __metadata:
     alp-node: ^4.1.0
     alp-rollup-plugin-config: 1.2.0
     liwi-mongo: 10.0.0
-    liwi-resources-server: 10.0.0
-    liwi-resources-websocket-server: 10.0.0
+    liwi-resources-server: 10.1.0
+    liwi-resources-websocket-server: 10.1.0
     nightingale-app-console: ^13.0.0
     pob-babel: 35.3.0
     rollup: 3.3.0
@@ -8681,14 +8681,14 @@ __metadata:
     "@types/backo2": 1.0.1
     extended-json: 10.0.0
     liwi-resources-client: 10.0.0
-    liwi-resources-server: 10.0.0
+    liwi-resources-server: 10.1.0
     nightingale-logger: ^13.0.0
     pob-babel: 35.3.0
     typescript: 4.9.3
   languageName: unknown
   linkType: soft
 
-"liwi-resources-server@10.0.0, liwi-resources-server@workspace:packages/liwi-resources-server":
+"liwi-resources-server@10.1.0, liwi-resources-server@workspace:packages/liwi-resources-server":
   version: 0.0.0-use.local
   resolution: "liwi-resources-server@workspace:packages/liwi-resources-server"
   dependencies:
@@ -8704,7 +8704,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"liwi-resources-void-client@10.0.0, liwi-resources-void-client@workspace:packages/liwi-resources-void-client":
+"liwi-resources-void-client@10.1.0, liwi-resources-void-client@workspace:packages/liwi-resources-void-client":
   version: 0.0.0-use.local
   resolution: "liwi-resources-void-client@workspace:packages/liwi-resources-void-client"
   dependencies:
@@ -8712,7 +8712,7 @@ __metadata:
     "@babel/preset-env": 7.20.2
     babel-preset-modern-browsers: 15.0.2
     liwi-resources-client: 10.0.0
-    liwi-resources-server: 10.0.0
+    liwi-resources-server: 10.1.0
     pob-babel: 35.3.0
     typescript: 4.9.3
   languageName: unknown
@@ -8736,7 +8736,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"liwi-resources-websocket-server@10.0.0, liwi-resources-websocket-server@workspace:packages/liwi-resources-websocket-server":
+"liwi-resources-websocket-server@10.1.0, liwi-resources-websocket-server@workspace:packages/liwi-resources-websocket-server":
   version: 0.0.0-use.local
   resolution: "liwi-resources-websocket-server@workspace:packages/liwi-resources-websocket-server"
   dependencies:
@@ -8747,7 +8747,7 @@ __metadata:
     babel-preset-modern-browsers: 15.0.2
     bufferutil: ^4.0.3
     extended-json: 10.0.0
-    liwi-resources-server: 10.0.0
+    liwi-resources-server: 10.1.0
     liwi-store: 10.0.0
     nightingale-logger: ^13.0.0
     pob-babel: 35.3.0
