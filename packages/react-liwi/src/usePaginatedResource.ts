@@ -8,13 +8,17 @@ import type {
 import type { UseResourceOptions } from './useResource';
 import { useResource } from './useResource';
 
+export interface PaginatedQueryRequiredParams {
+  page: number;
+}
+
 type PaginatedQueryParams<Params extends Record<string, unknown>> =
-  QueryParams<Params> & Record<'page', number>;
+  QueryParams<Params> & PaginatedQueryRequiredParams;
 
 type UsePaginatedResourceOptions<Params extends PaginatedQueryParams<Params>> =
   UseResourceOptions<Params>;
 
-interface Pagination {
+export interface Pagination {
   totalPages: number;
 }
 

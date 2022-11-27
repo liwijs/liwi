@@ -1,9 +1,12 @@
 import type { Query, QueryParams } from 'liwi-resources-client';
 import type { ResourceResultInitialLoading, ResourceResultInitialError, ResourceResultLoaded } from './createResourceResultFromState';
 import type { UseResourceOptions } from './useResource';
-type PaginatedQueryParams<Params extends Record<string, unknown>> = QueryParams<Params> & Record<'page', number>;
+export interface PaginatedQueryRequiredParams {
+    page: number;
+}
+type PaginatedQueryParams<Params extends Record<string, unknown>> = QueryParams<Params> & PaginatedQueryRequiredParams;
 type UsePaginatedResourceOptions<Params extends PaginatedQueryParams<Params>> = UseResourceOptions<Params>;
-interface Pagination {
+export interface Pagination {
     totalPages: number;
 }
 interface PaginatedResourceResultInitialLoading<Data, Params extends PaginatedQueryParams<Params>> extends ResourceResultInitialLoading<Data, Params> {
