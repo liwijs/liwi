@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.0.0](https://github.com/liwijs/liwi/compare/v9.2.0...v10.0.0) (2022-11-27)
+
+
+### Code Refactoring
+
+* drop node 14 and cjs ([b7035bd](https://github.com/liwijs/liwi/commit/b7035bd2289982ef56d3e560f4f3f308e90a555e))
+
+
+### Features
+
+* **deps:** update nightingale to v13 (major) ([#128](https://github.com/liwijs/liwi/issues/128)) ([f04d7fe](https://github.com/liwijs/liwi/commit/f04d7fe2deba3f20733ff945a35c61098139d8a9))
+* **react-liwi:** export PaginatedQueryRequiredParams and Pagination ([deb4afb](https://github.com/liwijs/liwi/commit/deb4afbe95c45c2c63aeb5565ac996008f8e84ce))
+
+
+### BREAKING CHANGES
+
+* dropped node 14 and cjs
+
+
+
+
+
 # [9.2.0](https://github.com/liwijs/liwi/compare/v9.1.0...v9.2.0) (2022-10-29)
 
 
