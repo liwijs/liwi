@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.1](https://github.com/liwijs/liwi/compare/v10.1.0...v10.1.1) (2022-12-10)
+
+
+### Bug Fixes
+
+* **liwi-mongo:** meta count using criteria ([e2347ad](https://github.com/liwijs/liwi/commit/e2347adb00e229c78a7b8523b1ac06beb6ca0545))
+
+
+
+
+
 # [10.0.0](https://github.com/liwijs/liwi/compare/v9.2.0...v10.0.0) (2022-11-27)
 
 
