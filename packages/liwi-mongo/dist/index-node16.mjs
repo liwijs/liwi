@@ -60,7 +60,7 @@ class MongoQueryCollection extends AbstractSubscribableStoreQuery {
     return this.testCriteria;
   }
   async fetch(onFulfilled) {
-    const [result, count] = await Promise.all([this.createMongoCursor().then(cursor => cursor.toArray()), this.store.count()]);
+    const [result, count] = await Promise.all([this.createMongoCursor().then(cursor => cursor.toArray()), this.store.count(this.options.criteria)]);
     return onFulfilled({
       result: result.map(this.transformer),
       meta: {

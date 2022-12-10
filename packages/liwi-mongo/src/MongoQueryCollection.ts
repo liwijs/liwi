@@ -76,7 +76,7 @@ export default class MongoQueryCollection<
   async fetch<T>(onFulfilled: (result: QueryResult<Item[]>) => T): Promise<T> {
     const [result, count] = await Promise.all([
       this.createMongoCursor().then((cursor) => cursor.toArray()),
-      this.store.count(),
+      this.store.count(this.options.criteria),
     ]);
 
     return onFulfilled({
