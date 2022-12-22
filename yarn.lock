@@ -3210,7 +3210,7 @@ __metadata:
     "@babel/core": 7.20.7
     "@todo-example/modules": 10.1.1
     alp-node: ^4.1.0
-    alp-rollup-plugin-config: 1.2.0
+    alp-rollup-plugin-config: 2.0.0
     liwi-mongo: 10.1.1
     liwi-resources-server: 10.1.1
     liwi-resources-websocket-server: 10.1.1
@@ -4026,15 +4026,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alp-rollup-plugin-config@npm:1.2.0":
-  version: 1.2.0
-  resolution: "alp-rollup-plugin-config@npm:1.2.0"
+"alp-rollup-plugin-config@npm:2.0.0":
+  version: 2.0.0
+  resolution: "alp-rollup-plugin-config@npm:2.0.0"
   dependencies:
     "@guanghechen/rollup-plugin-copy": 1.8.6
     js-yaml: 4.1.0
   peerDependencies:
     rollup: ^2.64.0 || ^3.0.0
-  checksum: 9404a22bafdfae5e3aeaf5fb1008e3bb5ce2e3f2feae28708939805e4cbd6812c0f0a172798a788f62f84456c01e7313c9a697ec314ffc2b30784337c4ee063c
+  checksum: acea3888d8b23524488a9423d9b3ba0ed7b1fe755482c619ab8c420106cbe03a42972a73c13bdc62b2dadae62bd9b519e8a6ce0832f0bd6e15f5a649b8445a60
   languageName: node
   linkType: hard
 
