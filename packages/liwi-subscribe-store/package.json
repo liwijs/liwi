@@ -30,22 +30,20 @@
     "./package.json": "./package.json",
     ".": {
       "node": {
-        "import": "./dist/index-node16.mjs",
-        "require": "./dist/index-node16.cjs"
+        "import": "./dist/index-node16.mjs"
       },
       "browser": {
         "browser:modern": {
           "import": "./dist/index-browsermodern.es.js"
         },
-        "import": "./dist/index-browser.es.js",
-        "require": "./dist/index-browser.cjs.js"
+        "import": "./dist/index-browser.es.js"
       }
     }
   },
   "sideEffects": false,
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
-    "build:definitions": "tsc -p",
+    "build:definitions": "tsc -p tsconfig.json",
     "clean": "yarn clean:build",
     "clean:build": "pob-babel-clean-out dist",
     "lint": "yarn run lint:eslint",
@@ -72,7 +70,7 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.20.1",
+    "@babel/runtime": "^7.20.7",
     "liwi-store": "10.1.1"
   },
   "devDependencies": {

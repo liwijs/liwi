@@ -21,15 +21,14 @@
     "./package.json": "./package.json",
     ".": {
       "node": {
-        "import": "./dist/index-node16.mjs",
-        "require": "./dist/index-node16.cjs"
+        "import": "./dist/index-node16.mjs"
       }
     }
   },
   "sideEffects": false,
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
-    "build:definitions": "tsc -p",
+    "build:definitions": "tsc -p tsconfig.json",
     "clean": "yarn clean:build",
     "clean:build": "pob-babel-clean-out dist",
     "lint": "yarn run lint:eslint",
@@ -49,7 +48,7 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.20.1",
+    "@babel/runtime": "^7.20.7",
     "extended-json": "10.1.1",
     "liwi-resources-client": "10.1.1",
     "liwi-resources-server": "10.1.1",
