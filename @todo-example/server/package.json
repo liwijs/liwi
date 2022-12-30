@@ -39,11 +39,11 @@
   },
   "dependencies": {
     "@todo-example/modules": "10.1.1",
-    "alp-node": "^4.1.0",
+    "alp-node": "4.1.0",
     "liwi-mongo": "10.1.1",
     "liwi-resources-server": "10.1.1",
     "liwi-resources-websocket-server": "10.1.1",
-    "nightingale-app-console": "^13.0.0"
+    "nightingale-app-console": "13.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.20.7",

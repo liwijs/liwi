@@ -1,7 +1,7 @@
 import { createCheckPackageWithWorkspaces } from 'check-package-dependencies';
 
-createCheckPackageWithWorkspaces(undefined, {
-  tryToAutoFix: true,
-}).checkRecommended({
-  isLibrary: () => true,
-});
+await createCheckPackageWithWorkspaces()
+  .checkRecommended({
+    isLibrary: (name) => !name.startsWith('@todo-example'),
+  })
+  .run();
