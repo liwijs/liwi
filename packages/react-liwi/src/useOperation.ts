@@ -7,7 +7,7 @@ export interface OperationState {
 
 export type OperationCallWrapper<T extends (...args: any) => Promise<any>> = (
   ...args: Parameters<T>
-) => Promise<[undefined | Error | any, undefined | ReturnType<T>]>;
+) => Promise<[undefined | Error | any, undefined | Awaited<ReturnType<T>>]>;
 
 export function useOperation<T extends (...args: any) => Promise<any>>(
   operationCall: T,
