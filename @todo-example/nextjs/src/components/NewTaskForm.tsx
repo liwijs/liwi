@@ -1,19 +1,20 @@
+import type { TasksService } from '@todo-example/modules';
 import type { ReactElement, FormEventHandler } from 'react';
-import { useState, useContext, useEffect } from 'react';
-import { useOperation, TransportClientReadyContext } from 'react-liwi';
-import { TodoServicesContext } from 'app/services/TodoServicesProvider';
+import { useState } from 'react';
+import type { OperationCallWrapper } from 'react-liwi';
 
-export function NewTaskForm(): ReactElement {
+export interface NewTaskFormProps {
+  isReady: boolean;
+  isTaskCreating: boolean;
+  createTask: OperationCallWrapper<TasksService['operations']['create']>;
+}
+
+export function NewTaskForm({
+  isReady,
+  isTaskCreating,
+  createTask,
+}: NewTaskFormProps): ReactElement {
   const [newTaskInput, setNewTaskInput] = useState('');
-  const todoServices = useContext(TodoServicesContext);
-  const isReady = useContext(TransportClientReadyContext);
-  const [createTask, { loading: taskCreating, error: taskCreateFailed }] =
-    useOperation(todoServices.tasksService.operations.create);
-
-  useEffect(() => {
-    if (taskCreateFailed === undefined) return;
-    alert(taskCreateFailed);
-  }, [taskCreateFailed]);
 
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
@@ -41,7 +42,7 @@ export function NewTaskForm(): ReactElement {
       <input
         className="new-todo"
         placeholder="What needs to be done?"
-        disabled={!isReady || taskCreating}
+        disabled={!isReady || isTaskCreating}
         value={newTaskInput}
         onChange={(e): void => {
           setNewTaskInput(e.target.value);

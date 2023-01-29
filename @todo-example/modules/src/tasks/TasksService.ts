@@ -2,29 +2,29 @@ import type { ServiceQuery } from 'liwi-resources-client';
 import { createResourceClientService } from 'liwi-resources-client';
 import type { DraftTask, Task } from './Task';
 
-export interface QueryAllParams {
+export interface TaskQueryAllParams {
   completed?: boolean;
   limit: number;
   page: number;
 }
 
-interface CreateParams {
+export interface TaskCreateParams {
   task: DraftTask;
 }
 
-interface PatchParams {
+interface TaskPatchParams {
   id: Task['_id'];
   patch: Partial<Pick<Task, 'completed' | 'label'>>;
 }
 
 export interface TasksService {
   queries: {
-    queryAll: ServiceQuery<Task[], QueryAllParams>;
+    queryAll: ServiceQuery<Task[], TaskQueryAllParams>;
     queryWithoutParams: ServiceQuery<Task[], Record<string, never>>;
   };
   operations: {
-    create: (params: CreateParams) => Promise<Task>;
-    patch: (params: PatchParams) => Promise<Task>;
+    create: (params: TaskCreateParams) => Promise<Task>;
+    patch: (params: TaskPatchParams) => Promise<Task>;
     clearCompleted: () => Promise<void>;
   };
 }

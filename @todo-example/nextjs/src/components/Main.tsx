@@ -1,33 +1,30 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import type { Task } from '@todo-example/modules';
+import type {
+  TaskQueryAllParams,
+  Task,
+  TasksService,
+} from '@todo-example/modules';
 import type { ReactElement } from 'react';
-import { useContext, useMemo, useState } from 'react';
-import { useResource, useOperation } from 'react-liwi';
-import { TodoServicesContext } from 'app/services/TodoServicesProvider';
+import { useMemo, useState } from 'react';
+import type { OperationCallWrapper, ResourceResult } from 'react-liwi';
 import { TodoList } from './TodoList';
 
-export default function Main(): ReactElement | null {
-  const todoServices = useContext(TodoServicesContext);
-  const tasksResourceResult = useResource(
-    todoServices.tasksService.queries.queryAll,
-    {
-      params: {
-        limit: 200,
-        page: 1,
-      },
-      subscribe: true,
-    },
-    [],
-  );
+export interface MainProps {
+  tasksResourceResult: ResourceResult<Task[], TaskQueryAllParams>;
+  clearCompleted: OperationCallWrapper<
+    TasksService['operations']['clearCompleted']
+  >;
+  patchTask: OperationCallWrapper<TasksService['operations']['patch']>;
+}
 
+export default function Main({
+  tasksResourceResult,
+  clearCompleted,
+  patchTask,
+}: MainProps): ReactElement | null {
   const [hash, setHash] = useState(
     typeof window === 'undefined' ? '#/' : window.location.hash,
   );
-
-  const [clearCompleted] = useOperation(
-    todoServices.tasksService.operations.clearCompleted,
-  );
-  const [patchTask] = useOperation(todoServices.tasksService.operations.patch);
 
   const activeTasks = useMemo(() => {
     if (!tasksResourceResult.data) return [];

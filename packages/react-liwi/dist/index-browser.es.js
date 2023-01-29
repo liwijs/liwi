@@ -328,6 +328,23 @@ function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
   };
 }
 
+var useVisibilityChangeSubscriber = function useVisibilityChangeSubscriber() {
+  var handleVisibilityChangeRef = useRef();
+  return useMemo(function () {
+    return {
+      subscribe: function subscribe(handleVisibilityChange) {
+        handleVisibilityChangeRef.current = handleVisibilityChange;
+        document.addEventListener('visibilitychange', handleVisibilityChange, false);
+      },
+      unsubscribe: function unsubscribe() {
+        if (handleVisibilityChangeRef.current) {
+          document.removeEventListener('visibilitychange', handleVisibilityChangeRef.current);
+        }
+      }
+    };
+  }, []);
+};
+
 /* eslint-disable max-lines */
 var defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
@@ -340,10 +357,10 @@ var isInitial = function isInitial(changes) {
 function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp) {
   var _ref = _temp === void 0 ? defaultOptions : _temp,
     visibleTimeout = _ref.visibleTimeout;
+  var visibilityChangeSubscriber = useVisibilityChangeSubscriber();
   var querySubscriptionRef = useRef(undefined);
   var timeoutRef = useRef(undefined);
   var changeParamsRef = useRef(undefined);
-  var handleVisibilityChangeRef = useRef(undefined);
   var skipRef = useRef(skip);
   skipRef.current = skip;
   var unsubscribe = function unsubscribe() {
@@ -439,7 +456,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
               subscribe();
             }
           };
-          var handleVisibilityChange = function handleVisibilityChange() {
+          visibilityChangeSubscriber.subscribe(function handleVisibilityChange() {
             if (skipRef.current) return;
             if (!document.hidden) {
               if (timeoutRef.current !== undefined) {
@@ -458,9 +475,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
             if (querySubscriptionRef.current === undefined) return;
             queryLogger.debug('timeout visible');
             timeoutRef.current = setTimeout(unsubscribe, visibleTimeout);
-          };
-          handleVisibilityChangeRef.current = handleVisibilityChange;
-          document.addEventListener('visibilitychange', handleVisibilityChange, false);
+          });
           if (!document.hidden && !skipRef.current) {
             subscribe();
           }
@@ -482,16 +497,14 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
   }, [skip].concat(deps));
   useEffect(function () {
     return function () {
-      if (handleVisibilityChangeRef.current) {
-        document.removeEventListener('visibilitychange', handleVisibilityChangeRef.current);
-      }
+      visibilityChangeSubscriber.unsubscribe();
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = undefined;
       }
       unsubscribe();
     };
-  }, []);
+  }, [visibilityChangeSubscriber]);
   return useMemo(function () {
     return createResourceResultFromState(state);
   }, [state]);

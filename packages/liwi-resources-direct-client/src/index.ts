@@ -47,7 +47,6 @@ export const createDirectTransportClient = <AuthenticatedUser>({
         },
       ) as any;
 
-      p.then();
       p.stop = () => {};
       p.cancel = () => {};
       return p;
