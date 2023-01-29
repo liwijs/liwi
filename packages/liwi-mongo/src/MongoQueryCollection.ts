@@ -68,7 +68,7 @@ export default class MongoQueryCollection<
       }
 
       // criteria not supported by mingo: updates will not work
-      if (this.options.criteria.$search) {
+      if (this.options.criteria.$text) {
         return () => false;
       }
 

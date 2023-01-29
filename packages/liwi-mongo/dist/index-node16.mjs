@@ -56,7 +56,7 @@ class MongoQueryCollection extends AbstractSubscribableStoreQuery {
       }
 
       // criteria not supported by mingo: updates will not work
-      if (this.options.criteria.$search) {
+      if (this.options.criteria.$text) {
         return () => false;
       }
       const mingoQuery = new mingo.Query(this.options.criteria);
