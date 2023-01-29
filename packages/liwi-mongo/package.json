@@ -1,6 +1,6 @@
 {
   "name": "liwi-mongo",
-  "version": "10.1.2",
+  "version": "10.1.3",
   "description": "mongo implementation for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",

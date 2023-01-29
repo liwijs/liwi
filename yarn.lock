@@ -3165,14 +3165,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todo-example/modules@10.1.2, @todo-example/modules@workspace:@todo-example/modules":
+"@todo-example/modules@10.1.3, @todo-example/modules@workspace:@todo-example/modules":
   version: 0.0.0-use.local
   resolution: "@todo-example/modules@workspace:@todo-example/modules"
   dependencies:
     "@babel/core": 7.20.12
     "@babel/preset-env": 7.20.2
     babel-preset-modern-browsers: 15.0.2
-    liwi-mongo: 10.1.2
+    liwi-mongo: 10.1.3
     liwi-resources-client: 10.1.2
     pob-babel: 35.4.0
     typescript: 4.9.4
@@ -3185,7 +3185,7 @@ __metadata:
   dependencies:
     "@playwright/test": 1.28.1
     "@todo-example/babel-preset-nextjs-babel-config": 10.0.0
-    "@todo-example/modules": 10.1.2
+    "@todo-example/modules": 10.1.3
     "@types/node": 18.11.18
     "@types/react": 18.0.27
     "@types/react-native": 0.71.1
@@ -3214,10 +3214,10 @@ __metadata:
   resolution: "@todo-example/server@workspace:@todo-example/server"
   dependencies:
     "@babel/core": 7.20.12
-    "@todo-example/modules": 10.1.2
+    "@todo-example/modules": 10.1.3
     alp-node: 4.1.0
     alp-rollup-plugin-config: 2.0.0
-    liwi-mongo: 10.1.2
+    liwi-mongo: 10.1.3
     liwi-resources-server: 10.1.2
     liwi-resources-websocket-server: 10.1.2
     nightingale-app-console: 13.0.0
@@ -8638,13 +8638,13 @@ __metadata:
   resolution: "liwi-mongo-example@workspace:packages/liwi-mongo-example"
   dependencies:
     "@babel/core": 7.20.12
-    liwi-mongo: 10.1.2
+    liwi-mongo: 10.1.3
     pob-babel: 35.4.0
     typescript: 4.9.4
   languageName: unknown
   linkType: soft
 
-"liwi-mongo@10.1.2, liwi-mongo@workspace:packages/liwi-mongo":
+"liwi-mongo@10.1.3, liwi-mongo@workspace:packages/liwi-mongo":
   version: 0.0.0-use.local
   resolution: "liwi-mongo@workspace:packages/liwi-mongo"
   dependencies:

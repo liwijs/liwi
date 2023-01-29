@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.3](https://github.com/liwijs/liwi/compare/v10.1.2...v10.1.3) (2023-01-29)
+
+
+### Bug Fixes
+
+* **liwi-mongo:** ignore $text not $search ([80225b2](https://github.com/liwijs/liwi/commit/80225b264b57960d521401e80a64b74a265bdf18))
+
+
+
+
+
 ## [10.1.2](https://github.com/liwijs/liwi/compare/v10.1.1...v10.1.2) (2023-01-29)
 
 
