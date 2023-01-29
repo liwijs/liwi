@@ -67,6 +67,11 @@ export default class MongoQueryCollection<
         return () => true;
       }
 
+      // criteria not supported by mingo: updates will not work
+      if (this.options.criteria.$search) {
+        return () => false;
+      }
+
       const mingoQuery = new mingo.Query(this.options.criteria);
       this.testCriteria = mingoQuery.test.bind(mingoQuery);
     }
