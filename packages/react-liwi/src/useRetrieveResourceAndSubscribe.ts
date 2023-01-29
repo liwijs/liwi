@@ -17,6 +17,7 @@ import type {
   ResourceReducerInitializerReturn,
 } from './reducer';
 import reducer, { initReducer } from './reducer';
+import { useVisibilityChangeSubscriber } from './utils/useVisibilityChangeSubscriber';
 
 export interface UseResourceAndSubscribeOptions {
   visibleTimeout: number;
@@ -43,6 +44,7 @@ export function useRetrieveResourceAndSubscribe<
   deps: any[],
   { visibleTimeout }: UseResourceAndSubscribeOptions = defaultOptions,
 ): ResourceResult<Result, Params> {
+  const visibilityChangeSubscriber = useVisibilityChangeSubscriber();
   const querySubscriptionRef = useRef<QuerySubscription | undefined>(undefined);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
@@ -51,7 +53,6 @@ export function useRetrieveResourceAndSubscribe<
     undefined,
   );
 
-  const handleVisibilityChangeRef = useRef<(() => void) | undefined>(undefined);
   const skipRef = useRef(skip);
   skipRef.current = skip;
 
@@ -199,13 +200,7 @@ export function useRetrieveResourceAndSubscribe<
             timeoutRef.current = setTimeout(unsubscribe, visibleTimeout);
           };
 
-          handleVisibilityChangeRef.current = handleVisibilityChange;
-
-          document.addEventListener(
-            'visibilitychange',
-            handleVisibilityChange,
-            false,
-          );
+          visibilityChangeSubscriber.subscribe(handleVisibilityChange);
 
           if (!document.hidden && !skipRef.current) {
             subscribe();
@@ -232,12 +227,7 @@ export function useRetrieveResourceAndSubscribe<
 
   useEffect(() => {
     return () => {
-      if (handleVisibilityChangeRef.current) {
-        document.removeEventListener(
-          'visibilitychange',
-          handleVisibilityChangeRef.current,
-        );
-      }
+      visibilityChangeSubscriber.unsubscribe();
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = undefined;
@@ -245,7 +235,7 @@ export function useRetrieveResourceAndSubscribe<
 
       unsubscribe();
     };
-  }, []);
+  }, [visibilityChangeSubscriber]);
 
   return useMemo(() => createResourceResultFromState(state), [state]);
 }
