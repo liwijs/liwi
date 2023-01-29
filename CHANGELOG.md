@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.2](https://github.com/liwijs/liwi/compare/v10.1.1...v10.1.2) (2023-01-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency react-native-web to v0.18.11 ([#173](https://github.com/liwijs/liwi/issues/173)) ([2534b88](https://github.com/liwijs/liwi/commit/2534b881ba270784c794c456ac959f23c72b6110))
+* **liwi-monogo:** fix createTestCriteria for unsupported $search criteria ([e572148](https://github.com/liwijs/liwi/commit/e57214831e14a193ad2c5dec16c3873c25e1c076))
+* **react-liwi:** typescript fix OperationCallWrapper second value of tuple Promise type ([c1c1b1f](https://github.com/liwijs/liwi/commit/c1c1b1f7fbff0b795732aaf345c50bee096be96e))
+
+
+
+
+
 ## [10.1.1](https://github.com/liwijs/liwi/compare/v10.1.0...v10.1.1) (2022-12-10)
 
 

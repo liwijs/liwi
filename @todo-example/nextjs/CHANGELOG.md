@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.2](https://github.com/liwijs/liwi/compare/v10.1.1...v10.1.2) (2023-01-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency react-native-web to v0.18.11 ([#173](https://github.com/liwijs/liwi/issues/173)) ([2534b88](https://github.com/liwijs/liwi/commit/2534b881ba270784c794c456ac959f23c72b6110))
+
+
+
+
+
 ## [10.1.1](https://github.com/liwijs/liwi/compare/v10.1.0...v10.1.1) (2022-12-10)
 
 **Note:** Version bump only for package @todo-example/nextjs

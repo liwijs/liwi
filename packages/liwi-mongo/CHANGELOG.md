@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.2](https://github.com/liwijs/liwi/compare/v10.1.1...v10.1.2) (2023-01-29)
+
+
+### Bug Fixes
+
+* **liwi-monogo:** fix createTestCriteria for unsupported $search criteria ([e572148](https://github.com/liwijs/liwi/commit/e57214831e14a193ad2c5dec16c3873c25e1c076))
+
+
+
+
+
 ## [10.1.1](https://github.com/liwijs/liwi/compare/v10.1.0...v10.1.1) (2022-12-10)
 
 
