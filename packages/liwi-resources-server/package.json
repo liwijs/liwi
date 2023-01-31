@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-server",
-  "version": "10.3.0",
+  "version": "10.3.1",
   "description": "resources server for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -73,7 +73,7 @@
   "dependencies": {
     "@babel/runtime": "^7.20.7",
     "extended-json": "10.2.0",
-    "liwi-resources": "10.3.0",
+    "liwi-resources": "10.3.1",
     "nightingale-logger": "^13.0.0"
   },
   "devDependencies": {
