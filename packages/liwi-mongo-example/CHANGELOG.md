@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.2.0](https://github.com/liwijs/liwi/compare/v10.1.3...v10.2.0) (2023-01-31)
+
+
+### Features
+
+* **liwi-mongo-example:** update mongo example ([cf4a895](https://github.com/liwijs/liwi/commit/cf4a895fb783b394323df61d893143682bfdc944))
+
+
+
+
+
 ## [10.1.3](https://github.com/liwijs/liwi/compare/v10.1.2...v10.1.3) (2023-01-29)
 
 **Note:** Version bump only for package liwi-mongo-example

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.2.0](https://github.com/liwijs/liwi/compare/v10.1.3...v10.2.0) (2023-01-31)
+
+
+### Features
+
+* update mongo ([96f189d](https://github.com/liwijs/liwi/commit/96f189da0f43582f8703998596208b2a5c2ed528))
+
+
+
+
+
 ## [10.1.3](https://github.com/liwijs/liwi/compare/v10.1.2...v10.1.3) (2023-01-29)
 
 

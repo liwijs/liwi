@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.2.0](https://github.com/liwijs/liwi/compare/v10.1.3...v10.2.0) (2023-01-31)
+
+
+### Features
+
+* update mingo and fix typings ([4ed585e](https://github.com/liwijs/liwi/commit/4ed585e82c20f07ee9a7e1587b8ad37648872b62))
+
+
+
+
+
 ## [10.1.2](https://github.com/liwijs/liwi/compare/v10.1.1...v10.1.2) (2023-01-29)
 
 
