@@ -151,6 +151,7 @@ export type Criteria<Model extends BaseModel> = Partial<Model> & ({
     };
     $where?: string | ((this: Model) => boolean);
     $comment?: string | Document;
+    [key: string]: any;
 });
 export type Sort<Model extends BaseModel> = {
     [P in keyof Model]?: -1 | 1;
