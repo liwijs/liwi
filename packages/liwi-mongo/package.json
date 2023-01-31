@@ -1,6 +1,6 @@
 {
   "name": "liwi-mongo",
-  "version": "10.2.0",
+  "version": "10.3.0",
   "description": "mongo implementation for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -48,8 +48,8 @@
     ]
   },
   "dependencies": {
-    "liwi-store": "10.2.0",
-    "liwi-subscribe-store": "10.2.0",
+    "liwi-store": "10.3.0",
+    "liwi-subscribe-store": "10.3.0",
     "mingo": "^6.2.7",
     "mongodb": "^4.13.0",
     "nightingale-logger": "^13.0.0"

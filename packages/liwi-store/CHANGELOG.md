@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.3.0](https://github.com/liwijs/liwi/compare/v10.2.0...v10.3.0) (2023-01-31)
+
+
+### Features
+
+* **liwi-store:** allow regex as object with pattern and options ([7e62bda](https://github.com/liwijs/liwi/commit/7e62bdafbf1b134294354edb3af74d794850fc85))
+
+
+
+
+
 # [10.2.0](https://github.com/liwijs/liwi/compare/v10.1.3...v10.2.0) (2023-01-31)
 
 
