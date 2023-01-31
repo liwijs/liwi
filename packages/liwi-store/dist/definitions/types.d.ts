@@ -87,6 +87,10 @@ export type IncludeOnlyFields<Model extends BaseModel> = {
 } & Record<string, 1>;
 export type Fields<Model extends BaseModel> = ExcludeOnlyFields<Model> | IncludeOnlyFields<Model>;
 type BitwiseFilter = number /** numeric bit mask */ | readonly number[];
+interface FilterRegex {
+    pattern: string;
+    options: string;
+}
 interface FilterOperators<TValue> {
     $eq?: TValue;
     $gt?: TValue;
@@ -105,7 +109,7 @@ interface FilterOperators<TValue> {
     $expr?: Record<string, any>;
     $jsonSchema?: Record<string, any>;
     $mod?: TValue extends number ? [number, number] : never;
-    $regex?: TValue extends string ? RegExp | string : never;
+    $regex?: TValue extends string ? RegExp | FilterRegex | string : never;
     $options?: TValue extends string ? string : never;
     $geoIntersects?: {
         $geometry: Document;
