@@ -4071,7 +4071,7 @@ __metadata:
     react-alp-connection-state: 6.2.2
     react-dom: 18.2.0
     react-liwi: 10.3.2
-    react-native-web: 0.18.11
+    react-native-web: 0.18.12
     springbokjs-daemon: 9.0.0
     todomvc-app-css: 2.4.2
     todomvc-common: 1.0.5
@@ -11827,9 +11827,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-native-web@npm:0.18.11":
-  version: 0.18.11
-  resolution: "react-native-web@npm:0.18.11"
+"react-native-web@npm:0.18.12":
+  version: 0.18.12
+  resolution: "react-native-web@npm:0.18.12"
   dependencies:
     "@babel/runtime": ^7.18.6
     create-react-class: ^15.7.0
@@ -11841,7 +11841,7 @@ __metadata:
   peerDependencies:
     react: ^17.0.2 || ^18.0.0
     react-dom: ^17.0.2 || ^18.0.0
-  checksum: efcc00d591e5628a3b5221eb246ff4fe8d65377d879ce9f9058503465efeec4265db0e1def523ac27c6d390bf46f4d54b6a686a9e578a9519c759b9c69528580
+  checksum: 69f0ebafafc4b04b845105646d0efc0cee10ed378377c621ac67a487d5508bb0dbd1c0ff3ea8d17f5cff0c0fb8d6355916f52f19ad3dad842b99b75c65ff4973
   languageName: node
   linkType: hard
 
