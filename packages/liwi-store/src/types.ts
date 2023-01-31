@@ -275,25 +275,26 @@ type AlternativeType<T> = T extends readonly (infer U)[]
   : RegExpOrString<T>;
 type Condition<T> = AlternativeType<T> | FilterOperators<AlternativeType<T>>;
 
-export type Criteria<Model extends BaseModel> = Partial<Model> &
-  ({
-    [Property in Join<NestedPaths<Model, []>, '.'>]?: Condition<
-      PropertyType<Model, Property>
-    >;
-  } & {
-    $and?: Criteria<Model>[];
-    $nor?: Criteria<Model>[];
-    $or?: Criteria<Model>[];
-    $text?: {
-      $search: string;
-      $language?: string;
-      $caseSensitive?: boolean;
-      $diacriticSensitive?: boolean;
-    };
-    $where?: string | ((this: Model) => boolean);
-    $comment?: string | Document;
-    [key: string]: any;
-  });
+export type Criteria<Model extends BaseModel> =
+  | Partial<Model>
+  | ({
+      [Property in Join<NestedPaths<Model, []>, '.'>]?: Condition<
+        PropertyType<Model, Property>
+      >;
+    } & {
+      $and?: Criteria<Model>[];
+      $nor?: Criteria<Model>[];
+      $or?: Criteria<Model>[];
+      $text?: {
+        $search: string;
+        $language?: string;
+        $caseSensitive?: boolean;
+        $diacriticSensitive?: boolean;
+      };
+      $where?: string | ((this: Model) => boolean);
+      $comment?: string | Document;
+      [key: string]: any;
+    });
 
 export type Sort<Model extends BaseModel> = {
   [P in keyof Model]?: -1 | 1;

@@ -137,7 +137,7 @@ type PropertyType<Type, Property extends string> = string extends Property ? unk
 type RegExpOrString<T> = T extends string ? RegExp | T : T;
 type AlternativeType<T> = T extends readonly (infer U)[] ? T | RegExpOrString<U> : RegExpOrString<T>;
 type Condition<T> = AlternativeType<T> | FilterOperators<AlternativeType<T>>;
-export type Criteria<Model extends BaseModel> = Partial<Model> & ({
+export type Criteria<Model extends BaseModel> = Partial<Model> | ({
     [Property in Join<NestedPaths<Model, []>, '.'>]?: Condition<PropertyType<Model, Property>>;
 } & {
     $and?: Criteria<Model>[];
