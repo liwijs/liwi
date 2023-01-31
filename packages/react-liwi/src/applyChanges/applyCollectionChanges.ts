@@ -1,6 +1,6 @@
 import type { Change, Changes, QueryInfo, QueryMeta } from 'liwi-store';
-import { Lazy } from 'mingo/lazy.js';
-import { $sort } from 'mingo/operators/pipeline/sort.js';
+import { Lazy } from 'mingo/lazy';
+import { $sort } from 'mingo/operators/pipeline/sort';
 
 function sortCollection<T>(collection: T[], sort: Record<string, 1 | -1>): T[] {
   return $sort(Lazy(collection), sort, { idKey: '_id' }).value() as T[];

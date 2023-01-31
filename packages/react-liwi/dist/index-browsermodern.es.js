@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback, useReducer, useMemo } from 'react';
 import { jsx } from 'react/jsx-runtime';
 import { Logger } from 'nightingale-logger';
-import { Lazy } from 'mingo/lazy.js';
-import { $sort } from 'mingo/operators/pipeline/sort.js';
+import { Lazy } from 'mingo/lazy';
+import { $sort } from 'mingo/operators/pipeline/sort';
 export { ResourcesServerError } from 'liwi-resources-client';
 
 const TransportClientContext = /*#__PURE__*/createContext(undefined);

@@ -10129,7 +10129,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mingo@npm:^6.0.3, mingo@npm:^6.2.7":
+"mingo@npm:^6.2.7":
   version: 6.2.7
   resolution: "mingo@npm:6.2.7"
   checksum: 95e17186d049596519856c9d149e82493318b799f4b442502ea7db87b4575d424823ceef6e439700c54b3f3642055443e2a6ee7e85c9f67dfa0dcbe4d5b04af5
@@ -11817,7 +11817,7 @@ __metadata:
     "@types/react": 18.0.27
     babel-preset-modern-browsers: 15.0.2
     liwi-resources-client: 10.1.2
-    mingo: ^6.0.3
+    mingo: ^6.2.7
     nightingale-logger: ^13.0.0
     pob-babel: 35.4.0
     react: 18.2.0

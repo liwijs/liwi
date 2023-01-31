@@ -3,8 +3,8 @@ import _objectWithoutPropertiesLoose from '@babel/runtime/helpers/esm/objectWith
 import { jsx } from 'react/jsx-runtime';
 import _extends from '@babel/runtime/helpers/esm/extends';
 import { Logger } from 'nightingale-logger';
-import { Lazy } from 'mingo/lazy.js';
-import { $sort } from 'mingo/operators/pipeline/sort.js';
+import { Lazy } from 'mingo/lazy';
+import { $sort } from 'mingo/operators/pipeline/sort';
 export { ResourcesServerError } from 'liwi-resources-client';
 
 var _excluded = ["createFn", "children"];
