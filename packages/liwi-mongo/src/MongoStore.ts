@@ -14,6 +14,7 @@ import type {
 } from 'liwi-store';
 import type {
   Collection,
+  Filter,
   FindCursor,
   MongoClient,
   UpdateFilter,
@@ -134,7 +135,7 @@ export default class MongoStore<
     if (!object.updated) object.updated = new Date();
 
     const collection = await this.collection;
-    await collection.replaceOne({ _id: object._id } as Criteria<Model>, object);
+    await collection.replaceOne({ _id: object._id } as Filter<Model>, object);
     return object;
   }
 
@@ -163,7 +164,8 @@ export default class MongoStore<
     object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>,
     setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
   ): Promise<MongoUpsertResult<KeyValue, Model>> {
-    const $setOnInsert = {
+    const $setOnInsert: Update<Model>['$setOnInsert'] = {
+      // @ts-expect-error -- created is Date as set in BaseModel
       created: object.created || new Date(),
       ...setOnInsertPartialObject,
     };
@@ -178,7 +180,7 @@ export default class MongoStore<
     const collection = await this.collection;
 
     const { upsertedCount } = await collection.updateOne(
-      { _id: object._id } as Criteria<Model>,
+      { _id: object._id } as Filter<Model>,
       { $set, $setOnInsert } as UpdateFilter<Model>,
       { upsert: true },
     );
@@ -201,7 +203,7 @@ export default class MongoStore<
   ): Promise<Model> {
     const collection = await this.collection;
     const commandResult = await collection.updateOne(
-      { _id: key, ...criteria } as Criteria<Model>,
+      { _id: key, ...criteria } as Filter<Model>,
       partialUpdate as UpdateFilter<Model>,
     );
     if (!commandResult.acknowledged) {
@@ -226,7 +228,7 @@ export default class MongoStore<
     return this.collection
       .then((collection) =>
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        collection.updateMany(criteria, partialUpdate as any),
+        collection.updateMany(criteria as Filter<Model>, partialUpdate as any),
       )
       .then((res) => undefined); // TODO return updated object
   }
@@ -234,7 +236,7 @@ export default class MongoStore<
   deleteByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<void> {
     return this.collection
       .then((collection) =>
-        collection.deleteOne({ _id: key, ...criteria } as Criteria<Model>),
+        collection.deleteOne({ _id: key, ...criteria } as Filter<Model>),
       )
       .then(() => undefined);
   }
@@ -245,14 +247,14 @@ export default class MongoStore<
 
   deleteMany(selector: Criteria<Model>): Promise<void> {
     return this.collection
-      .then((collection) => collection.deleteMany(selector))
+      .then((collection) => collection.deleteMany(selector as Filter<Model>))
       .then(() => undefined);
   }
 
   async count(filter?: Criteria<Model>): Promise<number> {
     const collection = await this.collection;
     return filter
-      ? collection.countDocuments(filter)
+      ? collection.countDocuments(filter as Filter<Model>)
       : collection.countDocuments();
   }
 
@@ -262,7 +264,7 @@ export default class MongoStore<
   ): Promise<MongoCursor<Model, Result, KeyValue>> {
     const collection = await this.collection;
     const findCursor = filter
-      ? collection.find<Result>(filter)
+      ? collection.find<Result>(filter as Filter<Model>)
       : (collection.find() as unknown as FindCursor<Result>);
     if (sort) findCursor.sort(sort);
     return new MongoCursor<Model, Result, KeyValue>(this, findCursor);
@@ -276,7 +278,7 @@ export default class MongoStore<
     const result = await collection.findOne<Model>({
       _id: key,
       ...criteria,
-    } as Criteria<Model>);
+    } as Filter<Model>);
     return result || undefined;
   }
 
@@ -291,7 +293,7 @@ export default class MongoStore<
     sort?: Sort<Model>,
   ): Promise<Model | undefined> {
     const collection = await this.collection;
-    const result = await collection.findOne<Model>(filter, {
+    const result = await collection.findOne<Model>(filter as Filter<Model>, {
       sort,
     });
     return result || undefined;

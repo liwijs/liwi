@@ -383,6 +383,7 @@ class MongoStore {
   }
   async upsertOneWithInfo(object, setOnInsertPartialObject) {
     const $setOnInsert = {
+      // @ts-expect-error -- created is Date as set in BaseModel
       created: object.created || new Date(),
       ...setOnInsertPartialObject
     };
