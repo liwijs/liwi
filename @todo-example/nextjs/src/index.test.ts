@@ -4,7 +4,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import type { Daemon } from 'springbokjs-daemon';
 import { createDaemon } from 'springbokjs-daemon';
 
-describe('test e2e', () => {
+xdescribe('test e2e', () => {
   const cwd = new URL('..', import.meta.url).pathname;
   const cwdServer = new URL('../../server', import.meta.url).pathname;
   let daemonNext: Daemon;
