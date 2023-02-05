@@ -123,7 +123,9 @@ export function useRetrieveResourceAndSubscribe<
                       ? applyCollectionChanges
                       : applySingleItemChanges
                   ) as ApplyChanges<Result, any>;
-                } else {
+                }
+                // if a change happen before the initial result, applyChanges will be undefined
+                else if (applyChanges) {
                   const { state: newResult, meta: newMeta } = applyChanges(
                     currentResult,
                     changes,
