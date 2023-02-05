@@ -1,7 +1,7 @@
 {
   "name": "@todo-example/nextjs",
   "private": true,
-  "version": "10.3.2",
+  "version": "10.3.3",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "type": "module",
@@ -28,7 +28,7 @@
     "react": "18.2.0",
     "react-alp-connection-state": "6.2.2",
     "react-dom": "18.2.0",
-    "react-liwi": "10.3.2",
+    "react-liwi": "10.3.3",
     "react-native-web": "0.18.12",
     "todomvc-app-css": "2.4.2",
     "todomvc-common": "1.0.5"

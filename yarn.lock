@@ -4070,7 +4070,7 @@ __metadata:
     react: 18.2.0
     react-alp-connection-state: 6.2.2
     react-dom: 18.2.0
-    react-liwi: 10.3.2
+    react-liwi: 10.3.3
     react-native-web: 0.18.12
     springbokjs-daemon: 9.0.0
     todomvc-app-css: 2.4.2
@@ -11783,7 +11783,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-liwi@10.3.2, react-liwi@workspace:packages/react-liwi":
+"react-liwi@10.3.3, react-liwi@workspace:packages/react-liwi":
   version: 0.0.0-use.local
   resolution: "react-liwi@workspace:packages/react-liwi"
   dependencies:

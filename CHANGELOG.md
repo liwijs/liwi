@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.3.3](https://github.com/liwijs/liwi/compare/v10.3.2...v10.3.3) (2023-02-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency react-native-web to v0.18.12 ([#180](https://github.com/liwijs/liwi/issues/180)) ([f3b5957](https://github.com/liwijs/liwi/commit/f3b5957340923f5edf64e6e38d7310948f845a6d))
+* **react-liwi:** fix when a change happen before initial result ([0cfafb8](https://github.com/liwijs/liwi/commit/0cfafb816934568abc1f6e1833c55a021d37d7b2))
+
+
+
+
+
 ## [10.3.2](https://github.com/liwijs/liwi/compare/v10.3.1...v10.3.2) (2023-01-31)
 
 
