@@ -417,7 +417,9 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
                   queryInfo: currentQueryInfo
                 });
                 applyChanges = Array.isArray(initialChange.initial) ? applyCollectionChanges : applySingleItemChanges;
-              } else {
+              }
+              // if a change happen before the initial result, applyChanges will be undefined
+              else if (applyChanges) {
                 _applyChanges = applyChanges(currentResult, changes, currentMeta, currentQueryInfo), newResult = _applyChanges.state, newMeta = _applyChanges.meta;
                 if (newResult && newResult !== currentResult) {
                   currentResult = newResult;

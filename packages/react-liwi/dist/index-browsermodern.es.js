@@ -398,7 +398,9 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
                 queryInfo: currentQueryInfo
               });
               applyChanges = Array.isArray(initialChange.initial) ? applyCollectionChanges : applySingleItemChanges;
-            } else {
+            }
+            // if a change happen before the initial result, applyChanges will be undefined
+            else if (applyChanges) {
               const {
                 state: newResult,
                 meta: newMeta
