@@ -37,7 +37,7 @@
     "@playwright/test": "1.28.1",
     "@types/node": "18.13.0",
     "@types/react": "18.0.28",
-    "@types/react-native": "0.71.2",
+    "@types/react-native": "0.71.3",
     "mongodb-memory-server": "8.11.4",
     "next-compose-plugins": "2.2.1",
     "next-transpile-modules": "10.0.0",
