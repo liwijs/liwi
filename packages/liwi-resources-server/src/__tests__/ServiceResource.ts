@@ -38,10 +38,10 @@ it('should transpile without error on simple queries', () => {
       `${common}
 export const postsResource1: ServiceResource<PostServiceQueries> = {
   queries: {
-    queryAll: (params: void, connectedUser) => {
+    queryAll: (params: void, loggedInUser) => {
       return {} as any;
     },
-    queryDetailedPost: (params: void, connectedUser) => {
+    queryDetailedPost: (params: void, loggedInUser) => {
       return {} as any;
     },
   },
@@ -59,10 +59,10 @@ export const postsResource1: ServiceResource<PostServiceQueries> = {
 //       `${common}
 // export const postsResource1: ServiceResource<PostServiceQueries> = {
 //   queries: {
-//     queryAll: (params: void, connectedUser) => {
+//     queryAll: (params: void, loggedInUser) => {
 //       return {} as any;
 //     },
-//     queryDetailedPost: (params: void, connectedUser) => {
+//     queryDetailedPost: (params: void, loggedInUser) => {
 //       return {} as any;
 //     },
 //     unexpectedQuery: () => {},

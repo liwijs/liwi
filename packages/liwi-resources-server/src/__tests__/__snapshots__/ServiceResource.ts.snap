@@ -8,10 +8,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsResource1 = void 0;
 exports.postsResource1 = {
     queries: {
-        queryAll: function (params, connectedUser) {
+        queryAll: function (params, loggedInUser) {
             return {};
         },
-        queryDetailedPost: function (params, connectedUser) {
+        queryDetailedPost: function (params, loggedInUser) {
             return {};
         },
     },
