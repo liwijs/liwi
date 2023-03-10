@@ -4092,7 +4092,7 @@ __metadata:
     liwi-resources-websocket-server: 10.3.2
     nightingale-app-console: 13.0.0
     pob-babel: 35.4.0
-    rollup: 3.9.0
+    rollup: 3.19.1
     rollup-plugin-copy: 3.4.0
     typescript: 4.9.5
   languageName: unknown
@@ -12200,6 +12200,20 @@ __metadata:
     globby: 10.0.1
     is-plain-object: ^3.0.0
   checksum: 6eed5b2498fbe44d694f65ae9a9287b13a606b98a232b5a144a94140e8631efae5f5953b573ba68bf2dc59ab11c223ad3ea6f6cd15b51f42287f4bcc234f0e8b
+  languageName: node
+  linkType: hard
+
+"rollup@npm:3.19.1":
+  version: 3.19.1
+  resolution: "rollup@npm:3.19.1"
+  dependencies:
+    fsevents: ~2.3.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    rollup: dist/bin/rollup
+  checksum: f78198c6de224b26650c70b16db156762d1fcceeb375d34fb2c76fc5b23a78f712c3c881d3248e6f277a511589e20d50c247bcf5c7920f1ddc0a43cadf9f0140
   languageName: node
   linkType: hard
 
