@@ -1,4 +1,4 @@
-type PromiseResolve<T> = (value: T | PromiseLike<T>) => void;
+type PromiseResolve<T> = (value: PromiseLike<T> | T) => void;
 
 export const createPromiseResolver = <T>(): {
   resolve: PromiseResolve<T>;

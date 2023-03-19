@@ -2,7 +2,7 @@ import type { Change, Changes, QueryInfo, QueryMeta } from 'liwi-store';
 import { Lazy } from 'mingo/lazy';
 import { $sort } from 'mingo/operators/pipeline/sort';
 
-function sortCollection<T>(collection: T[], sort: Record<string, 1 | -1>): T[] {
+function sortCollection<T>(collection: T[], sort: Record<string, -1 | 1>): T[] {
   return $sort(Lazy(collection), sort, { idKey: '_id' }).value() as T[];
 }
 
@@ -74,11 +74,11 @@ const applyCollectionChange = <Value>(
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
 export function applyCollectionChanges<Item>(
-  state: undefined | Item[],
+  state: Item[] | undefined,
   changes: Changes<any, Item[]>,
   queryMeta: QueryMeta,
   queryInfo: QueryInfo<Item>,
-): { state: undefined | Item[]; meta: QueryMeta } {
+): { state: Item[] | undefined; meta: QueryMeta } {
   if (state === undefined) return { state, meta: queryMeta };
 
   const newQueryMeta = { ...queryMeta };

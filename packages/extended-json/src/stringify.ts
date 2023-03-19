@@ -3,7 +3,7 @@ import type { ExtendedJsonValue } from './ExtendedJsonValue';
 type JsonReplacer = (
   key: string,
   value: any,
-) => number | string | boolean | Record<string, any> | undefined;
+) => Record<string, any> | boolean | number | string | undefined;
 
 // const internalReplacer = (key, value) => {
 //   return value;
@@ -18,7 +18,7 @@ type JsonReplacer = (
 export default function stringify(
   value: ExtendedJsonValue,
   replacer?: JsonReplacer,
-  space?: string | number,
+  space?: number | string,
 ): string {
   return JSON.stringify(
     value,

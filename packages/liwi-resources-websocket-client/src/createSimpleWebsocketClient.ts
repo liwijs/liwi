@@ -10,7 +10,7 @@ export type StateChangeListenerCreator = (
 
 export interface SimpleWebsocketClientOptions {
   url: string;
-  protocols?: string | string[];
+  protocols?: string[] | string;
   timeout?: number;
   reconnection?: boolean;
   reconnectionDelayMin?: number;
@@ -32,7 +32,7 @@ export interface WebsocketTransport {
   listenStateChange: StateChangeListenerCreator;
 }
 
-type Timeouts = 'maxConnect' | 'tryReconnect' | 'inactivity';
+type Timeouts = 'inactivity' | 'maxConnect' | 'tryReconnect';
 
 export default function createSimpleWebsocketClient({
   url,
@@ -56,7 +56,7 @@ export default function createSimpleWebsocketClient({
     factor: 1.2,
   });
 
-  const timeouts: Record<Timeouts, null | ReturnType<typeof setTimeout>> = {
+  const timeouts: Record<Timeouts, ReturnType<typeof setTimeout> | null> = {
     maxConnect: null,
     tryReconnect: null,
     inactivity: null,

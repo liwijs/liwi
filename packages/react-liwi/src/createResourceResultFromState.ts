@@ -49,12 +49,12 @@ export interface ResourceResultLoaded<
   data: Data;
   meta: QueryMeta;
   queryInfo: QueryInfo<any>;
-  error: undefined | Error | ResourcesServerError;
+  error: Error | ResourcesServerError | undefined;
 }
 
 export type ResourceResult<Data, Params extends QueryParams<Params>> =
-  | ResourceResultInitialLoading<Data, Params>
   | ResourceResultInitialError<Data, Params>
+  | ResourceResultInitialLoading<Data, Params>
   | ResourceResultLoaded<Data, Params>;
 
 export const createResourceResultFromState = <

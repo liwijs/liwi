@@ -16,7 +16,7 @@ const logger = new Logger('liwi:resources-websocket-client');
 
 export type SubscriptionCallback = (
   subscriptionId: number,
-  error: null | Error,
+  error: Error | null,
   result: any,
 ) => void;
 
@@ -76,7 +76,7 @@ export const createMessageHandler = <AuthenticatedUser>(
 
   const createQuery = async <
     Service extends ServiceResource<any, any>,
-    Key extends keyof Service['queries'] & string,
+    Key extends string & keyof Service['queries'],
   >(
     payload: ToServerQueryPayload<Key>,
     resource: Service,

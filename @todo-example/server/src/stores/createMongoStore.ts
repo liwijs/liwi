@@ -4,7 +4,7 @@ import { MongoStore, MongoConnection } from 'liwi-mongo';
 
 export { createMongoSubscribeStore } from 'liwi-mongo';
 
-type DbConfig = Map<'mongodb', Map<string, string | number>>;
+type DbConfig = Map<'mongodb', Map<string, number | string>>;
 
 const mongoConfig = config.get<DbConfig>('db').get('mongodb');
 if (!mongoConfig) throw new Error('Invalid mongo config (db.mongodb)');

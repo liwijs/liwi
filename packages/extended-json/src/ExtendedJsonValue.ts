@@ -1,12 +1,12 @@
 export type ExtendedJsonValue =
-  | undefined
-  | null
-  | string
-  | number
-  | boolean
   | Date
+  | ExtendedJsonRecord
   | ExtendedJsonValue[]
-  | ExtendedJsonRecord;
+  | boolean
+  | number
+  | string
+  | null
+  | undefined;
 
 // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 export interface ExtendedJsonRecord {

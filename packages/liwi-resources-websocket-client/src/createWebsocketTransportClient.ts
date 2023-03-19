@@ -42,7 +42,7 @@ export type WebsocketTransportClientOptions = Omit<
   Partial<Pick<SimpleWebsocketClientOptions, 'url'>>;
 
 type PromiseExecutor<T> = (
-  resolve: (value: T | PromiseLike<T>) => void,
+  resolve: (value: PromiseLike<T> | T) => void,
   reject: (reason?: any) => void,
 ) => void;
 
@@ -50,7 +50,7 @@ type Handler<T> = (id: number, error: AckError | null, result: T) => void;
 
 class SubscribeResultPromise<
   Result,
-  Payload extends Record<keyof Payload & string, ExtendedJsonValue | undefined>,
+  Payload extends Record<string & keyof Payload, ExtendedJsonValue | undefined>,
 > implements
     TransportClientSubscribeResult<Result, Payload>,
     PromiseLike<Result>
@@ -87,11 +87,11 @@ class SubscribeResultPromise<
 
   then<TResult1 = Result, TResult2 = never>(
     onfulfilled?:
-      | ((value: Result) => TResult1 | PromiseLike<TResult1>)
+      | ((value: Result) => PromiseLike<TResult1> | TResult1)
       | null
       | undefined,
     onrejected?:
-      | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+      | ((reason: any) => PromiseLike<TResult2> | TResult2)
       | null
       | undefined,
   ): PromiseLike<TResult1 | TResult2> {
@@ -100,7 +100,7 @@ class SubscribeResultPromise<
 
   catch<TResult2 = never>(
     onrejected?:
-      | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+      | ((reason: any) => PromiseLike<TResult2> | TResult2)
       | null
       | undefined,
   ): PromiseLike<Result | TResult2> {
@@ -245,7 +245,7 @@ export default function createResourcesWebsocketClient({
 
     subscribe: <
       T extends keyof ToServerSubscribeMessages<Payload>,
-      Payload extends Record<keyof Payload & string, ExtendedJsonValue>,
+      Payload extends Record<string & keyof Payload, ExtendedJsonValue>,
       Result,
       V extends ToServerSubscribeMessages<Payload>[T][2],
     >(

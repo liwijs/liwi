@@ -128,7 +128,9 @@ export interface ToServerSubscribeMessages<
 export type ToServerMessages = ToServerSimpleMessages &
   ToServerSubscribeMessages<Record<string, ExtendedJsonValue> | undefined>;
 
-export type ToServerMessage = (
+export type ToServerMessage = {
+  id: number;
+} & ( // eslint-disable-next-line @typescript-eslint/sort-type-constituents
   | {
       type: 'do';
       payload: ToServerSimpleMessages['do'][0];
@@ -153,7 +155,7 @@ export type ToServerMessage = (
       type: 'fetchAndSubscribe';
       payload: ToServerSubscribeMessages['fetchAndSubscribe'][0];
     }
-) & { id: number };
+);
 
 export class ResourcesServerError extends Error {
   code: string;

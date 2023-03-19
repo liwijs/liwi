@@ -36,7 +36,7 @@ export interface FetchedState<Result, Params extends QueryParams<Params>> {
   meta: QueryMeta;
   queryInfo: QueryInfo<any>;
   promise?: Promise<void>;
-  error: undefined | Error | ResourcesServerError;
+  error: Error | ResourcesServerError | undefined;
 }
 
 export interface InitAction {
@@ -64,14 +64,14 @@ export interface ErrorAction {
 }
 
 export type Action<Result> =
-  | ResolveAction<Result>
-  | RefetchAction
+  | ErrorAction
   | FetchingAction
-  | ErrorAction;
+  | RefetchAction
+  | ResolveAction<Result>;
 export type State<Result, Params extends QueryParams<Params>> =
-  | InitialState<Result, Params>
+  | FetchedState<Result, Params>
   | InitialErrorState<Result, Params>
-  | FetchedState<Result, Params>;
+  | InitialState<Result, Params>;
 export type ResourceReducer<
   Result,
   Params extends QueryParams<Params>,
@@ -126,7 +126,7 @@ export default function reducer<Result, Params extends QueryParams<Params>>(
         queryInfo: state.queryInfo,
         promise: action.promise,
         error: state.error,
-      } as InitialState<Result, Params> | FetchedState<Result, Params>;
+      } as FetchedState<Result, Params> | InitialState<Result, Params>;
     case 'fetching':
       return {
         ...state,

@@ -26,13 +26,13 @@ export type SubscribeCallback<KeyValue extends AllowedKeyValue, Result> = (
 ) => unknown;
 
 export type AllowedParamValue =
-  | undefined
-  | null
-  | string
-  | number
-  | boolean
+  | AllowedParamValue[]
   | Date
-  | AllowedParamValue[];
+  | boolean
+  | number
+  | string
+  | null
+  | undefined;
 
 export type QueryParams<Params extends Record<string, unknown>> = {
   [P in keyof Params]: Extract<Params[P], AllowedParamValue>;

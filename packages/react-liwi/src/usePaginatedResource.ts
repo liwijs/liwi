@@ -13,7 +13,7 @@ export interface PaginatedQueryRequiredParams {
 }
 
 type PaginatedQueryParams<Params extends Record<string, unknown>> =
-  QueryParams<Params> & PaginatedQueryRequiredParams;
+  PaginatedQueryRequiredParams & QueryParams<Params>;
 
 type UsePaginatedResourceOptions<Params extends PaginatedQueryParams<Params>> =
   UseResourceOptions<Params>;
@@ -47,8 +47,8 @@ export type PaginatedResourceResult<
   Data,
   Params extends PaginatedQueryParams<Params>,
 > =
-  | PaginatedResourceResultInitialLoading<Data, Params>
   | PaginatedResourceResultInitialError<Data, Params>
+  | PaginatedResourceResultInitialLoading<Data, Params>
   | PaginatedResourceResultLoaded<Data, Params>;
 
 export function usePaginatedResource<

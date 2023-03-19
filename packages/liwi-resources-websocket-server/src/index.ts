@@ -20,7 +20,7 @@ import { WebSocketServer } from 'ws';
 
 type GetAuthenticatedUser<AuthenticatedUser> = (
   request: http.IncomingMessage,
-) => AuthenticatedUser | null | Promise<AuthenticatedUser | null>;
+) => AuthenticatedUser | Promise<AuthenticatedUser | null> | null;
 
 interface ExtendedWebSocket extends WebSocket {
   isAlive: boolean;
@@ -72,7 +72,7 @@ export const createWsServer = <AuthenticatedUser>(
 
       const sendAck = (
         id: number,
-        error: null | Error,
+        error: Error | null,
         result?: ExtendedJsonValue,
       ): void => {
         sendMessage('ack', id, error && createSafeError(error), result);
@@ -80,7 +80,7 @@ export const createWsServer = <AuthenticatedUser>(
 
       const sendSubscriptionMessage: SubscriptionCallback = (
         subscriptionId: number,
-        error: null | Error,
+        error: Error | null,
         result: ExtendedJsonValue,
       ): void => {
         sendMessage(

@@ -12,7 +12,7 @@ type JsonReviver = <T extends ExtendedJsonValue>(
 const internalReviver: JsonReviver = function <T extends ExtendedJsonValue>(
   key: string,
   value: T,
-): T | Date {
+): Date | T {
   if (typeof value === 'string') {
     const matchDate = regexpStringDate.exec(value);
     if (matchDate) {

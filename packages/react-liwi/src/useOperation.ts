@@ -2,12 +2,12 @@ import { useCallback, useState } from 'react';
 
 export interface OperationState {
   loading: boolean;
-  error: undefined | Error;
+  error: Error | undefined;
 }
 
 export type OperationCallWrapper<T extends (...args: any) => Promise<any>> = (
   ...args: Parameters<T>
-) => Promise<[undefined | Error | any, undefined | Awaited<ReturnType<T>>]>;
+) => Promise<[Error | any | undefined, Awaited<ReturnType<T>> | undefined]>;
 
 export function useOperation<T extends (...args: any) => Promise<any>>(
   operationCall: T,

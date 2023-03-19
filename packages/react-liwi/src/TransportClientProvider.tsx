@@ -15,10 +15,10 @@ export const useTransportClientState = (): ConnectionStates =>
 export const useTransportClientIsReady = (): boolean =>
   useContext(TransportClientReadyContext);
 
-type TransportClientProviderProps<P extends Record<never, unknown>> = {
-  createFn: (params: Omit<P, 'createFn' | 'children'>) => TransportClient;
+type TransportClientProviderProps<P extends Record<never, unknown>> = P & {
+  createFn: (params: Omit<P, 'children' | 'createFn'>) => TransportClient;
   children: ReactNode;
-} & P;
+};
 
 export function TransportClientProvider<P extends Record<never, unknown>>({
   createFn,

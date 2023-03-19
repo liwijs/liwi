@@ -13,7 +13,7 @@ export interface BaseModel {
 
 export type OptionalBaseModelKeysForInsert = keyof BaseModel;
 
-export type AllowedKeyValue = string | number;
+export type AllowedKeyValue = number | string;
 
 export type InsertType<
   Model extends BaseModel & Record<KeyPath, unknown>,
@@ -60,19 +60,14 @@ type NestedPathsOfType<Model, Type> = KeysOfAType<
 
 export type $CurrentDateSpec =
   | true
-  | { $type: 'timestamp' }
-  | { $type: 'date' };
+  | { $type: 'date' }
+  | { $type: 'timestamp' };
 
 type ArrayElement<Type> = Type extends readonly (infer Item)[] ? Item : never;
 type MatchKeysAndValues<Model extends BaseModel> = {
-  [Property in Join<NestedPaths<Model, []>, '.'>]?: PropertyType<
-    Model,
-    Property
-  >;
-} & {
   [Property in `${NestedPathsOfType<Model, any[]>}.$${
-    | `[${string}]`
-    | ''}`]?: ArrayElement<
+    | ''
+    | `[${string}]`}`]?: ArrayElement<
     PropertyType<
       Model,
       Property extends `${infer Key}.$${string}` ? Key : never
@@ -80,8 +75,13 @@ type MatchKeysAndValues<Model extends BaseModel> = {
   >;
 } & {
   [Property in `${NestedPathsOfType<Model, Record<string, any>[]>}.$${
-    | `[${string}]`
-    | ''}.${string}`]?: any;
+    | ''
+    | `[${string}]`}.${string}`]?: any;
+} & {
+  [Property in Join<NestedPaths<Model, []>, '.'>]?: PropertyType<
+    Model,
+    Property
+  >;
 };
 
 type NumericType = number;
@@ -90,12 +90,12 @@ interface AddToSetOperators<Type> {
   $each?: Flatten<Type>[];
 }
 
-type SetFields<Model> = ({
-  readonly [key in KeysOfAType<Model, readonly any[] | undefined>]?:
-    | Flatten<Model[key]>
-    | AddToSetOperators<Flatten<Model[key]>[]>;
-} & NotAcceptedFields<Model, readonly any[] | undefined>) &
-  Readonly<Record<string, AddToSetOperators<any> | any>>;
+type SetFields<Model> = NotAcceptedFields<Model, readonly any[] | undefined> &
+  Readonly<Record<string, AddToSetOperators<any> | any>> & {
+    readonly [key in KeysOfAType<Model, readonly any[] | undefined>]?:
+      | AddToSetOperators<Flatten<Model[key]>[]>
+      | Flatten<Model[key]>;
+  };
 
 type FilterOperations<T> = T extends Record<string, any>
   ? {
@@ -103,24 +103,24 @@ type FilterOperations<T> = T extends Record<string, any>
     }
   : FilterOperators<T>;
 
-type PullOperator<TSchema> = ({
-  readonly [key in KeysOfAType<TSchema, readonly any[]>]?:
-    | Partial<Flatten<TSchema[key]>>
-    | FilterOperations<Flatten<TSchema[key]>>;
-} & NotAcceptedFields<TSchema, readonly any[]>) &
-  Readonly<Record<string, FilterOperators<any> | any>>;
+type PullOperator<TSchema> = NotAcceptedFields<TSchema, readonly any[]> &
+  Readonly<Record<string, FilterOperators<any> | any>> & {
+    readonly [key in KeysOfAType<TSchema, readonly any[]>]?:
+      | FilterOperations<Flatten<TSchema[key]>>
+      | Partial<Flatten<TSchema[key]>>;
+  };
 
-type PullAllOperator<TSchema> = ({
-  readonly [key in KeysOfAType<TSchema, readonly any[]>]?: TSchema[key];
-} & NotAcceptedFields<TSchema, readonly any[]>) &
-  Readonly<Record<string, readonly any[]>>;
+type PullAllOperator<TSchema> = NotAcceptedFields<TSchema, readonly any[]> &
+  Readonly<Record<string, readonly any[]>> & {
+    readonly [key in KeysOfAType<TSchema, readonly any[]>]?: TSchema[key];
+  };
 
-type PushOperator<TSchema> = ({
-  readonly [key in KeysOfAType<TSchema, readonly any[]>]?:
-    | Flatten<TSchema[key]>
-    | ArrayOperator<Flatten<TSchema[key]>[]>;
-} & NotAcceptedFields<TSchema, readonly any[]>) &
-  Readonly<Record<string, ArrayOperator<any> | any>>;
+type PushOperator<TSchema> = NotAcceptedFields<TSchema, readonly any[]> &
+  Readonly<Record<string, ArrayOperator<any> | any>> & {
+    readonly [key in KeysOfAType<TSchema, readonly any[]>]?:
+      | ArrayOperator<Flatten<TSchema[key]>[]>
+      | Flatten<TSchema[key]>;
+  };
 
 interface ArrayOperator<Type> {
   $each?: Flatten<Type>[];
@@ -129,6 +129,7 @@ interface ArrayOperator<Type> {
 }
 
 export interface Update<Model extends BaseModel> {
+
   /* Field Update Operators */
   $currentDate?: OnlyFieldsOfType<Model, Date, $CurrentDateSpec>;
   $inc?: OnlyFieldsOfType<Model, NumericType | undefined>;
@@ -143,19 +144,20 @@ export interface Update<Model extends BaseModel> {
   /* Array Update Operators */
   // Model[P] is Array ? never :
   $addToSet?: SetFields<Model>;
-  $pop?: OnlyFieldsOfType<Model, readonly any[], 1 | -1>;
+  $pop?: OnlyFieldsOfType<Model, readonly any[], -1 | 1>;
   $pull?: PullOperator<Model>;
+
   /** The $push operator appends a specified value to an array. */
   $push?: PushOperator<Model>;
   $pullAll?: PullAllOperator<Model>;
 }
 
-export type ExcludeOnlyFields<Model extends BaseModel> = {
+export type ExcludeOnlyFields<Model extends BaseModel> = Record<string, 0> & {
   [P in keyof Model]?: 0;
-} & Record<string, 0>;
-export type IncludeOnlyFields<Model extends BaseModel> = {
+};
+export type IncludeOnlyFields<Model extends BaseModel> = Record<string, 1> & {
   [P in keyof Model]?: 1;
-} & Record<string, 1>;
+};
 export type Fields<Model extends BaseModel> =
   | ExcludeOnlyFields<Model>
   | IncludeOnlyFields<Model>;
@@ -179,6 +181,7 @@ interface FilterOperators<TValue> {
   $not?: TValue extends string
     ? FilterOperators<TValue> | RegExp
     : FilterOperators<TValue>;
+
   /**
    * When `true`, `$exists` matches the documents that contain the field,
    * including documents where the field value is null.
@@ -188,7 +191,7 @@ interface FilterOperators<TValue> {
   $expr?: Record<string, any>;
   $jsonSchema?: Record<string, any>;
   $mod?: TValue extends number ? [number, number] : never;
-  $regex?: TValue extends string ? RegExp | FilterRegex | string : never;
+  $regex?: TValue extends string ? FilterRegex | RegExp | string : never;
   $options?: TValue extends string ? string : never;
   $geoIntersects?: {
     $geometry: Document;
@@ -209,21 +212,21 @@ interface FilterOperators<TValue> {
 
 type Join<T extends unknown[], D extends string> = T extends []
   ? ''
-  : T extends [string | number]
+  : T extends [number | string]
   ? `${T[0]}`
-  : T extends [string | number, ...infer R]
+  : T extends [number | string, ...infer R]
   ? `${T[0]}${D}${Join<R, D>}`
   : string;
 type NestedPaths<Type, Depth extends number[]> = Depth['length'] extends 8
   ? []
   : Type extends
-      | string
-      | number
-      | boolean
+      | Buffer
       | Date
       | RegExp
-      | Buffer
       | Uint8Array
+      | boolean
+      | number
+      | string
       | ((...args: any[]) => any)
       | {
           _bsontype: string;
@@ -271,7 +274,7 @@ type PropertyType<Type, Property extends string> = string extends Property
 
 type RegExpOrString<T> = T extends string ? RegExp | T : T;
 type AlternativeType<T> = T extends readonly (infer U)[]
-  ? T | RegExpOrString<U>
+  ? RegExpOrString<U> | T
   : RegExpOrString<T>;
 type Condition<T> = AlternativeType<T> | FilterOperators<AlternativeType<T>>;
 
@@ -292,13 +295,13 @@ export type Criteria<Model extends BaseModel> =
         $diacriticSensitive?: boolean;
       };
       $where?: string | ((this: Model) => boolean);
-      $comment?: string | Document;
+      $comment?: Document | string;
       [key: string]: any;
     });
 
-export type Sort<Model extends BaseModel> = {
+export type Sort<Model extends BaseModel> = Record<string, -1 | 1> & {
   [P in keyof Model]?: -1 | 1;
-} & Record<string, -1 | 1>;
+};
 
 export interface QueryMeta {
   total: number;
@@ -319,9 +322,9 @@ export interface InitialChange<Value = any> {
 
 export type Change<KeyValue, Result> =
   | InitialChange<Result>
+  | { type: 'deleted'; keys: KeyValue[] }
   | { type: 'inserted'; result: Result }
-  | { type: 'updated'; result: Result }
-  | { type: 'deleted'; keys: KeyValue[] };
+  | { type: 'updated'; result: Result };
 
 export type Changes<KeyValue, Result> = Change<KeyValue, Result>[];
 
@@ -333,13 +336,13 @@ export interface QueryOptions<Model extends BaseModel> {
 }
 
 export type ResourceOperationKey =
-  | 'fetch'
-  | 'subscribe'
-  | 'fetchAndSubscribe'
-  | 'unsubscribe'
-  | 'cursor'
   | 'cursor toArray'
-  | 'do';
+  | 'cursor'
+  | 'do'
+  | 'fetch'
+  | 'fetchAndSubscribe'
+  | 'subscribe'
+  | 'unsubscribe';
 
 export type Transformer<Model extends BaseModel, Transformed = Model> = (
   model: Model,

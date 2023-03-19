@@ -20,8 +20,8 @@ export {
 export { ResourcesServerError } from 'liwi-resources-client';
 
 export type SimplifiedConnectionState =
-  | 'connecting'
   | 'connected'
+  | 'connecting'
   | 'disconnected';
 
 export const transportClientStateToSimplifiedState = (

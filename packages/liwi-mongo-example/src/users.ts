@@ -14,7 +14,7 @@ interface User extends MongoBaseModel {
   groups: string[];
 }
 
-const users: MongoStore<User> = new MongoStore(connection, 'users');
+const users = new MongoStore<User>(connection, 'users');
 
 await users.deleteMany({});
 const allUsers = await users.findAll();

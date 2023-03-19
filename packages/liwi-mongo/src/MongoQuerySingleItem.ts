@@ -172,8 +172,8 @@ export default class MongoQuerySingleItem<
       stop: unsubscribe,
       cancel: unsubscribe,
       then: <T, U>(
-        onFulfilled: () => T | Promise<T>,
-        onRejected?: (error: any) => U | Promise<U>,
+        onFulfilled: () => Promise<T> | T,
+        onRejected?: (error: any) => Promise<U> | U,
       ): Promise<T | U> => promise.then(onFulfilled, onRejected),
     };
   }

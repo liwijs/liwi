@@ -11,7 +11,7 @@ export type TransportClientSubscribeCallback<Result = ExtendedJsonValue> = (
 
 export interface TransportClientSubscribeResult<
   Result,
-  Payload extends Record<keyof Payload & string, ExtendedJsonValue | undefined>,
+  Payload extends Record<string & keyof Payload, ExtendedJsonValue | undefined>,
 > extends PromiseLike<Result> {
   cancel: () => void;
   stop: () => void;
@@ -20,9 +20,9 @@ export interface TransportClientSubscribeResult<
 
 export type ConnectionStates =
   | 'closed'
-  | 'opening'
-  | 'connecting'
   | 'connected'
+  | 'connecting'
+  | 'opening'
   | 'reconnect-scheduled'
   | 'wait-for-visibility';
 
@@ -49,7 +49,7 @@ export interface TransportClient {
 
   subscribe: <
     T extends keyof ToServerSubscribeMessages<Payload>,
-    Payload extends Record<keyof Payload & string, ExtendedJsonValue>,
+    Payload extends Record<string & keyof Payload, ExtendedJsonValue>,
     Result,
     V extends ToServerSubscribeMessages<Payload>[T][2],
   >(

@@ -30,11 +30,11 @@ const applySingleItemChange = <Value extends Record<keyof Value, any>>(
 export function applySingleItemChanges<
   Value extends Record<keyof Value, unknown>,
 >(
-  state: undefined | Value | null,
+  state: Value | null | undefined,
   changes: Changes<any, Value | null>,
   queryMeta: QueryMeta,
   queryInfo: QueryInfo<Value>,
-): { state: undefined | Value | null; meta: QueryMeta } {
+): { state: Value | null | undefined; meta: QueryMeta } {
   if (state === undefined) return { state, meta: queryMeta };
 
   const newQueryMeta = { ...queryMeta };

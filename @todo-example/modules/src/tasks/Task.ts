@@ -5,4 +5,4 @@ export interface DraftTask {
   label: string;
 }
 
-export type Task = MongoBaseModel & DraftTask;
+export type Task = DraftTask & MongoBaseModel;

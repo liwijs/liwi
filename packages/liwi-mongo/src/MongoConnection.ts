@@ -12,7 +12,7 @@ export default class MongoConnection extends AbstractConnection {
   connectionFailed?: boolean;
 
   // TODO interface
-  constructor(config: Map<string, string | number>) {
+  constructor(config: Map<string, number | string>) {
     super();
 
     if (!config.has('host')) {

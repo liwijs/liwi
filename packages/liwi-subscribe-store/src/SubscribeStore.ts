@@ -20,9 +20,9 @@ import type {
 } from 'liwi-store';
 
 export type Actions<Model> =
+  | { type: 'deleted'; prev: Model[] }
   | { type: 'inserted'; next: Model[] }
-  | { type: 'updated'; changes: [Model, Model][] }
-  | { type: 'deleted'; prev: Model[] };
+  | { type: 'updated'; changes: [Model, Model][] };
 
 export type Listener<Model> = (action: Actions<Model>) => unknown;
 
@@ -44,7 +44,7 @@ export default class SubscribeStore<
 {
   private readonly store: Store;
 
-  private readonly listeners: Set<Listener<Model>> = new Set();
+  private readonly listeners = new Set<Listener<Model>>();
 
   readonly keyPath: KeyPath;
 
