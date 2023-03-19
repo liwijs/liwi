@@ -155,7 +155,7 @@ function createSimpleWebsocketClient(_ref) {
     listenStateChange: function listenStateChange(listener) {
       stateChangeListeners.add(listener);
       return function () {
-        stateChangeListeners["delete"](listener);
+        stateChangeListeners.delete(listener);
       };
     }
   };
@@ -183,8 +183,8 @@ var SubscribeResultPromise = /*#__PURE__*/function () {
   _proto.then = function then(onfulfilled, onrejected) {
     return this.promise.then(onfulfilled, onrejected);
   };
-  _proto["catch"] = function _catch(onrejected) {
-    return this.promise["catch"](onrejected);
+  _proto.catch = function _catch(onrejected) {
+    return this.promise.catch(onrejected);
   };
   return SubscribeResultPromise;
 }(); // TODO handle resubscriptions after reconnect (or in useEffect ?)
@@ -293,7 +293,7 @@ function createResourcesWebsocketClient(_ref2) {
           };
           return resolve;
         }(function (result) {
-          acks["delete"](id);
+          acks.delete(id);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           resolve(result);
         }),
@@ -306,7 +306,7 @@ function createResourcesWebsocketClient(_ref2) {
           };
           return reject;
         }(function (err) {
-          acks["delete"](id);
+          acks.delete(id);
           reject(err);
         })
       });
@@ -352,8 +352,8 @@ function createResourcesWebsocketClient(_ref2) {
           }
         },
         stop: function stop() {
-          acks["delete"](id);
-          subscriptions["delete"](subscriptionId);
+          acks.delete(id);
+          subscriptions.delete(subscriptionId);
           // TODO what if reconnect (backend keeps subscription) and closed at this time ?
           if (wsClient.isConnected()) {
             sendMessage('subscribe:close', null, {

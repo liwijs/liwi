@@ -143,7 +143,7 @@ function useRetrieveResource(createQuery, params, skip, deps) {
             meta: meta,
             queryInfo: info
           });
-        })["catch"](function (err) {
+        }).catch(function (err) {
           dispatch({
             type: 'error',
             error: err
@@ -170,7 +170,7 @@ function useRetrieveResource(createQuery, params, skip, deps) {
           meta: meta,
           queryInfo: info
         });
-      })["catch"](function (err) {
+      }).catch(function (err) {
         dispatch({
           type: 'error',
           error: err
@@ -201,7 +201,7 @@ function useRetrieveResource(createQuery, params, skip, deps) {
           meta: meta,
           queryInfo: info
         });
-      })["catch"](function (err) {
+      }).catch(function (err) {
         dispatch({
           type: 'error',
           error: err

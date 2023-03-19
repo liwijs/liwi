@@ -49,7 +49,7 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
       } else {
         return messageHandler(message, sendSubscriptionMessage).then(function (result) {
           sendAck(message.id, null, result);
-        })["catch"](function (err) {
+        }).catch(function (err) {
           sendAck(message.id, err);
         });
       }
@@ -123,7 +123,7 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
     var authenticatedUserPromise = Promise.resolve(getAuthenticatedUser(request));
     wss.handleUpgrade(request, socket, upgradeHead, function (ws) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      authenticatedUserPromise["catch"](function (err) {
+      authenticatedUserPromise.catch(function (err) {
         logger.warn('getAuthenticatedUser threw an error, return null instead.',
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         {

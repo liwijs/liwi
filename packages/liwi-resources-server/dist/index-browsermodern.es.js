@@ -86,7 +86,6 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
     return resource.queries[payload.key](payload.params, authenticatedUser);
   };
   const createSubscription = (type, payload, resource, query, sendSubscriptionMessage) => {
-    var _resource$subscribeHo;
     if (!openedSubscriptions) {
       throw new Error('Subscriptions not allowed');
     }
@@ -106,7 +105,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
       }
       sendSubscriptionMessage(subscriptionId, error, result);
     });
-    const subscribeHook = (_resource$subscribeHo = resource.subscribeHooks) === null || _resource$subscribeHo === void 0 ? void 0 : _resource$subscribeHo[payload.key];
+    const subscribeHook = resource.subscribeHooks?.[payload.key];
     openedSubscriptions.set(subscriptionId, {
       subscription,
       subscribeHook,

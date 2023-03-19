@@ -131,7 +131,7 @@ var AbstractStoreCursor = /*#__PURE__*/function (_AbstractCursor) {
     if (!this.key) throw new Error('Cannot call result() before next()');
     return this.store.findByKey(this.key);
   };
-  _proto["delete"] = function _delete() {
+  _proto.delete = function _delete() {
     return this.store.deleteByKey(this.key);
   };
   _createClass(AbstractStoreCursor, [{

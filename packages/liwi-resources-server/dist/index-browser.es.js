@@ -235,7 +235,7 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
                       subscriptionId: _subscriptionId
                     });
                   } else {
-                    openedSubscriptions["delete"](_subscriptionId);
+                    openedSubscriptions.delete(_subscriptionId);
                     unsubscribeSubscription(_SubscriptionAndSubscribeHook);
                   }
                 } catch (err) {

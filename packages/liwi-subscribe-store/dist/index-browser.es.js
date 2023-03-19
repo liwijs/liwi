@@ -14,7 +14,7 @@ var SubscribeStore = /*#__PURE__*/function () {
   _proto.subscribe = function subscribe(callback) {
     this.listeners.add(callback);
     return function () {
-      return this.listeners["delete"](callback);
+      return this.listeners.delete(callback);
     };
   };
   _proto.callSubscribed = function callSubscribed(action) {
