@@ -1,13 +1,13 @@
 import type { Store as StoreInterface, AbstractConnection, UpsertResult, SubscribableStoreQuery, AbstractStoreCursor, SubscribableStore, QueryParams, UpsertPartialObject, BaseModel, InsertType, Update, Criteria, Sort, QueryOptions, Transformer, AllowedKeyValue, OptionalBaseModelKeysForInsert } from 'liwi-store';
 export type Actions<Model> = {
+    type: 'deleted';
+    prev: Model[];
+} | {
     type: 'inserted';
     next: Model[];
 } | {
     type: 'updated';
     changes: [Model, Model][];
-} | {
-    type: 'deleted';
-    prev: Model[];
 };
 export type Listener<Model> = (action: Actions<Model>) => unknown;
 export default class SubscribeStore<KeyPath extends keyof Model, KeyValue extends AllowedKeyValue, Model extends BaseModel & Record<KeyPath, KeyValue>, ModelInsertType extends InsertType<Model, KeyPath>, Connection extends AbstractConnection, Store extends SubscribableStore<KeyPath, KeyValue, Model, ModelInsertType, Connection>> implements StoreInterface<KeyPath, KeyValue, Model, ModelInsertType, Connection> {

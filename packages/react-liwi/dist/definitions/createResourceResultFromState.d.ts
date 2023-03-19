@@ -32,8 +32,8 @@ export interface ResourceResultLoaded<Data, Params extends QueryParams<Params>> 
     data: Data;
     meta: QueryMeta;
     queryInfo: QueryInfo<any>;
-    error: undefined | Error | ResourcesServerError;
+    error: Error | ResourcesServerError | undefined;
 }
-export type ResourceResult<Data, Params extends QueryParams<Params>> = ResourceResultInitialLoading<Data, Params> | ResourceResultInitialError<Data, Params> | ResourceResultLoaded<Data, Params>;
+export type ResourceResult<Data, Params extends QueryParams<Params>> = ResourceResultInitialError<Data, Params> | ResourceResultInitialLoading<Data, Params> | ResourceResultLoaded<Data, Params>;
 export declare const createResourceResultFromState: <Result, Params extends QueryParams<Params>>(state: State<Result, Params>) => ResourceResult<Result, Params>;
 //# sourceMappingURL=createResourceResultFromState.d.ts.map

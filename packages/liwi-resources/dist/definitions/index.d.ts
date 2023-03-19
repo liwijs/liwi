@@ -63,7 +63,9 @@ export interface ToServerSubscribeMessages<Params extends Record<keyof Params, E
     fetchAndSubscribe: SubscribeMessage<ToServerSubscribeQueryPayload, undefined, Result>;
 }
 export type ToServerMessages = ToServerSimpleMessages & ToServerSubscribeMessages<Record<string, ExtendedJsonValue> | undefined>;
-export type ToServerMessage = ({
+export type ToServerMessage = {
+    id: number;
+} & ({
     type: 'do';
     payload: ToServerSimpleMessages['do'][0];
 } | {
@@ -78,9 +80,7 @@ export type ToServerMessage = ({
 } | {
     type: 'fetchAndSubscribe';
     payload: ToServerSubscribeMessages['fetchAndSubscribe'][0];
-}) & {
-    id: number;
-};
+});
 export declare class ResourcesServerError extends Error {
     code: string;
     constructor(code: string, message: string);

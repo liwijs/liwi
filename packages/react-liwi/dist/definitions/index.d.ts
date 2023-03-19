@@ -7,6 +7,6 @@ export type { OperationCallWrapper } from './useOperation';
 export type { ResourceResult } from './createResourceResultFromState';
 export { TransportClientProvider, TransportClientContext, TransportClientStateContext, TransportClientReadyContext, useTransportClientState, useTransportClientIsReady, } from './TransportClientProvider';
 export { ResourcesServerError } from 'liwi-resources-client';
-export type SimplifiedConnectionState = 'connecting' | 'connected' | 'disconnected';
+export type SimplifiedConnectionState = 'connected' | 'connecting' | 'disconnected';
 export declare const transportClientStateToSimplifiedState: (state: ConnectionStates) => SimplifiedConnectionState;
 //# sourceMappingURL=index.d.ts.map

@@ -3,7 +3,7 @@ export type StateChangeListener = (newState: ConnectionStates) => void;
 export type StateChangeListenerCreator = (listener: StateChangeListener) => () => void;
 export interface SimpleWebsocketClientOptions {
     url: string;
-    protocols?: string | string[];
+    protocols?: string[] | string;
     timeout?: number;
     reconnection?: boolean;
     reconnectionDelayMin?: number;

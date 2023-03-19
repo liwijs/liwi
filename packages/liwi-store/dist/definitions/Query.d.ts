@@ -9,7 +9,7 @@ export interface QuerySubscription extends PromiseLike<void> {
     stop: () => void;
 }
 export type SubscribeCallback<KeyValue extends AllowedKeyValue, Result> = (err: Error | null, changes: Changes<KeyValue, Result>) => unknown;
-export type AllowedParamValue = undefined | null | string | number | boolean | Date | AllowedParamValue[];
+export type AllowedParamValue = AllowedParamValue[] | Date | boolean | number | string | null | undefined;
 export type QueryParams<Params extends Record<string, unknown>> = {
     [P in keyof Params]: Extract<Params[P], AllowedParamValue>;
 };

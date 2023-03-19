@@ -1,4 +1,4 @@
-export type ExtendedJsonValue = undefined | null | string | number | boolean | Date | ExtendedJsonValue[] | ExtendedJsonRecord;
+export type ExtendedJsonValue = Date | ExtendedJsonRecord | ExtendedJsonValue[] | boolean | number | string | null | undefined;
 export interface ExtendedJsonRecord {
     [key: string]: ExtendedJsonValue;
 }
