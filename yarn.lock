@@ -4097,6 +4097,7 @@ __metadata:
     "@types/react": 18.0.28
     "@types/react-native": 0.71.3
     classnames: 2.3.2
+    liwi-resources-client: 10.3.2
     liwi-resources-void-client: 10.3.2
     liwi-resources-websocket-client: 10.3.2
     mongodb-memory-server: 8.12.1
