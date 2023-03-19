@@ -129,7 +129,6 @@ interface ArrayOperator<Type> {
 }
 
 export interface Update<Model extends BaseModel> {
-
   /* Field Update Operators */
   $currentDate?: OnlyFieldsOfType<Model, Date, $CurrentDateSpec>;
   $inc?: OnlyFieldsOfType<Model, NumericType | undefined>;
