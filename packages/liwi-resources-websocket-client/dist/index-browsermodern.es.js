@@ -163,7 +163,6 @@ class SubscribeResultPromise {
   //   Result,
   //   Payload
   // >['changePayload'];
-
   constructor({
     executor,
     stop

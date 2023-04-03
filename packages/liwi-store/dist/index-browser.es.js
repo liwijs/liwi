@@ -18,28 +18,26 @@ var AbstractCursor = /*#__PURE__*/function (_Symbol$iterator) {
     var _forEachKeys = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(callback) {
       var _key;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 3;
-              return this.next();
-            case 3:
-              _key = _context.sent;
-              if (_key) {
-                _context.next = 6;
-                break;
-              }
-              return _context.abrupt("return");
-            case 6:
-              _context.next = 8;
-              return callback(_key);
-            case 8:
-              _context.next = 0;
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 3;
+            return this.next();
+          case 3:
+            _key = _context.sent;
+            if (_key) {
+              _context.next = 6;
               break;
-            case 10:
-            case "end":
-              return _context.stop();
-          }
+            }
+            return _context.abrupt("return");
+          case 6:
+            _context.next = 8;
+            return callback(_key);
+          case 8:
+            _context.next = 0;
+            break;
+          case 10:
+          case "end":
+            return _context.stop();
         }
       }, _callee, this);
     }));
@@ -56,45 +54,41 @@ var AbstractCursor = /*#__PURE__*/function (_Symbol$iterator) {
   };
   _proto.keysIterator = /*#__PURE__*/_regeneratorRuntime().mark(function keysIterator() {
     return _regeneratorRuntime().wrap(function keysIterator$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 3;
-            return this.next();
-          case 3:
-            _context2.next = 0;
-            break;
-          case 5:
-          case "end":
-            return _context2.stop();
-        }
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.next = 3;
+          return this.next();
+        case 3:
+          _context2.next = 0;
+          break;
+        case 5:
+        case "end":
+          return _context2.stop();
       }
     }, keysIterator, this);
   });
   _proto[_Symbol$iterator] = /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var _iterator, _step, keyPromise;
     return _regeneratorRuntime().wrap(function _callee2$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            _iterator = _createForOfIteratorHelperLoose(this.keysIterator());
-          case 1:
-            if ((_step = _iterator()).done) {
-              _context3.next = 7;
-              break;
-            }
-            keyPromise = _step.value;
-            _context3.next = 5;
-            return keyPromise.then(function (key) {
-              return key && this.result();
-            });
-          case 5:
-            _context3.next = 1;
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          _iterator = _createForOfIteratorHelperLoose(this.keysIterator());
+        case 1:
+          if ((_step = _iterator()).done) {
+            _context3.next = 7;
             break;
-          case 7:
-          case "end":
-            return _context3.stop();
-        }
+          }
+          keyPromise = _step.value;
+          _context3.next = 5;
+          return keyPromise.then(function (key) {
+            return key && this.result();
+          });
+        case 5:
+          _context3.next = 1;
+          break;
+        case 7:
+        case "end":
+          return _context3.stop();
       }
     }, _callee2, this);
   }) // TODO Symbol.asyncIterator, https://phabricator.babeljs.io/T7356

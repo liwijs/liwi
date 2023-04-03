@@ -45,22 +45,20 @@ var SubscribeStore = /*#__PURE__*/function () {
     var _insertOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(object) {
       var inserted;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return this.store.insertOne(object);
-            case 2:
-              inserted = _context.sent;
-              this.callSubscribed({
-                type: 'inserted',
-                next: [inserted]
-              });
-              return _context.abrupt("return", inserted);
-            case 5:
-            case "end":
-              return _context.stop();
-          }
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return this.store.insertOne(object);
+          case 2:
+            inserted = _context.sent;
+            this.callSubscribed({
+              type: 'inserted',
+              next: [inserted]
+            });
+            return _context.abrupt("return", inserted);
+          case 5:
+          case "end":
+            return _context.stop();
         }
       }, _callee, this);
     }));
@@ -72,22 +70,20 @@ var SubscribeStore = /*#__PURE__*/function () {
     var _replaceOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(object) {
       var replaced;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return this.store.replaceOne(object);
-            case 2:
-              replaced = _context2.sent;
-              this.callSubscribed({
-                type: 'updated',
-                changes: [[object, replaced]]
-              });
-              return _context2.abrupt("return", replaced);
-            case 5:
-            case "end":
-              return _context2.stop();
-          }
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return this.store.replaceOne(object);
+          case 2:
+            replaced = _context2.sent;
+            this.callSubscribed({
+              type: 'updated',
+              changes: [[object, replaced]]
+            });
+            return _context2.abrupt("return", replaced);
+          case 5:
+          case "end":
+            return _context2.stop();
         }
       }, _callee2, this);
     }));
@@ -99,24 +95,22 @@ var SubscribeStore = /*#__PURE__*/function () {
     var _replaceSeveral = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(objects) {
       var replacedObjects;
       return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              _context3.next = 2;
-              return this.store.replaceSeveral(objects);
-            case 2:
-              replacedObjects = _context3.sent;
-              this.callSubscribed({
-                type: 'updated',
-                changes: objects.map(function (prev, index) {
-                  return [prev, replacedObjects[index]];
-                })
-              });
-              return _context3.abrupt("return", replacedObjects);
-            case 5:
-            case "end":
-              return _context3.stop();
-          }
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return this.store.replaceSeveral(objects);
+          case 2:
+            replacedObjects = _context3.sent;
+            this.callSubscribed({
+              type: 'updated',
+              changes: objects.map(function (prev, index) {
+                return [prev, replacedObjects[index]];
+              })
+            });
+            return _context3.abrupt("return", replacedObjects);
+          case 5:
+          case "end":
+            return _context3.stop();
         }
       }, _callee3, this);
     }));
@@ -128,18 +122,16 @@ var SubscribeStore = /*#__PURE__*/function () {
     var _upsertOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(object, setOnInsertPartialObject) {
       var result;
       return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-        while (1) {
-          switch (_context4.prev = _context4.next) {
-            case 0:
-              _context4.next = 2;
-              return this.upsertOneWithInfo(object, setOnInsertPartialObject);
-            case 2:
-              result = _context4.sent;
-              return _context4.abrupt("return", result.object);
-            case 4:
-            case "end":
-              return _context4.stop();
-          }
+        while (1) switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.next = 2;
+            return this.upsertOneWithInfo(object, setOnInsertPartialObject);
+          case 2:
+            result = _context4.sent;
+            return _context4.abrupt("return", result.object);
+          case 4:
+          case "end":
+            return _context4.stop();
         }
       }, _callee4, this);
     }));
@@ -151,31 +143,29 @@ var SubscribeStore = /*#__PURE__*/function () {
     var _upsertOneWithInfo = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(object, setOnInsertPartialObject) {
       var upsertedWithInfo;
       return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-        while (1) {
-          switch (_context5.prev = _context5.next) {
-            case 0:
-              _context5.next = 2;
-              return this.store.upsertOneWithInfo(object, setOnInsertPartialObject);
-            case 2:
-              upsertedWithInfo = _context5.sent;
-              if (!upsertedWithInfo.inserted) {
-                _context5.next = 7;
-                break;
-              }
-              this.callSubscribed({
-                type: 'inserted',
-                next: [upsertedWithInfo.object]
-              });
-              _context5.next = 8;
+        while (1) switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.next = 2;
+            return this.store.upsertOneWithInfo(object, setOnInsertPartialObject);
+          case 2:
+            upsertedWithInfo = _context5.sent;
+            if (!upsertedWithInfo.inserted) {
+              _context5.next = 7;
               break;
-            case 7:
-              throw new Error('TODO');
-            case 8:
-              return _context5.abrupt("return", upsertedWithInfo);
-            case 9:
-            case "end":
-              return _context5.stop();
-          }
+            }
+            this.callSubscribed({
+              type: 'inserted',
+              next: [upsertedWithInfo.object]
+            });
+            _context5.next = 8;
+            break;
+          case 7:
+            throw new Error('TODO');
+          case 8:
+            return _context5.abrupt("return", upsertedWithInfo);
+          case 9:
+          case "end":
+            return _context5.stop();
         }
       }, _callee5, this);
     }));
@@ -187,20 +177,18 @@ var SubscribeStore = /*#__PURE__*/function () {
     var _partialUpdateByKey = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(key, partialUpdate, criteria) {
       var _extends2;
       return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-        while (1) {
-          switch (_context6.prev = _context6.next) {
-            case 0:
-              _context6.t0 = this;
-              _context6.next = 3;
-              return this.findOne(_extends((_extends2 = {}, _extends2[this.store.keyPath] = key, _extends2), criteria));
-            case 3:
-              _context6.t1 = _context6.sent;
-              _context6.t2 = partialUpdate;
-              return _context6.abrupt("return", _context6.t0.partialUpdateOne.call(_context6.t0, _context6.t1, _context6.t2));
-            case 6:
-            case "end":
-              return _context6.stop();
-          }
+        while (1) switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.t0 = this;
+            _context6.next = 3;
+            return this.findOne(_extends((_extends2 = {}, _extends2[this.store.keyPath] = key, _extends2), criteria));
+          case 3:
+            _context6.t1 = _context6.sent;
+            _context6.t2 = partialUpdate;
+            return _context6.abrupt("return", _context6.t0.partialUpdateOne.call(_context6.t0, _context6.t1, _context6.t2));
+          case 6:
+          case "end":
+            return _context6.stop();
         }
       }, _callee6, this);
     }));
@@ -212,22 +200,20 @@ var SubscribeStore = /*#__PURE__*/function () {
     var _partialUpdateOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(object, partialUpdate) {
       var updated;
       return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-        while (1) {
-          switch (_context7.prev = _context7.next) {
-            case 0:
-              _context7.next = 2;
-              return this.store.partialUpdateOne(object, partialUpdate);
-            case 2:
-              updated = _context7.sent;
-              this.callSubscribed({
-                type: 'updated',
-                changes: [[object, updated]]
-              });
-              return _context7.abrupt("return", updated);
-            case 5:
-            case "end":
-              return _context7.stop();
-          }
+        while (1) switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.next = 2;
+            return this.store.partialUpdateOne(object, partialUpdate);
+          case 2:
+            updated = _context7.sent;
+            this.callSubscribed({
+              type: 'updated',
+              changes: [[object, updated]]
+            });
+            return _context7.abrupt("return", updated);
+          case 5:
+          case "end":
+            return _context7.stop();
         }
       }, _callee7, this);
     }));
@@ -240,48 +226,44 @@ var SubscribeStore = /*#__PURE__*/function () {
       var _this2 = this;
       var cursor, changes;
       return _regeneratorRuntime().wrap(function _callee9$(_context9) {
-        while (1) {
-          switch (_context9.prev = _context9.next) {
-            case 0:
-              _context9.next = 2;
-              return this.store.cursor(criteria);
-            case 2:
-              cursor = _context9.sent;
-              changes = [];
-              _context9.next = 6;
-              return cursor.forEach( /*#__PURE__*/function () {
-                var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(model) {
-                  var key, updated;
-                  return _regeneratorRuntime().wrap(function _callee8$(_context8) {
-                    while (1) {
-                      switch (_context8.prev = _context8.next) {
-                        case 0:
-                          key = model[_this2.store.keyPath];
-                          _context8.next = 3;
-                          return _this2.store.partialUpdateByKey(key, partialUpdate, criteria);
-                        case 3:
-                          updated = _context8.sent;
-                          changes.push([model, updated]);
-                        case 5:
-                        case "end":
-                          return _context8.stop();
-                      }
-                    }
-                  }, _callee8);
-                }));
-                return function () {
-                  return _ref.apply(this, arguments);
-                };
-              }());
-            case 6:
-              this.callSubscribed({
-                type: 'updated',
-                changes: changes
-              });
-            case 7:
-            case "end":
-              return _context9.stop();
-          }
+        while (1) switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.next = 2;
+            return this.store.cursor(criteria);
+          case 2:
+            cursor = _context9.sent;
+            changes = [];
+            _context9.next = 6;
+            return cursor.forEach( /*#__PURE__*/function () {
+              var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(model) {
+                var key, updated;
+                return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+                  while (1) switch (_context8.prev = _context8.next) {
+                    case 0:
+                      key = model[_this2.store.keyPath];
+                      _context8.next = 3;
+                      return _this2.store.partialUpdateByKey(key, partialUpdate, criteria);
+                    case 3:
+                      updated = _context8.sent;
+                      changes.push([model, updated]);
+                    case 5:
+                    case "end":
+                      return _context8.stop();
+                  }
+                }, _callee8);
+              }));
+              return function () {
+                return _ref.apply(this, arguments);
+              };
+            }());
+          case 6:
+            this.callSubscribed({
+              type: 'updated',
+              changes: changes
+            });
+          case 7:
+          case "end":
+            return _context9.stop();
         }
       }, _callee9, this);
     }));
@@ -292,19 +274,17 @@ var SubscribeStore = /*#__PURE__*/function () {
   _proto.deleteByKey = /*#__PURE__*/function () {
     var _deleteByKey = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(key, criteria) {
       return _regeneratorRuntime().wrap(function _callee10$(_context10) {
-        while (1) {
-          switch (_context10.prev = _context10.next) {
-            case 0:
-              _context10.t0 = this;
-              _context10.next = 3;
-              return this.findByKey(key, criteria);
-            case 3:
-              _context10.t1 = _context10.sent;
-              return _context10.abrupt("return", _context10.t0.deleteOne.call(_context10.t0, _context10.t1));
-            case 5:
-            case "end":
-              return _context10.stop();
-          }
+        while (1) switch (_context10.prev = _context10.next) {
+          case 0:
+            _context10.t0 = this;
+            _context10.next = 3;
+            return this.findByKey(key, criteria);
+          case 3:
+            _context10.t1 = _context10.sent;
+            return _context10.abrupt("return", _context10.t0.deleteOne.call(_context10.t0, _context10.t1));
+          case 5:
+          case "end":
+            return _context10.stop();
         }
       }, _callee10, this);
     }));
@@ -315,20 +295,18 @@ var SubscribeStore = /*#__PURE__*/function () {
   _proto.deleteOne = /*#__PURE__*/function () {
     var _deleteOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(object) {
       return _regeneratorRuntime().wrap(function _callee11$(_context11) {
-        while (1) {
-          switch (_context11.prev = _context11.next) {
-            case 0:
-              _context11.next = 2;
-              return this.store.deleteOne(object);
-            case 2:
-              this.callSubscribed({
-                type: 'deleted',
-                prev: [object]
-              });
-            case 3:
-            case "end":
-              return _context11.stop();
-          }
+        while (1) switch (_context11.prev = _context11.next) {
+          case 0:
+            _context11.next = 2;
+            return this.store.deleteOne(object);
+          case 2:
+            this.callSubscribed({
+              type: 'deleted',
+              prev: [object]
+            });
+          case 3:
+          case "end":
+            return _context11.stop();
         }
       }, _callee11, this);
     }));
@@ -340,28 +318,26 @@ var SubscribeStore = /*#__PURE__*/function () {
     var _deleteMany = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(criteria) {
       var cursor, prev;
       return _regeneratorRuntime().wrap(function _callee12$(_context12) {
-        while (1) {
-          switch (_context12.prev = _context12.next) {
-            case 0:
-              _context12.next = 2;
-              return this.store.cursor(criteria);
-            case 2:
-              cursor = _context12.sent;
-              _context12.next = 5;
-              return cursor.toArray();
-            case 5:
-              prev = _context12.sent;
-              _context12.next = 8;
-              return this.store.deleteMany(criteria);
-            case 8:
-              this.callSubscribed({
-                type: 'deleted',
-                prev: prev
-              });
-            case 9:
-            case "end":
-              return _context12.stop();
-          }
+        while (1) switch (_context12.prev = _context12.next) {
+          case 0:
+            _context12.next = 2;
+            return this.store.cursor(criteria);
+          case 2:
+            cursor = _context12.sent;
+            _context12.next = 5;
+            return cursor.toArray();
+          case 5:
+            prev = _context12.sent;
+            _context12.next = 8;
+            return this.store.deleteMany(criteria);
+          case 8:
+            this.callSubscribed({
+              type: 'deleted',
+              prev: prev
+            });
+          case 9:
+          case "end":
+            return _context12.stop();
         }
       }, _callee12, this);
     }));
@@ -372,14 +348,12 @@ var SubscribeStore = /*#__PURE__*/function () {
   _proto.count = /*#__PURE__*/function () {
     var _count = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(criteria) {
       return _regeneratorRuntime().wrap(function _callee13$(_context13) {
-        while (1) {
-          switch (_context13.prev = _context13.next) {
-            case 0:
-              return _context13.abrupt("return", this.store.count(criteria));
-            case 1:
-            case "end":
-              return _context13.stop();
-          }
+        while (1) switch (_context13.prev = _context13.next) {
+          case 0:
+            return _context13.abrupt("return", this.store.count(criteria));
+          case 1:
+          case "end":
+            return _context13.stop();
         }
       }, _callee13, this);
     }));
@@ -391,19 +365,17 @@ var SubscribeStore = /*#__PURE__*/function () {
     var _cursor = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(criteria, sort) {
       var cursor;
       return _regeneratorRuntime().wrap(function _callee14$(_context14) {
-        while (1) {
-          switch (_context14.prev = _context14.next) {
-            case 0:
-              _context14.next = 2;
-              return this.store.cursor(criteria, sort);
-            case 2:
-              cursor = _context14.sent;
-              cursor.overrideStore(this);
-              return _context14.abrupt("return", cursor);
-            case 5:
-            case "end":
-              return _context14.stop();
-          }
+        while (1) switch (_context14.prev = _context14.next) {
+          case 0:
+            _context14.next = 2;
+            return this.store.cursor(criteria, sort);
+          case 2:
+            cursor = _context14.sent;
+            cursor.overrideStore(this);
+            return _context14.abrupt("return", cursor);
+          case 5:
+          case "end":
+            return _context14.stop();
         }
       }, _callee14, this);
     }));
