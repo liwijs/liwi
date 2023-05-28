@@ -1,6 +1,6 @@
 import { execSync, spawnSync } from 'child_process';
 // import { createRequire } from 'module';
-import { MongoMemoryServer } from 'mongodb-memory-server';
+// import { MongoMemoryServer } from 'mongodb-memory-server';
 import type { Daemon } from 'springbokjs-daemon';
 import { createDaemon } from 'springbokjs-daemon';
 
@@ -9,7 +9,7 @@ xdescribe('test e2e', () => {
   const cwdServer = new URL('../../server', import.meta.url).pathname;
   let daemonNext: Daemon;
   let daemonServer: Daemon;
-  let mongod: MongoMemoryServer;
+  // let mongod: MongoMemoryServer;
 
   beforeAll(async () => {
     // const require = createRequire(import.meta.url);\
@@ -46,7 +46,7 @@ xdescribe('test e2e', () => {
       },
     );
 
-    mongod = await MongoMemoryServer.create();
+    // mongod = await MongoMemoryServer.create();
 
     daemonNext = createDaemon({
       command: process.argv0,
@@ -59,7 +59,7 @@ xdescribe('test e2e', () => {
       args: ['build/index-node16.mjs'],
       env: {
         NODE_ENV: 'test',
-        MONGO_PORT: String(mongod.instanceInfo?.port),
+        // MONGO_PORT: String(mongod.instanceInfo?.port),
       },
     });
     // dont wait for daemonNext as next does not support process.send('ready')
@@ -71,7 +71,7 @@ xdescribe('test e2e', () => {
     await Promise.all([
       daemonNext?.stop(),
       daemonServer?.stop(),
-      mongod?.stop(),
+      // mongod?.stop(),
     ]);
   });
 
