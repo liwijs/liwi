@@ -51,7 +51,7 @@
     "liwi-store": "10.3.2",
     "liwi-subscribe-store": "10.3.2",
     "mingo": "^6.2.7",
-    "mongodb": "^4.13.0",
+    "mongodb": "^5.0.0",
     "nightingale-logger": "^13.0.0"
   },
   "devDependencies": {
