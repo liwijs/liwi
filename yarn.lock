@@ -3076,6 +3076,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native/virtualized-lists@npm:^0.72.4":
+  version: 0.72.5
+  resolution: "@react-native/virtualized-lists@npm:0.72.5"
+  dependencies:
+    invariant: ^2.2.4
+    nullthrows: ^1.1.1
+  peerDependencies:
+    react-native: "*"
+    react-test-renderer: 18.2.0
+  checksum: 9ad28ddf23f6775de6950acfa4dbdc2c4a39fafd1d0001ae8062b6b4a5c79a15c9a83830d1bebc48fcfe05d286ecb811bf9f0ce6b18db06af43f11390f08d368
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-babel@npm:6.0.3":
   version: 6.0.3
   resolution: "@rollup/plugin-babel@npm:6.0.3"
@@ -3220,7 +3233,7 @@ __metadata:
     "@todo-example/modules": 10.3.2
     "@types/node": 18.16.16
     "@types/react": 18.2.7
-    "@types/react-native": 0.71.5
+    "@types/react-native": 0.72.2
     classnames: 2.3.2
     liwi-resources-client: 10.3.2
     liwi-resources-void-client: 10.3.2
@@ -3644,12 +3657,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native@npm:0.71.5":
-  version: 0.71.5
-  resolution: "@types/react-native@npm:0.71.5"
+"@types/react-native@npm:0.72.2":
+  version: 0.72.2
+  resolution: "@types/react-native@npm:0.72.2"
   dependencies:
+    "@react-native/virtualized-lists": ^0.72.4
     "@types/react": "*"
-  checksum: a9d88591154aeb94ee42ed88f194fed77148592e35d2bb807d9ad7aa04216ec068f5bc541e6c320c8cbac775a4f0c863bc1bd5c1c884a8f1d599494783f61d63
+  checksum: b2915594381365ea379cb46b9a65219c6b6c7446d97d15f4da9615b8f180972bacba7cae584f4a8f83cce3a180f8a9a08a9c6b57081b37e2543f23f5717693d4
   languageName: node
   linkType: hard
 
@@ -7418,6 +7432,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"invariant@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "invariant@npm:2.2.4"
+  dependencies:
+    loose-envify: ^1.0.0
+  checksum: cc3182d793aad82a8d1f0af697b462939cb46066ec48bbf1707c150ad5fad6406137e91a262022c269702e01621f35ef60269f6c0d7fd178487959809acdfb14
+  languageName: node
+  linkType: hard
+
 "ip@npm:^2.0.0":
   version: 2.0.0
   resolution: "ip@npm:2.0.0"
@@ -10118,6 +10141,13 @@ __metadata:
     gauge: ^4.0.3
     set-blocking: ^2.0.0
   checksum: ae238cd264a1c3f22091cdd9e2b106f684297d3c184f1146984ecbe18aaa86343953f26b9520dedd1b1372bc0316905b736c1932d778dbeb1fcf5a1001390e2a
+  languageName: node
+  linkType: hard
+
+"nullthrows@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "nullthrows@npm:1.1.1"
+  checksum: 10806b92121253eb1b08ecf707d92480f5331ba8ae5b23fa3eb0548ad24196eb797ed47606153006568a5733ea9e528a3579f21421f7828e09e7756f4bdd386f
   languageName: node
   linkType: hard
 
