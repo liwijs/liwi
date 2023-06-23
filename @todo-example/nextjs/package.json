@@ -37,7 +37,7 @@
   "devDependencies": {
     "@playwright/test": "1.32.2",
     "@types/node": "18.16.18",
-    "@types/react": "18.2.13",
+    "@types/react": "18.2.14",
     "@types/react-native": "0.72.2",
     "next-compose-plugins": "2.2.1",
     "next-transpile-modules": "10.0.0",
