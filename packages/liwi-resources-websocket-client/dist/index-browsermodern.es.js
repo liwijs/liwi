@@ -157,13 +157,13 @@ function createSimpleWebsocketClient({
 }
 
 /* eslint-disable max-lines */
+
 const logger = new Logger('liwi:resources-websocket-client');
 class SubscribeResultPromise {
   // readonly changePayload: TransportClientSubscribeResult<
   //   Result,
   //   Payload
   // >['changePayload'];
-
   constructor({
     executor,
     stop

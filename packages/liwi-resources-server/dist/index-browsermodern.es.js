@@ -55,6 +55,7 @@ class ResourcesServerService {
 }
 
 /* eslint-disable complexity, max-lines */
+
 const logger = new Logger('liwi:resources-websocket-client');
 const logUnexpectedError = (error, message, payload) => {
   if (!(error instanceof ResourcesServerError)) {

@@ -6,14 +6,14 @@
   "license": "ISC",
   "type": "module",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
-  "main": "./build/index-node16.mjs",
+  "main": "./build/index-node18.mjs",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "node": {
-        "import": "./build/index-node16.mjs"
+        "import": "./build/index-node18.mjs"
       }
     }
   },
@@ -30,7 +30,7 @@
     "babelEnvs": [
       {
         "target": "node",
-        "version": "16"
+        "version": "18"
       }
     ],
     "entries": [
@@ -46,10 +46,10 @@
     "nightingale-app-console": "13.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.21.3",
+    "@babel/core": "7.22.5",
     "alp-rollup-plugin-config": "2.0.0",
-    "pob-babel": "35.6.2",
+    "pob-babel": "36.0.0",
     "rollup-plugin-copy": "3.4.0",
-    "typescript": "4.9.5"
+    "typescript": "5.1.3"
   }
 }

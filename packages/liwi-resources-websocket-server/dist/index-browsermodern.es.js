@@ -4,6 +4,7 @@ import { Logger } from 'nightingale-logger';
 import { WebSocketServer } from 'ws';
 
 /* eslint-disable max-lines */
+
 const logger = new Logger('liwi:resources-websocket-server');
 const createWsServer = (server, path, resourcesServerService, getAuthenticatedUser) => {
   const wss = new WebSocketServer({

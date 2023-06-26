@@ -139,10 +139,10 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
   return {
     wss: wss,
     close: function close() {
-      var _iterator, _step;
+      var _iterator, _step, ws;
       wss.close();
       for (_iterator = _createForOfIteratorHelperLoose(wss.clients); !(_step = _iterator()).done;) {
-        var ws = _step.value;
+        ws = _step.value;
         ws.terminate();
       }
       server.removeListener('upgrade', handleUpgrade);

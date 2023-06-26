@@ -330,6 +330,7 @@ const useVisibilityChangeSubscriber = () => {
 };
 
 /* eslint-disable max-lines */
+
 const defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
 };
