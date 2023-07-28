@@ -3232,14 +3232,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todo-example/modules@10.4.0, @todo-example/modules@workspace:@todo-example/modules":
+"@todo-example/modules@10.5.0, @todo-example/modules@workspace:@todo-example/modules":
   version: 0.0.0-use.local
   resolution: "@todo-example/modules@workspace:@todo-example/modules"
   dependencies:
     "@babel/core": 7.21.3
     "@babel/preset-env": 7.20.2
-    liwi-mongo: 10.4.0
-    liwi-resources-client: 10.4.0
+    liwi-mongo: 10.5.0
+    liwi-resources-client: 10.5.0
     pob-babel: 35.6.2
     typescript: 4.9.5
   languageName: unknown
@@ -3251,14 +3251,14 @@ __metadata:
   dependencies:
     "@playwright/test": 1.32.2
     "@todo-example/babel-preset-nextjs-babel-config": 10.0.0
-    "@todo-example/modules": 10.4.0
+    "@todo-example/modules": 10.5.0
     "@types/node": 18.16.18
     "@types/react": 18.2.14
     "@types/react-native": 0.72.2
     classnames: 2.3.2
-    liwi-resources-client: 10.4.0
-    liwi-resources-void-client: 10.4.0
-    liwi-resources-websocket-client: 10.4.0
+    liwi-resources-client: 10.5.0
+    liwi-resources-void-client: 10.5.0
+    liwi-resources-websocket-client: 10.5.0
     next: 13.0.4
     next-compose-plugins: 2.2.1
     next-transpile-modules: 10.0.0
@@ -3266,7 +3266,7 @@ __metadata:
     react: 18.2.0
     react-alp-connection-state: 6.2.2
     react-dom: 18.2.0
-    react-liwi: 10.4.0
+    react-liwi: 10.5.0
     react-native-web: 0.19.1
     springbokjs-daemon: 9.0.0
     todomvc-app-css: 2.4.2
@@ -3280,12 +3280,12 @@ __metadata:
   resolution: "@todo-example/server@workspace:@todo-example/server"
   dependencies:
     "@babel/core": 7.21.3
-    "@todo-example/modules": 10.4.0
+    "@todo-example/modules": 10.5.0
     alp-node: 4.1.0
     alp-rollup-plugin-config: 2.0.0
-    liwi-mongo: 10.4.0
-    liwi-resources-server: 10.4.0
-    liwi-resources-websocket-server: 10.4.0
+    liwi-mongo: 10.5.0
+    liwi-resources-server: 10.5.0
+    liwi-resources-websocket-server: 10.5.0
     nightingale-app-console: 14.1.0
     pob-babel: 35.6.2
     rollup-plugin-copy: 3.4.0
@@ -8758,13 +8758,13 @@ __metadata:
   resolution: "liwi-mongo-example@workspace:packages/liwi-mongo-example"
   dependencies:
     "@babel/core": 7.21.3
-    liwi-mongo: 10.4.0
+    liwi-mongo: 10.5.0
     pob-babel: 35.6.2
     typescript: 4.9.5
   languageName: unknown
   linkType: soft
 
-"liwi-mongo@10.4.0, liwi-mongo@workspace:packages/liwi-mongo":
+"liwi-mongo@10.5.0, liwi-mongo@workspace:packages/liwi-mongo":
   version: 0.0.0-use.local
   resolution: "liwi-mongo@workspace:packages/liwi-mongo"
   dependencies:
@@ -8799,7 +8799,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"liwi-resources-client@10.4.0, liwi-resources-client@workspace:packages/liwi-resources-client":
+"liwi-resources-client@10.5.0, liwi-resources-client@workspace:packages/liwi-resources-client":
   version: 0.0.0-use.local
   resolution: "liwi-resources-client@workspace:packages/liwi-resources-client"
   dependencies:
@@ -8823,15 +8823,15 @@ __metadata:
     "@babel/runtime": ^7.21.0
     "@types/backo2": 1.0.1
     extended-json: 10.4.0
-    liwi-resources-client: 10.4.0
-    liwi-resources-server: 10.4.0
+    liwi-resources-client: 10.5.0
+    liwi-resources-server: 10.5.0
     nightingale-logger: ^14.0.0
     pob-babel: 35.6.2
     typescript: 4.9.5
   languageName: unknown
   linkType: soft
 
-"liwi-resources-server@10.4.0, liwi-resources-server@workspace:packages/liwi-resources-server":
+"liwi-resources-server@10.5.0, liwi-resources-server@workspace:packages/liwi-resources-server":
   version: 0.0.0-use.local
   resolution: "liwi-resources-server@workspace:packages/liwi-resources-server"
   dependencies:
@@ -8846,20 +8846,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"liwi-resources-void-client@10.4.0, liwi-resources-void-client@workspace:packages/liwi-resources-void-client":
+"liwi-resources-void-client@10.5.0, liwi-resources-void-client@workspace:packages/liwi-resources-void-client":
   version: 0.0.0-use.local
   resolution: "liwi-resources-void-client@workspace:packages/liwi-resources-void-client"
   dependencies:
     "@babel/core": 7.21.3
     "@babel/preset-env": 7.20.2
-    liwi-resources-client: 10.4.0
-    liwi-resources-server: 10.4.0
+    liwi-resources-client: 10.5.0
+    liwi-resources-server: 10.5.0
     pob-babel: 35.6.2
     typescript: 4.9.5
   languageName: unknown
   linkType: soft
 
-"liwi-resources-websocket-client@10.4.0, liwi-resources-websocket-client@workspace:packages/liwi-resources-websocket-client":
+"liwi-resources-websocket-client@10.5.0, liwi-resources-websocket-client@workspace:packages/liwi-resources-websocket-client":
   version: 0.0.0-use.local
   resolution: "liwi-resources-websocket-client@workspace:packages/liwi-resources-websocket-client"
   dependencies:
@@ -8869,14 +8869,14 @@ __metadata:
     "@types/backo2": 1.0.1
     backo2: ^1.0.2
     extended-json: 10.4.0
-    liwi-resources-client: 10.4.0
+    liwi-resources-client: 10.5.0
     nightingale-logger: ^14.0.0
     pob-babel: 35.6.2
     typescript: 4.9.5
   languageName: unknown
   linkType: soft
 
-"liwi-resources-websocket-server@10.4.0, liwi-resources-websocket-server@workspace:packages/liwi-resources-websocket-server":
+"liwi-resources-websocket-server@10.5.0, liwi-resources-websocket-server@workspace:packages/liwi-resources-websocket-server":
   version: 0.0.0-use.local
   resolution: "liwi-resources-websocket-server@workspace:packages/liwi-resources-websocket-server"
   dependencies:
@@ -8886,7 +8886,7 @@ __metadata:
     "@types/ws": 8.5.5
     bufferutil: ^4.0.3
     extended-json: 10.4.0
-    liwi-resources-server: 10.4.0
+    liwi-resources-server: 10.5.0
     liwi-store: 10.4.0
     nightingale-logger: ^14.0.0
     pob-babel: 35.6.2
@@ -11114,7 +11114,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-liwi@10.4.0, react-liwi@workspace:packages/react-liwi":
+"react-liwi@10.5.0, react-liwi@workspace:packages/react-liwi":
   version: 0.0.0-use.local
   resolution: "react-liwi@workspace:packages/react-liwi"
   dependencies:
@@ -11123,7 +11123,7 @@ __metadata:
     "@babel/preset-react": 7.18.6
     "@babel/runtime": ^7.21.0
     "@types/react": 18.2.14
-    liwi-resources-client: 10.4.0
+    liwi-resources-client: 10.5.0
     mingo: ^6.2.7
     nightingale-logger: ^14.0.0
     pob-babel: 35.6.2

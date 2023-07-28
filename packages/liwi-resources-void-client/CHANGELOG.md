@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.0](https://github.com/liwijs/liwi/compare/v10.4.0...v10.5.0) (2023-07-28)
+
+**Note:** Version bump only for package liwi-resources-void-client
+
+
+
+
+
 ## [10.4.0](https://github.com/liwijs/liwi/compare/v10.3.3...v10.4.0) (2023-07-28)
 
 

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.0](https://github.com/liwijs/liwi/compare/v10.4.0...v10.5.0) (2023-07-28)
+
+
+### Features
+
+* **deps:** update nightingale to v14 (major) ([#258](https://github.com/liwijs/liwi/issues/258)) ([478f72b](https://github.com/liwijs/liwi/commit/478f72bfaa969d44fbc390a62944568d98bb75cf))
+
+
+
 ## [10.4.0](https://github.com/liwijs/liwi/compare/v10.3.3...v10.4.0) (2023-07-28)
 
 
