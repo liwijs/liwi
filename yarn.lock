@@ -1365,7 +1365,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.0, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.19.0, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.19.0, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.8.4":
   version: 7.21.0
   resolution: "@babel/runtime@npm:7.21.0"
   dependencies:
@@ -3281,7 +3281,7 @@ __metadata:
   dependencies:
     "@babel/core": 7.21.3
     "@todo-example/modules": 10.5.0
-    alp-node: 4.1.0
+    alp-node: 4.2.2
     alp-rollup-plugin-config: 2.0.0
     liwi-mongo: 10.5.0
     liwi-resources-server: 10.5.0
@@ -4022,83 +4022,88 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alp-listen@npm:5.0.1":
-  version: 5.0.1
-  resolution: "alp-listen@npm:5.0.1"
+"alp-listen@npm:5.1.2":
+  version: 5.1.2
+  resolution: "alp-listen@npm:5.1.2"
   dependencies:
-    alp-node-config: 7.0.1
+    alp-node-config: 7.1.2
     nightingale-logger: ^12.1.4
-  checksum: f0b83d385f5a50dae8cc147037d129f1323fac9c6ecbae62d6406361c2ce896959dc08f2038105f91aac81cb4b32ddd98a59aecad34926b066cb0c541384d8f5
+  checksum: 33336bcc81dc67b7f1c380dd954a0247f779efa12f414342a3ebf70dff42529e08037e716303a7c60121fa57c667b6bf1611f3c4d464c176208d792c248a23d4
   languageName: node
   linkType: hard
 
-"alp-node-config@npm:7.0.1":
-  version: 7.0.1
-  resolution: "alp-node-config@npm:7.0.1"
+"alp-node-config@npm:7.1.2":
+  version: 7.1.2
+  resolution: "alp-node-config@npm:7.1.2"
   dependencies:
     alp-types: 3.1.0
     deep-freeze-es6: ^1.4.1
     minimist-argv: ^1.1.0
     parse-json-object-as-map: ^1.2.0
     stringify-json: ^2.0.0
-  checksum: 52db1ae2dbedca805c1269c7aed61d65436ac5dc5091e7e8e78da0db6c52075cbc476fd096a8fdceaffcab4c66afd6e6e866c387030ddc7fe72c9b6fd32b3797
+  checksum: 5ac77bbd7cedca110f035d72e640c1a18e4d81050d2678612a58bbb470439994787fbe18699ebf60060e6e23027c8b3845dc91927e29af627a35014449a73fe3
   languageName: node
   linkType: hard
 
-"alp-node-errors@npm:6.0.1":
-  version: 6.0.1
-  resolution: "alp-node-errors@npm:6.0.1"
+"alp-node-errors@npm:6.1.2":
+  version: 6.1.2
+  resolution: "alp-node-errors@npm:6.1.2"
   dependencies:
     alp-types: 3.1.0
     error-html: ^0.3.5
     nightingale-logger: ^12.1.4
-  checksum: eafb159f7c16e9f68f7c1e886c05c51a65657185c1dbc378e7e89b50394cafb92aaf70faada4fe344e642df853b74417d8eec30fc95d259b6e00ebef89b32fc9
+  checksum: caca9c8922913729212ed3e32526fa0ca3e68016698161ec01fd8e3dbb7f2d72590f862e9e5d64d4c30d125731595fde1cc04ef9d1e0c8f96ea88ce114c70236
   languageName: node
   linkType: hard
 
-"alp-node-language@npm:5.1.1":
-  version: 5.1.1
-  resolution: "alp-node-language@npm:5.1.1"
+"alp-node-language@npm:5.2.2":
+  version: 5.2.2
+  resolution: "alp-node-language@npm:5.2.2"
   dependencies:
     "@types/koa": ^2.13.1
     alp-types: 3.1.0
     object-properties: ^6.1.0
-  checksum: 853a92c94b5496fd5219da60762649a3e4793277f80513ffd9204b94c4435c8c7e96103c334a6c1dbd645a44040985282bf4a50a8f3f0bb11a6ec18035f5770e
+  checksum: 3aa1297ce35e20634baa00d3ae9611f9d86920064641a286b842a483637be0a40f2957cf0559badd60a2cd1aa92dc5a7848d9a56fa8ec1d3d8504d22e24b9833
   languageName: node
   linkType: hard
 
-"alp-node@npm:4.1.0":
-  version: 4.1.0
-  resolution: "alp-node@npm:4.1.0"
+"alp-node@npm:4.2.2":
+  version: 4.2.2
+  resolution: "alp-node@npm:4.2.2"
   dependencies:
     "@types/koa": ^2.13.1
     "@types/node": ">=14.0.0"
     "@types/node-fetch": ^3.0.3
-    alp-listen: 5.0.1
-    alp-node-config: 7.0.1
-    alp-node-errors: 6.0.1
-    alp-node-language: 5.1.1
-    alp-params: 4.2.0
-    alp-translate: 6.0.2
+    alp-listen: 5.1.2
+    alp-node-config: 7.1.2
+    alp-node-errors: 6.1.2
+    alp-node-language: 5.2.2
+    alp-params: 4.3.2
+    alp-translate: 6.1.2
     alp-types: 3.1.0
     koa: ^2.13.1
     koa-compress: ^5.0.0
     koa-static: ^5.0.0
     nightingale-logger: ^12.1.4
     node-fetch: ^3.2.0
-  checksum: af6ea35fb609c4d3ba5b135199ab9fef9a97d31b8d406416d5e8250c8b304ae3213284f099d2721d16e466a17fdb5573532a0987eeb8fd7ca5a8b77f7813994c
+  peerDependencies:
+    react: ^18.1.0
+    router-segments: ^5.0.0
+  checksum: f0171e5191a470707870c09c48057f203de66ff550038a57480d8c3ae6731f3906b39631ff80afb90518c2b83c1780273564cba73ceeeb8eb51126a2ce700e0e
   languageName: node
   linkType: hard
 
-"alp-params@npm:4.2.0":
-  version: 4.2.0
-  resolution: "alp-params@npm:4.2.0"
+"alp-params@npm:4.3.2":
+  version: 4.3.2
+  resolution: "alp-params@npm:4.3.2"
   dependencies:
-    "@babel/runtime": ^7.17.0
-    alp-router: 5.1.2
+    "@babel/runtime": ^7.19.0
+    alp-router: 5.2.2
     alp-types: 3.1.0
     object-properties: ^6.1.0
-  checksum: f57d8de68f36502160dacda3c390c9d8dd2e44f3ee82c1db3c36254b9092262d7c6d8a6b598ea95ee8b9253d21c748b9a60c76759a0185d775a597b625676a67
+  peerDependencies:
+    router-segments: ^5.0.0
+  checksum: 087f5d1a1bcdbe18db7d98e18af34b616f7dac54a81d94a76ed846d7d0179108597a5970f0b57ecdfe0b26fe0600a1e7ff9bc3fa3dc2056dbf83a89c90dca21a
   languageName: node
   linkType: hard
 
@@ -4114,26 +4119,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alp-router@npm:5.1.2":
-  version: 5.1.2
-  resolution: "alp-router@npm:5.1.2"
+"alp-router@npm:5.2.2":
+  version: 5.2.2
+  resolution: "alp-router@npm:5.2.2"
   dependencies:
     alp-types: 3.1.0
   peerDependencies:
     router-segments: ^5.0.0
-  checksum: 716c2014b29e149d9a77e1be8011a821e33f1d5e186af761f31f509ab4c17df6b5b0da97248195edb02e831118d3d237ad14fc55e804e2f6dbf986c03117ba0b
+  checksum: 0d4e524e3cd1018d936941cf9a3de3a823255ab0fdc740a1303de46d33d9de2061404b89f9bc2bca00387cabe7ebd3aa5dd5d0720d1f7b5aab49967a01442426
   languageName: node
   linkType: hard
 
-"alp-translate@npm:6.0.2":
-  version: 6.0.2
-  resolution: "alp-translate@npm:6.0.2"
+"alp-translate@npm:6.1.2":
+  version: 6.1.2
+  resolution: "alp-translate@npm:6.1.2"
   dependencies:
     alp-types: 3.1.0
     intl-messageformat: ^9.10.0
     nightingale-logger: ^12.1.4
-    react-alp-context: 4.0.2
-  checksum: 3eb35d8d34b58444f250a4ac1995c0f24402c4e8c867eb1f13d9ec5b4142eb37fb599a69800de57930be9dafa860a23d5434655e66c673eab4a3f52e39d231ed
+    react-alp-context: 4.1.2
+  peerDependencies:
+    react: ^18.1.0
+  checksum: e07ed740a729bb65683bc1e0eb79b244add47d68c5b2fcfc1fc2fe65da7664e2780b2dd34172e810d2713be034c5a926c5dac739982491fac2037d7968202ab0
   languageName: node
   linkType: hard
 
@@ -11077,14 +11084,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-alp-context@npm:4.0.2":
-  version: 4.0.2
-  resolution: "react-alp-context@npm:4.0.2"
+"react-alp-context@npm:4.1.2":
+  version: 4.1.2
+  resolution: "react-alp-context@npm:4.1.2"
   dependencies:
     alp-types: 3.1.0
   peerDependencies:
-    react: ^17.0.2
-  checksum: 09dedf6dfb50ecdee74e0f7f5d8d27f8b73b7342807610b5c6b96c698be6319c430d3e8e757ecd277f2fa16c4ae3bc597e500c2ce73c9bc9a3f644e31b01a6ac
+    react: ^18.1.0
+  checksum: cea7af8981486c5f18f0f609213f220d9bdc9f167db8ab6143d25b4325889318ea97c9c5a22f1a93f551727c7c1afc487132efdcb583a839307b13a3b0e32f89
   languageName: node
   linkType: hard
 

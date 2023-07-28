@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@todo-example/modules": "10.5.0",
-    "alp-node": "4.1.0",
+    "alp-node": "4.2.2",
     "liwi-mongo": "10.5.0",
     "liwi-resources-server": "10.5.0",
     "liwi-resources-websocket-server": "10.5.0",
