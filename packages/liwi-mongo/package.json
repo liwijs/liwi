@@ -20,6 +20,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./dist/definitions/index.d.ts",
       "node": {
         "import": "./dist/index-node16.mjs"
       }
