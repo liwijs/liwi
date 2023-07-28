@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.4.0](https://github.com/liwijs/liwi/compare/v10.3.3...v10.4.0) (2023-07-28)
+
+
+### Features
+
+* **deps:** update dependency mongodb to v5 ([#187](https://github.com/liwijs/liwi/issues/187)) ([ace5a92](https://github.com/liwijs/liwi/commit/ace5a92f8753d982882c35b37cdc0a488c97ec2f))
+* **deps:** update dependency react-native-web to v0.19.0 ([#218](https://github.com/liwijs/liwi/issues/218)) ([929a667](https://github.com/liwijs/liwi/commit/929a667c43047c6ae2c4f6d4eec74aaaee54bfaa))
+
+
+### Bug Fixes
+
+* fix lint error ([517aed1](https://github.com/liwijs/liwi/commit/517aed1ea369ae7c4585ce8f744cab545da9d103))
+
+
+
 ## [10.3.3](https://github.com/liwijs/liwi/compare/v10.3.2...v10.3.3) (2023-02-05)
 
 

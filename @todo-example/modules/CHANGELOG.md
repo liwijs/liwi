@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.4.0](https://github.com/liwijs/liwi/compare/v10.3.3...v10.4.0) (2023-07-28)
+
+
+### Bug Fixes
+
+* fix lint error ([517aed1](https://github.com/liwijs/liwi/commit/517aed1ea369ae7c4585ce8f744cab545da9d103))
+
+
+
 ## [10.3.2](https://github.com/liwijs/liwi/compare/v10.3.1...v10.3.2) (2023-01-31)
 
 **Note:** Version bump only for package @todo-example/modules

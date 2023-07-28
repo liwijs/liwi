@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-void-client",
-  "version": "10.3.2",
+  "version": "10.4.0",
   "description": "void client implementation for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -67,8 +67,8 @@
     ]
   },
   "dependencies": {
-    "liwi-resources-client": "10.3.2",
-    "liwi-resources-server": "10.3.2"
+    "liwi-resources-client": "10.4.0",
+    "liwi-resources-server": "10.4.0"
   },
   "devDependencies": {
     "@babel/core": "7.21.3",

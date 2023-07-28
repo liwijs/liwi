@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-websocket-client",
-  "version": "10.3.2",
+  "version": "10.4.0",
   "description": "websocket client implementation for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -75,8 +75,8 @@
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "backo2": "^1.0.2",
-    "extended-json": "10.2.0",
-    "liwi-resources-client": "10.3.2",
+    "extended-json": "10.4.0",
+    "liwi-resources-client": "10.4.0",
     "nightingale-logger": "^13.0.0"
   },
   "devDependencies": {

@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.4.0](https://github.com/liwijs/liwi/compare/v10.3.3...v10.4.0) (2023-07-28)
+
+
+### Features
+
+* rename connectedUser to loggedInUser ([83bb095](https://github.com/liwijs/liwi/commit/83bb095c5d9dfafef2d59b1fe1f32cac26c4fd6a))
+
+
+### Bug Fixes
+
+* add types in exports for typescript 5 ([0630185](https://github.com/liwijs/liwi/commit/0630185dee33a72b43b29848d6001bb54cb4c4b9))
+
+
+
 ## [10.3.2](https://github.com/liwijs/liwi/compare/v10.3.1...v10.3.2) (2023-01-31)
 
 **Note:** Version bump only for package liwi-resources-server
