@@ -1,7 +1,6 @@
 import type { ExtendedJsonValue } from './ExtendedJsonValue';
 
 const regexpStringDate =
-  // eslint-disable-next-line unicorn/no-unsafe-regex
   /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
 
 type JsonReviver = <T extends ExtendedJsonValue>(
