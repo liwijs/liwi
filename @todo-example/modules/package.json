@@ -1,7 +1,7 @@
 {
   "name": "@todo-example/modules",
   "private": true,
-  "version": "10.5.0",
+  "version": "11.0.0",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "type": "module",
@@ -65,8 +65,8 @@
     ]
   },
   "dependencies": {
-    "liwi-mongo": "10.5.0",
-    "liwi-resources-client": "10.5.0"
+    "liwi-mongo": "11.0.0",
+    "liwi-resources-client": "11.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.22.9",

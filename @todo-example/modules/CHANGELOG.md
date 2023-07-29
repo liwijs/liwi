@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.0.0](https://github.com/liwijs/liwi/compare/v10.5.0...v11.0.0) (2023-07-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop node 16
+
+### Bug Fixes
+
+* fix modules config ([f34cee8](https://github.com/liwijs/liwi/commit/f34cee860f968b0dcc79b20d55d9e2b08dd1c04a))
+
+
+### Code Refactoring
+
+* update to node 18 ([e2dcbf8](https://github.com/liwijs/liwi/commit/e2dcbf8f5f6f32da6daa583fe352a453231c0c40))
+
+
+
 ## [10.5.0](https://github.com/liwijs/liwi/compare/v10.4.0...v10.5.0) (2023-07-28)
 
 **Note:** Version bump only for package @todo-example/modules
