@@ -13,9 +13,7 @@ function stringify(value, replacer, space) {
   replacer, space);
 }
 
-const regexpStringDate =
-// eslint-disable-next-line unicorn/no-unsafe-regex
-/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
+const regexpStringDate = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
 const internalReviver = function (key, value) {
   if (typeof value === 'string') {
     const matchDate = regexpStringDate.exec(value);

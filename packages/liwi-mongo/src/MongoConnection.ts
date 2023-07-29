@@ -99,6 +99,7 @@ export default class MongoConnection extends AbstractConnection {
     this._connecting = this.getConnection();
   }
 
+  // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   getConnection(): Promise<mongodb.MongoClient> {
     throw new Error('call connect()');
   }
