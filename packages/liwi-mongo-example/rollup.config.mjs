@@ -4,5 +4,6 @@ import createRollupConfig from 'pob-babel/createRollupConfig.js';
 
 export default createRollupConfig({
   cwd: dirname(fileURLToPath(import.meta.url)),
-  outDirectory: 'dist',
+  outDirectory: 'build',
+  plugins: [],
 });
