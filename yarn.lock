@@ -2960,19 +2960,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:1.32.2":
-  version: 1.32.2
-  resolution: "@playwright/test@npm:1.32.2"
+"@playwright/test@npm:1.36.2":
+  version: 1.36.2
+  resolution: "@playwright/test@npm:1.36.2"
   dependencies:
     "@types/node": "*"
     fsevents: 2.3.2
-    playwright-core: 1.32.2
+    playwright-core: 1.36.2
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     playwright: cli.js
-  checksum: 3e4a9286c2a63c12b55368c3b94e8817fee15146e09e5be549be21d6938b6bcd26a32b0dc295100a3b24f1f0839fdb65be680e7a11a39014f485f36551c6844a
+  checksum: 659304e0bbbafb2fa36395fbd8bd2c5db2b7791bbb55fa62409946ec7ec726cf8fff89f2b8a1a74fe831bf50a8780a37a5322a1251a6f7db2a9220a57ac408f0
   languageName: node
   linkType: hard
 
@@ -3318,7 +3318,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todo-example/nextjs@workspace:@todo-example/nextjs"
   dependencies:
-    "@playwright/test": 1.32.2
+    "@playwright/test": 1.36.2
     "@todo-example/babel-preset-nextjs-babel-config": 10.0.0
     "@todo-example/modules": 10.5.0
     "@types/node": 18.17.1
@@ -10706,12 +10706,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.32.2":
-  version: 1.32.2
-  resolution: "playwright-core@npm:1.32.2"
+"playwright-core@npm:1.36.2":
+  version: 1.36.2
+  resolution: "playwright-core@npm:1.36.2"
   bin:
-    playwright: cli.js
-  checksum: ff000cbf280e5d558fe70fd3edf14910a2e86ec68b04e28327176268345be7b3f88a5d22d78e8dae677dd633dce6cd493237df199773b55312f2ae1ab85d711f
+    playwright-core: cli.js
+  checksum: 2193ce802ef93c28b9b5e11a0b1d7b60778c686015659978d1cbf0eb9cda2cdc85ec5575b887c1346e9d161cc2805bf27638d76a2f7f857dffeae968e6ceffcd
   languageName: node
   linkType: hard
 
