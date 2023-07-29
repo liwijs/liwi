@@ -1,7 +1,7 @@
 {
   "pob": {
     "app": {
-      "type": "node",
+      "type": "node-library",
       "testing": false
     },
     "project": {

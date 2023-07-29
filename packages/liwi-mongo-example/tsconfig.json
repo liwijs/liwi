@@ -2,13 +2,10 @@
   "include": ["src/**/*.ts"],
   "compilerOptions": {
     "rootDir": "src",
+    "baseUrl": "" /* Base directory to resolve non-absolute module names. */,
     "newLine": "lf",
-    "outDir": "dist/definitions",
-    "tsBuildInfoFile": "dist/definitions/tsbuildinfo",
-    "noEmitOnError": true,
-    "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": true,
+    "noEmit": true,
+    "tsBuildInfoFile": "node_modules/.cache/tsc/tsbuildinfo",
     "incremental": true,
     "composite": true,
 
@@ -35,6 +32,7 @@
 
     /* Module Resolution Options */
     "moduleResolution": "bundler" /* Specify module resolution strategy. */,
+    "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
 

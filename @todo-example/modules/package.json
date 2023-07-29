@@ -35,13 +35,15 @@
       }
     }
   },
+  "sideEffects": true,
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs",
     "clean": "yarn clean:build",
     "clean:build": "pob-babel-clean-out build",
     "lint": "yarn run lint:eslint",
     "lint:eslint": "yarn ../.. run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/modules",
-    "start": "yarn clean:build && rollup --config rollup.config.mjs --watch"
+    "start": "yarn clean:build && rollup --config rollup.config.mjs --watch",
+    "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "prettier": "@pob/root/prettier-config",
   "pob": {

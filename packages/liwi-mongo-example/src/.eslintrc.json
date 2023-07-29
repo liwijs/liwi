@@ -7,8 +7,16 @@
   "plugins": ["@typescript-eslint"],
   "extends": [
     "@pob/eslint-config-typescript",
-    "@pob/eslint-config-typescript/node"
+    "@pob/eslint-config-typescript/node",
+    "@pob/eslint-config-typescript/app"
   ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src"]
+      }
+    }
+  },
   "ignorePatterns": ["*.d.ts"],
   "overrides": [
     {
