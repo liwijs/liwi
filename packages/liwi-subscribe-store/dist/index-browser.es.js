@@ -392,6 +392,7 @@ var SubscribeStore = /*#__PURE__*/function () {
   return SubscribeStore;
 }();
 
+/* eslint-disable @typescript-eslint/class-methods-use-this */
 var AbstractSubscribableStoreQuery = /*#__PURE__*/function () {
   function AbstractSubscribableStoreQuery() {}
   var _proto = AbstractSubscribableStoreQuery.prototype;

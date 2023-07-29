@@ -131,6 +131,8 @@ class SubscribeStore {
   }
 }
 
+/* eslint-disable @typescript-eslint/class-methods-use-this */
+
 class AbstractSubscribableStoreQuery {
   changeParams() {
     throw new Error('Method not supported. Please create a new query.');

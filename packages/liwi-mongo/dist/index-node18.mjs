@@ -559,6 +559,8 @@ class MongoConnection extends AbstractConnection {
     this.getConnection = () => Promise.resolve(connectPromise);
     this._connecting = this.getConnection();
   }
+
+  // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   getConnection() {
     throw new Error('call connect()');
   }
