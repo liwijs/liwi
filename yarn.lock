@@ -5027,19 +5027,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-package-dependencies@npm:6.4.1":
-  version: 6.4.1
-  resolution: "check-package-dependencies@npm:6.4.1"
+"check-package-dependencies@npm:6.7.0":
+  version: 6.7.0
+  resolution: "check-package-dependencies@npm:6.7.0"
   dependencies:
     chalk: ^5.2.0
     glob: ^10.0.0
     import-meta-resolve: ^3.0.0
-    semver: ^7.5.0
+    semver: ^7.5.4
     semver-utils: ^1.1.4
     type-fest: ^3.0.0
   bin:
     check-package-dependencies: bin/check-package-dependencies.mjs
-  checksum: 6fbf89a6f7df011a594d4f80acfaba5b3bb4d3d72ffd244a7f5970426a951d0e448633386f611c3c04f36da057fca9dcdf64f9221e5608f3f248ad34000e9408
+  checksum: e75370533b3f7c0cd4af2e3fbc4c57e7736f26d27ac484328367047dc361615f78768914b61c15b7b2401333f4c08f1a35d41b0335e1fdafa9b0849b9aaa431c
   languageName: node
   linkType: hard
 
@@ -8872,7 +8872,7 @@ __metadata:
     "@pob/lerna-light": 7.0.1
     "@pob/root": 8.1.1
     "@types/jest": 29.5.3
-    check-package-dependencies: 6.4.1
+    check-package-dependencies: 6.7.0
     eslint: 8.46.0
     jest: 29.6.2
     pob-babel: 36.2.0
@@ -11513,7 +11513,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.0.0, semver@npm:^7.1.1, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.3.8, semver@npm:^7.5.0, semver@npm:^7.5.3":
+"semver@npm:^7.0.0, semver@npm:^7.1.1, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.3.8, semver@npm:^7.5.3, semver@npm:^7.5.4":
   version: 7.5.4
   resolution: "semver@npm:7.5.4"
   dependencies:
