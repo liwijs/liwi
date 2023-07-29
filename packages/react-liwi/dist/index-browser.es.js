@@ -143,10 +143,10 @@ function useRetrieveResource(createQuery, params, skip, deps) {
             meta: meta,
             queryInfo: info
           });
-        }).catch(function (err) {
+        }).catch(function (error) {
           dispatch({
             type: 'error',
-            error: err
+            error: error
           });
         })
       };
@@ -170,10 +170,10 @@ function useRetrieveResource(createQuery, params, skip, deps) {
           meta: meta,
           queryInfo: info
         });
-      }).catch(function (err) {
+      }).catch(function (error) {
         dispatch({
           type: 'error',
-          error: err
+          error: error
         });
       })
     });
@@ -201,10 +201,10 @@ function useRetrieveResource(createQuery, params, skip, deps) {
           meta: meta,
           queryInfo: info
         });
-      }).catch(function (err) {
+      }).catch(function (error) {
         dispatch({
           type: 'error',
-          error: err
+          error: error
         });
       })
     });
@@ -222,12 +222,11 @@ var copy = function copy(state) {
   return [].concat(state);
 };
 var applyCollectionChange = function applyCollectionChange(state, change, queryMeta, queryInfo) {
+  var keyPath, newCollection, _keyPath, deletedKeys, _keyPath2, newState;
   switch (change.type) {
     case 'initial':
       {
-        var keyPath = queryInfo.keyPath;
-
-        // update meta
+        keyPath = queryInfo.keyPath; // update meta
         Object.assign(queryMeta, change.meta);
 
         // update state if exists, keeping ref to avoid rerendering everything
@@ -242,7 +241,7 @@ var applyCollectionChange = function applyCollectionChange(state, change, queryM
     case 'inserted':
       {
         queryMeta.total += change.result.length;
-        var newCollection = [].concat(change.result, state);
+        newCollection = [].concat(change.result, state);
         if (queryInfo.sort) {
           newCollection = sortCollection(newCollection, queryInfo.sort);
         }
@@ -252,16 +251,16 @@ var applyCollectionChange = function applyCollectionChange(state, change, queryM
     case 'deleted':
       {
         queryMeta.total -= change.keys.length;
-        var _keyPath = queryInfo.keyPath;
-        var deletedKeys = change.keys;
+        _keyPath = queryInfo.keyPath;
+        deletedKeys = change.keys;
         return state.filter(function (value) {
           return !deletedKeys.includes(value[_keyPath]);
         });
       }
     case 'updated':
       {
-        var _keyPath2 = queryInfo.keyPath;
-        var newState = copy(state);
+        _keyPath2 = queryInfo.keyPath;
+        newState = copy(state);
         change.result.forEach(function (newObject) {
           var index = newState.findIndex(function (o) {
             return o[_keyPath2] === newObject[_keyPath2];
@@ -346,6 +345,7 @@ var useVisibilityChangeSubscriber = function useVisibilityChangeSubscriber() {
 };
 
 /* eslint-disable max-lines */
+
 var defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
 };
@@ -393,7 +393,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
               timeoutRef: timeoutRef.current
             });
             querySubscriptionRef.current = query.fetchAndSubscribe(function (err, changes) {
-              var _applyChanges, newResult, newMeta;
+              var initialChange, _applyChanges, newResult, newMeta;
               queryLogger.debug('received changes', {
                 err: err,
                 changes: changes
@@ -406,7 +406,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
                 return;
               }
               if (!currentResult && isInitial(changes)) {
-                var initialChange = changes[0];
+                initialChange = changes[0];
                 currentResult = initialChange.initial;
                 currentMeta = initialChange.meta;
                 currentQueryInfo = initialChange.queryInfo;
@@ -435,10 +435,10 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, _temp)
             });
             querySubscriptionRef.current.then(function () {
               queryLogger.success('subscribed');
-            }, function (err) {
+            }, function (error) {
               dispatch({
                 type: 'error',
-                error: err
+                error: error
               });
             });
           };
@@ -571,19 +571,19 @@ function useOperation(operationCall) {
           error: undefined
         });
         return [undefined, result];
-      }, function (err) {
+      }, function (error) {
         setState({
           loading: false,
-          error: err
+          error: error
         });
-        return [err, undefined];
+        return [error, undefined];
       });
-    } catch (err) {
+    } catch (error) {
       setState({
         loading: false,
-        error: err
+        error: error
       });
-      return Promise.resolve([err, undefined]);
+      return Promise.resolve([error, undefined]);
     }
   }, [operationCall]);
   return [operationCallWrapper, state];

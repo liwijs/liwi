@@ -150,9 +150,9 @@ export const createMessageHandler = <AuthenticatedUser>(
             const resource = getResource(message.payload);
             const query = await createQuery(message.payload, resource);
             return await query.fetch((result) => result);
-          } catch (err) {
-            logUnexpectedError(err, message.type, message.payload);
-            throw err;
+          } catch (error) {
+            logUnexpectedError(error, message.type, message.payload);
+            throw error;
           }
           return;
         }
@@ -168,9 +168,9 @@ export const createMessageHandler = <AuthenticatedUser>(
               query,
               subscriptionCallback,
             );
-          } catch (err) {
-            logUnexpectedError(err, message.type, message.payload);
-            throw err;
+          } catch (error) {
+            logUnexpectedError(error, message.type, message.payload);
+            throw error;
           }
           return;
         }
@@ -185,9 +185,9 @@ export const createMessageHandler = <AuthenticatedUser>(
               query,
               subscriptionCallback,
             );
-          } catch (err) {
-            logUnexpectedError(err, message.type, message.payload);
-            throw err;
+          } catch (error) {
+            logUnexpectedError(error, message.type, message.payload);
+            throw error;
           }
           return;
         }
@@ -210,8 +210,8 @@ export const createMessageHandler = <AuthenticatedUser>(
               openedSubscriptions.delete(subscriptionId);
               unsubscribeSubscription(SubscriptionAndSubscribeHook);
             }
-          } catch (err) {
-            logUnexpectedError(err, message.type, message.payload);
+          } catch (error) {
+            logUnexpectedError(error, message.type, message.payload);
           }
           return;
         }
@@ -230,9 +230,9 @@ export const createMessageHandler = <AuthenticatedUser>(
             }
 
             return operation(params, authenticatedUser);
-          } catch (err) {
-            logUnexpectedError(err, message.type, message.payload);
-            throw err;
+          } catch (error) {
+            logUnexpectedError(error, message.type, message.payload);
+            throw error;
           }
         }
       }

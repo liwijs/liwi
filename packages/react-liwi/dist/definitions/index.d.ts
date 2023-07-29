@@ -1,4 +1,4 @@
-import type { ConnectionStates } from 'liwi-resources-client/src/TransportClient';
+import type { ConnectionStates } from 'liwi-resources-client';
 export { useResource } from './useResource';
 export type { PaginatedQueryRequiredParams, Pagination, } from './usePaginatedResource';
 export { usePaginatedResource } from './usePaginatedResource';

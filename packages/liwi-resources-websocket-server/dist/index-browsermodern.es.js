@@ -4,6 +4,7 @@ import { Logger } from 'nightingale-logger';
 import { WebSocketServer } from 'ws';
 
 /* eslint-disable max-lines */
+
 const logger = new Logger('liwi:resources-websocket-server');
 const createWsServer = (server, path, resourcesServerService, getAuthenticatedUser) => {
   const wss = new WebSocketServer({
@@ -50,8 +51,8 @@ const createWsServer = (server, path, resourcesServerService, getAuthenticatedUs
       } else {
         return messageHandler(message, sendSubscriptionMessage).then(result => {
           sendAck(message.id, null, result);
-        }).catch(err => {
-          sendAck(message.id, err);
+        }).catch(error => {
+          sendAck(message.id, error);
         });
       }
     };
@@ -121,11 +122,11 @@ const createWsServer = (server, path, resourcesServerService, getAuthenticatedUs
     const authenticatedUserPromise = Promise.resolve(getAuthenticatedUser(request));
     wss.handleUpgrade(request, socket, upgradeHead, ws => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      authenticatedUserPromise.catch(err => {
+      authenticatedUserPromise.catch(error => {
         logger.warn('getAuthenticatedUser threw an error, return null instead.',
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         {
-          err
+          err: error
         });
         return null;
       }).then(authenticatedUser => {

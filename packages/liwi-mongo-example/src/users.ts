@@ -1,4 +1,4 @@
-import assert from 'assert';
+import assert from 'node:assert';
 import { MongoConnection, MongoStore } from 'liwi-mongo';
 import type { MongoInsertType, MongoBaseModel } from 'liwi-mongo';
 

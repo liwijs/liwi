@@ -1,8 +1,8 @@
 /* eslint-disable max-lines */
-import type http from 'http';
-import type net from 'net';
+import type http from 'node:http';
+import type net from 'node:net';
 import { encode, decode } from 'extended-json';
-import type { ExtendedJsonValue } from 'extended-json/src/ExtendedJsonValue';
+import type { ExtendedJsonValue } from 'extended-json';
 import type {
   AckError,
   ToServerMessage,
@@ -109,8 +109,8 @@ export const createWsServer = <AuthenticatedUser>(
             .then((result) => {
               sendAck(message.id, null, result as ExtendedJsonValue);
             })
-            .catch((err) => {
-              sendAck(message.id, err as Error);
+            .catch((error) => {
+              sendAck(message.id, error as Error);
             });
         }
       };
@@ -191,11 +191,11 @@ export const createWsServer = <AuthenticatedUser>(
     wss.handleUpgrade(request, socket, upgradeHead, (ws) => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       authenticatedUserPromise
-        .catch((err) => {
+        .catch((error) => {
           logger.warn(
             'getAuthenticatedUser threw an error, return null instead.',
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            { err },
+            { err: error },
           );
           return null;
         })

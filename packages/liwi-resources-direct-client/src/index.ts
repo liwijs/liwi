@@ -42,8 +42,8 @@ export const createDirectTransportClient = <AuthenticatedUser>({
         (result) => {
           callback(null, result as any);
         },
-        (err) => {
-          (callback as any)(err);
+        (error) => {
+          (callback as any)(error);
         },
       ) as any;
 

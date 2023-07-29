@@ -85,20 +85,18 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
   var createQuery = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(payload, resource) {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              if (payload.key.startsWith('query')) {
-                _context.next = 2;
-                break;
-              }
-              throw new Error('Invalid query key');
-            case 2:
-              return _context.abrupt("return", resource.queries[payload.key](payload.params, authenticatedUser));
-            case 3:
-            case "end":
-              return _context.stop();
-          }
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            if (payload.key.startsWith('query')) {
+              _context.next = 2;
+              break;
+            }
+            throw new Error('Invalid query key');
+          case 2:
+            return _context.abrupt("return", resource.queries[payload.key](payload.params, authenticatedUser));
+          case 3:
+          case "end":
+            return _context.stop();
         }
       }, _callee);
     }));
@@ -157,112 +155,110 @@ var createMessageHandler = function createMessageHandler(resourcesServerService,
       var _messageHandler = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(message, subscriptionCallback) {
         var resource, query, _resource, _query, _resource2, _query2, _subscriptionId, _SubscriptionAndSubscribeHook, _resource3, _message$payload, operationKey, params, operation;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.t0 = message.type;
-                _context2.next = _context2.t0 === 'fetch' ? 3 : _context2.t0 === 'fetchAndSubscribe' ? 18 : _context2.t0 === 'subscribe' ? 33 : _context2.t0 === 'subscribe:close' ? 47 : _context2.t0 === 'do' ? 51 : 64;
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.t0 = message.type;
+              _context2.next = _context2.t0 === 'fetch' ? 3 : _context2.t0 === 'fetchAndSubscribe' ? 18 : _context2.t0 === 'subscribe' ? 33 : _context2.t0 === 'subscribe:close' ? 47 : _context2.t0 === 'do' ? 51 : 64;
+              break;
+            case 3:
+              _context2.prev = 3;
+              resource = getResource(message.payload);
+              _context2.next = 7;
+              return createQuery(message.payload, resource);
+            case 7:
+              query = _context2.sent;
+              _context2.next = 10;
+              return query.fetch(function (result) {
+                return result;
+              });
+            case 10:
+              return _context2.abrupt("return", _context2.sent);
+            case 13:
+              _context2.prev = 13;
+              _context2.t1 = _context2["catch"](3);
+              logUnexpectedError(_context2.t1, message.type, message.payload);
+              throw _context2.t1;
+            case 17:
+              return _context2.abrupt("return");
+            case 18:
+              _context2.prev = 18;
+              _resource = getResource(message.payload);
+              _context2.next = 22;
+              return createQuery(message.payload, _resource);
+            case 22:
+              _query = _context2.sent;
+              _context2.next = 25;
+              return createSubscription('fetchAndSubscribe', message.payload, _resource, _query, subscriptionCallback);
+            case 25:
+              return _context2.abrupt("return", _context2.sent);
+            case 28:
+              _context2.prev = 28;
+              _context2.t2 = _context2["catch"](18);
+              logUnexpectedError(_context2.t2, message.type, message.payload);
+              throw _context2.t2;
+            case 32:
+              return _context2.abrupt("return");
+            case 33:
+              _context2.prev = 33;
+              _resource2 = getResource(message.payload);
+              _context2.next = 37;
+              return createQuery(message.payload, _resource2);
+            case 37:
+              _query2 = _context2.sent;
+              _context2.next = 40;
+              return createSubscription('subscribe', message.payload, _resource2, _query2, subscriptionCallback);
+            case 40:
+              _context2.next = 46;
+              break;
+            case 42:
+              _context2.prev = 42;
+              _context2.t3 = _context2["catch"](33);
+              logUnexpectedError(_context2.t3, message.type, message.payload);
+              throw _context2.t3;
+            case 46:
+              return _context2.abrupt("return");
+            case 47:
+              if (openedSubscriptions) {
+                _context2.next = 49;
                 break;
-              case 3:
-                _context2.prev = 3;
-                resource = getResource(message.payload);
-                _context2.next = 7;
-                return createQuery(message.payload, resource);
-              case 7:
-                query = _context2.sent;
-                _context2.next = 10;
-                return query.fetch(function (result) {
-                  return result;
-                });
-              case 10:
-                return _context2.abrupt("return", _context2.sent);
-              case 13:
-                _context2.prev = 13;
-                _context2.t1 = _context2["catch"](3);
-                logUnexpectedError(_context2.t1, message.type, message.payload);
-                throw _context2.t1;
-              case 17:
-                return _context2.abrupt("return");
-              case 18:
-                _context2.prev = 18;
-                _resource = getResource(message.payload);
-                _context2.next = 22;
-                return createQuery(message.payload, _resource);
-              case 22:
-                _query = _context2.sent;
-                _context2.next = 25;
-                return createSubscription('fetchAndSubscribe', message.payload, _resource, _query, subscriptionCallback);
-              case 25:
-                return _context2.abrupt("return", _context2.sent);
-              case 28:
-                _context2.prev = 28;
-                _context2.t2 = _context2["catch"](18);
-                logUnexpectedError(_context2.t2, message.type, message.payload);
-                throw _context2.t2;
-              case 32:
-                return _context2.abrupt("return");
-              case 33:
-                _context2.prev = 33;
-                _resource2 = getResource(message.payload);
-                _context2.next = 37;
-                return createQuery(message.payload, _resource2);
-              case 37:
-                _query2 = _context2.sent;
-                _context2.next = 40;
-                return createSubscription('subscribe', message.payload, _resource2, _query2, subscriptionCallback);
-              case 40:
-                _context2.next = 46;
+              }
+              throw new Error('Subscriptions not allowed');
+            case 49:
+              try {
+                _subscriptionId = message.payload.subscriptionId;
+                _SubscriptionAndSubscribeHook = openedSubscriptions.get(_subscriptionId);
+                if (!_SubscriptionAndSubscribeHook) {
+                  logger.warn('tried to unsubscribe non existing watcher', {
+                    subscriptionId: _subscriptionId
+                  });
+                } else {
+                  openedSubscriptions.delete(_subscriptionId);
+                  unsubscribeSubscription(_SubscriptionAndSubscribeHook);
+                }
+              } catch (error) {
+                logUnexpectedError(error, message.type, message.payload);
+              }
+              return _context2.abrupt("return");
+            case 51:
+              _context2.prev = 51;
+              _resource3 = getResource(message.payload);
+              _message$payload = message.payload, operationKey = _message$payload.operationKey, params = _message$payload.params;
+              operation = _resource3.operations[operationKey];
+              if (operation) {
+                _context2.next = 57;
                 break;
-              case 42:
-                _context2.prev = 42;
-                _context2.t3 = _context2["catch"](33);
-                logUnexpectedError(_context2.t3, message.type, message.payload);
-                throw _context2.t3;
-              case 46:
-                return _context2.abrupt("return");
-              case 47:
-                if (openedSubscriptions) {
-                  _context2.next = 49;
-                  break;
-                }
-                throw new Error('Subscriptions not allowed');
-              case 49:
-                try {
-                  _subscriptionId = message.payload.subscriptionId;
-                  _SubscriptionAndSubscribeHook = openedSubscriptions.get(_subscriptionId);
-                  if (!_SubscriptionAndSubscribeHook) {
-                    logger.warn('tried to unsubscribe non existing watcher', {
-                      subscriptionId: _subscriptionId
-                    });
-                  } else {
-                    openedSubscriptions.delete(_subscriptionId);
-                    unsubscribeSubscription(_SubscriptionAndSubscribeHook);
-                  }
-                } catch (err) {
-                  logUnexpectedError(err, message.type, message.payload);
-                }
-                return _context2.abrupt("return");
-              case 51:
-                _context2.prev = 51;
-                _resource3 = getResource(message.payload);
-                _message$payload = message.payload, operationKey = _message$payload.operationKey, params = _message$payload.params;
-                operation = _resource3.operations[operationKey];
-                if (operation) {
-                  _context2.next = 57;
-                  break;
-                }
-                throw new ResourcesServerError('OPERATION_NOT_FOUND', "Operation not found: " + operationKey);
-              case 57:
-                return _context2.abrupt("return", operation(params, authenticatedUser));
-              case 60:
-                _context2.prev = 60;
-                _context2.t4 = _context2["catch"](51);
-                logUnexpectedError(_context2.t4, message.type, message.payload);
-                throw _context2.t4;
-              case 64:
-              case "end":
-                return _context2.stop();
-            }
+              }
+              throw new ResourcesServerError('OPERATION_NOT_FOUND', "Operation not found: " + operationKey);
+            case 57:
+              return _context2.abrupt("return", operation(params, authenticatedUser));
+            case 60:
+              _context2.prev = 60;
+              _context2.t4 = _context2["catch"](51);
+              logUnexpectedError(_context2.t4, message.type, message.payload);
+              throw _context2.t4;
+            case 64:
+            case "end":
+              return _context2.stop();
           }
         }, _callee2, null, [[3, 13], [18, 28], [33, 42], [51, 60]]);
       }));

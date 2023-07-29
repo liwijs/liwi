@@ -13,7 +13,7 @@ module.exports = function babelConfig(api) {
       '@todo-example/*/lib',
     ],
     presets: [
-      ['pob-babel/preset.js'],
+      ['pob-babel/preset.js', { modules: false }],
       [
         '@babel/preset-react',
         {

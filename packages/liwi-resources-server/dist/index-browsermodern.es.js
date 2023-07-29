@@ -55,6 +55,7 @@ class ResourcesServerService {
 }
 
 /* eslint-disable complexity, max-lines */
+
 const logger = new Logger('liwi:resources-websocket-client');
 const logUnexpectedError = (error, message, payload) => {
   if (!(error instanceof ResourcesServerError)) {
@@ -140,9 +141,9 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               const resource = getResource(message.payload);
               const query = await createQuery(message.payload, resource);
               return await query.fetch(result => result);
-            } catch (err) {
-              logUnexpectedError(err, message.type, message.payload);
-              throw err;
+            } catch (error) {
+              logUnexpectedError(error, message.type, message.payload);
+              throw error;
             }
             return;
           }
@@ -152,9 +153,9 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               const resource = getResource(message.payload);
               const query = await createQuery(message.payload, resource);
               return await createSubscription('fetchAndSubscribe', message.payload, resource, query, subscriptionCallback);
-            } catch (err) {
-              logUnexpectedError(err, message.type, message.payload);
-              throw err;
+            } catch (error) {
+              logUnexpectedError(error, message.type, message.payload);
+              throw error;
             }
             return;
           }
@@ -164,9 +165,9 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               const resource = getResource(message.payload);
               const query = await createQuery(message.payload, resource);
               await createSubscription('subscribe', message.payload, resource, query, subscriptionCallback);
-            } catch (err) {
-              logUnexpectedError(err, message.type, message.payload);
-              throw err;
+            } catch (error) {
+              logUnexpectedError(error, message.type, message.payload);
+              throw error;
             }
             return;
           }
@@ -191,8 +192,8 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
                 openedSubscriptions.delete(subscriptionId);
                 unsubscribeSubscription(SubscriptionAndSubscribeHook);
               }
-            } catch (err) {
-              logUnexpectedError(err, message.type, message.payload);
+            } catch (error) {
+              logUnexpectedError(error, message.type, message.payload);
             }
             return;
           }
@@ -209,9 +210,9 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
                 throw new ResourcesServerError('OPERATION_NOT_FOUND', `Operation not found: ${operationKey}`);
               }
               return operation(params, authenticatedUser);
-            } catch (err) {
-              logUnexpectedError(err, message.type, message.payload);
-              throw err;
+            } catch (error) {
+              logUnexpectedError(error, message.type, message.payload);
+              throw error;
             }
           }
       }

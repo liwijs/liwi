@@ -30,7 +30,7 @@ export function NewTaskForm(): ReactElement {
             setNewTaskInput('');
           }
         },
-        (err) => {},
+        (error) => {},
       );
     }
     return false;

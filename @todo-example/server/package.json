@@ -6,14 +6,15 @@
   "license": "ISC",
   "type": "module",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.12.0"
   },
-  "main": "./build/index-node16.mjs",
+  "main": "./build/index-node18.mjs",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./build/definitions/index.d.ts",
       "node": {
-        "import": "./build/index-node16.mjs"
+        "import": "./build/index-node18.mjs"
       }
     }
   },
@@ -30,7 +31,7 @@
     "babelEnvs": [
       {
         "target": "node",
-        "version": "16"
+        "version": "18"
       }
     ],
     "entries": [
@@ -39,17 +40,18 @@
   },
   "dependencies": {
     "@todo-example/modules": "10.5.0",
-    "alp-node": "4.1.0",
+    "alp-node": "6.0.0",
     "liwi-mongo": "10.5.0",
     "liwi-resources-server": "10.5.0",
     "liwi-resources-websocket-server": "10.5.0",
-    "nightingale-app-console": "14.1.0"
+    "nightingale-app-console": "14.1.0",
+    "router-segments": "7.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.21.3",
-    "alp-rollup-plugin-config": "2.0.0",
-    "pob-babel": "35.6.2",
+    "@babel/core": "7.22.9",
+    "alp-rollup-plugin-config": "2.1.0",
+    "pob-babel": "36.2.0",
     "rollup-plugin-copy": "3.4.0",
-    "typescript": "4.9.5"
+    "typescript": "5.1.6"
   }
 }

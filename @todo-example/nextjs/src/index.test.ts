@@ -1,4 +1,4 @@
-import { execSync, spawnSync } from 'child_process';
+import { execSync, spawnSync } from 'node:child_process';
 // import { createRequire } from 'module';
 // import { MongoMemoryServer } from 'mongodb-memory-server';
 import type { Daemon } from 'springbokjs-daemon';

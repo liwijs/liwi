@@ -1,5 +1,5 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import config from 'alp-rollup-plugin-config';
 import createRollupConfig from 'pob-babel/createRollupConfig.js';
 import run from 'pob-babel/plugin-run.cjs';

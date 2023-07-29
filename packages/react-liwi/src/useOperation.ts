@@ -33,20 +33,20 @@ export function useOperation<T extends (...args: any) => Promise<any>>(
             });
             return [undefined, result];
           },
-          (err) => {
+          (error) => {
             setState({
               loading: false,
-              error: err,
+              error,
             });
-            return [err, undefined];
+            return [error, undefined];
           },
         );
-      } catch (err) {
+      } catch (error) {
         setState({
           loading: false,
-          error: err as Error,
+          error: error as Error,
         });
-        return Promise.resolve([err, undefined]);
+        return Promise.resolve([error, undefined]);
       }
     },
     [operationCall],

@@ -150,10 +150,10 @@ export function useRetrieveResourceAndSubscribe<
               () => {
                 queryLogger.success('subscribed');
               },
-              (err) => {
+              (error) => {
                 dispatch({
                   type: 'error',
-                  error: err,
+                  error,
                 });
               },
             );

@@ -1,4 +1,4 @@
-import type { Task } from '@todo-example/modules/tasks/Task';
+import type { Task } from '@todo-example/modules';
 import {
   createMongoSubscribeStore,
   createMongoStore,

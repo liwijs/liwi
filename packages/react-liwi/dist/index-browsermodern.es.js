@@ -137,10 +137,10 @@ function useRetrieveResource(createQuery, params, skip, deps) {
           meta,
           queryInfo: info
         });
-      }).catch(err => {
+      }).catch(error => {
         dispatch({
           type: 'error',
-          error: err
+          error
         });
       })
     };
@@ -163,10 +163,10 @@ function useRetrieveResource(createQuery, params, skip, deps) {
           meta,
           queryInfo: info
         });
-      }).catch(err => {
+      }).catch(error => {
         dispatch({
           type: 'error',
-          error: err
+          error
         });
       })
     });
@@ -195,10 +195,10 @@ function useRetrieveResource(createQuery, params, skip, deps) {
           meta,
           queryInfo: info
         });
-      }).catch(err => {
+      }).catch(error => {
         dispatch({
           type: 'error',
-          error: err
+          error
         });
       })
     });
@@ -330,6 +330,7 @@ const useVisibilityChangeSubscriber = () => {
 };
 
 /* eslint-disable max-lines */
+
 const defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
 };
@@ -419,10 +420,10 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
           });
           querySubscriptionRef.current.then(() => {
             queryLogger.success('subscribed');
-          }, err => {
+          }, error => {
             dispatch({
               type: 'error',
-              error: err
+              error
             });
           });
         };
@@ -541,19 +542,19 @@ function useOperation(operationCall) {
           error: undefined
         });
         return [undefined, result];
-      }, err => {
+      }, error => {
         setState({
           loading: false,
-          error: err
+          error
         });
-        return [err, undefined];
+        return [error, undefined];
       });
-    } catch (err) {
+    } catch (error) {
       setState({
         loading: false,
-        error: err
+        error: error
       });
-      return Promise.resolve([err, undefined]);
+      return Promise.resolve([error, undefined]);
     }
   }, [operationCall]);
   return [operationCallWrapper, state];

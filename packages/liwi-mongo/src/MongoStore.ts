@@ -68,8 +68,8 @@ export default class MongoStore<
         this._collection = client.db().collection(collectionName);
         return this._collection;
       },
-      (err: any) => {
-        this._collection = Promise.reject(err);
+      (error: any) => {
+        this._collection = Promise.reject(error);
         return this._collection;
       },
     );

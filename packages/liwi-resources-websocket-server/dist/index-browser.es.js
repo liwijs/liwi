@@ -49,8 +49,8 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
       } else {
         return messageHandler(message, sendSubscriptionMessage).then(function (result) {
           sendAck(message.id, null, result);
-        }).catch(function (err) {
-          sendAck(message.id, err);
+        }).catch(function (error) {
+          sendAck(message.id, error);
         });
       }
     };
@@ -123,11 +123,11 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
     var authenticatedUserPromise = Promise.resolve(getAuthenticatedUser(request));
     wss.handleUpgrade(request, socket, upgradeHead, function (ws) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      authenticatedUserPromise.catch(function (err) {
+      authenticatedUserPromise.catch(function (error) {
         logger.warn('getAuthenticatedUser threw an error, return null instead.',
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         {
-          err: err
+          err: error
         });
         return null;
       }).then(function (authenticatedUser) {
@@ -139,10 +139,10 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
   return {
     wss: wss,
     close: function close() {
-      var _iterator, _step;
+      var _iterator, _step, ws;
       wss.close();
       for (_iterator = _createForOfIteratorHelperLoose(wss.clients); !(_step = _iterator()).done;) {
-        var ws = _step.value;
+        ws = _step.value;
         ws.terminate();
       }
       server.removeListener('upgrade', handleUpgrade);

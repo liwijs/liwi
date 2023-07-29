@@ -5,12 +5,8 @@
     "rootDir": "src",
     "baseUrl": "./src" /* Base directory to resolve non-absolute module names. */,
     "newLine": "lf",
-    "outDir": "node_modules/.cache/tsc",
+    "noEmit": true,
     "tsBuildInfoFile": "node_modules/.cache/tsc/tsbuildinfo",
-    "noEmitOnError": true,
-    "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": true,
     "incremental": true,
     "composite": true,
 
@@ -38,37 +34,40 @@
     "forceConsistentCasingInFileNames": true,
 
     /* Module Resolution Options */
-    "moduleResolution": "node" /* Specify module resolution strategy. */,
+    "moduleResolution": "bundler" /* Specify module resolution strategy. */,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
 
     "paths": {
       "@todo-example/babel-preset-nextjs-babel-config": [
-        "../../../@todo-example/babel-preset-nextjs-babel-config/lib"
+        "../../@todo-example/babel-preset-nextjs-babel-config/lib"
       ],
       "@todo-example/babel-preset-nextjs-babel-config/*": [
-        "../../../@todo-example/babel-preset-nextjs-babel-config/lib/*"
+        "../../@todo-example/babel-preset-nextjs-babel-config/lib/*"
       ],
-      "@todo-example/modules": ["../../../@todo-example/modules/src"],
-      "@todo-example/modules/*": ["../../../@todo-example/modules/src/*"],
+      "liwi-resources-client": ["../../packages/liwi-resources-client/src"],
+      "liwi-resources-client/*": ["../../packages/liwi-resources-client/src/*"],
+      "@todo-example/modules": ["../../@todo-example/modules/src"],
+      "@todo-example/modules/*": ["../../@todo-example/modules/src/*"],
       "liwi-resources-void-client": [
-        "../../../packages/liwi-resources-void-client/src"
+        "../../packages/liwi-resources-void-client/src"
       ],
       "liwi-resources-void-client/*": [
-        "../../../packages/liwi-resources-void-client/src/*"
+        "../../packages/liwi-resources-void-client/src/*"
       ],
       "liwi-resources-websocket-client": [
-        "../../../packages/liwi-resources-websocket-client/src"
+        "../../packages/liwi-resources-websocket-client/src"
       ],
       "liwi-resources-websocket-client/*": [
-        "../../../packages/liwi-resources-websocket-client/src/*"
+        "../../packages/liwi-resources-websocket-client/src/*"
       ],
-      "react-liwi": ["../../../packages/react-liwi/src"],
-      "react-liwi/*": ["../../../packages/react-liwi/src/*"]
+      "react-liwi": ["../../packages/react-liwi/src"],
+      "react-liwi/*": ["../../packages/react-liwi/src/*"]
     }
   },
   "references": [
+    { "path": "../../packages/liwi-resources-client/tsconfig.json" },
     { "path": "../../@todo-example/modules/tsconfig.json" },
     { "path": "../../packages/liwi-resources-void-client/tsconfig.json" },
     { "path": "../../packages/liwi-resources-websocket-client/tsconfig.json" },
