@@ -37,7 +37,7 @@
   "devDependencies": {
     "@playwright/test": "1.36.2",
     "@types/node": "18.17.1",
-    "@types/react": "18.2.17",
+    "@types/react": "18.2.18",
     "@types/react-native": "0.72.2",
     "springbokjs-daemon": "10.0.0",
     "typescript": "5.1.6"
