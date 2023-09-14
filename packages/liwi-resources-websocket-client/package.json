@@ -80,7 +80,7 @@
     "nightingale-logger": "^14.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.22.17",
+    "@babel/core": "7.22.19",
     "@babel/preset-env": "7.22.15",
     "@types/backo2": "1.0.1",
     "pob-babel": "36.2.0",
