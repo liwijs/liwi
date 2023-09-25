@@ -81,7 +81,7 @@
     "ws": "^8.4.2"
   },
   "devDependencies": {
-    "@babel/core": "7.22.20",
+    "@babel/core": "7.23.0",
     "@babel/preset-env": "7.22.20",
     "@types/ws": "8.5.5",
     "pob-babel": "36.2.0",
