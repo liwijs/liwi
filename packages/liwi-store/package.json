@@ -76,7 +76,7 @@
     "@babel/runtime": "^7.22.6"
   },
   "devDependencies": {
-    "@babel/core": "7.23.0",
+    "@babel/core": "7.23.2",
     "@babel/preset-env": "7.23.2",
     "pob-babel": "36.2.0",
     "typescript": "5.2.2"
