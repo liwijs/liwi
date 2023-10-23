@@ -24,7 +24,7 @@
     "liwi-resources-client": "11.0.0",
     "liwi-resources-void-client": "11.0.0",
     "liwi-resources-websocket-client": "11.0.0",
-    "next": "13.4.12",
+    "next": "13.5.6",
     "nightingale-app-console": "14.1.0",
     "react": "18.2.0",
     "react-alp-connection-state": "8.0.0",
