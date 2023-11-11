@@ -52,7 +52,7 @@
     "liwi-resources-server": "11.0.0",
     "liwi-resources-websocket-server": "11.0.0",
     "nightingale-app-console": "14.1.0",
-    "router-segments": "7.0.0"
+    "router-segments": "7.0.1"
   },
   "devDependencies": {
     "@babel/core": "7.23.3",
