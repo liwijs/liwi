@@ -4057,10 +4057,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bson@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "bson@npm:5.4.0"
-  checksum: 1c0bcfdc48c373694fe642e04a1c0745efb31fae5350d44a202494bcf6b9a8be2aa68c9761786dee1c276882913d9011420de05fa606f738761909805b4349df
+"bson@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "bson@npm:6.2.0"
+  checksum: 6e079d1cafabda340a34ed2f496e20770abdee96e076ff23de810b36531dc75ac41fbe9a7d4644a9fbeae3dfd32bf2973465058fcdbe8601c7783b4b42c5ba61
   languageName: node
   linkType: hard
 
@@ -7501,7 +7501,7 @@ __metadata:
     liwi-store: "npm:11.0.0"
     liwi-subscribe-store: "npm:11.0.0"
     mingo: "npm:^6.2.7"
-    mongodb: "npm:^5.0.0"
+    mongodb: "npm:^6.0.0"
     nightingale-logger: "npm:^14.0.0"
     pob-babel: "npm:36.6.3"
     typescript: "npm:5.2.2"
@@ -8144,27 +8144,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb@npm:^5.0.0":
-  version: 5.8.1
-  resolution: "mongodb@npm:5.8.1"
+"mongodb@npm:^6.0.0":
+  version: 6.2.0
+  resolution: "mongodb@npm:6.2.0"
   dependencies:
     "@mongodb-js/saslprep": "npm:^1.1.0"
-    bson: "npm:^5.4.0"
+    bson: "npm:^6.2.0"
     mongodb-connection-string-url: "npm:^2.6.0"
-    socks: "npm:^2.7.1"
   peerDependencies:
     "@aws-sdk/credential-providers": ^3.188.0
-    "@mongodb-js/zstd": ^1.0.0
-    kerberos: ^1.0.0 || ^2.0.0
-    mongodb-client-encryption: ">=2.3.0 <3"
+    "@mongodb-js/zstd": ^1.1.0
+    gcp-metadata: ^5.2.0
+    kerberos: ^2.0.1
+    mongodb-client-encryption: ">=6.0.0 <7"
     snappy: ^7.2.2
-  dependenciesMeta:
-    "@mongodb-js/saslprep":
-      optional: true
+    socks: ^2.7.1
   peerDependenciesMeta:
     "@aws-sdk/credential-providers":
       optional: true
     "@mongodb-js/zstd":
+      optional: true
+    gcp-metadata:
       optional: true
     kerberos:
       optional: true
@@ -8172,7 +8172,9 @@ __metadata:
       optional: true
     snappy:
       optional: true
-  checksum: 425bea3cbcce444146abc946cfaf7d91fe92854945d17eb5912589ac12f926c5c073263f0948c0ba2dff154eab3a4746b2aaac5408de80296e4e35fdd01e8879
+    socks:
+      optional: true
+  checksum: ec007d6c0c9f32fbb4c18a7f217c93779b23ee06b2a1bf54cf655d439d02f68d44f36d66404103d8c29c18a8875295e7772c9619bc38c77783cc4a84ad3d5b09
   languageName: node
   linkType: hard
 
@@ -9714,7 +9716,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"socks@npm:^2.6.2, socks@npm:^2.7.1":
+"socks@npm:^2.6.2":
   version: 2.7.1
   resolution: "socks@npm:2.7.1"
   dependencies:
