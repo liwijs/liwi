@@ -4,9 +4,15 @@
   "version": "11.0.0",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liwijs/liwi.git",
+    "directory": "@todo-example/modules"
+  },
+  "homepage": "https://github.com/liwijs/liwi",
   "type": "module",
   "engines": {
-    "node": ">=18.12.0"
+    "node": ">=20.9.0"
   },
   "browserslist": {
     "production": [
@@ -17,7 +23,7 @@
       "not ios_saf < 10"
     ]
   },
-  "main": "./build/index-node18.mjs",
+  "main": "./build/index-node20.mjs",
   "module": "./build/index-browser.es.js",
   "browser": "./build/index-browser.es.js",
   "exports": {
@@ -25,7 +31,7 @@
     ".": {
       "types": "./src/index.ts",
       "node": {
-        "import": "./build/index-node18.mjs"
+        "import": "./build/index-node20.mjs"
       },
       "browser": {
         "browser:modern": {
@@ -50,7 +56,8 @@
     "babelEnvs": [
       {
         "target": "node",
-        "version": "18"
+        "version": "20",
+        "omitVersionInFileName": true
       },
       {
         "target": "browser",
@@ -69,9 +76,9 @@
     "liwi-resources-client": "11.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.23.2",
-    "@babel/preset-env": "7.23.2",
-    "pob-babel": "36.2.0",
+    "@babel/core": "7.23.3",
+    "@babel/preset-env": "7.23.3",
+    "pob-babel": "36.6.3",
     "typescript": "5.2.2"
   }
 }

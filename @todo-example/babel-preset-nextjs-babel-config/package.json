@@ -4,6 +4,12 @@
   "version": "11.0.0",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liwijs/liwi.git",
+    "directory": "@todo-example/babel-preset-nextjs-babel-config"
+  },
+  "homepage": "https://github.com/liwijs/liwi",
   "type": "module",
   "engines": {
     "node": ">=18.12.0"

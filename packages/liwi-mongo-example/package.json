@@ -12,14 +12,14 @@
   "homepage": "https://github.com/liwijs/liwi",
   "type": "module",
   "engines": {
-    "node": ">=18.12.0"
+    "node": ">=20.9.0"
   },
   "exports": {
     "./package.json": "./package.json",
     "./users": {
       "types": "./src/users.ts",
       "node": {
-        "import": "./build/users-node18.mjs"
+        "import": "./build/users-node20.mjs"
       }
     }
   },
@@ -37,7 +37,8 @@
     "babelEnvs": [
       {
         "target": "node",
-        "version": "18"
+        "version": "20",
+        "omitVersionInFileName": true
       }
     ],
     "entries": [
@@ -48,8 +49,8 @@
     "liwi-mongo": "11.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.23.2",
-    "pob-babel": "36.2.0",
+    "@babel/core": "7.23.3",
+    "pob-babel": "36.6.3",
     "typescript": "5.2.2"
   }
 }
