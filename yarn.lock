@@ -2655,7 +2655,7 @@ __metadata:
     react-liwi: "npm:11.0.0"
     react-native-web: "npm:0.19.9"
     springbokjs-daemon: "npm:10.0.0"
-    todomvc-app-css: "npm:2.4.2"
+    todomvc-app-css: "npm:2.4.3"
     todomvc-common: "npm:1.0.5"
     typescript: "npm:5.2.2"
   languageName: unknown
@@ -10210,10 +10210,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"todomvc-app-css@npm:2.4.2":
-  version: 2.4.2
-  resolution: "todomvc-app-css@npm:2.4.2"
-  checksum: 6d9dabea5eea67d6a31fa866749bdd5c558dc8888c50fed91cbfe585fd7739706ba4f9d132b511be1052c3c18b243dc4b9a8003193b46abd6fcd370c638dcc47
+"todomvc-app-css@npm:2.4.3":
+  version: 2.4.3
+  resolution: "todomvc-app-css@npm:2.4.3"
+  checksum: a9d517434ed22c79726409a9af0d5ed8f9fbe6ce23371a23c808cb88eab7ccaf639241d2f5d5fa7a3bc78ec112b528e83b5b9d386b16dc680c0b8671078d6e06
   languageName: node
   linkType: hard
 
