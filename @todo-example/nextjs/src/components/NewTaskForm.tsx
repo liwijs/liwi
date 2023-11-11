@@ -39,6 +39,7 @@ export function NewTaskForm(): ReactElement {
   return (
     <form onSubmit={handleSubmit}>
       <input
+        name="new-todo"
         className="new-todo"
         placeholder="What needs to be done?"
         disabled={!isReady || taskCreating}

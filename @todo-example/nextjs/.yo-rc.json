@@ -3,7 +3,8 @@
     "app": {
       "type": "next.js",
       "export": false,
-      "testing": false
+      "testing": false,
+      "e2e": true
     },
     "project": {
       "type": "app"

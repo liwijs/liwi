@@ -20,7 +20,7 @@
     "lint:eslint": "yarn ../.. run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/nextjs",
     "start": "next dev",
     "start:prod": "next start",
-    "test:e2e": "playwright test e2e/"
+    "test:e2e": "playwright test"
   },
   "prettier": "@pob/root/prettier-config",
   "dependencies": {
@@ -41,10 +41,11 @@
     "todomvc-common": "1.0.5"
   },
   "devDependencies": {
-    "@playwright/test": "1.36.2",
+    "@playwright/test": "1.39.0",
     "@types/node": "18.18.9",
     "@types/react": "18.2.37",
     "@types/react-native": "0.72.6",
+    "mongodb-memory-server": "9.0.1",
     "springbokjs-daemon": "10.0.0",
     "typescript": "5.2.2"
   }

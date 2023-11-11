@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 
 const TODO_NAME = 'Bake a cake';
 
-test('should work', async ({ page }) => {
+test('should add, filter then clear', async ({ page }) => {
   // Helper function to get the amount of todos on the page
   const getCountOfTodos = () =>
     page.$$eval('ul.todo-list > li', (el) => el.length);
@@ -16,12 +16,13 @@ test('should work', async ({ page }) => {
   expect(await getCountOfTodos()).toBe(0);
 
   // Adding a todo entry (click in the input, enter the todo title and press the Enter key)
-  await page.click('input.new-todo');
-  await page.type('input.new-todo', TODO_NAME);
-  await page.press('input.new-todo', 'Enter');
+  const inputLocator = page.locator('input.new-todo');
+  await inputLocator.fill(TODO_NAME);
+  await inputLocator.press('Enter');
 
-  // After adding 1 there should be 1 entry in the list
-  expect(await getCountOfTodos()).toBe(1);
+  await expect(
+    page.locator('label').filter({ hasText: TODO_NAME }),
+  ).toBeVisible();
 
   // Here we get the text in the first todo item to see if it's the same which the user has entered
   const textContentOfFirstTodoEntry = await page.$eval(
@@ -29,6 +30,8 @@ test('should work', async ({ page }) => {
     (el) => el.textContent,
   );
   expect(textContentOfFirstTodoEntry, TODO_NAME);
+
+  expect(await getCountOfTodos()).toBe(1);
 
   // The todo list should be persistent. Here we reload the page and see if the entry is still there
   await page.reload({
@@ -47,7 +50,12 @@ test('should work', async ({ page }) => {
   await page.click('"Completed"');
   expect(await getCountOfTodos()).toBe(1);
 
+  const itemLocator = page.locator('label').filter({ hasText: TODO_NAME });
+
   // Clear the list of completed entries, then it should be again 0
   await page.click('"Clear completed"');
-  expect(await getCountOfTodos()).toBe(0);
+
+  await expect(itemLocator).toBeHidden();
+
+  await expect(await getCountOfTodos()).toBe(0);
 });

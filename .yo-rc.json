@@ -3,6 +3,7 @@
     "monorepo": {
       "ci": true,
       "testing": true,
+      "e2eTesting": "@todo-example/nextjs",
       "codecov": false,
       "documentation": false,
       "eslint": true,
