@@ -2737,10 +2737,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/backo2@npm:1.0.3":
-  version: 1.0.3
-  resolution: "@types/backo2@npm:1.0.3"
-  checksum: 273e7c83232e4c8b9b5713467d606af95f8c976e71b5289564dc405654c5200937335acdb748281bdfcba60c58d9ac4316441ca38aa926d0a7ef1d1bd4044988
+"@types/backo2@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@types/backo2@npm:1.0.4"
+  checksum: d44d74c719ef47620f0e37de6a05b4c45a3c220b627489e9b379a09dc2322115d84c53e1b0ef320dbed160289b9683bb8ec507d49d8401196d16f8b3c0162e21
   languageName: node
   linkType: hard
 
@@ -7549,7 +7549,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.23.3"
     "@babel/runtime": "npm:^7.23.2"
-    "@types/backo2": "npm:1.0.3"
+    "@types/backo2": "npm:1.0.4"
     extended-json: "npm:11.0.0"
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
@@ -7594,7 +7594,7 @@ __metadata:
     "@babel/core": "npm:7.23.3"
     "@babel/preset-env": "npm:7.23.3"
     "@babel/runtime": "npm:^7.23.2"
-    "@types/backo2": "npm:1.0.3"
+    "@types/backo2": "npm:1.0.4"
     backo2: "npm:^1.0.2"
     extended-json: "npm:11.0.0"
     liwi-resources-client: "npm:11.0.0"
