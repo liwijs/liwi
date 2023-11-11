@@ -2642,7 +2642,7 @@ __metadata:
     "@todo-example/modules": "npm:11.0.0"
     "@types/node": "npm:18.18.9"
     "@types/react": "npm:18.2.37"
-    "@types/react-native": "npm:0.72.5"
+    "@types/react-native": "npm:0.72.6"
     classnames: "npm:2.3.2"
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-void-client: "npm:11.0.0"
@@ -3019,13 +3019,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native@npm:0.72.5":
-  version: 0.72.5
-  resolution: "@types/react-native@npm:0.72.5"
+"@types/react-native@npm:0.72.6":
+  version: 0.72.6
+  resolution: "@types/react-native@npm:0.72.6"
   dependencies:
     "@react-native/virtualized-lists": "npm:^0.72.4"
     "@types/react": "npm:*"
-  checksum: ca76455309f5690334e8d0780ec5a0fd44f261faaf4d0472d0aa7b10ffd7c5b4fe5bd653a8cb49811f695ad431503e25fcc1b6f1244bdecf90acb7a29cef6b6c
+  checksum: be2ee861f8e0ecdca7f7c6f8a6182dc6c6afa2687b2feb663adc35a7e25f8c528eef1aaa3ca7a5c5f5cef12db5306e139e6490998a98ed67b15035d36a9b93ca
   languageName: node
   linkType: hard
 
