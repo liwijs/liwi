@@ -2624,7 +2624,7 @@ __metadata:
     liwi-mongo: "npm:11.0.0"
     liwi-resources-client: "npm:11.0.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -2653,7 +2653,7 @@ __metadata:
     springbokjs-daemon: "npm:10.0.0"
     todomvc-app-css: "npm:2.4.3"
     todomvc-common: "npm:1.0.5"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -2672,7 +2672,7 @@ __metadata:
     pob-babel: "npm:36.6.3"
     rollup-plugin-copy: "npm:3.5.0"
     router-segments: "npm:7.0.1"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -5503,7 +5503,7 @@ __metadata:
     "@babel/core": "npm:7.23.3"
     "@babel/preset-env": "npm:7.23.3"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7578,7 +7578,7 @@ __metadata:
     "@babel/core": "npm:7.23.3"
     liwi-mongo: "npm:11.0.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7593,7 +7593,7 @@ __metadata:
     mongodb: "npm:^6.0.0"
     nightingale-logger: "npm:^14.0.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7612,7 +7612,7 @@ __metadata:
     eslint: "npm:8.54.0"
     jest: "npm:29.7.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7628,7 +7628,7 @@ __metadata:
     liwi-store: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7644,7 +7644,7 @@ __metadata:
     liwi-resources-server: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7659,7 +7659,7 @@ __metadata:
     liwi-resources: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7672,7 +7672,7 @@ __metadata:
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7689,7 +7689,7 @@ __metadata:
     liwi-resources-client: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7707,7 +7707,7 @@ __metadata:
     liwi-store: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
     utf-8-validate: "npm:^6.0.0"
     ws: "npm:^8.4.2"
   dependenciesMeta:
@@ -7727,7 +7727,7 @@ __metadata:
     extended-json: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7739,7 +7739,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.3"
     "@babel/runtime": "npm:^7.23.2"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7752,7 +7752,7 @@ __metadata:
     "@babel/runtime": "npm:^7.23.2"
     liwi-store: "npm:11.0.0"
     pob-babel: "npm:36.6.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -9303,7 +9303,7 @@ __metadata:
     nightingale-logger: "npm:^14.0.0"
     pob-babel: "npm:36.6.3"
     react: "npm:18.2.0"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   peerDependencies:
     react: ^18.0.0
   languageName: unknown
@@ -10626,23 +10626,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.2.2":
-  version: 5.2.2
-  resolution: "typescript@npm:5.2.2"
+"typescript@npm:5.3.2":
+  version: 5.3.2
+  resolution: "typescript@npm:5.3.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: d65e50eb849bd21ff8677e5b9447f9c6e74777e346afd67754934264dcbf4bd59e7d2473f6062d9a015d66bd573311166357e3eb07fea0b52859cf9bb2b58555
+  checksum: 415e5fb6611f5713e460bad48039f00bcfdbde53a2f911727862d5aa9c5d5edd250059a419df382d8f031709e15a169c41eb62b6a401da5eec7ac0f4e359d6ac
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>":
-  version: 5.2.2
-  resolution: "typescript@patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"
+"typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>":
+  version: 5.3.2
+  resolution: "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: f79cc2ba802c94c2b78dbb00d767a10adb67368ae764709737dc277273ec148aa4558033a03ce901406b35fddf4eac46dabc94a1e1d12d2587e2b9cfe5707b4a
+  checksum: 1b45cdfb577a78ae7a9a9d0b77a7b772142cb98ba05e4e5aefba7044a028ded885bcecef63166407a5986645cea816fe4986894336aacd5e791796ea79a6a7ed
   languageName: node
   linkType: hard
 
