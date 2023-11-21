@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.39.0",
-    "@types/node": "18.18.10",
+    "@types/node": "18.18.11",
     "@types/react": "18.2.37",
     "@types/react-native": "0.72.6",
     "mongodb-memory-server": "9.0.1",
