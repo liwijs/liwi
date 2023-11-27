@@ -2636,7 +2636,7 @@ __metadata:
     "@todo-example/babel-preset-nextjs-babel-config": "npm:11.0.0"
     "@todo-example/modules": "npm:11.0.0"
     "@types/node": "npm:18.18.13"
-    "@types/react": "npm:18.2.38"
+    "@types/react": "npm:18.2.39"
     "@types/react-native": "npm:0.72.7"
     classnames: "npm:2.3.2"
     liwi-resources-client: "npm:11.0.0"
@@ -3025,14 +3025,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:18.2.38":
-  version: 18.2.38
-  resolution: "@types/react@npm:18.2.38"
+"@types/react@npm:*, @types/react@npm:18.2.39":
+  version: 18.2.39
+  resolution: "@types/react@npm:18.2.39"
   dependencies:
     "@types/prop-types": "npm:*"
     "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 9f9b9925c979e848d572dce6fff34951708127ba6b1fd4306c93fbcab74f5c6cff2b2e47d4222339eeb6c19d264e93450cb2ad6b255c73c536d0a1e2093cc98a
+  checksum: 870f7774c676ae0f3ab6339a62b3315f5a296e89412358b15a5249a61e781a8807a2253ef7ad2ec98e7a5bea1e8c3ddd95b02226d6b8ac4a085da59b4a496564
   languageName: node
   linkType: hard
 
@@ -9297,7 +9297,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.3"
     "@babel/preset-react": "npm:7.23.3"
     "@babel/runtime": "npm:^7.23.2"
-    "@types/react": "npm:18.2.38"
+    "@types/react": "npm:18.2.39"
     liwi-resources-client: "npm:11.0.0"
     mingo: "npm:^6.2.7"
     nightingale-logger: "npm:^14.0.0"
