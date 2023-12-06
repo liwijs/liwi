@@ -2671,7 +2671,7 @@ __metadata:
     nightingale-app-console: "npm:14.2.1"
     pob-babel: "npm:36.6.3"
     rollup-plugin-copy: "npm:3.5.0"
-    router-segments: "npm:7.0.1"
+    router-segments: "npm:8.0.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -8548,7 +8548,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nightingale-logger@npm:14.2.1, nightingale-logger@npm:^14.0.0, nightingale-logger@npm:^14.0.2, nightingale-logger@npm:^14.1.0":
+"nightingale-logger@npm:14.2.1, nightingale-logger@npm:^14.0.0, nightingale-logger@npm:^14.0.2, nightingale-logger@npm:^14.1.0, nightingale-logger@npm:^14.2.1":
   version: 14.2.1
   resolution: "nightingale-logger@npm:14.2.1"
   dependencies:
@@ -9677,13 +9677,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"router-segments@npm:7.0.1":
-  version: 7.0.1
-  resolution: "router-segments@npm:7.0.1"
+"router-segments@npm:8.0.0":
+  version: 8.0.0
+  resolution: "router-segments@npm:8.0.0"
   dependencies:
-    nightingale-logger: "npm:^14.0.2"
+    nightingale-logger: "npm:^14.2.1"
     path-to-regexp: "npm:^6.2.1"
-  checksum: d1eb3aac50a35366692f99f5f615a08ad3716725e5fa778b6e849d387f871634d01def1d87d6921adbb6bc14f255c5e3ffe0d60a53cfb9634e248c727886e6ba
+  checksum: 64c560e5cab34938966e60d54cbc0f7a8dcc65bd87d5b0135b44835c656ad046add9ccf8abdf07e724b2db628b6ec3139e090f8f8584ff4253248f0dde86830b
   languageName: node
   linkType: hard
 
