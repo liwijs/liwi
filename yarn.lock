@@ -1171,9 +1171,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-runtime@npm:7.23.3":
-  version: 7.23.3
-  resolution: "@babel/plugin-transform-runtime@npm:7.23.3"
+"@babel/plugin-transform-runtime@npm:7.23.4":
+  version: 7.23.4
+  resolution: "@babel/plugin-transform-runtime@npm:7.23.4"
   dependencies:
     "@babel/helper-module-imports": "npm:^7.22.15"
     "@babel/helper-plugin-utils": "npm:^7.22.5"
@@ -1183,7 +1183,7 @@ __metadata:
     semver: "npm:^6.3.1"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: f513306d560765077aae618e2931ad445ad9648a86cf18f4169d3a7b5bc8c9b66399109f6a8612eb5dd7a09b45f8b56bf86e0e1abd1978a92dad0a97eb89cf8e
+  checksum: d962002d4cdeae91866fb7e9fb8ae5e5d568bd9ea866cfd03e8e564120f6f7db99d8f142f9b044819b975c0d0ca76418d8673bf46ea48feeba7779ae4f3bc46f
   languageName: node
   linkType: hard
 
@@ -2418,6 +2418,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pob/rollup@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@pob/rollup@npm:1.0.0"
+  dependencies:
+    rollup: "npm:3.29.4"
+  bin:
+    pob-rollup-clean-out: ./bin/pob-rollup-clean-out.js
+    rollup: ./bin/rollup.cjs
+  checksum: 2dba40b149459c1ad72618ef79678dbb072cc03b14959a44234a804e8c42c5a0baf5e5b6b3a9a4b4a0b2c13f9491ae028f37aca296cd1db87e20f79df00ae5f5
+  languageName: node
+  linkType: hard
+
 "@pob/root@npm:8.7.0":
   version: 8.7.0
   resolution: "@pob/root@npm:8.7.0"
@@ -2623,7 +2635,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.3"
     liwi-mongo: "npm:11.0.0"
     liwi-resources-client: "npm:11.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -2669,7 +2681,7 @@ __metadata:
     liwi-resources-server: "npm:11.0.0"
     liwi-resources-websocket-server: "npm:11.0.0"
     nightingale-app-console: "npm:14.2.1"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     rollup-plugin-copy: "npm:3.5.0"
     router-segments: "npm:7.0.1"
     typescript: "npm:5.3.3"
@@ -3823,10 +3835,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-fix-class-properties-uninitialized@npm:7.1.0":
-  version: 7.1.0
-  resolution: "babel-plugin-fix-class-properties-uninitialized@npm:7.1.0"
-  checksum: 10bd60b70eb618046f2ef813961e8627e0e52abe394c8f13c4a207510ee629fdf8c49007c4282220a2096d9cea3f4a1acb5b4b8e3a1280e31b56a4889204458f
+"babel-plugin-fix-class-properties-uninitialized@npm:7.2.0":
+  version: 7.2.0
+  resolution: "babel-plugin-fix-class-properties-uninitialized@npm:7.2.0"
+  checksum: c9e4676a9addf43c46866d48934ba05e93cbf35618146a122b78df6d42ace7fa374e881d82a65b9ad418632df146ede3f3fe836c623cc78371b025c61ca72099
   languageName: node
   linkType: hard
 
@@ -3996,20 +4008,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-pob-env@npm:10.2.2":
-  version: 10.2.2
-  resolution: "babel-preset-pob-env@npm:10.2.2"
+"babel-preset-pob-env@npm:10.3.0":
+  version: 10.3.0
+  resolution: "babel-preset-pob-env@npm:10.3.0"
   dependencies:
     "@babel/plugin-proposal-nullish-coalescing-operator": "npm:^7.18.6"
     "@babel/plugin-proposal-optional-chaining": "npm:^7.21.0"
     "@babel/plugin-transform-modules-commonjs": "npm:^7.23.0"
     "@babel/preset-typescript": "npm:^7.23.2"
     babel-plugin-discard-module-references: "npm:^1.1.2"
-    babel-plugin-fix-class-properties-uninitialized: "npm:7.1.0"
+    babel-plugin-fix-class-properties-uninitialized: "npm:7.2.0"
     babel-preset-optimizations: "npm:^2.0.0"
   peerDependencies:
     "@babel/core": ^7.23.2
-  checksum: 92b7be06e14d5d81eefdf48e92769a2ac2d4f1c802f612d909992676ad31a217ba09e4e2bca9dd2618942025e624002cf09360e6c961412fc00423601357d319
+  checksum: 224d89152d053ed90f020c47e3fae3d92675bdcffeae7c48560f376c3a7ca32f52c70ca2e71d654d4d1feca97b3411fe74f8e7c07bbc9dc400525b175f6e6d3a
   languageName: node
   linkType: hard
 
@@ -5502,7 +5514,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.23.3"
     "@babel/preset-env": "npm:7.23.3"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7577,7 +7589,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.23.3"
     liwi-mongo: "npm:11.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7592,7 +7604,7 @@ __metadata:
     mingo: "npm:^6.2.7"
     mongodb: "npm:^6.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7611,7 +7623,7 @@ __metadata:
     check-package-dependencies: "npm:7.0.0"
     eslint: "npm:8.55.0"
     jest: "npm:29.7.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7627,7 +7639,7 @@ __metadata:
     liwi-resources: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7643,7 +7655,7 @@ __metadata:
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7658,7 +7670,7 @@ __metadata:
     extended-json: "npm:11.0.0"
     liwi-resources: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7671,7 +7683,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.3"
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7688,7 +7700,7 @@ __metadata:
     extended-json: "npm:11.0.0"
     liwi-resources-client: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7706,7 +7718,7 @@ __metadata:
     liwi-resources-server: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
     utf-8-validate: "npm:^6.0.0"
     ws: "npm:^8.4.2"
@@ -7726,7 +7738,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.3"
     extended-json: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7738,7 +7750,7 @@ __metadata:
     "@babel/core": "npm:7.23.3"
     "@babel/preset-env": "npm:7.23.3"
     "@babel/runtime": "npm:^7.23.2"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7751,7 +7763,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.3"
     "@babel/runtime": "npm:^7.23.2"
     liwi-store: "npm:11.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -9093,17 +9105,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pob-babel@npm:36.6.3":
-  version: 36.6.3
-  resolution: "pob-babel@npm:36.6.3"
+"pob-babel@npm:36.7.0":
+  version: 36.7.0
+  resolution: "pob-babel@npm:36.7.0"
   dependencies:
     "@babel/core": "npm:^7.23.2"
-    "@babel/plugin-transform-runtime": "npm:7.23.3"
+    "@babel/plugin-transform-runtime": "npm:7.23.4"
+    "@pob/rollup": "npm:1.0.0"
     "@rollup/plugin-babel": "npm:6.0.4"
     "@rollup/plugin-json": "npm:6.0.1"
     "@rollup/plugin-node-resolve": "npm:15.2.3"
     "@rollup/plugin-run": "npm:3.0.2"
-    babel-preset-pob-env: "npm:10.2.2"
+    babel-preset-pob-env: "npm:10.3.0"
     rollup: "npm:3.29.4"
     rollup-config-external-dependencies: "npm:^2.0.0"
     semver: "npm:^7.3.7"
@@ -9117,7 +9130,7 @@ __metadata:
   bin:
     pob-babel-clean-out: ./bin/pob-babel-clean-out.js
     rollup: ./bin/rollup.cjs
-  checksum: 5d984a141add529d349ab027c942aa63c02c286d0f6a41e0f59e162622e1762b52ad5f6db292a17c36af75870fdd2c64870e54d9c0c5227f80f76e427947995c
+  checksum: f08b0c52caf85091abd533da5b629f77afe82868a36b1e28c67fb488137e4703bca08ea4bad36b06e29e92c2f670d2c3b51c8b11bf0d7ce3614078326bfe42b9
   languageName: node
   linkType: hard
 
@@ -9301,7 +9314,7 @@ __metadata:
     liwi-resources-client: "npm:11.0.0"
     mingo: "npm:^6.2.7"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:36.6.3"
+    pob-babel: "npm:36.7.0"
     react: "npm:18.2.0"
     typescript: "npm:5.3.3"
   peerDependencies:
