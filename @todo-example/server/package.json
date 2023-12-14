@@ -55,7 +55,7 @@
     "router-segments": "7.0.1"
   },
   "devDependencies": {
-    "@babel/core": "7.23.3",
+    "@babel/core": "7.23.6",
     "alp-rollup-plugin-config": "2.1.0",
     "pob-babel": "36.8.0",
     "rollup-plugin-copy": "3.5.0",
