@@ -9,6 +9,7 @@ import type {
 } from './reducer';
 import reducer, { initReducer } from './reducer';
 
+// eslint-disable-next-line @typescript-eslint/max-params
 export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
   createQuery: (initialParams: Params) => Query<Result, Params>,
   params: Params,

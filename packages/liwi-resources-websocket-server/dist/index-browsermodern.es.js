@@ -6,13 +6,17 @@ import { WebSocketServer } from 'ws';
 /* eslint-disable max-lines */
 
 const logger = new Logger('liwi:resources-websocket-server');
-const createWsServer = (server, path, resourcesServerService, getAuthenticatedUser) => {
+const createWsServer = (server, path, resourcesServerService, getAuthenticatedUser
+// eslint-disable-next-line @typescript-eslint/max-params
+) => {
   const wss = new WebSocketServer({
     noServer: true
   });
   wss.on('connection', (ws, authenticatedUser) => {
     ws.isAlive = true;
-    const sendMessage = (type, id, error, result) => {
+    const sendMessage = (type, id, error, result
+    // eslint-disable-next-line @typescript-eslint/max-params
+    ) => {
       if (!id) throw new Error('Invalid id');
       logger.debug('sendMessage', {
         type,

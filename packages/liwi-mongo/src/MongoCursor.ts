@@ -42,7 +42,7 @@ export default class MongoCursor<
     return Promise.resolve(this);
   }
 
-  result(): Promise<Result> {
+  override result(): Promise<Result> {
     if (!this._result) throw new Error('Cannot call result() before next()');
     return Promise.resolve(this._result);
   }

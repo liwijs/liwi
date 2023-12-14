@@ -41,7 +41,7 @@
       }
     }
   },
-  "sideEffects": true,
+  "sideEffects": false,
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs",
     "clean": "yarn clean:build",
@@ -76,9 +76,9 @@
     "liwi-resources-client": "11.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.23.3",
-    "@babel/preset-env": "7.23.3",
-    "pob-babel": "36.8.0",
+    "@babel/core": "7.23.6",
+    "@babel/preset-env": "7.23.6",
+    "pob-babel": "37.0.0",
     "typescript": "5.3.3"
   }
 }

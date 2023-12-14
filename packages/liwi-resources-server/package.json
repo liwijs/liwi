@@ -78,15 +78,15 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.23.2",
+    "@babel/runtime": "^7.23.6",
     "extended-json": "11.0.0",
     "liwi-resources": "11.0.0",
     "nightingale-logger": "^14.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.23.3",
-    "@babel/preset-env": "7.23.3",
-    "pob-babel": "36.8.0",
+    "@babel/core": "7.23.6",
+    "@babel/preset-env": "7.23.6",
+    "pob-babel": "37.0.0",
     "typescript": "5.3.3"
   }
 }

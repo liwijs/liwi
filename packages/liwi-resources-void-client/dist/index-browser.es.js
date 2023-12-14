@@ -1,14 +1,14 @@
-var createVoidTransportClient = function createVoidTransportClient() {
+const createVoidTransportClient = () => {
   return {
-    connect: function connect() {},
-    close: function close() {},
-    listenStateChange: function listenStateChange() {
-      return function () {};
+    connect: () => {},
+    close: () => {},
+    listenStateChange: () => {
+      return () => {};
     },
-    send: function send() {
+    send: () => {
       throw new Error('Void client: send should not be called');
     },
-    subscribe: function subscribe() {
+    subscribe: () => {
       throw new Error('Void client: subscribe should not be called');
     }
   };

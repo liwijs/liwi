@@ -94,6 +94,7 @@ export const createMessageHandler = <AuthenticatedUser>(
     resource: ServiceResource<any, any>,
     query: Query<any, any>,
     sendSubscriptionMessage: SubscriptionCallback,
+    // eslint-disable-next-line @typescript-eslint/max-params
   ): PromiseLike<null> => {
     if (!openedSubscriptions) {
       throw new Error('Subscriptions not allowed');
@@ -154,7 +155,6 @@ export const createMessageHandler = <AuthenticatedUser>(
             logUnexpectedError(error, message.type, message.payload);
             throw error;
           }
-          return;
         }
         case 'fetchAndSubscribe': {
           try {
@@ -172,7 +172,6 @@ export const createMessageHandler = <AuthenticatedUser>(
             logUnexpectedError(error, message.type, message.payload);
             throw error;
           }
-          return;
         }
         case 'subscribe': {
           try {

@@ -1,27 +1,32 @@
-import _createForOfIteratorHelperLoose from '@babel/runtime/helpers/esm/createForOfIteratorHelperLoose';
 import { decode, encode } from 'extended-json';
 import { createMessageHandler, ResourcesServerError } from 'liwi-resources-server';
 import { Logger } from 'nightingale-logger';
 import { WebSocketServer } from 'ws';
 
-var logger = new Logger('liwi:resources-websocket-server');
-var createWsServer = function createWsServer(server, path, resourcesServerService, getAuthenticatedUser) {
-  var wss = new WebSocketServer({
+/* eslint-disable max-lines */
+
+const logger = new Logger('liwi:resources-websocket-server');
+const createWsServer = (server, path, resourcesServerService, getAuthenticatedUser
+// eslint-disable-next-line @typescript-eslint/max-params
+) => {
+  const wss = new WebSocketServer({
     noServer: true
   });
-  wss.on('connection', function (ws, authenticatedUser) {
+  wss.on('connection', (ws, authenticatedUser) => {
     ws.isAlive = true;
-    var sendMessage = function sendMessage(type, id, error, result) {
+    const sendMessage = (type, id, error, result
+    // eslint-disable-next-line @typescript-eslint/max-params
+    ) => {
       if (!id) throw new Error('Invalid id');
       logger.debug('sendMessage', {
-        type: type,
-        id: id,
-        error: error,
-        result: result
+        type,
+        id,
+        error,
+        result
       });
       ws.send(encode([type, id, error, result]));
     };
-    var createSafeError = function createSafeError(error) {
+    const createSafeError = error => {
       if (error instanceof ResourcesServerError) {
         return {
           code: error.code,
@@ -34,72 +39,70 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
         message: 'Internal Server Error'
       };
     };
-    var sendAck = function sendAck(id, error, result) {
+    const sendAck = (id, error, result) => {
       sendMessage('ack', id, error && createSafeError(error), result);
     };
-    var sendSubscriptionMessage = function sendSubscriptionMessage(subscriptionId, error, result) {
+    const sendSubscriptionMessage = (subscriptionId, error, result) => {
       sendMessage('subscription', subscriptionId, error && createSafeError(error), result);
     };
-    var _createMessageHandler = createMessageHandler(resourcesServerService, authenticatedUser, true),
-      messageHandler = _createMessageHandler.messageHandler,
-      close = _createMessageHandler.close;
-    var handleDecodedMessage = function handleDecodedMessage(message) {
+    const {
+      messageHandler,
+      close
+    } = createMessageHandler(resourcesServerService, authenticatedUser, true);
+    const handleDecodedMessage = message => {
       if (message.id == null) {
-        return messageHandler(message, sendSubscriptionMessage).then(function () {});
+        return messageHandler(message, sendSubscriptionMessage).then(() => {});
       } else {
-        return messageHandler(message, sendSubscriptionMessage).then(function (result) {
+        return messageHandler(message, sendSubscriptionMessage).then(result => {
           sendAck(message.id, null, result);
-        }).catch(function (error) {
+        }).catch(error => {
           sendAck(message.id, error);
         });
       }
     };
-    ws.on('pong', function () {
+    ws.on('pong', () => {
       ws.isAlive = true;
     });
-    ws.on('close', function (code, data) {
-      var reason = data.toString();
+    ws.on('close', (code, data) => {
+      const reason = data.toString();
       logger.debug('closed', {
-        code: code,
-        reason: reason
+        code,
+        reason
       });
       close();
     });
-    ws.on('error', function (error) {
+    ws.on('error', error => {
       logger.error('ws error', {
-        error: error
+        error
       });
     });
-    ws.on('message', function (data, isBinary) {
+    ws.on('message', (data, isBinary) => {
       if (isBinary) return;
 
       // eslint-disable-next-line @typescript-eslint/no-base-to-string
-      var message = data.toString(),
-        type,
-        id,
-        payload;
+      const message = data.toString();
       if (message === 'close') return;
       if (typeof message !== 'string') {
         logger.warn('got non string message');
         return;
       }
-      var decoded = decode(message);
+      const decoded = decode(message);
       try {
-        type = decoded[0], id = decoded[1], payload = decoded[2];
+        const [type, id, payload] = decoded;
         logger.debug('received', {
-          type: type,
-          id: id,
-          payload: payload
+          type,
+          id,
+          payload
         });
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         handleDecodedMessage({
-          type: type,
-          id: id,
-          payload: payload
+          type,
+          id,
+          payload
         });
-      } catch (_unused) {
+      } catch {
         logger.notice('invalid message', {
-          decoded: decoded
+          decoded
         });
       }
     });
@@ -107,9 +110,9 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
   });
 
   // https://www.npmjs.com/package/ws#how-to-detect-and-close-broken-connections
-  var interval = setInterval(function () {
-    wss.clients.forEach(function (ws) {
-      var extWs = ws;
+  const interval = setInterval(() => {
+    wss.clients.forEach(ws => {
+      const extWs = ws;
       if (!extWs.isAlive) {
         ws.terminate();
         return;
@@ -118,31 +121,29 @@ var createWsServer = function createWsServer(server, path, resourcesServerServic
       ws.ping(null, undefined);
     });
   }, 60000);
-  var handleUpgrade = function handleUpgrade(request, socket, upgradeHead) {
+  const handleUpgrade = (request, socket, upgradeHead) => {
     if (request.url !== path) return;
-    var authenticatedUserPromise = Promise.resolve(getAuthenticatedUser(request));
-    wss.handleUpgrade(request, socket, upgradeHead, function (ws) {
+    const authenticatedUserPromise = Promise.resolve(getAuthenticatedUser(request));
+    wss.handleUpgrade(request, socket, upgradeHead, ws => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      authenticatedUserPromise.catch(function (error) {
+      authenticatedUserPromise.catch(error => {
         logger.warn('getAuthenticatedUser threw an error, return null instead.',
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         {
           err: error
         });
         return null;
-      }).then(function (authenticatedUser) {
+      }).then(authenticatedUser => {
         wss.emit('connection', ws, authenticatedUser);
       });
     });
   };
   server.on('upgrade', handleUpgrade);
   return {
-    wss: wss,
-    close: function close() {
-      var _iterator, _step, ws;
+    wss,
+    close() {
       wss.close();
-      for (_iterator = _createForOfIteratorHelperLoose(wss.clients); !(_step = _iterator()).done;) {
-        ws = _step.value;
+      for (const ws of wss.clients) {
         ws.terminate();
       }
       server.removeListener('upgrade', handleUpgrade);

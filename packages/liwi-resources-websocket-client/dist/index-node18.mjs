@@ -164,6 +164,7 @@ class SubscribeResultPromise {
   //   Result,
   //   Payload
   // >['changePayload'];
+
   constructor({
     executor,
     stop
@@ -175,7 +176,6 @@ class SubscribeResultPromise {
     this.cancel = stop;
     // this.changePayload = changePayload;
   }
-
   then(onfulfilled, onrejected) {
     return this.promise.then(onfulfilled, onrejected);
   }
@@ -361,7 +361,6 @@ function createResourcesWebsocketClient({
       });
     }
   };
-
   wsClient.listenStateChange(newState => {
     logger.info('newState', {
       newState

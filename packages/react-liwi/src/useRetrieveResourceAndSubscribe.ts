@@ -34,6 +34,7 @@ const isInitial = <Result>(
 ): changes is [InitialChange<Result>] =>
   changes.length === 1 && changes[0].type === 'initial';
 
+// eslint-disable-next-line @typescript-eslint/max-params
 export function useRetrieveResourceAndSubscribe<
   Result,
   Params extends QueryParams<Params>,

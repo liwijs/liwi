@@ -49,8 +49,8 @@
     "liwi-mongo": "11.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.23.3",
-    "pob-babel": "36.8.0",
+    "@babel/core": "7.23.6",
+    "pob-babel": "37.0.0",
     "typescript": "5.3.3"
   }
 }

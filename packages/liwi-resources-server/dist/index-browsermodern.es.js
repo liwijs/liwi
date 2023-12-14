@@ -15,7 +15,6 @@ class ResourcesServerService {
     this.serviceResources = serviceResources;
     // this.cursorResources = cursorResources;
   }
-
   addResource(key, resource) {
     this.serviceResources.set(key, resource);
   }
@@ -86,7 +85,9 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
     }
     return resource.queries[payload.key](payload.params, authenticatedUser);
   };
-  const createSubscription = (type, payload, resource, query, sendSubscriptionMessage) => {
+  const createSubscription = (type, payload, resource, query, sendSubscriptionMessage
+  // eslint-disable-next-line @typescript-eslint/max-params
+  ) => {
     if (!openedSubscriptions) {
       throw new Error('Subscriptions not allowed');
     }
@@ -145,7 +146,6 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               logUnexpectedError(error, message.type, message.payload);
               throw error;
             }
-            return;
           }
         case 'fetchAndSubscribe':
           {
@@ -157,7 +157,6 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               logUnexpectedError(error, message.type, message.payload);
               throw error;
             }
-            return;
           }
         case 'subscribe':
           {

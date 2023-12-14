@@ -22,6 +22,7 @@ export class ClientQuery<Result, Params extends QueryParams<Params>>
 
   private params: Params;
 
+  // eslint-disable-next-line @typescript-eslint/max-params
   constructor(
     resourceName: string,
     transportClient: TransportClient,

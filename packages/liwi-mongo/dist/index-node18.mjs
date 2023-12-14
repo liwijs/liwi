@@ -439,7 +439,6 @@ class MongoStore {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     collection.updateMany(criteria, partialUpdate)).then(() => undefined); // TODO return updated object
   }
-
   deleteByKey(key, criteria) {
     return this.collection.then(collection => collection.deleteOne({
       _id: key,

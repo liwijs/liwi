@@ -107,6 +107,7 @@ function reducer(state, action) {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/max-params
 function useRetrieveResource(createQuery, params, skip, deps) {
   const isTransportReady = useContext(TransportClientReadyContext);
   const wasReady = useRef(isTransportReady);
@@ -213,7 +214,9 @@ function sortCollection(collection, sort) {
   }).value();
 }
 const copy = state => [...state];
-const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
+const applyCollectionChange = (state, change, queryMeta, queryInfo
+// eslint-disable-next-line @typescript-eslint/max-params
+) => {
   switch (change.type) {
     case 'initial':
       {
@@ -263,6 +266,7 @@ const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
 };
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
+// eslint-disable-next-line @typescript-eslint/max-params
 function applyCollectionChanges(state, changes, queryMeta, queryInfo) {
   if (state === undefined) return {
     state,
@@ -278,7 +282,10 @@ function applyCollectionChanges(state, changes, queryMeta, queryInfo) {
   };
 }
 
-const applySingleItemChange = (state, change, queryMeta) => {
+const applySingleItemChange = (state, change, queryMeta
+
+// eslint-disable-next-line @typescript-eslint/max-params
+) => {
   switch (change.type) {
     case 'initial':
       queryMeta.total = change.initial === null ? 0 : 1;
@@ -299,6 +306,7 @@ const applySingleItemChange = (state, change, queryMeta) => {
 };
 
 // https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js
+// eslint-disable-next-line @typescript-eslint/max-params
 function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
   if (state === undefined) return {
     state,
@@ -334,9 +342,10 @@ const useVisibilityChangeSubscriber = () => {
 const defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
 };
-
 const logger = new Logger('react-liwi:useResourceAndSubscribe');
 const isInitial = changes => changes.length === 1 && changes[0].type === 'initial';
+
+// eslint-disable-next-line @typescript-eslint/max-params
 function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
   visibleTimeout
 } = defaultOptions) {

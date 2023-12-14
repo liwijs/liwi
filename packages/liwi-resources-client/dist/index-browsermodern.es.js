@@ -3,6 +3,7 @@ export { ResourcesServerError } from 'liwi-resources';
 
 const logger = new Logger('liwi:resources:query');
 class ClientQuery {
+  // eslint-disable-next-line @typescript-eslint/max-params
   constructor(resourceName, transportClient, key, params) {
     this.resourceName = resourceName;
     this.transportClient = transportClient;

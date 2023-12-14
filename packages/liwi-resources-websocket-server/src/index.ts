@@ -38,6 +38,7 @@ export const createWsServer = <AuthenticatedUser>(
   path: string,
   resourcesServerService: ResourcesServerService,
   getAuthenticatedUser: GetAuthenticatedUser<AuthenticatedUser>,
+  // eslint-disable-next-line @typescript-eslint/max-params
 ): ResourcesWebsocketServer => {
   const wss = new WebSocketServer({ noServer: true });
 
@@ -51,6 +52,7 @@ export const createWsServer = <AuthenticatedUser>(
         id: ToClientMessage[1],
         error: ToClientMessage[2],
         result: ToClientMessage[3],
+        // eslint-disable-next-line @typescript-eslint/max-params
       ): void => {
         if (!id) throw new Error('Invalid id');
         logger.debug('sendMessage', { type, id, error, result });
