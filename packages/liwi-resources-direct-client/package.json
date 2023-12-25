@@ -62,7 +62,7 @@
   "devDependencies": {
     "@babel/core": "7.23.6",
     "@types/backo2": "1.0.4",
-    "pob-babel": "37.0.0",
+    "pob-babel": "37.1.0",
     "typescript": "5.3.3"
   }
 }
