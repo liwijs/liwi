@@ -2636,7 +2636,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.6"
     liwi-mongo: "npm:11.0.0"
     liwi-resources-client: "npm:11.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -2682,7 +2682,7 @@ __metadata:
     liwi-resources-server: "npm:11.0.0"
     liwi-resources-websocket-server: "npm:11.0.0"
     nightingale-app-console: "npm:14.2.1"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     rollup-plugin-copy: "npm:3.5.0"
     router-segments: "npm:7.0.1"
     typescript: "npm:5.3.3"
@@ -5534,7 +5534,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.23.6"
     "@babel/preset-env": "npm:7.23.6"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7630,7 +7630,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.23.6"
     liwi-mongo: "npm:11.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7645,7 +7645,7 @@ __metadata:
     mingo: "npm:^6.2.7"
     mongodb: "npm:^6.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7664,7 +7664,7 @@ __metadata:
     check-package-dependencies: "npm:7.0.0"
     eslint: "npm:8.56.0"
     jest: "npm:29.7.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7680,7 +7680,7 @@ __metadata:
     liwi-resources: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7696,7 +7696,7 @@ __metadata:
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7711,7 +7711,7 @@ __metadata:
     extended-json: "npm:11.0.0"
     liwi-resources: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7724,7 +7724,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.6"
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7741,7 +7741,7 @@ __metadata:
     extended-json: "npm:11.0.0"
     liwi-resources-client: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7759,7 +7759,7 @@ __metadata:
     liwi-resources-server: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
     utf-8-validate: "npm:^6.0.0"
     ws: "npm:^8.4.2"
@@ -7779,7 +7779,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.6"
     extended-json: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7791,7 +7791,7 @@ __metadata:
     "@babel/core": "npm:7.23.6"
     "@babel/preset-env": "npm:7.23.6"
     "@babel/runtime": "npm:^7.23.6"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7804,7 +7804,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.6"
     "@babel/runtime": "npm:^7.23.6"
     liwi-store: "npm:11.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -9146,9 +9146,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pob-babel@npm:37.0.0":
-  version: 37.0.0
-  resolution: "pob-babel@npm:37.0.0"
+"pob-babel@npm:37.1.0":
+  version: 37.1.0
+  resolution: "pob-babel@npm:37.1.0"
   dependencies:
     "@babel/core": "npm:^7.23.2"
     "@babel/plugin-transform-runtime": "npm:7.23.6"
@@ -9159,7 +9159,7 @@ __metadata:
     "@rollup/plugin-run": "npm:3.0.2"
     babel-preset-pob-env: "npm:11.0.0"
     rollup: "npm:3.29.4"
-    rollup-config-external-dependencies: "npm:^2.0.0"
+    rollup-config-external-dependencies: "npm:^3.0.0"
     semver: "npm:^7.3.7"
   peerDependencies:
     "@babel/core": ^7.23.2
@@ -9171,7 +9171,7 @@ __metadata:
   bin:
     pob-babel-clean-out: ./bin/pob-babel-clean-out.js
     rollup: ./bin/rollup.cjs
-  checksum: c655f0d71fb6221915e3c226e2c390c82067b078af4b4d06ebb7ea1bb1b8fbd205e5dd7ba06e71cf187cccf4fa95d563045b36a0ac40cf96e4dad4ab3df10662
+  checksum: 98789a573f935381072ff692c3ce48a68402a7645ffaedcd712f5b9ff5b195cb9f2ac7de80b38a5158b1fa84d1748ceb648501b1079bff292d68e0118c6acaa0
   languageName: node
   linkType: hard
 
@@ -9355,7 +9355,7 @@ __metadata:
     liwi-resources-client: "npm:11.0.0"
     mingo: "npm:^6.2.7"
     nightingale-logger: "npm:^14.0.0"
-    pob-babel: "npm:37.0.0"
+    pob-babel: "npm:37.1.0"
     react: "npm:18.2.0"
     typescript: "npm:5.3.3"
   peerDependencies:
@@ -9697,10 +9697,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup-config-external-dependencies@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "rollup-config-external-dependencies@npm:2.0.0"
-  checksum: a4d164edc8eb4c143c16efe1b7446a9e4f8998e00b9e1580e3079577464a2eb6bc76c2a96de8c1658769e185acea852da960c084a53751575d30de1496381d9a
+"rollup-config-external-dependencies@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "rollup-config-external-dependencies@npm:3.0.0"
+  checksum: 48fcea9a737be0499fa93ea23c7d5218c5bbbfb25756885aa5d58e941500a367ef73aee4f71975879585feabec7cc990a7a56aa5426ea1f3e456787570662007
   languageName: node
   linkType: hard
 
