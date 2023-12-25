@@ -2676,7 +2676,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.23.6"
     "@todo-example/modules": "npm:11.0.0"
-    alp-node: "npm:6.0.0"
+    alp-node: "npm:6.1.0"
     alp-rollup-plugin-config: "npm:2.1.0"
     liwi-mongo: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
@@ -2684,7 +2684,7 @@ __metadata:
     nightingale-app-console: "npm:15.0.0"
     pob-babel: "npm:37.1.0"
     rollup-plugin-copy: "npm:3.5.0"
-    router-segments: "npm:9.0.0"
+    router-segments: "npm:9.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -2969,16 +2969,6 @@ __metadata:
   version: 1.2.0
   resolution: "@types/minimist@npm:1.2.0"
   checksum: 2d71badba95174193966dd4f07b23481e560a170f7deb47bd27a23c832c46d2f95e735f3b40b5420fd9c49f22fe6123f33739a3d53c8d9f4baef5a27633a170d
-  languageName: node
-  linkType: hard
-
-"@types/node-fetch@npm:^2.6.4":
-  version: 2.6.4
-  resolution: "@types/node-fetch@npm:2.6.4"
-  dependencies:
-    "@types/node": "npm:*"
-    form-data: "npm:^3.0.0"
-  checksum: e904b5f887099a2728979bce9bbae9cc5f851e97a8dc71fe9a6f900798ef0cab761a3027609e70ca73b0bfbd0a9433acdbc052301762eb2d7695d97975746be6
   languageName: node
   linkType: hard
 
@@ -3368,86 +3358,85 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alp-listen@npm:7.0.0":
-  version: 7.0.0
-  resolution: "alp-listen@npm:7.0.0"
+"alp-listen@npm:7.1.0":
+  version: 7.1.0
+  resolution: "alp-listen@npm:7.1.0"
   dependencies:
-    alp-node-config: "npm:9.0.0"
-    nightingale-logger: "npm:^14.1.0"
-  checksum: 24b36fe95620da3888ac9ef3ace07ea192b23cc02e4714abedefe69363eaea671de42cf547e650e9bdd8171621559cf4a3ff735a642f4e836a913009dc9d31a9
+    alp-node-config: "npm:9.1.0"
+    nightingale-logger: "npm:^15.0.0"
+  checksum: 1c9d1d497321a2613d90d01d809b95357e971806e0d646cdf8bb9a2f5438e263229219fd4adfc396537aace3eb40526ac90fb2a018b0bf8e427f05874437b39f
   languageName: node
   linkType: hard
 
-"alp-node-config@npm:9.0.0":
-  version: 9.0.0
-  resolution: "alp-node-config@npm:9.0.0"
+"alp-node-config@npm:9.1.0":
+  version: 9.1.0
+  resolution: "alp-node-config@npm:9.1.0"
   dependencies:
-    alp-types: "npm:3.1.0"
+    alp-types: "npm:3.1.1"
     deep-freeze-es6: "npm:^3.0.2"
     minimist-argv: "npm:^1.1.0"
     parse-json-object-as-map: "npm:^1.2.0"
     stringify-json: "npm:^2.0.0"
-  checksum: 2b37ab92d811bbf99a25bcb8097b1da3f652dc7a6c6d36d8e73fa4ac37dec4f25b9ea2e5d355236be9e22bad371dc87d76abc6af6025977feef44e54534fbdc4
+  checksum: c3c992d3bc63a3fb61436767fd3c089962d23e35694d64cbdb74dd84f8886c1e8383e7f6692a35840bc85b621440d3d365e7a15641290b87f52313f16572c320
   languageName: node
   linkType: hard
 
-"alp-node-errors@npm:8.0.0":
-  version: 8.0.0
-  resolution: "alp-node-errors@npm:8.0.0"
+"alp-node-errors@npm:8.1.0":
+  version: 8.1.0
+  resolution: "alp-node-errors@npm:8.1.0"
   dependencies:
-    alp-types: "npm:3.1.0"
+    alp-types: "npm:3.1.1"
     error-html: "npm:^0.3.5"
-    nightingale-logger: "npm:^14.1.0"
-  checksum: 8e9134958a0fd83a39b8877ead19d78d55cf3f1a8c9f4f0ed235c5b80c08c169ca3bd8642868125ffc2a779015d304943052cc238c78f5c7d20306f82fc6f9bd
+    nightingale-logger: "npm:^15.0.0"
+  checksum: db39c898979ada52100783ba8d08484df1c694353f6a4ce92aa56f617e2a2f5022d1356acb690889bcbfdc90e26d5d7f9502ca5050042779a2f7b0d4de39773f
   languageName: node
   linkType: hard
 
-"alp-node-language@npm:7.0.0":
-  version: 7.0.0
-  resolution: "alp-node-language@npm:7.0.0"
+"alp-node-language@npm:7.1.0":
+  version: 7.1.0
+  resolution: "alp-node-language@npm:7.1.0"
   dependencies:
     "@types/koa": "npm:^2.13.1"
-    alp-types: "npm:3.1.0"
+    alp-types: "npm:3.1.1"
     object-properties: "npm:^8.0.0"
-  checksum: 9dabd6d6b8879d56eec7478f47a91dc984dce030885f549eadb480903261fb30f99468917b45ab5763ce53f8b43f37b22b1332b5439af3539be5f9faf540da4c
+  checksum: 653b4619cdff78ac8608ebf8bcbe289b7d4267a8576577e50ead0eb4eb90795df19ae85e0829c433eb56b29ea2afb02abb846cc33db8d388b782d911b1047678
   languageName: node
   linkType: hard
 
-"alp-node@npm:6.0.0":
-  version: 6.0.0
-  resolution: "alp-node@npm:6.0.0"
+"alp-node@npm:6.1.0":
+  version: 6.1.0
+  resolution: "alp-node@npm:6.1.0"
   dependencies:
     "@types/koa": "npm:^2.13.1"
     "@types/node": "npm:>=18.0.0"
-    "@types/node-fetch": "npm:^2.6.4"
-    alp-listen: "npm:7.0.0"
-    alp-node-config: "npm:9.0.0"
-    alp-node-errors: "npm:8.0.0"
-    alp-node-language: "npm:7.0.0"
-    alp-params: "npm:6.0.0"
-    alp-translate: "npm:8.0.0"
-    alp-types: "npm:3.1.0"
+    alp-listen: "npm:7.1.0"
+    alp-node-config: "npm:9.1.0"
+    alp-node-errors: "npm:8.1.0"
+    alp-node-language: "npm:7.1.0"
+    alp-params: "npm:6.1.0"
+    alp-translate: "npm:8.1.0"
+    alp-types: "npm:3.1.1"
     koa: "npm:^2.13.1"
     koa-compress: "npm:^5.0.0"
     koa-static: "npm:^5.0.0"
-    nightingale-logger: "npm:^14.1.0"
+    nightingale-logger: "npm:^15.0.0"
   peerDependencies:
-    router-segments: ^7.0.0
-  checksum: f4f50790342c1cd031354337f61997c445ec6135a50c3fb9be550de79be17621f8c704903df0e2068b483d5fcc7cffaf0e8ec0751f554b192b0a103a52dc4453
+    router-segments: ^9.1.0
+  checksum: a949d78a57ee71de5b596cab37c9e56c4fbb2ea14a3e7a25127e4807abcf387a21004adc2e3f6cad8cd1d1324847d583e717d12b6484b2d1bc6928054d2d8013
   languageName: node
   linkType: hard
 
-"alp-params@npm:6.0.0":
-  version: 6.0.0
-  resolution: "alp-params@npm:6.0.0"
+"alp-params@npm:6.1.0":
+  version: 6.1.0
+  resolution: "alp-params@npm:6.1.0"
   dependencies:
-    "@babel/runtime": "npm:^7.22.6"
-    alp-router: "npm:7.0.0"
-    alp-types: "npm:3.1.0"
+    "@babel/runtime": "npm:^7.23.6"
+    alp-router: "npm:7.1.0"
+    alp-types: "npm:3.1.1"
     object-properties: "npm:^8.0.0"
   peerDependencies:
-    router-segments: ^7.0.0
-  checksum: 3f13bc5b2c6f0fd0bd92c0b0ac69b67b443e35f3d37f055d67324d15d02282eb44c366eb5ec0aa36e607686f1043dbd5fc69237680db4eafc5959e6d8c4ca785
+    router-segments: ^9.1.0
+  checksum: 9a14dde42840e06752740af1e26fad01b5bdbfe228ed934973f1a8c5a935c9510fa7d6c73ab65530b1ff2e3aafbed89c427f0c7ce7f95404beac8d49044c53d2
   languageName: node
   linkType: hard
 
@@ -3463,32 +3452,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alp-router@npm:7.0.0":
-  version: 7.0.0
-  resolution: "alp-router@npm:7.0.0"
+"alp-router@npm:7.1.0":
+  version: 7.1.0
+  resolution: "alp-router@npm:7.1.0"
   dependencies:
-    alp-types: "npm:3.1.0"
+    alp-types: "npm:3.1.1"
   peerDependencies:
-    router-segments: ^7.0.0
-  checksum: 16a891a8cfc9c65030f685b26937af3b73c90de05b6fec08e5d0e7392d00410c6bb153b98c4f5f95f6ed28193a3b412ea95e6b9c53ca4e4e48d45da3274b9915
+    router-segments: ^9.1.0
+  checksum: a03c30a4797c11652ace7f01ba3158b0a00a76dda78ceddffcf977dca2f3136fa9e0679b381b5cb331fafd7ae4e4fcb0aff7facab98ffd10b7c1afb9a2e3efcd
   languageName: node
   linkType: hard
 
-"alp-translate@npm:8.0.0":
-  version: 8.0.0
-  resolution: "alp-translate@npm:8.0.0"
+"alp-translate@npm:8.1.0":
+  version: 8.1.0
+  resolution: "alp-translate@npm:8.1.0"
   dependencies:
-    alp-types: "npm:3.1.0"
+    alp-types: "npm:3.1.1"
     intl-messageformat: "npm:^10.0.0"
-    nightingale-logger: "npm:^14.1.0"
-  checksum: 2b08054590c5a47fc75c0fae7c89782ab827713d2a25fc2eb29643fc43ef923cead04f0e01eaf3545c744bcf5db9e13acc26a479f3d487f0c8fc5f83df12b978
+    nightingale-logger: "npm:^15.0.0"
+  checksum: 3bac2e1398fe656de1af9827223ead6d173c6145d94e5d0d037d9a2759ec522488b80a18f7152b61505f0bbf8689e4c8bf4ba13fd3945950471bc13a875149de
   languageName: node
   linkType: hard
 
-"alp-types@npm:3.1.0":
-  version: 3.1.0
-  resolution: "alp-types@npm:3.1.0"
-  checksum: f22f0f26947d3ff8290e4281ab931ea8923bcd80c460c1254f890d01a7d416959dd827f539e1736cabec7b0ad9e6bb610a0e067234f867371f232fcac65164c5
+"alp-types@npm:3.1.1":
+  version: 3.1.1
+  resolution: "alp-types@npm:3.1.1"
+  checksum: 7d538e89b5445c0c1ededa3f57c7a366a84b7fff1d34fc311dd16bdfb28a739be404da7df19a143d08dec41f2c032ca8b0b8f4cf2a98dce82d2f011d332bafd7
   languageName: node
   linkType: hard
 
@@ -3733,13 +3722,6 @@ __metadata:
   dependencies:
     tslib: "npm:^2.4.0"
   checksum: 4a55065aae8c7283e45e2a8ac38ba9812f030696640d650c4ec62cfd67e5d61bd698e67b758a81fcb845e2d5ea1d857106f9235cc4282ad40cd1944b26fde1b2
-  languageName: node
-  linkType: hard
-
-"asynckit@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "asynckit@npm:0.4.0"
-  checksum: 3ce727cbc78f69d6a4722517a58ee926c8c21083633b1d3fdf66fd688f6c127a53a592141bd4866f9b63240a86e9d8e974b13919450bd17fa33c2d22c4558ad8
   languageName: node
   linkType: hard
 
@@ -4440,15 +4422,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"combined-stream@npm:^1.0.8":
-  version: 1.0.8
-  resolution: "combined-stream@npm:1.0.8"
-  dependencies:
-    delayed-stream: "npm:~1.0.0"
-  checksum: 2e969e637d05d09fa50b02d74c83a1186f6914aae89e6653b62595cc75a221464f884f55f231b8f4df7a49537fba60bdc0427acd2bf324c09a1dbb84837e36e4
-  languageName: node
-  linkType: hard
-
 "commander@npm:11.1.0":
   version: 11.1.0
   resolution: "commander@npm:11.1.0"
@@ -4796,13 +4769,6 @@ __metadata:
     has-property-descriptors: "npm:^1.0.0"
     object-keys: "npm:^1.1.1"
   checksum: e60aee6a19b102df4e2b1f301816804e81ab48bb91f00d0d935f269bf4b3f79c88b39e4f89eaa132890d23267335fd1140dfcd8d5ccd61031a0a2c41a54e33a6
-  languageName: node
-  linkType: hard
-
-"delayed-stream@npm:~1.0.0":
-  version: 1.0.0
-  resolution: "delayed-stream@npm:1.0.0"
-  checksum: 46fe6e83e2cb1d85ba50bd52803c68be9bd953282fa7096f51fc29edd5d67ff84ff753c51966061e5ba7cb5e47ef6d36a91924eddb7f3f3483b1c560f77a0020
   languageName: node
   linkType: hard
 
@@ -5721,17 +5687,6 @@ __metadata:
     cross-spawn: "npm:^7.0.0"
     signal-exit: "npm:^4.0.1"
   checksum: 087edd44857d258c4f73ad84cb8df980826569656f2550c341b27adf5335354393eec24ea2fabd43a253233fb27cee177ebe46bd0b7ea129c77e87cb1e9936fb
-  languageName: node
-  linkType: hard
-
-"form-data@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "form-data@npm:3.0.1"
-  dependencies:
-    asynckit: "npm:^0.4.0"
-    combined-stream: "npm:^1.0.8"
-    mime-types: "npm:^2.1.12"
-  checksum: 944b40ff63b9cb1ca7a97e70f72104c548e0b0263e3e817e49919015a0d687453086259b93005389896dbffd3777cccea2e67c51f4e827590e5979b14ff91bf7
   languageName: node
   linkType: hard
 
@@ -8107,7 +8062,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-types@npm:^2.1.12, mime-types@npm:^2.1.18, mime-types@npm:~2.1.24, mime-types@npm:~2.1.34":
+"mime-types@npm:^2.1.18, mime-types@npm:~2.1.24, mime-types@npm:~2.1.34":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
   dependencies:
@@ -8674,7 +8629,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nightingale-logger@npm:14.2.1, nightingale-logger@npm:^14.0.2, nightingale-logger@npm:^14.1.0, nightingale-logger@npm:^14.2.1":
+"nightingale-logger@npm:14.2.1, nightingale-logger@npm:^14.0.2":
   version: 14.2.1
   resolution: "nightingale-logger@npm:14.2.1"
   dependencies:
@@ -9836,13 +9791,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"router-segments@npm:9.0.0":
-  version: 9.0.0
-  resolution: "router-segments@npm:9.0.0"
+"router-segments@npm:9.1.0":
+  version: 9.1.0
+  resolution: "router-segments@npm:9.1.0"
   dependencies:
-    nightingale-logger: "npm:^14.2.1"
+    nightingale-logger: "npm:^15.0.0"
     path-to-regexp: "npm:^6.2.1"
-  checksum: c65b8d023d0821a6ace18d276076841b6f16d5c28debf78bf84310cb9c8c64b326e43ca2f7153459ba9c64380a53970402b378112cd0d1d1f64bda9788f3fa77
+  checksum: 49d1acfe5d188a82f7ce3532bcbbcf44a6280b2649c93273cd736effead4cd001013ebd23bec1c461d72bd7940d6c7576ba6acdb6230fc0f9f3ce4c3226f0866
   languageName: node
   linkType: hard
 
