@@ -34,9 +34,6 @@
         "import": "./build/index-node20.mjs"
       },
       "browser": {
-        "browser:modern": {
-          "import": "./build/index-browsermodern.es.js"
-        },
         "import": "./build/index-browser.es.js"
       }
     }
@@ -60,10 +57,6 @@
         "omitVersionInFileName": true
       },
       {
-        "target": "browser",
-        "version": "modern"
-      },
-      {
         "target": "browser"
       }
     ],
@@ -78,7 +71,7 @@
   "devDependencies": {
     "@babel/core": "7.23.6",
     "@babel/preset-env": "7.23.6",
-    "pob-babel": "37.1.0",
+    "pob-babel": "38.0.0",
     "typescript": "5.3.3"
   }
 }
