@@ -1456,7 +1456,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.22.6, @babel/runtime@npm:^7.23.6, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.23.6, @babel/runtime@npm:^7.8.4":
   version: 7.23.6
   resolution: "@babel/runtime@npm:7.23.6"
   dependencies:
@@ -2649,18 +2649,18 @@ __metadata:
     "@playwright/test": "npm:1.40.1"
     "@todo-example/babel-preset-nextjs-babel-config": "npm:11.0.0"
     "@todo-example/modules": "workspace:*"
-    "@types/node": "npm:18.19.3"
-    "@types/react": "npm:18.2.45"
+    "@types/node": "npm:20.10.5"
+    "@types/react": "npm:18.2.46"
     "@types/react-native": "npm:0.72.8"
     classnames: "npm:2.3.2"
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-void-client: "npm:11.0.0"
     liwi-resources-websocket-client: "npm:11.0.0"
-    mongodb-memory-server: "npm:9.0.1"
+    mongodb-memory-server: "npm:9.1.3"
     next: "npm:14.0.3"
     nightingale-app-console: "npm:15.0.0"
     react: "npm:18.2.0"
-    react-alp-connection-state: "npm:8.0.0"
+    react-alp-connection-state: "npm:8.1.0"
     react-dom: "npm:18.2.0"
     react-liwi: "npm:11.0.0"
     react-native-web: "npm:0.19.9"
@@ -2973,12 +2973,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:18.19.3, @types/node@npm:>=18.0.0, @types/node@npm:^18.11.9":
-  version: 18.19.3
-  resolution: "@types/node@npm:18.19.3"
+"@types/node@npm:*, @types/node@npm:20.10.5, @types/node@npm:>=18.0.0":
+  version: 20.10.5
+  resolution: "@types/node@npm:20.10.5"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: b95d0c0be342275e27d882bb6ca73c0b757d1672a121cae1fc3249eda4f86a8abeb5745e5c5c1150914bcfda323a3fc51526cd34e2097f8355bf7cbf12fa6bcb
+  checksum: 4a378428d2c9f692b19801a5a3d20dc4c0ad5d4a3d103350f8b401af439941a9aa5efeadc8eb9db13c66c620318bc7f336abfc8934f82fd32c4a689d85068c6f
   languageName: node
   linkType: hard
 
@@ -2986,6 +2986,15 @@ __metadata:
   version: 14.18.30
   resolution: "@types/node@npm:14.18.30"
   checksum: 8d2b4687cd3699fc19d3bc6fc0ad90a68108946a6181836f48edd9c0e29202fc3870a7ee6e68fbc045cdca6d0eb044d14e69c04b119b6cdde975858da453fa4e
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.11.9":
+  version: 18.19.3
+  resolution: "@types/node@npm:18.19.3"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: b95d0c0be342275e27d882bb6ca73c0b757d1672a121cae1fc3249eda4f86a8abeb5745e5c5c1150914bcfda323a3fc51526cd34e2097f8355bf7cbf12fa6bcb
   languageName: node
   linkType: hard
 
@@ -3029,14 +3038,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:18.2.45":
-  version: 18.2.45
-  resolution: "@types/react@npm:18.2.45"
+"@types/react@npm:*, @types/react@npm:18.2.46":
+  version: 18.2.46
+  resolution: "@types/react@npm:18.2.46"
   dependencies:
     "@types/prop-types": "npm:*"
     "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: bd27fd8a959fa776965997af89cb04e43e7868416850fdff421b5539f389efa35acae3d55915c9f32d7b00fb388550302bf8a7f06010abf9ad431e5bf58cb774
+  checksum: 10fb28a5b8504106512ce3b154c45d1ac045c31633786773a29f003b3079b434060368bb56f95ef6c39510835ceec4fb8fdc271d6ca2b9cdd979379cf53f126b
   languageName: node
   linkType: hard
 
@@ -8243,9 +8252,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb-memory-server-core@npm:9.0.1":
-  version: 9.0.1
-  resolution: "mongodb-memory-server-core@npm:9.0.1"
+"mongodb-memory-server-core@npm:9.1.3":
+  version: 9.1.3
+  resolution: "mongodb-memory-server-core@npm:9.1.3"
   dependencies:
     async-mutex: "npm:^0.4.0"
     camelcase: "npm:^6.3.0"
@@ -8253,29 +8262,29 @@ __metadata:
     find-cache-dir: "npm:^3.3.2"
     follow-redirects: "npm:^1.15.3"
     https-proxy-agent: "npm:^7.0.2"
-    mongodb: "npm:^5.9.0"
+    mongodb: "npm:^5.9.1"
     new-find-package-json: "npm:^2.0.0"
     semver: "npm:^7.5.4"
     tar-stream: "npm:^3.0.0"
     tslib: "npm:^2.6.2"
     yauzl: "npm:^2.10.0"
-  checksum: 53d4d5ad4f9381efd534405acb7513d6491d8f28574476511aa0cf426a5a0671ed85b4796807e76acf4561c324dabe3ef0feeae98237b722477983884164cc16
+  checksum: 89612408978eb5a36b13136d68a0b85357808178b574057e5b35a14be0ea47085dec2bdf43d9f10df91f9b5767ea29738d2014644ef9d40984ccf082a9f1ef8e
   languageName: node
   linkType: hard
 
-"mongodb-memory-server@npm:9.0.1":
-  version: 9.0.1
-  resolution: "mongodb-memory-server@npm:9.0.1"
+"mongodb-memory-server@npm:9.1.3":
+  version: 9.1.3
+  resolution: "mongodb-memory-server@npm:9.1.3"
   dependencies:
-    mongodb-memory-server-core: "npm:9.0.1"
+    mongodb-memory-server-core: "npm:9.1.3"
     tslib: "npm:^2.6.2"
-  checksum: f2860e6c0c4fbde72478e8543ea42ae85668b4ba6516506a33dc1c18e8f7b9a254ad5b37c6c7969c909486d80478dd65e008689969f1360df74ba63b445d11d8
+  checksum: f7ca6c320e7a358b96e15cfba6c74da84e0191966737bbb460f591d70932b8ebd0486883112e994c702818d2fab7e1be2ae18af7f4dd961ff3041476b42ed55d
   languageName: node
   linkType: hard
 
-"mongodb@npm:^5.9.0":
-  version: 5.9.1
-  resolution: "mongodb@npm:5.9.1"
+"mongodb@npm:^5.9.1":
+  version: 5.9.2
+  resolution: "mongodb@npm:5.9.2"
   dependencies:
     "@mongodb-js/saslprep": "npm:^1.1.0"
     bson: "npm:^5.5.0"
@@ -8301,7 +8310,7 @@ __metadata:
       optional: true
     snappy:
       optional: true
-  checksum: 525623ae1f0c7c6dee13adecc887dd44991c95e8c3cb4ebc09cb71548f7d72b784dc26fb0acec7c69e6d88773d9ee9deeabbadb91717c78fbd9025e73a99354f
+  checksum: f80ccd8a55a1bdb2513db98e97f723b7c67b1b0dd94ff254930b8fd9b1f4efbf66ceff191748aaf8b0b5331d381497c39857b3380bf013de1f9148a7f9220336
   languageName: node
   linkType: hard
 
@@ -9364,18 +9373,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-alp-connection-state@npm:8.0.0":
-  version: 8.0.0
-  resolution: "react-alp-connection-state@npm:8.0.0"
+"react-alp-connection-state@npm:8.1.0":
+  version: 8.1.0
+  resolution: "react-alp-connection-state@npm:8.1.0"
   dependencies:
-    "@babel/runtime": "npm:^7.22.6"
+    "@babel/runtime": "npm:^7.23.6"
   peerDependencies:
     react: ^18.1.0
     react-native: "*"
   peerDependenciesMeta:
     react-native:
       optional: true
-  checksum: a27dca54116775f6861efb4685939c5b2f899eabcad159525f7dcd0b056d6ae3debbf605d76d9fb58b60198ad66ada9d674ba9a4e8921b3f37213a9f6b356808
+  checksum: 343feb8f32092183a5cb6797618c7074a028a7afe73f247f0cf8693ea1774e4507c220d811d9c9a6bf900bce59ddb44f9bf3d1c89320440ffc32d13277afc902
   languageName: node
   linkType: hard
 
@@ -9413,7 +9422,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.6"
     "@babel/preset-react": "npm:7.23.3"
     "@babel/runtime": "npm:^7.23.6"
-    "@types/react": "npm:18.2.45"
+    "@types/react": "npm:18.2.46"
     liwi-resources-client: "npm:11.0.0"
     mingo: "npm:^6.2.7"
     nightingale-logger: "npm:^15.0.0"

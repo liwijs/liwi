@@ -33,7 +33,7 @@
     "next": "14.0.3",
     "nightingale-app-console": "15.0.0",
     "react": "18.2.0",
-    "react-alp-connection-state": "8.0.0",
+    "react-alp-connection-state": "8.1.0",
     "react-dom": "18.2.0",
     "react-liwi": "11.0.0",
     "react-native-web": "0.19.9",
@@ -42,10 +42,10 @@
   },
   "devDependencies": {
     "@playwright/test": "1.40.1",
-    "@types/node": "18.19.3",
-    "@types/react": "18.2.45",
+    "@types/node": "20.10.5",
+    "@types/react": "18.2.46",
     "@types/react-native": "0.72.8",
-    "mongodb-memory-server": "9.0.1",
+    "mongodb-memory-server": "9.1.3",
     "springbokjs-daemon": "10.0.0",
     "typescript": "5.3.3"
   }
