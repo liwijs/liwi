@@ -16,7 +16,6 @@
   },
   "sideEffects": false,
   "main": "./build/index-node20.mjs",
-  "types": "./src/index.ts",
   "module": "./build/index-browser.es.js",
   "browser": "./build/index-browser.es.js",
   "exports": {
