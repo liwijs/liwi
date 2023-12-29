@@ -32,7 +32,6 @@
     "lint:eslint": "yarn ../.. run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/server",
     "start": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
-  "prettier": "@pob/root/prettier-config",
   "pob": {
     "babelEnvs": [
       {
@@ -45,6 +44,7 @@
       "index"
     ]
   },
+  "prettier": "@pob/root/prettier-config",
   "dependencies": {
     "@todo-example/modules": "11.0.0",
     "alp-node": "6.1.0",
@@ -57,7 +57,7 @@
   "devDependencies": {
     "@babel/core": "7.23.6",
     "alp-rollup-plugin-config": "2.2.0",
-    "pob-babel": "38.0.0",
+    "pob-babel": "38.0.1",
     "rollup-plugin-copy": "3.5.0",
     "typescript": "5.3.3"
   }

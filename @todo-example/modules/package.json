@@ -14,16 +14,9 @@
   "engines": {
     "node": ">=20.9.0"
   },
-  "browserslist": {
-    "production": [
-      "defaults",
-      "> 0.2%",
-      "not ie < 12",
-      "not safari < 10",
-      "not ios_saf < 10"
-    ]
-  },
+  "sideEffects": false,
   "main": "./build/index-node20.mjs",
+  "types": "./src/index.ts",
   "module": "./build/index-browser.es.js",
   "browser": "./build/index-browser.es.js",
   "exports": {
@@ -38,7 +31,6 @@
       }
     }
   },
-  "sideEffects": false,
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs",
     "clean": "yarn clean:build",
@@ -48,7 +40,15 @@
     "start": "yarn clean:build && rollup --config rollup.config.mjs --watch",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
-  "prettier": "@pob/root/prettier-config",
+  "browserslist": {
+    "production": [
+      "defaults",
+      "> 0.2%",
+      "not ie < 12",
+      "not safari < 10",
+      "not ios_saf < 10"
+    ]
+  },
   "pob": {
     "babelEnvs": [
       {
@@ -64,6 +64,7 @@
       "index"
     ]
   },
+  "prettier": "@pob/root/prettier-config",
   "dependencies": {
     "liwi-mongo": "11.0.0",
     "liwi-resources-client": "11.0.0"
@@ -71,7 +72,7 @@
   "devDependencies": {
     "@babel/core": "7.23.6",
     "@babel/preset-env": "7.23.6",
-    "pob-babel": "38.0.0",
+    "pob-babel": "38.0.1",
     "typescript": "5.3.3"
   }
 }

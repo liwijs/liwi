@@ -15,6 +15,7 @@
   "engines": {
     "node": ">=18.12.0"
   },
+  "sideEffects": false,
   "main": "./dist/index-node18.mjs",
   "types": "./dist/definitions/index.d.ts",
   "exports": {
@@ -26,7 +27,6 @@
       }
     }
   },
-  "sideEffects": false,
   "files": [
     "src",
     "dist"
@@ -40,7 +40,6 @@
     "lint:eslint": "yarn ../.. run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet packages/liwi-resources-direct-client",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
-  "prettier": "@pob/root/prettier-config",
   "pob": {
     "babelEnvs": [
       {
@@ -52,6 +51,7 @@
       "index"
     ]
   },
+  "prettier": "@pob/root/prettier-config",
   "dependencies": {
     "@babel/runtime": "^7.23.6",
     "extended-json": "11.0.0",
@@ -62,7 +62,7 @@
   "devDependencies": {
     "@babel/core": "7.23.6",
     "@types/backo2": "1.0.4",
-    "pob-babel": "38.0.0",
+    "pob-babel": "38.0.1",
     "typescript": "5.3.3"
   }
 }
