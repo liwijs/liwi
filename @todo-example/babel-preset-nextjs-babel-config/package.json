@@ -14,16 +14,16 @@
   "engines": {
     "node": ">=18.12.0"
   },
+  "sideEffects": false,
   "main": "./lib/index.cjs",
   "exports": {
     ".": "./lib/index.cjs",
     "./package.json": "./package.json"
   },
-  "sideEffects": false,
   "scripts": {
     "lint": "yarn run lint:eslint",
     "lint:eslint": "yarn ../.. run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet @todo-example/babel-preset-nextjs-babel-config"
   },
-  "prettier": "@pob/root/prettier-config",
-  "pob": {}
+  "pob": {},
+  "prettier": "@pob/root/prettier-config"
 }

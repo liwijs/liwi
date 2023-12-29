@@ -15,15 +15,7 @@
   "engines": {
     "node": ">=18.12.0"
   },
-  "browserslist": {
-    "production": [
-      "defaults",
-      "> 0.2%",
-      "not ie < 12",
-      "not safari < 10",
-      "not ios_saf < 10"
-    ]
-  },
+  "sideEffects": false,
   "main": "./dist/index-node18.mjs",
   "types": "./dist/definitions/index.d.ts",
   "module": "./dist/index-browser.es.js",
@@ -36,14 +28,10 @@
         "import": "./dist/index-node18.mjs"
       },
       "browser": {
-        "browser:modern": {
-          "import": "./dist/index-browsermodern.es.js"
-        },
         "import": "./dist/index-browser.es.js"
       }
     }
   },
-  "sideEffects": false,
   "files": [
     "src",
     "dist"
@@ -58,16 +46,20 @@
     "test": "yarn ../../ run test -- packages/extended-json",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
-  "prettier": "@pob/root/prettier-config",
+  "browserslist": {
+    "production": [
+      "defaults",
+      "> 0.2%",
+      "not ie < 12",
+      "not safari < 10",
+      "not ios_saf < 10"
+    ]
+  },
   "pob": {
     "babelEnvs": [
       {
         "target": "node",
         "version": "18"
-      },
-      {
-        "target": "browser",
-        "version": "modern"
       },
       {
         "target": "browser"
@@ -77,10 +69,11 @@
       "index"
     ]
   },
+  "prettier": "@pob/root/prettier-config",
   "devDependencies": {
     "@babel/core": "7.23.6",
     "@babel/preset-env": "7.23.6",
-    "pob-babel": "37.1.0",
+    "pob-babel": "38.0.1",
     "typescript": "5.3.3"
   }
 }

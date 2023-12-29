@@ -1,44 +1,28 @@
 {
+  "extends": [
+    "@pob/root/tsconfigs/strict.json",
+    "@pob/root/tsconfigs/targets/webpack.json"
+  ],
   "include": ["src/**/*.ts", "src/**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "rootDir": "src",
     "baseUrl": "./src" /* Base directory to resolve non-absolute module names. */,
-    "newLine": "lf",
     "noEmit": true,
     "tsBuildInfoFile": "node_modules/.cache/tsc/tsbuildinfo",
     "incremental": true,
     "composite": true,
 
-    /* No need to check .d.ts files */
-    "skipLibCheck": true,
-
-    "target": "esnext" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */,
-    "module": "esnext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
-    "lib": [
-      "dom",
-      "esnext"
-    ] /* Polyfills are imported either by babel or with polyfill.io */,
     "jsx": "preserve" /* 'react-jsx' is used with react/jsx-runtime (react >=17 || >= 16.14.0 | >= 15.7.0) */,
-    "isolatedModules": true /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */,
     "allowJs": true,
-    "plugins": [{ "name": "next" }],
-
-    /* Enable all strict type-checking options. */
-    "strict": true,
-
-    /* Additional Checks */
-    "noUnusedLocals": true /* Report errors on unused locals. */,
-    "noUnusedParameters": false /* Report errors on unused parameters. */,
-    "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
-    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
-    "forceConsistentCasingInFileNames": true,
-
-    /* Module Resolution Options */
-    "moduleResolution": "bundler" /* Specify module resolution strategy. */,
+    "strictNullChecks": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": ["dom", "esnext"],
+    "esModuleInterop": true,
+    "isolatedModules": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
-    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+    "plugins": [{ "name": "next" }],
 
     "paths": {
       "@todo-example/babel-preset-nextjs-babel-config": [

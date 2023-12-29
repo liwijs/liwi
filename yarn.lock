@@ -2395,57 +2395,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pob/pretty-eslint-config@npm:5.3.0":
-  version: 5.3.0
-  resolution: "@pob/pretty-eslint-config@npm:5.3.0"
+"@pob/pretty-eslint-config@npm:5.3.1":
+  version: 5.3.1
+  resolution: "@pob/pretty-eslint-config@npm:5.3.1"
   dependencies:
-    "@pob/sort-eslint-config": "npm:5.2.0"
+    "@pob/sort-eslint-config": "npm:5.2.1"
     prettier: "npm:^2.6.2"
   bin:
     pretty-eslint-config: ./bin/pretty-eslint-config.js
-  checksum: f56b5deaf227861dfafed4cebdde2398e8d28959430cd6b67ad865f265e1d17514acecd31aa94263b5b5cc76d7137f054e04c71fa3fd4db8707fb112d86cc1d2
+  checksum: 60fe31ca13938ae34e8e941128897976c226062ef0374defcf1fc95179cc858e87e46684006428c6d14442a5519c0d2baf36164eb547242c2de1d600e47ded43
   languageName: node
   linkType: hard
 
-"@pob/pretty-pkg@npm:6.3.0":
-  version: 6.3.0
-  resolution: "@pob/pretty-pkg@npm:6.3.0"
+"@pob/pretty-pkg@npm:7.0.0":
+  version: 7.0.0
+  resolution: "@pob/pretty-pkg@npm:7.0.0"
   dependencies:
-    "@pob/sort-pkg": "npm:6.2.0"
+    "@pob/sort-pkg": "npm:7.0.0"
+    glob: "npm:^10.0.0"
     prettier: "npm:^2.6.2"
   bin:
     pretty-pkg: ./bin/pretty-pkg.js
-  checksum: 1cb7f47da3981b6a57b96b77464c568fdb712152d8006f64aaacb1680efd958b76e69b18909935feeb974b053a5b55c45d54a3e9431a33fd2b75daef7201ef37
+  checksum: 0f9713067d459caccb7f143ad2d2ae8bc9e8d42ef048693ae9a4605e02a5194a527391e7d75e8a706790920890789f1815b297f15d047b54cc195c044d78de57
   languageName: node
   linkType: hard
 
-"@pob/rollup@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@pob/rollup@npm:1.0.0"
+"@pob/rollup@npm:1.0.1":
+  version: 1.0.1
+  resolution: "@pob/rollup@npm:1.0.1"
   dependencies:
     rollup: "npm:3.29.4"
   bin:
     pob-rollup-clean-out: ./bin/pob-rollup-clean-out.js
     rollup: ./bin/rollup.cjs
-  checksum: 2dba40b149459c1ad72618ef79678dbb072cc03b14959a44234a804e8c42c5a0baf5e5b6b3a9a4b4a0b2c13f9491ae028f37aca296cd1db87e20f79df00ae5f5
+  checksum: ae2bd3a3aabfe198c8e25a6dfa72fa3fcb9036791e109196f729234a460a2952bc3e598cc49afd78289be8dc5421444fef14c7bda5c1d0a94749e24102395b18
   languageName: node
   linkType: hard
 
-"@pob/root@npm:8.9.1":
-  version: 8.9.1
-  resolution: "@pob/root@npm:8.9.1"
+"@pob/root@npm:9.0.0":
+  version: 9.0.0
+  resolution: "@pob/root@npm:9.0.0"
   dependencies:
     "@commitlint/cli": "npm:18.4.3"
-    "@pob/pretty-eslint-config": "npm:5.3.0"
-    "@pob/pretty-pkg": "npm:6.3.0"
+    "@pob/pretty-eslint-config": "npm:5.3.1"
+    "@pob/pretty-pkg": "npm:7.0.0"
     conventional-changelog-conventionalcommits: "npm:^7.0.0"
     cosmiconfig: "npm:^8.3.6"
     husky: "npm:~8.0.1"
     json5: "npm:^2.2.2"
     lint-staged: "npm:15.2.0"
-    pob-dependencies: "npm:8.10.1"
+    pob-dependencies: "npm:11.0.0"
     prettier: "npm:2.8.8"
-    repository-check-dirty: "npm:6.3.0"
+    repository-check-dirty: "npm:6.3.1"
     semver: "npm:^7.3.7"
     which-pm-runs: "npm:1.1.0"
   bin:
@@ -2457,32 +2458,32 @@ __metadata:
     pretty-eslint-config: ./bin/pretty-eslint-config.js
     pretty-pkg: ./bin/pretty-pkg.js
     repository-check-dirty: ./bin/repository-check-dirty.js
-  checksum: 7b1eb748e8355b92af350b17cb86fdc6ef09056f6ac02bb92c60f6a5fd973d5452eb66fcff4900646f02d86917c3c8313b4c4a372da309dfc1674886a7fc060a
+  checksum: c9a9f5e6b5a205dcaf93edc03094abb40191febe96a90997f31225d4e8e623915b801ea13486cf15caa576f2872847a6cae237e575d64e1a35f785ce71552a8b
   languageName: node
   linkType: hard
 
-"@pob/sort-eslint-config@npm:5.2.0":
-  version: 5.2.0
-  resolution: "@pob/sort-eslint-config@npm:5.2.0"
+"@pob/sort-eslint-config@npm:5.2.1":
+  version: 5.2.1
+  resolution: "@pob/sort-eslint-config@npm:5.2.1"
   dependencies:
-    "@pob/sort-object": "npm:6.2.0"
-  checksum: 52905652d31e5c2b27e648c4e19bf746cd2fb87c44647fe21b381c3d8134233a4b730bca37873cc6f6119d76bcf32ca2f4ed0451bd8c5d4345556ac88af476c2
+    "@pob/sort-object": "npm:6.2.1"
+  checksum: eb75f6443c15d81663774ca3393ca23b5cedcfaf4afb4184724e896fbfbacc57caf1eec3338e1bf36388040120cfb724934c27959778c749dda10e0a6e98518c
   languageName: node
   linkType: hard
 
-"@pob/sort-object@npm:6.2.0":
-  version: 6.2.0
-  resolution: "@pob/sort-object@npm:6.2.0"
-  checksum: 0fc5717608f423a8e112d86671a69188da034f43c23f172cb3fb37b18a21bc36a753e82d05809328c061b8cf755e19aad9e82f01c9ebaf0b8dd4687e4f90b606
+"@pob/sort-object@npm:6.2.1":
+  version: 6.2.1
+  resolution: "@pob/sort-object@npm:6.2.1"
+  checksum: b8125923c075e03e90f2df19c73bb5c7cc0d676a67695061d5154e738868d63e55bce17c269ddab028d83e637b27299f45c32a5e5acf248d47134b955cef0b9b
   languageName: node
   linkType: hard
 
-"@pob/sort-pkg@npm:6.2.0":
-  version: 6.2.0
-  resolution: "@pob/sort-pkg@npm:6.2.0"
+"@pob/sort-pkg@npm:7.0.0":
+  version: 7.0.0
+  resolution: "@pob/sort-pkg@npm:7.0.0"
   dependencies:
-    "@pob/sort-object": "npm:6.2.0"
-  checksum: 48e69158fc2abfc600c48476004878443ca08c7a850f32819f9e28363ef16c18a96c56e38c36a3125517423b1e6b217fa4ed5c3457237ef56aa4739ff59129df
+    "@pob/sort-object": "npm:6.2.1"
+  checksum: eeea4487b60a792c8d5415ff55f4b6e775ca7356a4fbee8e8fd9c67d6c2ee86d126d6534a2568f3537d065dd41caf31fd9bb1dcba859ef0f0efda42aa16403b4
   languageName: node
   linkType: hard
 
@@ -2636,7 +2637,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.6"
     liwi-mongo: "npm:11.0.0"
     liwi-resources-client: "npm:11.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -2682,7 +2683,7 @@ __metadata:
     liwi-resources-server: "npm:11.0.0"
     liwi-resources-websocket-server: "npm:11.0.0"
     nightingale-app-console: "npm:15.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     rollup-plugin-copy: "npm:3.5.0"
     router-segments: "npm:9.1.0"
     typescript: "npm:5.3.3"
@@ -3829,10 +3830,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-fix-class-properties-uninitialized@npm:7.2.0":
-  version: 7.2.0
-  resolution: "babel-plugin-fix-class-properties-uninitialized@npm:7.2.0"
-  checksum: c9e4676a9addf43c46866d48934ba05e93cbf35618146a122b78df6d42ace7fa374e881d82a65b9ad418632df146ede3f3fe836c623cc78371b025c61ca72099
+"babel-plugin-fix-class-properties-uninitialized@npm:7.2.1":
+  version: 7.2.1
+  resolution: "babel-plugin-fix-class-properties-uninitialized@npm:7.2.1"
+  checksum: d4d6d2f9e5fa470b4f812740f216262e725e13a81698402410ea9b679da6c82bfca13257aad3274086b68ffef2ffcc37603969fa5514c1013d92e2c3c2c2053d
   languageName: node
   linkType: hard
 
@@ -4002,20 +4003,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-pob-env@npm:11.0.0":
-  version: 11.0.0
-  resolution: "babel-preset-pob-env@npm:11.0.0"
+"babel-preset-pob-env@npm:11.0.1":
+  version: 11.0.1
+  resolution: "babel-preset-pob-env@npm:11.0.1"
   dependencies:
     "@babel/plugin-proposal-nullish-coalescing-operator": "npm:^7.18.6"
     "@babel/plugin-proposal-optional-chaining": "npm:^7.21.0"
     "@babel/plugin-transform-modules-commonjs": "npm:^7.23.0"
     "@babel/preset-typescript": "npm:^7.23.2"
     babel-plugin-discard-module-references: "npm:^1.1.2"
-    babel-plugin-fix-class-properties-uninitialized: "npm:7.2.0"
+    babel-plugin-fix-class-properties-uninitialized: "npm:7.2.1"
     babel-preset-optimizations: "npm:^2.0.0"
   peerDependencies:
     "@babel/core": ^7.23.2
-  checksum: 41e00e7c89f3fde2465858baa24c0488c52fc03aa42e149f761f1cced2a0b49ff779899a33c64141d8ba630edc1a6e88df7c345c61cd3d72516b5bddb5a1d25a
+  checksum: dbd4604883ade8ce4e1e00eec64810f902f218cfbdf9de4711cfa60b902a3a0c123a445a611fb449d2460086f52a440976e15b4bb0f569abe2cf25bab6def068
   languageName: node
   linkType: hard
 
@@ -5510,7 +5511,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.23.6"
     "@babel/preset-env": "npm:7.23.6"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7595,7 +7596,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.23.6"
     liwi-mongo: "npm:11.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7610,7 +7611,7 @@ __metadata:
     mingo: "npm:^6.2.7"
     mongodb: "npm:^6.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7624,12 +7625,12 @@ __metadata:
     "@pob/eslint-config": "npm:53.0.0"
     "@pob/eslint-config-typescript": "npm:53.1.0"
     "@pob/eslint-config-typescript-react": "npm:53.0.0"
-    "@pob/root": "npm:8.9.1"
+    "@pob/root": "npm:9.0.0"
     "@types/jest": "npm:29.5.11"
     check-package-dependencies: "npm:7.0.0"
     eslint: "npm:8.56.0"
     jest: "npm:29.7.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7645,7 +7646,7 @@ __metadata:
     liwi-resources: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7661,7 +7662,7 @@ __metadata:
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7676,7 +7677,7 @@ __metadata:
     extended-json: "npm:11.0.0"
     liwi-resources: "npm:11.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7689,7 +7690,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.6"
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7706,7 +7707,7 @@ __metadata:
     extended-json: "npm:11.0.0"
     liwi-resources-client: "npm:11.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7724,7 +7725,7 @@ __metadata:
     liwi-resources-server: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
     utf-8-validate: "npm:^6.0.0"
     ws: "npm:^8.4.2"
@@ -7744,7 +7745,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.6"
     extended-json: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7756,7 +7757,7 @@ __metadata:
     "@babel/core": "npm:7.23.6"
     "@babel/preset-env": "npm:7.23.6"
     "@babel/runtime": "npm:^7.23.6"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7769,7 +7770,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.6"
     "@babel/runtime": "npm:^7.23.6"
     liwi-store: "npm:11.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -9216,18 +9217,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pob-babel@npm:37.1.0":
-  version: 37.1.0
-  resolution: "pob-babel@npm:37.1.0"
+"pob-babel@npm:38.0.1":
+  version: 38.0.1
+  resolution: "pob-babel@npm:38.0.1"
   dependencies:
     "@babel/core": "npm:^7.23.2"
     "@babel/plugin-transform-runtime": "npm:7.23.6"
-    "@pob/rollup": "npm:1.0.0"
+    "@pob/rollup": "npm:1.0.1"
     "@rollup/plugin-babel": "npm:6.0.4"
     "@rollup/plugin-json": "npm:6.1.0"
     "@rollup/plugin-node-resolve": "npm:15.2.3"
     "@rollup/plugin-run": "npm:3.0.2"
-    babel-preset-pob-env: "npm:11.0.0"
+    babel-preset-pob-env: "npm:11.0.1"
     rollup: "npm:3.29.4"
     rollup-config-external-dependencies: "npm:^3.0.0"
     semver: "npm:^7.3.7"
@@ -9241,14 +9242,14 @@ __metadata:
   bin:
     pob-babel-clean-out: ./bin/pob-babel-clean-out.js
     rollup: ./bin/rollup.cjs
-  checksum: 98789a573f935381072ff692c3ce48a68402a7645ffaedcd712f5b9ff5b195cb9f2ac7de80b38a5158b1fa84d1748ceb648501b1079bff292d68e0118c6acaa0
+  checksum: cff0f972e2ed85a57e1003a54d602b3497ffcc843efb818607a796b7d15f065670cb91eef60cee9fca4b72f10d7c9dea735dd8f6942843f60de58cb067dabfb2
   languageName: node
   linkType: hard
 
-"pob-dependencies@npm:8.10.1":
-  version: 8.10.1
-  resolution: "pob-dependencies@npm:8.10.1"
-  checksum: 2d534111864cdf4403fd89ab788e8bac5f893e88a92d7fc15b295aa109282cecfbf8934eaf941ca95ffefbd2cbcd79b27cbae4a45d36359f27a644f931b8247c
+"pob-dependencies@npm:11.0.0":
+  version: 11.0.0
+  resolution: "pob-dependencies@npm:11.0.0"
+  checksum: 9e96bf8a158c0f4dfc1d7a27568b3e88985b840275839404d8e2bd04dc127fced71d166e987f6a31b7bf8a961a5e8c883731f25aabd42f2ea04d1ff1c63680b5
   languageName: node
   linkType: hard
 
@@ -9425,7 +9426,7 @@ __metadata:
     liwi-resources-client: "npm:11.0.0"
     mingo: "npm:^6.2.7"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:37.1.0"
+    pob-babel: "npm:38.0.1"
     react: "npm:18.2.0"
     typescript: "npm:5.3.3"
   peerDependencies:
@@ -9607,12 +9608,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"repository-check-dirty@npm:6.3.0":
-  version: 6.3.0
-  resolution: "repository-check-dirty@npm:6.3.0"
+"repository-check-dirty@npm:6.3.1":
+  version: 6.3.1
+  resolution: "repository-check-dirty@npm:6.3.1"
   bin:
     repository-check-dirty: ./bin/repository-check-dirty.js
-  checksum: 6ef51a19d4246936ee2add0812d45238159cd61fca866782e2d4eaf9ecc27c18d871f9007ab4f6e7d9eed241449f4e74e2fc2b87bec1c24931e213b018254c4f
+  checksum: 8e4dac3c4d1cf2474ab5f92f3006dca8d7bb0c60e8ffbc89f48bdcda4dcfc8cb3be7828169bfe498baff643b47d01a93a162f1c5b5085b76d957e6498b3dcef3
   languageName: node
   linkType: hard
 

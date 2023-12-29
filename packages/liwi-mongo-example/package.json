@@ -32,7 +32,6 @@
     "start": "yarn clean:build && rollup --config rollup.config.mjs --watch",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
-  "prettier": "@pob/root/prettier-config",
   "pob": {
     "babelEnvs": [
       {
@@ -45,12 +44,13 @@
       "users"
     ]
   },
+  "prettier": "@pob/root/prettier-config",
   "dependencies": {
     "liwi-mongo": "11.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.23.6",
-    "pob-babel": "37.1.0",
+    "pob-babel": "38.0.1",
     "typescript": "5.3.3"
   }
 }
