@@ -2648,7 +2648,7 @@ __metadata:
     "@playwright/test": "npm:1.40.1"
     "@todo-example/babel-preset-nextjs-babel-config": "npm:11.0.0"
     "@todo-example/modules": "workspace:*"
-    "@types/node": "npm:18.19.3"
+    "@types/node": "npm:20.10.5"
     "@types/react": "npm:18.2.46"
     "@types/react-native": "npm:0.72.8"
     classnames: "npm:2.3.2"
@@ -2972,12 +2972,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:18.19.3, @types/node@npm:>=18.0.0, @types/node@npm:^18.11.9":
-  version: 18.19.3
-  resolution: "@types/node@npm:18.19.3"
+"@types/node@npm:*, @types/node@npm:20.10.5, @types/node@npm:>=18.0.0":
+  version: 20.10.5
+  resolution: "@types/node@npm:20.10.5"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: b95d0c0be342275e27d882bb6ca73c0b757d1672a121cae1fc3249eda4f86a8abeb5745e5c5c1150914bcfda323a3fc51526cd34e2097f8355bf7cbf12fa6bcb
+  checksum: 4a378428d2c9f692b19801a5a3d20dc4c0ad5d4a3d103350f8b401af439941a9aa5efeadc8eb9db13c66c620318bc7f336abfc8934f82fd32c4a689d85068c6f
   languageName: node
   linkType: hard
 
@@ -2985,6 +2985,15 @@ __metadata:
   version: 14.18.30
   resolution: "@types/node@npm:14.18.30"
   checksum: 8d2b4687cd3699fc19d3bc6fc0ad90a68108946a6181836f48edd9c0e29202fc3870a7ee6e68fbc045cdca6d0eb044d14e69c04b119b6cdde975858da453fa4e
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.11.9":
+  version: 18.19.3
+  resolution: "@types/node@npm:18.19.3"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: b95d0c0be342275e27d882bb6ca73c0b757d1672a121cae1fc3249eda4f86a8abeb5745e5c5c1150914bcfda323a3fc51526cd34e2097f8355bf7cbf12fa6bcb
   languageName: node
   linkType: hard
 
