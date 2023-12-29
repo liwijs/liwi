@@ -1456,7 +1456,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.22.6, @babel/runtime@npm:^7.23.6, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.23.6, @babel/runtime@npm:^7.8.4":
   version: 7.23.6
   resolution: "@babel/runtime@npm:7.23.6"
   dependencies:
@@ -2659,7 +2659,7 @@ __metadata:
     next: "npm:14.0.3"
     nightingale-app-console: "npm:15.0.0"
     react: "npm:18.2.0"
-    react-alp-connection-state: "npm:8.0.0"
+    react-alp-connection-state: "npm:8.1.0"
     react-dom: "npm:18.2.0"
     react-liwi: "npm:11.0.0"
     react-native-web: "npm:0.19.9"
@@ -2677,7 +2677,7 @@ __metadata:
     "@babel/core": "npm:7.23.6"
     "@todo-example/modules": "npm:11.0.0"
     alp-node: "npm:6.1.0"
-    alp-rollup-plugin-config: "npm:2.1.0"
+    alp-rollup-plugin-config: "npm:2.2.0"
     liwi-mongo: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
     liwi-resources-websocket-server: "npm:11.0.0"
@@ -3440,15 +3440,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alp-rollup-plugin-config@npm:2.1.0":
-  version: 2.1.0
-  resolution: "alp-rollup-plugin-config@npm:2.1.0"
+"alp-rollup-plugin-config@npm:2.2.0":
+  version: 2.2.0
+  resolution: "alp-rollup-plugin-config@npm:2.2.0"
   dependencies:
     "@guanghechen/rollup-plugin-copy": "npm:1.8.6"
     js-yaml: "npm:4.1.0"
   peerDependencies:
-    rollup: ^2.64.0 || ^3.0.0
-  checksum: e19b4d36c748024b405b3b920062feeb31898c6f4e75183fefdf2414e075852a47197828c63a22ce5f1a79766a0d20fa9a61a47f6f3cbdd927c60e672818a81f
+    rollup: ^2.64.0 || ^3.0.0 || ^4.0.0
+  checksum: 14a3e2e2f98cf67a8acdb0bc9d8fe61742fef214ef32507c99d53b945dd1efc8b2ebe7c07755a3d0d824d90f2a38c5ac2e687961dec2dc2348b791245a929534
   languageName: node
   linkType: hard
 
@@ -9362,18 +9362,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-alp-connection-state@npm:8.0.0":
-  version: 8.0.0
-  resolution: "react-alp-connection-state@npm:8.0.0"
+"react-alp-connection-state@npm:8.1.0":
+  version: 8.1.0
+  resolution: "react-alp-connection-state@npm:8.1.0"
   dependencies:
-    "@babel/runtime": "npm:^7.22.6"
+    "@babel/runtime": "npm:^7.23.6"
   peerDependencies:
     react: ^18.1.0
     react-native: "*"
   peerDependenciesMeta:
     react-native:
       optional: true
-  checksum: a27dca54116775f6861efb4685939c5b2f899eabcad159525f7dcd0b056d6ae3debbf605d76d9fb58b60198ad66ada9d674ba9a4e8921b3f37213a9f6b356808
+  checksum: 343feb8f32092183a5cb6797618c7074a028a7afe73f247f0cf8693ea1774e4507c220d811d9c9a6bf900bce59ddb44f9bf3d1c89320440ffc32d13277afc902
   languageName: node
   linkType: hard
 
