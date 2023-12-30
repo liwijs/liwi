@@ -70,7 +70,7 @@
   },
   "prettier": "@pob/root/prettier-config",
   "dependencies": {
-    "@babel/runtime": "^7.23.6",
+    "@babel/runtime": "^7.23.7",
     "extended-json": "11.0.0",
     "liwi-resources": "11.0.0",
     "liwi-store": "11.0.0",
