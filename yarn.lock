@@ -1172,19 +1172,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-runtime@npm:7.23.6":
-  version: 7.23.6
-  resolution: "@babel/plugin-transform-runtime@npm:7.23.6"
+"@babel/plugin-transform-runtime@npm:7.23.7":
+  version: 7.23.7
+  resolution: "@babel/plugin-transform-runtime@npm:7.23.7"
   dependencies:
     "@babel/helper-module-imports": "npm:^7.22.15"
     "@babel/helper-plugin-utils": "npm:^7.22.5"
-    babel-plugin-polyfill-corejs2: "npm:^0.4.6"
-    babel-plugin-polyfill-corejs3: "npm:^0.8.5"
-    babel-plugin-polyfill-regenerator: "npm:^0.5.3"
+    babel-plugin-polyfill-corejs2: "npm:^0.4.7"
+    babel-plugin-polyfill-corejs3: "npm:^0.8.7"
+    babel-plugin-polyfill-regenerator: "npm:^0.5.4"
     semver: "npm:^6.3.1"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 54e540ec04f05f664c69db36a78b5db56b0d3e25bbe34d7f11cfe21cc5aad5240661f5ada630c7b2abcae99d229851aafbb6b2218cf285771379e0844a3f24a9
+  checksum: 1e0b21c943e565e6a2a859991059f5b5a8b917689aab9b3beb172babece1843b42f9ae9ff9913f01134fb201fd67ac2831559578949c7287e7c782e6d6740de8
   languageName: node
   linkType: hard
 
@@ -2638,7 +2638,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.7"
     liwi-mongo: "npm:11.0.0"
     liwi-resources-client: "npm:11.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -2684,7 +2684,7 @@ __metadata:
     liwi-resources-server: "npm:11.0.0"
     liwi-resources-websocket-server: "npm:11.0.0"
     nightingale-app-console: "npm:15.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     rollup-plugin-copy: "npm:3.5.0"
     router-segments: "npm:9.1.0"
     typescript: "npm:5.3.3"
@@ -3906,7 +3906,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs2@npm:^0.4.6, babel-plugin-polyfill-corejs2@npm:^0.4.7":
+"babel-plugin-polyfill-corejs2@npm:^0.4.7":
   version: 0.4.7
   resolution: "babel-plugin-polyfill-corejs2@npm:0.4.7"
   dependencies:
@@ -3919,7 +3919,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs3@npm:^0.8.5, babel-plugin-polyfill-corejs3@npm:^0.8.7":
+"babel-plugin-polyfill-corejs3@npm:^0.8.7":
   version: 0.8.7
   resolution: "babel-plugin-polyfill-corejs3@npm:0.8.7"
   dependencies:
@@ -3931,7 +3931,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-regenerator@npm:^0.5.3, babel-plugin-polyfill-regenerator@npm:^0.5.4":
+"babel-plugin-polyfill-regenerator@npm:^0.5.4":
   version: 0.5.4
   resolution: "babel-plugin-polyfill-regenerator@npm:0.5.4"
   dependencies:
@@ -4004,9 +4004,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-pob-env@npm:11.0.1":
-  version: 11.0.1
-  resolution: "babel-preset-pob-env@npm:11.0.1"
+"babel-preset-pob-env@npm:11.0.2":
+  version: 11.0.2
+  resolution: "babel-preset-pob-env@npm:11.0.2"
   dependencies:
     "@babel/plugin-proposal-nullish-coalescing-operator": "npm:^7.18.6"
     "@babel/plugin-proposal-optional-chaining": "npm:^7.21.0"
@@ -4017,7 +4017,7 @@ __metadata:
     babel-preset-optimizations: "npm:^2.0.0"
   peerDependencies:
     "@babel/core": ^7.23.2
-  checksum: dbd4604883ade8ce4e1e00eec64810f902f218cfbdf9de4711cfa60b902a3a0c123a445a611fb449d2460086f52a440976e15b4bb0f569abe2cf25bab6def068
+  checksum: 62037c45f298af5b667e61a1550a311d00c289bdaaca6751faddcd882214dbfe5e87bff0f5a2b9807811452a6f76aee4bbb62dbc0053d778e6f4aed50c917b47
   languageName: node
   linkType: hard
 
@@ -5503,7 +5503,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.23.7"
     "@babel/preset-env": "npm:7.23.7"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7614,7 +7614,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.23.7"
     liwi-mongo: "npm:11.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7629,7 +7629,7 @@ __metadata:
     mingo: "npm:^6.2.7"
     mongodb: "npm:^6.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7648,7 +7648,7 @@ __metadata:
     check-package-dependencies: "npm:7.0.0"
     eslint: "npm:8.56.0"
     jest: "npm:29.7.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7664,7 +7664,7 @@ __metadata:
     liwi-resources: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7680,7 +7680,7 @@ __metadata:
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7695,7 +7695,7 @@ __metadata:
     extended-json: "npm:11.0.0"
     liwi-resources: "npm:11.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7708,7 +7708,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.7"
     liwi-resources-client: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7725,7 +7725,7 @@ __metadata:
     extended-json: "npm:11.0.0"
     liwi-resources-client: "npm:11.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7743,7 +7743,7 @@ __metadata:
     liwi-resources-server: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
     utf-8-validate: "npm:^6.0.0"
     ws: "npm:^8.4.2"
@@ -7763,7 +7763,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.7"
     extended-json: "npm:11.0.0"
     liwi-store: "npm:11.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7775,7 +7775,7 @@ __metadata:
     "@babel/core": "npm:7.23.7"
     "@babel/preset-env": "npm:7.23.7"
     "@babel/runtime": "npm:^7.23.7"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -7788,7 +7788,7 @@ __metadata:
     "@babel/preset-env": "npm:7.23.7"
     "@babel/runtime": "npm:^7.23.7"
     liwi-store: "npm:11.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -9139,18 +9139,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pob-babel@npm:38.0.1":
-  version: 38.0.1
-  resolution: "pob-babel@npm:38.0.1"
+"pob-babel@npm:38.0.2":
+  version: 38.0.2
+  resolution: "pob-babel@npm:38.0.2"
   dependencies:
     "@babel/core": "npm:^7.23.2"
-    "@babel/plugin-transform-runtime": "npm:7.23.6"
+    "@babel/plugin-transform-runtime": "npm:7.23.7"
     "@pob/rollup": "npm:1.0.1"
     "@rollup/plugin-babel": "npm:6.0.4"
     "@rollup/plugin-json": "npm:6.1.0"
     "@rollup/plugin-node-resolve": "npm:15.2.3"
     "@rollup/plugin-run": "npm:3.0.2"
-    babel-preset-pob-env: "npm:11.0.1"
+    babel-preset-pob-env: "npm:11.0.2"
     rollup: "npm:3.29.4"
     rollup-config-external-dependencies: "npm:^3.0.0"
     semver: "npm:^7.3.7"
@@ -9164,7 +9164,7 @@ __metadata:
   bin:
     pob-babel-clean-out: ./bin/pob-babel-clean-out.js
     rollup: ./bin/rollup.cjs
-  checksum: cff0f972e2ed85a57e1003a54d602b3497ffcc843efb818607a796b7d15f065670cb91eef60cee9fca4b72f10d7c9dea735dd8f6942843f60de58cb067dabfb2
+  checksum: 81419643242ed79e819786d9526518f1ec7ca6eff1ff7392134ecdf2c75427e82cc41ecd32f894e796d9e04bbef698ab5989c99aec71055267491c69c4302945
   languageName: node
   linkType: hard
 
@@ -9348,7 +9348,7 @@ __metadata:
     liwi-resources-client: "npm:11.0.0"
     mingo: "npm:^6.2.7"
     nightingale-logger: "npm:^15.0.0"
-    pob-babel: "npm:38.0.1"
+    pob-babel: "npm:38.0.2"
     react: "npm:18.2.0"
     typescript: "npm:5.3.3"
   peerDependencies:
