@@ -2678,7 +2678,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:7.23.7"
     "@todo-example/modules": "npm:11.0.0"
-    alp-node: "npm:6.1.0"
+    alp-node: "npm:7.0.0"
     alp-rollup-plugin-config: "npm:2.2.0"
     liwi-mongo: "npm:11.0.0"
     liwi-resources-server: "npm:11.0.0"
@@ -3370,85 +3370,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alp-listen@npm:7.1.0":
-  version: 7.1.0
-  resolution: "alp-listen@npm:7.1.0"
-  dependencies:
-    alp-node-config: "npm:9.1.0"
-    nightingale-logger: "npm:^15.0.0"
-  checksum: 1c9d1d497321a2613d90d01d809b95357e971806e0d646cdf8bb9a2f5438e263229219fd4adfc396537aace3eb40526ac90fb2a018b0bf8e427f05874437b39f
-  languageName: node
-  linkType: hard
-
-"alp-node-config@npm:9.1.0":
-  version: 9.1.0
-  resolution: "alp-node-config@npm:9.1.0"
-  dependencies:
-    alp-types: "npm:3.1.1"
-    deep-freeze-es6: "npm:^3.0.2"
-    minimist-argv: "npm:^1.1.0"
-    parse-json-object-as-map: "npm:^1.2.0"
-    stringify-json: "npm:^2.0.0"
-  checksum: c3c992d3bc63a3fb61436767fd3c089962d23e35694d64cbdb74dd84f8886c1e8383e7f6692a35840bc85b621440d3d365e7a15641290b87f52313f16572c320
-  languageName: node
-  linkType: hard
-
-"alp-node-errors@npm:8.1.0":
-  version: 8.1.0
-  resolution: "alp-node-errors@npm:8.1.0"
-  dependencies:
-    alp-types: "npm:3.1.1"
-    error-html: "npm:^0.3.5"
-    nightingale-logger: "npm:^15.0.0"
-  checksum: db39c898979ada52100783ba8d08484df1c694353f6a4ce92aa56f617e2a2f5022d1356acb690889bcbfdc90e26d5d7f9502ca5050042779a2f7b0d4de39773f
-  languageName: node
-  linkType: hard
-
-"alp-node-language@npm:7.1.0":
-  version: 7.1.0
-  resolution: "alp-node-language@npm:7.1.0"
-  dependencies:
-    "@types/koa": "npm:^2.13.1"
-    alp-types: "npm:3.1.1"
-    object-properties: "npm:^8.0.0"
-  checksum: 653b4619cdff78ac8608ebf8bcbe289b7d4267a8576577e50ead0eb4eb90795df19ae85e0829c433eb56b29ea2afb02abb846cc33db8d388b782d911b1047678
-  languageName: node
-  linkType: hard
-
-"alp-node@npm:6.1.0":
-  version: 6.1.0
-  resolution: "alp-node@npm:6.1.0"
+"alp-node@npm:7.0.0":
+  version: 7.0.0
+  resolution: "alp-node@npm:7.0.0"
   dependencies:
     "@types/koa": "npm:^2.13.1"
     "@types/node": "npm:>=18.0.0"
-    alp-listen: "npm:7.1.0"
-    alp-node-config: "npm:9.1.0"
-    alp-node-errors: "npm:8.1.0"
-    alp-node-language: "npm:7.1.0"
-    alp-params: "npm:6.1.0"
-    alp-translate: "npm:8.1.0"
-    alp-types: "npm:3.1.1"
+    deep-freeze-es6: "npm:^3.0.2"
+    error-html: "npm:^0.3.5"
+    intl-messageformat: "npm:^10.0.0"
     koa: "npm:^2.13.1"
     koa-compress: "npm:^5.0.0"
     koa-static: "npm:^5.0.0"
+    minimist: "npm:^1.2.8"
     nightingale-logger: "npm:^15.0.0"
+    object-properties: "npm:^8.1.0"
+    parse-json-object-as-map: "npm:^1.2.0"
   peerDependencies:
     router-segments: ^9.1.0
-  checksum: a949d78a57ee71de5b596cab37c9e56c4fbb2ea14a3e7a25127e4807abcf387a21004adc2e3f6cad8cd1d1324847d583e717d12b6484b2d1bc6928054d2d8013
-  languageName: node
-  linkType: hard
-
-"alp-params@npm:6.1.0":
-  version: 6.1.0
-  resolution: "alp-params@npm:6.1.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.23.6"
-    alp-router: "npm:7.1.0"
-    alp-types: "npm:3.1.1"
-    object-properties: "npm:^8.0.0"
-  peerDependencies:
-    router-segments: ^9.1.0
-  checksum: 9a14dde42840e06752740af1e26fad01b5bdbfe228ed934973f1a8c5a935c9510fa7d6c73ab65530b1ff2e3aafbed89c427f0c7ce7f95404beac8d49044c53d2
+  checksum: 4e986f22538e4702accbb8a390bf6381f14cfb8396c2cf72740e005f7317aa7fa0eae21c78705ed3a7750482a3d8f2affa13a3ca6aabeca1ef8b5a81aa0cccb2
   languageName: node
   linkType: hard
 
@@ -3461,35 +3401,6 @@ __metadata:
   peerDependencies:
     rollup: ^2.64.0 || ^3.0.0 || ^4.0.0
   checksum: 14a3e2e2f98cf67a8acdb0bc9d8fe61742fef214ef32507c99d53b945dd1efc8b2ebe7c07755a3d0d824d90f2a38c5ac2e687961dec2dc2348b791245a929534
-  languageName: node
-  linkType: hard
-
-"alp-router@npm:7.1.0":
-  version: 7.1.0
-  resolution: "alp-router@npm:7.1.0"
-  dependencies:
-    alp-types: "npm:3.1.1"
-  peerDependencies:
-    router-segments: ^9.1.0
-  checksum: a03c30a4797c11652ace7f01ba3158b0a00a76dda78ceddffcf977dca2f3136fa9e0679b381b5cb331fafd7ae4e4fcb0aff7facab98ffd10b7c1afb9a2e3efcd
-  languageName: node
-  linkType: hard
-
-"alp-translate@npm:8.1.0":
-  version: 8.1.0
-  resolution: "alp-translate@npm:8.1.0"
-  dependencies:
-    alp-types: "npm:3.1.1"
-    intl-messageformat: "npm:^10.0.0"
-    nightingale-logger: "npm:^15.0.0"
-  checksum: 3bac2e1398fe656de1af9827223ead6d173c6145d94e5d0d037d9a2759ec522488b80a18f7152b61505f0bbf8689e4c8bf4ba13fd3945950471bc13a875149de
-  languageName: node
-  linkType: hard
-
-"alp-types@npm:3.1.1":
-  version: 3.1.1
-  resolution: "alp-types@npm:3.1.1"
-  checksum: 7d538e89b5445c0c1ededa3f57c7a366a84b7fff1d34fc311dd16bdfb28a739be404da7df19a143d08dec41f2c032ca8b0b8f4cf2a98dce82d2f011d332bafd7
   languageName: node
   linkType: hard
 
@@ -8015,13 +7926,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"map2object@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "map2object@npm:1.0.0"
-  checksum: 0152e09ba883d9057c275ae7bb0d0a22b8319e281f593232dabf54a12c5bb7950ccd6f4465297a329377a8514f99b941ad48bb8daade078ce0dd641f191fc859
-  languageName: node
-  linkType: hard
-
 "media-typer@npm:0.3.0":
   version: 0.3.0
   resolution: "media-typer@npm:0.3.0"
@@ -8155,16 +8059,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist-argv@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "minimist-argv@npm:1.1.0"
-  dependencies:
-    "@types/minimist": "npm:^1.2.0"
-    minimist: "npm:^1.2.0"
-  checksum: 588b5a2eeb64894b1e42b7491bd446746a55500334adece53e34a19a5876df93dc9cc3ecdd66de98a0007c3ea5cc26a4c553b83da8e66530dbb8897f72e00c93
-  languageName: node
-  linkType: hard
-
 "minimist-options@npm:4.1.0":
   version: 4.1.0
   resolution: "minimist-options@npm:4.1.0"
@@ -8176,10 +8070,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.2.0, minimist@npm:^1.2.6":
-  version: 1.2.6
-  resolution: "minimist@npm:1.2.6"
-  checksum: b956a7d48669c5007f0afce100a92d3af18e77939a25b5b4f62e9ea07c2777033608327e14c2af85684d5cd504f623f2a04d30a4a43379d21dd3c6dcf12b8ab8
+"minimist@npm:^1.2.0, minimist@npm:^1.2.6, minimist@npm:^1.2.8":
+  version: 1.2.8
+  resolution: "minimist@npm:1.2.8"
+  checksum: 908491b6cc15a6c440ba5b22780a0ba89b9810e1aea684e253e43c4e3b8d56ec1dcdd7ea96dde119c29df59c936cde16062159eae4225c691e19c70b432b6e6f
   languageName: node
   linkType: hard
 
@@ -8785,10 +8679,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-properties@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "object-properties@npm:8.0.0"
-  checksum: a14fe1a68f5863b4901e75f05dfc129c39c7d83d2a2832166b3117b93c639e4be19ee202da071021996e7964b187d3f7950d1ac188746f7b90162282c5e4a946
+"object-properties@npm:^8.1.0":
+  version: 8.1.0
+  resolution: "object-properties@npm:8.1.0"
+  checksum: 2a88ae0ce1334f99cfe843835d0730cf3b95c17864a7d7304e28a189fd60ce9f445792ced2b8fa41001b409fc1972a0040bff9613382ef2f0ede1d3159a09259
   languageName: node
   linkType: hard
 
@@ -10271,15 +10165,6 @@ __metadata:
   dependencies:
     safe-buffer: "npm:~5.1.0"
   checksum: 7c41c17ed4dea105231f6df208002ebddd732e8e9e2d619d133cecd8e0087ddfd9587d2feb3c8caf3213cbd841ada6d057f5142cae68a4e62d3540778d9819b4
-  languageName: node
-  linkType: hard
-
-"stringify-json@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "stringify-json@npm:2.0.0"
-  dependencies:
-    map2object: "npm:^1.0.0"
-  checksum: 05361ccb77451228802ed2d86b1f3e728bf075bede42f9b2a9964307868337adfa3d61e455ceacf5acdfbdd208edc8edff4798132862f1741a57310830f70656
   languageName: node
   linkType: hard
 
