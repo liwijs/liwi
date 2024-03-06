@@ -70,7 +70,7 @@
   },
   "prettier": "@pob/root/prettier-config",
   "dependencies": {
-    "@babel/runtime": "^7.23.7"
+    "@babel/runtime": "^7.24.0"
   },
   "devDependencies": {
     "@babel/core": "7.24.0",

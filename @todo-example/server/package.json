@@ -14,13 +14,13 @@
   "engines": {
     "node": ">=20.9.0"
   },
-  "main": "./build/index-node20.mjs",
+  "main": "./build/index-node.mjs",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./src/index.ts",
       "node": {
-        "import": "./build/index-node20.mjs"
+        "import": "./build/index-node.mjs"
       }
     }
   },

@@ -15,7 +15,7 @@
     "node": ">=20.9.0"
   },
   "sideEffects": false,
-  "main": "./build/index-node20.mjs",
+  "main": "./build/index-node.mjs",
   "types": "./src/index.ts",
   "module": "./build/index-browser.es.js",
   "browser": "./build/index-browser.es.js",
@@ -24,7 +24,7 @@
     ".": {
       "types": "./src/index.ts",
       "node": {
-        "import": "./build/index-node20.mjs"
+        "import": "./build/index-node.mjs"
       },
       "browser": {
         "import": "./build/index-browser.es.js"

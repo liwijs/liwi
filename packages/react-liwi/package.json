@@ -74,7 +74,7 @@
     "react": "^18.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.23.7",
+    "@babel/runtime": "^7.24.0",
     "liwi-resources-client": "11.0.0",
     "mingo": "^6.2.7",
     "nightingale-logger": "^15.0.0"

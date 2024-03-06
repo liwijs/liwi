@@ -19,7 +19,7 @@
     "./users": {
       "types": "./src/users.ts",
       "node": {
-        "import": "./build/users-node20.mjs"
+        "import": "./build/users-node.mjs"
       }
     }
   },
