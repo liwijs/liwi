@@ -88,7 +88,7 @@ export default class MongoConnection extends AbstractConnection {
         console.error(error.message || error);
         // throw err;
         process.nextTick(() => {
-          // eslint-disable-next-line unicorn/no-process-exit
+          // eslint-disable-next-line unicorn/no-process-exit, n/no-process-exit
           process.exit(1);
         });
 

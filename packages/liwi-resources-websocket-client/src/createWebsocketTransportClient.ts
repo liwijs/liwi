@@ -216,7 +216,7 @@ export default function createResourcesWebsocketClient({
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           resolve(result);
         },
-        reject: (err) => {
+        reject: (err: Error) => {
           acks.delete(id);
           reject(err);
         },
