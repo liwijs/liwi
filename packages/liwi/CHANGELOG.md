@@ -1,7 +1,14 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## 12.0.0 (2024-03-30)
+
+Note: no notable changes
+
+
+
 
 ## [11.0.0](https://github.com/liwijs/liwi/compare/v10.5.0...v11.0.0) (2023-07-29)
 

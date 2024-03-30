@@ -1,7 +1,28 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## 12.0.0 (2024-03-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* update dev deps incuding babel which changes supported built files for browser
+
+### Features
+
+* **deps:** update nightingale to v15 (major) ([#404](https://github.com/liwijs/liwi/issues/404)) ([f4e3338](https://github.com/liwijs/liwi/commit/f4e33387072b727a08ee095d9f01e41d9d4e7a1e))
+
+
+### Miscellaneous Chores
+
+* update dev deps incuding babel which changes supported built files for browser ([462bf2e](https://github.com/liwijs/liwi/commit/462bf2e0bb3a6b8c9304106bc447bd248e3a61c7))
+
+Version bump for dependency: extended-json
+Version bump for dependency: liwi-resources-server
+Version bump for dependency: liwi-store
+
 
 ## [11.0.0](https://github.com/liwijs/liwi/compare/v10.5.0...v11.0.0) (2023-07-29)
 

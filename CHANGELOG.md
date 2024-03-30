@@ -1,7 +1,41 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## 12.0.0 (2024-03-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* update dev deps incuding babel which changes supported built files for browser
+
+### Features
+
+* **deps:** update dependency classnames to v2.4.0 ([#416](https://github.com/liwijs/liwi/issues/416)) ([30d6a24](https://github.com/liwijs/liwi/commit/30d6a24940da19ff1fadf134cca2eee5379eed6f))
+* **deps:** update dependency classnames to v2.5.0 ([#419](https://github.com/liwijs/liwi/issues/419)) ([6468907](https://github.com/liwijs/liwi/commit/646890758155ac8a55c176b8f3d77c1663900c59))
+* **deps:** update dependency mongodb to v6 ([#298](https://github.com/liwijs/liwi/issues/298)) ([96c5838](https://github.com/liwijs/liwi/commit/96c5838d006cbefaf96f466bfc802888795ce7e1))
+* **deps:** update dependency nightingale-app-console to v14.2.1 ([#362](https://github.com/liwijs/liwi/issues/362)) ([0289e84](https://github.com/liwijs/liwi/commit/0289e842033e142d6e74ae52c63c1d095a6c8c47))
+* **deps:** update dependency router-segments to v9 ([#402](https://github.com/liwijs/liwi/issues/402)) ([812f8e8](https://github.com/liwijs/liwi/commit/812f8e89a8afa32be61f21f559956649320c88c7))
+* **deps:** update nightingale to v15 (major) ([#404](https://github.com/liwijs/liwi/issues/404)) ([f4e3338](https://github.com/liwijs/liwi/commit/f4e33387072b727a08ee095d9f01e41d9d4e7a1e))
+
+
+### Bug Fixes
+
+* **deps:** update dependency classnames to v2.3.3 ([#411](https://github.com/liwijs/liwi/issues/411)) ([eaff9fa](https://github.com/liwijs/liwi/commit/eaff9fa70f22e51ace2f6c09812bf4241dc73b1c))
+* **deps:** update dependency next to v14.0.3 ([#369](https://github.com/liwijs/liwi/issues/369)) ([485281e](https://github.com/liwijs/liwi/commit/485281ef1406123bba9d1a3c3eddf7a1f7b1dcce))
+* **deps:** update dependency react-native-web to v0.19.10 ([#409](https://github.com/liwijs/liwi/issues/409)) ([c9f412f](https://github.com/liwijs/liwi/commit/c9f412f2a8b2fe71331297266de9e091f1ee6b06))
+* **deps:** update dependency react-native-web to v0.19.9 ([#292](https://github.com/liwijs/liwi/issues/292)) ([b958d50](https://github.com/liwijs/liwi/commit/b958d50efaab244fdbc98ccc12fe462179e95f63))
+* **deps:** update dependency router-segments to v7.0.1 ([#357](https://github.com/liwijs/liwi/issues/357)) ([292d051](https://github.com/liwijs/liwi/commit/292d051bcd4e5a3832710e6630972f4dfe3d28c7))
+* **deps:** update dependency todomvc-app-css to v2.4.3 ([#352](https://github.com/liwijs/liwi/issues/352)) ([6a44198](https://github.com/liwijs/liwi/commit/6a441985b76f8abfb764b60020f49a47620bf4a7))
+* **liwi-mongo:** properly implement forEach ([2fb838b](https://github.com/liwijs/liwi/commit/2fb838b4b81ccb109946a9d0203485488085f632))
+* update alp-node ([43b6ccf](https://github.com/liwijs/liwi/commit/43b6ccfeb5ceb2ffb3635f4b3c8836d375ef0864))
+
+
+### Miscellaneous Chores
+
+* update dev deps incuding babel which changes supported built files for browser ([462bf2e](https://github.com/liwijs/liwi/commit/462bf2e0bb3a6b8c9304106bc447bd248e3a61c7))
+
 
 ## [11.0.0](https://github.com/liwijs/liwi/compare/v10.5.0...v11.0.0) (2023-07-29)
 

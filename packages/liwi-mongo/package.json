@@ -1,6 +1,6 @@
 {
   "name": "liwi-mongo",
-  "version": "11.0.0",
+  "version": "12.0.0",
   "description": "mongo implementation for liwi",
   "keywords": [],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
@@ -53,8 +53,8 @@
   },
   "prettier": "@pob/root/prettier-config",
   "dependencies": {
-    "liwi-store": "11.0.0",
-    "liwi-subscribe-store": "11.0.0",
+    "liwi-store": "12.0.0",
+    "liwi-subscribe-store": "12.0.0",
     "mingo": "^6.2.7",
     "mongodb": "^6.0.0",
     "nightingale-logger": "^15.0.0"

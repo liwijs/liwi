@@ -1,7 +1,7 @@
 {
   "name": "@todo-example/nextjs",
   "private": true,
-  "version": "11.0.0",
+  "version": "12.0.0",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "repository": {
@@ -24,18 +24,18 @@
   },
   "prettier": "@pob/root/prettier-config",
   "dependencies": {
-    "@todo-example/babel-preset-nextjs-babel-config": "11.0.0",
+    "@todo-example/babel-preset-nextjs-babel-config": "12.0.0",
     "@todo-example/modules": "workspace:*",
     "classnames": "2.5.0",
-    "liwi-resources-client": "11.0.0",
-    "liwi-resources-void-client": "11.0.0",
-    "liwi-resources-websocket-client": "11.0.0",
+    "liwi-resources-client": "12.0.0",
+    "liwi-resources-void-client": "12.0.0",
+    "liwi-resources-websocket-client": "12.0.0",
     "next": "14.0.3",
     "nightingale-app-console": "15.0.0",
     "react": "18.2.0",
     "react-alp-connection-state": "8.1.1",
     "react-dom": "18.2.0",
-    "react-liwi": "11.0.0",
+    "react-liwi": "12.0.0",
     "react-native-web": "0.19.10",
     "todomvc-app-css": "2.4.3",
     "todomvc-common": "1.0.5"

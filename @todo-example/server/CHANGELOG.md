@@ -1,7 +1,37 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## 12.0.0 (2024-03-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* update dev deps incuding babel which changes supported built files for browser
+
+### Features
+
+* **deps:** update dependency nightingale-app-console to v14.2.1 ([#362](https://github.com/liwijs/liwi/issues/362)) ([0289e84](https://github.com/liwijs/liwi/commit/0289e842033e142d6e74ae52c63c1d095a6c8c47))
+* **deps:** update dependency router-segments to v9 ([#402](https://github.com/liwijs/liwi/issues/402)) ([812f8e8](https://github.com/liwijs/liwi/commit/812f8e89a8afa32be61f21f559956649320c88c7))
+* **deps:** update nightingale to v15 (major) ([#404](https://github.com/liwijs/liwi/issues/404)) ([f4e3338](https://github.com/liwijs/liwi/commit/f4e33387072b727a08ee095d9f01e41d9d4e7a1e))
+
+
+### Bug Fixes
+
+* **deps:** update dependency router-segments to v7.0.1 ([#357](https://github.com/liwijs/liwi/issues/357)) ([292d051](https://github.com/liwijs/liwi/commit/292d051bcd4e5a3832710e6630972f4dfe3d28c7))
+* update alp-node ([43b6ccf](https://github.com/liwijs/liwi/commit/43b6ccfeb5ceb2ffb3635f4b3c8836d375ef0864))
+
+
+### Miscellaneous Chores
+
+* update dev deps incuding babel which changes supported built files for browser ([462bf2e](https://github.com/liwijs/liwi/commit/462bf2e0bb3a6b8c9304106bc447bd248e3a61c7))
+
+Version bump for dependency: modules
+Version bump for dependency: liwi-mongo
+Version bump for dependency: liwi-resources-server
+Version bump for dependency: liwi-resources-websocket-server
+
 
 ## [11.0.0](https://github.com/liwijs/liwi/compare/v10.5.0...v11.0.0) (2023-07-29)
 

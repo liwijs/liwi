@@ -1,7 +1,42 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## 12.0.0 (2024-03-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* update dev deps incuding babel which changes supported built files for browser
+
+### Features
+
+* **deps:** update dependency classnames to v2.4.0 ([#416](https://github.com/liwijs/liwi/issues/416)) ([30d6a24](https://github.com/liwijs/liwi/commit/30d6a24940da19ff1fadf134cca2eee5379eed6f))
+* **deps:** update dependency classnames to v2.5.0 ([#419](https://github.com/liwijs/liwi/issues/419)) ([6468907](https://github.com/liwijs/liwi/commit/646890758155ac8a55c176b8f3d77c1663900c59))
+* **deps:** update dependency nightingale-app-console to v14.2.1 ([#362](https://github.com/liwijs/liwi/issues/362)) ([0289e84](https://github.com/liwijs/liwi/commit/0289e842033e142d6e74ae52c63c1d095a6c8c47))
+* **deps:** update nightingale to v15 (major) ([#404](https://github.com/liwijs/liwi/issues/404)) ([f4e3338](https://github.com/liwijs/liwi/commit/f4e33387072b727a08ee095d9f01e41d9d4e7a1e))
+
+
+### Bug Fixes
+
+* **deps:** update dependency classnames to v2.3.3 ([#411](https://github.com/liwijs/liwi/issues/411)) ([eaff9fa](https://github.com/liwijs/liwi/commit/eaff9fa70f22e51ace2f6c09812bf4241dc73b1c))
+* **deps:** update dependency next to v14.0.3 ([#369](https://github.com/liwijs/liwi/issues/369)) ([485281e](https://github.com/liwijs/liwi/commit/485281ef1406123bba9d1a3c3eddf7a1f7b1dcce))
+* **deps:** update dependency react-native-web to v0.19.10 ([#409](https://github.com/liwijs/liwi/issues/409)) ([c9f412f](https://github.com/liwijs/liwi/commit/c9f412f2a8b2fe71331297266de9e091f1ee6b06))
+* **deps:** update dependency react-native-web to v0.19.9 ([#292](https://github.com/liwijs/liwi/issues/292)) ([b958d50](https://github.com/liwijs/liwi/commit/b958d50efaab244fdbc98ccc12fe462179e95f63))
+* **deps:** update dependency todomvc-app-css to v2.4.3 ([#352](https://github.com/liwijs/liwi/issues/352)) ([6a44198](https://github.com/liwijs/liwi/commit/6a441985b76f8abfb764b60020f49a47620bf4a7))
+
+
+### Miscellaneous Chores
+
+* update dev deps incuding babel which changes supported built files for browser ([462bf2e](https://github.com/liwijs/liwi/commit/462bf2e0bb3a6b8c9304106bc447bd248e3a61c7))
+
+Version bump for dependency: babel-preset-nextjs-babel-config
+Version bump for dependency: liwi-resources-client
+Version bump for dependency: liwi-resources-void-client
+Version bump for dependency: liwi-resources-websocket-client
+Version bump for dependency: react-liwi
+
 
 ## [11.0.0](https://github.com/liwijs/liwi/compare/v10.5.0...v11.0.0) (2023-07-29)
 
