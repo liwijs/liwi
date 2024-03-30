@@ -21,6 +21,11 @@ class MongoCursor extends AbstractStoreCursor {
       return this.key;
     });
   }
+  async forEach(callback) {
+    for await (const result of this.cursor) {
+      await callback(result);
+    }
+  }
   limit(newLimit) {
     this.cursor.limit(newLimit);
     return Promise.resolve(this);

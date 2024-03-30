@@ -37,6 +37,14 @@ export default class MongoCursor<
     });
   }
 
+  override async forEach(
+    callback: (result: Result) => Promise<void> | void,
+  ): Promise<void> {
+    for await (const result of this.cursor) {
+      await callback(result);
+    }
+  }
+
   limit(newLimit: number): Promise<this> {
     this.cursor.limit(newLimit);
     return Promise.resolve(this);

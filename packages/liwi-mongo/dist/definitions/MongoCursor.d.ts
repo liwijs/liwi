@@ -9,6 +9,7 @@ export default class MongoCursor<Model extends MongoBaseModel<KeyValue>, Result 
     constructor(store: MongoStore<Model, KeyValue>, cursor: FindCursor<Result>);
     advance(count: number): void;
     next(): Promise<KeyValue | undefined>;
+    forEach(callback: (result: Result) => Promise<void> | void): Promise<void>;
     limit(newLimit: number): Promise<this>;
     result(): Promise<Result>;
     close(): Promise<void>;
