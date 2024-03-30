@@ -500,7 +500,7 @@ class MongoConnection extends AbstractConnection {
     if (!config.has('database')) {
       throw new Error('Missing config database');
     }
-    const buildConnectionString = redactCredentials => `mongodb://${config.has('user') ? `${redactCredentials ? `${config.get('user').slice(0, 2)}[redacted]` : config.get('user')}:${redactCredentials ? '[redacted]' : config.get('password')}@` : ''}` + `${config.get('host')}:${config.get('port')}/${config.get('database')}`;
+    const buildConnectionString = redactCredentials => `mongodb://${config.has('user') ? `${redactCredentials ? `${config.get('user').slice(0, 2)}[redacted]` : encodeURIComponent(config.get('user'))}:${redactCredentials ? '[redacted]' : encodeURIComponent(config.get('password'))}@` : ''}` + `${config.get('host')}:${config.get('port')}/${encodeURIComponent(config.get('database'))}`;
     const connectionString = buildConnectionString(false);
     const connectionStringRedacted = buildConnectionString(true);
     this.connect(connectionString, connectionStringRedacted);

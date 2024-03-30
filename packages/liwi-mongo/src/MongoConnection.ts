@@ -31,17 +31,17 @@ export default class MongoConnection extends AbstractConnection {
           ? `${
               redactCredentials
                 ? `${(config.get('user') as string).slice(0, 2)}[redacted]`
-                : (config.get('user') as string)
+                : encodeURIComponent(config.get('user') as string)
             }:${
               redactCredentials
                 ? '[redacted]'
-                : (config.get('password') as string)
+                : encodeURIComponent(config.get('password') as string)
             }@`
           : ''
       }` +
-      `${config.get('host') as string}:${config.get('port') as string}/${
-        config.get('database') as string
-      }`;
+      `${config.get('host') as string}:${
+        config.get('port') as string
+      }/${encodeURIComponent(config.get('database') as string)}`;
 
     const connectionString = buildConnectionString(false);
     const connectionStringRedacted = buildConnectionString(true);
