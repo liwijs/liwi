@@ -2676,7 +2676,7 @@ __metadata:
     "@todo-example/babel-preset-nextjs-babel-config": "npm:12.0.0"
     "@todo-example/modules": "workspace:*"
     "@types/node": "npm:20.12.7"
-    "@types/react": "npm:18.2.75"
+    "@types/react": "npm:18.2.76"
     "@types/react-native": "npm:0.72.8"
     classnames: "npm:2.5.0"
     liwi-resources-client: "npm:12.0.0"
@@ -3055,13 +3055,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:18.2.75":
-  version: 18.2.75
-  resolution: "@types/react@npm:18.2.75"
+"@types/react@npm:*, @types/react@npm:18.2.76":
+  version: 18.2.76
+  resolution: "@types/react@npm:18.2.76"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10/d609cdc52d3c89871e0b1b0a77ed2d4077c1393709d0ac51a03b04c17704eb337484405aa646b193ac0c54f4fb286e311739b243ce50023ef8ba5bed422a0e8b
+  checksum: 10/25e9f548ba72be3e0cc624653e3bf2ec7d3ad1ede522e474884375eb352be977098857fe89611295ae3f5dd2f370305955a396996cde93c10fb9d1fbb93a5a74
   languageName: node
   linkType: hard
 
@@ -9272,7 +9272,7 @@ __metadata:
     "@babel/preset-env": "npm:7.24.4"
     "@babel/preset-react": "npm:7.24.1"
     "@babel/runtime": "npm:^7.24.0"
-    "@types/react": "npm:18.2.75"
+    "@types/react": "npm:18.2.76"
     liwi-resources-client: "npm:12.0.0"
     mingo: "npm:^6.2.7"
     nightingale-logger: "npm:^15.0.0"
