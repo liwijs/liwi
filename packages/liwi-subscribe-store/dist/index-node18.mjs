@@ -1,5 +1,3 @@
-/* eslint-disable max-lines */
-
 class SubscribeStore {
   listeners = new Set();
   constructor(store) {
@@ -130,8 +128,6 @@ class SubscribeStore {
     return cursor;
   }
 }
-
-/* eslint-disable @typescript-eslint/class-methods-use-this */
 
 class AbstractSubscribableStoreQuery {
   changeParams() {

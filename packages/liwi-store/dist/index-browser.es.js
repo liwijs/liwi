@@ -5,6 +5,7 @@ class AbstractCursor {
     return this.next().then(() => this.result());
   }
   async forEachKeys(callback) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
     while (true) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const key = await this.next();
@@ -16,6 +17,7 @@ class AbstractCursor {
     return this.forEachKeys(() => this.result().then(result => callback(result)));
   }
   *keysIterator() {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
       yield this.next();
     }

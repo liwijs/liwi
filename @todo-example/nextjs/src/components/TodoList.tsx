@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import type { Task, TasksService } from '@todo-example/modules';
 import classNames from 'classnames';
 import type { ReactElement, MouseEventHandler } from 'react';
@@ -85,6 +83,7 @@ function TaskItem({
   }, [task]);
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <li
       className={classNames(
         optimisticUpdatedTask.completed && 'completed',

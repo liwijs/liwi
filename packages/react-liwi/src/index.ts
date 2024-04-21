@@ -39,5 +39,8 @@ export const transportClientStateToSimplifiedState = (
 
     case 'closed':
       return 'disconnected';
+
+    default:
+      throw new Error('Invalid state');
   }
 };

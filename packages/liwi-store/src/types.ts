@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 export type Except<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export type SetOptional<T, K extends keyof T> = Except<T, K> &

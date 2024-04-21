@@ -83,9 +83,9 @@ export default class MongoConnection extends AbstractConnection {
         this.getConnection = () => Promise.resolve(this._connection!);
         return connection;
       })
-      .catch((error) => {
+      .catch((error: unknown) => {
         logger.info('not connected', { connectionStringRedacted });
-        console.error(error.message || error);
+        console.error((error as Error).message || error);
         // throw err;
         process.nextTick(() => {
           // eslint-disable-next-line unicorn/no-process-exit, n/no-process-exit
@@ -99,7 +99,6 @@ export default class MongoConnection extends AbstractConnection {
     this._connecting = this.getConnection();
   }
 
-  // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   getConnection(): Promise<mongodb.MongoClient> {
     throw new Error('call connect()');
   }

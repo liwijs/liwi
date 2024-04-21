@@ -25,6 +25,7 @@ export function TransportClientProvider<P extends Record<never, unknown>>({
   children,
   ...params
 }: TransportClientProviderProps<P>): ReactElement {
+  // eslint-disable-next-line react/hook-use-state
   const [client] = useState(() => {
     return createFn(params);
   });

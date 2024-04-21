@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import type { ExtendedJsonValue } from 'extended-json';
 import { encode, decode } from 'extended-json';
 import { ResourcesServerError } from 'liwi-resources-client';
@@ -100,7 +99,7 @@ class SubscribeResultPromise<
 
   catch<TResult2 = never>(
     onrejected?:
-      | ((reason: any) => PromiseLike<TResult2> | TResult2)
+      | ((reason: unknown) => PromiseLike<TResult2> | TResult2)
       | null
       | undefined,
   ): PromiseLike<Result | TResult2> {

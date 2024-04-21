@@ -26,6 +26,7 @@ export function TodoServicesProvider({
   children: ReactNode;
 }): ReactElement {
   const transportClient = useContext(TransportClientContext);
+  // eslint-disable-next-line react/hook-use-state
   const [todoServices] = useState(() => ({
     tasksService: createTasksServiceClient(transportClient),
   }));

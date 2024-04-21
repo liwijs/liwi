@@ -1,4 +1,4 @@
-/* eslint-disable complexity, max-lines */
+/* eslint-disable complexity */
 import 'pob-babel';
 import type {
   Query,
@@ -85,7 +85,11 @@ export const createMessageHandler = <AuthenticatedUser>(
       throw new Error('Invalid query key');
     }
 
-    return resource.queries[payload.key](payload.params, authenticatedUser);
+    const result = await resource.queries[payload.key](
+      payload.params,
+      authenticatedUser,
+    );
+    return result;
   };
 
   const createSubscription = (
@@ -234,6 +238,11 @@ export const createMessageHandler = <AuthenticatedUser>(
             throw error;
           }
         }
+        default:
+          throw new ResourcesServerError(
+            'INVALID_MESSAGE_TYPE',
+            'Invalid message type',
+          );
       }
     },
   };

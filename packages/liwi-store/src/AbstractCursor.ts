@@ -21,6 +21,7 @@ export default abstract class AbstractCursor<
   async forEachKeys(
     callback: (key: any) => Promise<void> | void,
   ): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
     while (true) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const key = await this.next();
@@ -37,6 +38,7 @@ export default abstract class AbstractCursor<
   }
 
   *keysIterator(): Generator<Promise<any>, void, undefined> {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
       yield this.next();
     }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/class-methods-use-this */
 import type {
   Query,
   SubscribeCallback,

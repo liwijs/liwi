@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import Backoff from 'backo2';
 import type { ConnectionStates } from 'liwi-resources-client';
 

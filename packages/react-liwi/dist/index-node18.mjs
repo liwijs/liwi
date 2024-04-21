@@ -31,7 +31,9 @@ function usePaginatedResource(createQuery, options, deps) {
       totalPages: limit ? Math.ceil(total / limit) : 1
     };
   }, [total, limit]);
-  return useMemo(() => ({
+  return useMemo(() => (
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  {
     ...result,
     pagination
   }), [result, pagination]);
@@ -83,6 +85,7 @@ function TransportClientProvider({
   children,
   ...params
 }) {
+  // eslint-disable-next-line react/hook-use-state
   const [client] = useState(() => {
     return createFn(params);
   });
@@ -118,6 +121,8 @@ const transportClientStateToSimplifiedState = state => {
       return 'connected';
     case 'closed':
       return 'disconnected';
+    default:
+      throw new Error('Invalid state');
   }
 };
 

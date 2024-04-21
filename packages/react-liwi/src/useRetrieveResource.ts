@@ -49,8 +49,8 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
         query,
         promise: fetch(query, ({ result, meta, info }) => {
           dispatch({ type: 'resolve', result, meta, queryInfo: info });
-        }).catch((error) => {
-          dispatch({ type: 'error', error });
+        }).catch((error: unknown) => {
+          dispatch({ type: 'error', error: error as Error });
         }),
       };
     },
@@ -67,8 +67,8 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
       type: 'refetch',
       promise: fetch(state.query, ({ result, meta, info }) => {
         dispatch({ type: 'resolve', result, meta, queryInfo: info });
-      }).catch((error) => {
-        dispatch({ type: 'error', error });
+      }).catch((error: unknown) => {
+        dispatch({ type: 'error', error: error as Error });
       }),
     });
   }, [isTransportReady, fetch, skip, state.query]);
@@ -92,8 +92,8 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
       type: 'refetch',
       promise: fetch(state.query, ({ result, meta, info }) => {
         dispatch({ type: 'resolve', result, meta, queryInfo: info });
-      }).catch((error) => {
-        dispatch({ type: 'error', error });
+      }).catch((error: unknown) => {
+        dispatch({ type: 'error', error: error as Error });
       }),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

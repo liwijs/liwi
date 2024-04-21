@@ -15,6 +15,7 @@ function TransportClientProvider({
   children,
   ...params
 }) {
+  // eslint-disable-next-line react/hook-use-state
   const [client] = useState(() => {
     return createFn(params);
   });
@@ -39,7 +40,9 @@ function TransportClientProvider({
   });
 }
 
-const createResourceResultFromState = state => ({
+const createResourceResultFromState = state => (
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+{
   query: state.query,
   initialLoading: !state.fetched && state.fetching,
   initialError: !state.fetched && !!state.error,
@@ -81,6 +84,7 @@ function reducer(state, action) {
         error: undefined
       };
     case 'refetch':
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       return {
         fetched: state.fetched,
         fetching: true,
@@ -141,7 +145,7 @@ function useRetrieveResource(createQuery, params, skip, deps) {
       }).catch(error => {
         dispatch({
           type: 'error',
-          error
+          error: error
         });
       })
     };
@@ -167,7 +171,7 @@ function useRetrieveResource(createQuery, params, skip, deps) {
       }).catch(error => {
         dispatch({
           type: 'error',
-          error
+          error: error
         });
       })
     });
@@ -199,7 +203,7 @@ function useRetrieveResource(createQuery, params, skip, deps) {
       }).catch(error => {
         dispatch({
           type: 'error',
-          error
+          error: error
         });
       })
     });
@@ -337,15 +341,11 @@ const useVisibilityChangeSubscriber = () => {
   }), []);
 };
 
-/* eslint-disable max-lines */
-
 const defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
 };
 const logger = new Logger('react-liwi:useResourceAndSubscribe');
 const isInitial = changes => changes.length === 1 && changes[0].type === 'initial';
-
-// eslint-disable-next-line @typescript-eslint/max-params
 function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
   visibleTimeout
 } = defaultOptions) {
@@ -528,7 +528,9 @@ function usePaginatedResource(createQuery, options, deps) {
       totalPages: limit ? Math.ceil(total / limit) : 1
     };
   }, [total, limit]);
-  return useMemo(() => ({
+  return useMemo(() => (
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  {
     ...result,
     pagination
   }), [result, pagination]);
@@ -581,6 +583,8 @@ const transportClientStateToSimplifiedState = state => {
       return 'connected';
     case 'closed':
       return 'disconnected';
+    default:
+      throw new Error('Invalid state');
   }
 };
 

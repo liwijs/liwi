@@ -3,7 +3,6 @@ import { ResourcesServerError } from 'liwi-resources-client';
 import { Logger } from 'nightingale-logger';
 import Backoff from 'backo2';
 
-/* eslint-disable max-lines */
 function createSimpleWebsocketClient({
   url,
   protocols,
@@ -155,8 +154,6 @@ function createSimpleWebsocketClient({
     }
   };
 }
-
-/* eslint-disable max-lines */
 
 const logger = new Logger('liwi:resources-websocket-client');
 class SubscribeResultPromise {

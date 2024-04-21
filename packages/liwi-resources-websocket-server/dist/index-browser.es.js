@@ -3,8 +3,6 @@ import { createMessageHandler, ResourcesServerError } from 'liwi-resources-serve
 import { Logger } from 'nightingale-logger';
 import { WebSocketServer } from 'ws';
 
-/* eslint-disable max-lines */
-
 const logger = new Logger('liwi:resources-websocket-server');
 const createWsServer = (server, path, resourcesServerService, getAuthenticatedUser
 // eslint-disable-next-line @typescript-eslint/max-params
@@ -127,10 +125,8 @@ const createWsServer = (server, path, resourcesServerService, getAuthenticatedUs
     wss.handleUpgrade(request, socket, upgradeHead, ws => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       authenticatedUserPromise.catch(error => {
-        logger.warn('getAuthenticatedUser threw an error, return null instead.',
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        {
-          err: error
+        logger.warn('getAuthenticatedUser threw an error, return null instead.', {
+          error
         });
         return null;
       }).then(authenticatedUser => {

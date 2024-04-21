@@ -1,4 +1,4 @@
-/* eslint-disable complexity, max-lines */
+/* eslint-disable complexity */
 import type {
   QuerySubscription,
   SubscribeCallback,

@@ -45,7 +45,7 @@ class MongoCursor extends AbstractStoreCursor {
   }
 }
 
-/* eslint-disable complexity, max-lines */
+/* eslint-disable complexity */
 
 const identityTransformer$1 = model => model;
 class MongoQueryCollection extends AbstractSubscribableStoreQuery {
@@ -330,8 +330,6 @@ class MongoQuerySingleItem extends AbstractSubscribableStoreQuery {
   }
 }
 
-/* eslint-disable max-lines */
-
 class MongoStore {
   keyPath = '_id';
   constructor(connection, collectionName) {
@@ -563,8 +561,6 @@ class MongoConnection extends AbstractConnection {
     this.getConnection = () => Promise.resolve(connectPromise);
     this._connecting = this.getConnection();
   }
-
-  // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   getConnection() {
     throw new Error('call connect()');
   }

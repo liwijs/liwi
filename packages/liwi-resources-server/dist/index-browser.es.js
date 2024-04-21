@@ -53,7 +53,7 @@ class ResourcesServerService {
   // }
 }
 
-/* eslint-disable complexity, max-lines */
+/* eslint-disable complexity */
 
 const logger = new Logger('liwi:resources-websocket-client');
 const logUnexpectedError = (error, message, payload) => {
@@ -83,7 +83,8 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
     if (!payload.key.startsWith('query')) {
       throw new Error('Invalid query key');
     }
-    return resource.queries[payload.key](payload.params, authenticatedUser);
+    const result = await resource.queries[payload.key](payload.params, authenticatedUser);
+    return result;
   };
   const createSubscription = (type, payload, resource, query, sendSubscriptionMessage
   // eslint-disable-next-line @typescript-eslint/max-params
@@ -215,6 +216,8 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               throw error;
             }
           }
+        default:
+          throw new ResourcesServerError('INVALID_MESSAGE_TYPE', 'Invalid message type');
       }
     }
   };
