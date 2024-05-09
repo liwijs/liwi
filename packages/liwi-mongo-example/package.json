@@ -49,7 +49,7 @@
     "liwi-mongo": "12.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.24.4",
+    "@babel/core": "7.24.5",
     "pob-babel": "38.1.0",
     "typescript": "5.3.3"
   }
