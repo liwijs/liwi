@@ -2485,10 +2485,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/normalize-color@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@react-native/normalize-color@npm:2.1.0"
-  checksum: 10/a72b98538e6b7e265fb0669b8767d5f788777fb1a0ac1df7b0c82d8b3a804c8122aa7b819688c5e36fcf90b5ba93050b0070e29d3f0d70ab9530c2abd2bb9f9e
+"@react-native/normalize-colors@npm:^0.74.1":
+  version: 0.74.83
+  resolution: "@react-native/normalize-colors@npm:0.74.83"
+  checksum: 10/2784c3b119cc022a342530027f891a158e965291d79cc990a22b67c9e5f2a4f28043e19086a6ec9351e8df09173072104cad84c84a3de32ec94be99cc59c2cb1
   languageName: node
   linkType: hard
 
@@ -2661,7 +2661,7 @@ __metadata:
     react-alp-connection-state: "npm:8.1.1"
     react-dom: "npm:18.3.1"
     react-liwi: "npm:12.0.0"
-    react-native-web: "npm:0.19.10"
+    react-native-web: "npm:0.19.12"
     springbokjs-daemon: "npm:10.1.0"
     todomvc-app-css: "npm:2.4.3"
     todomvc-common: "npm:1.0.5"
@@ -9407,12 +9407,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-native-web@npm:0.19.10":
-  version: 0.19.10
-  resolution: "react-native-web@npm:0.19.10"
+"react-native-web@npm:0.19.12":
+  version: 0.19.12
+  resolution: "react-native-web@npm:0.19.12"
   dependencies:
     "@babel/runtime": "npm:^7.18.6"
-    "@react-native/normalize-color": "npm:^2.1.0"
+    "@react-native/normalize-colors": "npm:^0.74.1"
     fbjs: "npm:^3.0.4"
     inline-style-prefixer: "npm:^6.0.1"
     memoize-one: "npm:^6.0.0"
@@ -9422,7 +9422,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10/923a13b6d6c23039a0bb36d9c1490bc184c308649198e95ea0fdb62ab35983150126c4b07d716a09d42f37be57d14f2669ca9661e9a3faaf856ed7f7f222120e
+  checksum: 10/6c326cc2fa07abcabfffcb99ea6df921c405402ead895ee4a142e8fdf55deda504fc4ce392bf50de9e6fe141a446ec2a93d8b872fcf079f10b92799fa9021732
   languageName: node
   linkType: hard
 
