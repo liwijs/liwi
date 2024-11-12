@@ -30,7 +30,7 @@
     "liwi-resources-client": "12.0.0",
     "liwi-resources-void-client": "12.0.0",
     "liwi-resources-websocket-client": "12.0.0",
-    "next": "14.0.3",
+    "next": "14.2.10",
     "nightingale-app-console": "15.0.0",
     "react": "18.3.1",
     "react-alp-connection-state": "8.1.1",
