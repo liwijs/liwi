@@ -2658,7 +2658,7 @@ __metadata:
     "@types/node": "npm:20.12.11"
     "@types/react": "npm:18.3.12"
     "@types/react-native": "npm:0.72.8"
-    classnames: "npm:2.5.0"
+    classnames: "npm:2.5.1"
     liwi-resources-client: "npm:12.0.0"
     liwi-resources-void-client: "npm:12.0.0"
     liwi-resources-websocket-client: "npm:12.0.0"
@@ -4249,10 +4249,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:2.5.0":
-  version: 2.5.0
-  resolution: "classnames@npm:2.5.0"
-  checksum: 10/729436ac76dffd1307c554a8092b89d137481795b1aedc47d2557b11b7ff45c933a4ec209c3f9e5fbc43e05c5426cf23f52e189aa2ac2681cca84fa92abe1c36
+"classnames@npm:2.5.1":
+  version: 2.5.1
+  resolution: "classnames@npm:2.5.1"
+  checksum: 10/58eb394e8817021b153bb6e7d782cfb667e4ab390cb2e9dac2fc7c6b979d1cc2b2a733093955fc5c94aa79ef5c8c89f11ab77780894509be6afbb91dddd79d15
   languageName: node
   linkType: hard
 
