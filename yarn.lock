@@ -2658,7 +2658,6 @@ __metadata:
     "@types/node": "npm:20.12.11"
     "@types/react": "npm:18.3.12"
     "@types/react-native": "npm:0.72.8"
-    classnames: "npm:2.5.1"
     liwi-resources-client: "npm:12.0.0"
     liwi-resources-void-client: "npm:12.0.0"
     liwi-resources-websocket-client: "npm:12.0.0"
@@ -4246,13 +4245,6 @@ __metadata:
   version: 1.2.3
   resolution: "cjs-module-lexer@npm:1.2.3"
   checksum: 10/f96a5118b0a012627a2b1c13bd2fcb92509778422aaa825c5da72300d6dcadfb47134dd2e9d97dfa31acd674891dd91642742772d19a09a8adc3e56bd2f5928c
-  languageName: node
-  linkType: hard
-
-"classnames@npm:2.5.1":
-  version: 2.5.1
-  resolution: "classnames@npm:2.5.1"
-  checksum: 10/58eb394e8817021b153bb6e7d782cfb667e4ab390cb2e9dac2fc7c6b979d1cc2b2a733093955fc5c94aa79ef5c8c89f11ab77780894509be6afbb91dddd79d15
   languageName: node
   linkType: hard
 

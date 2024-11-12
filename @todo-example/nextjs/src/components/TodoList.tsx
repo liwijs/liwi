@@ -1,5 +1,4 @@
 import type { Task, TasksService } from '@todo-example/modules';
-import classNames from 'classnames';
 import type { ReactElement, MouseEventHandler } from 'react';
 import { useState, useRef, useEffect } from 'react';
 import type { OperationCallWrapper } from 'react-liwi';
@@ -85,10 +84,12 @@ function TaskItem({
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <li
-      className={classNames(
+      className={[
         optimisticUpdatedTask.completed && 'completed',
         editing && 'editing',
-      )}
+      ]
+        .filter(Boolean)
+        .join(' ')}
       onDoubleClick={handleDoubleClick}
     >
       <div className="view">
