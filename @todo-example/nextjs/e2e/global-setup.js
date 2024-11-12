@@ -1,6 +1,6 @@
 import { execSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { MongoMemoryServer } from 'mongodb-memory-server';
+import { MongoMemoryServer } from 'mongodb-memory-server-core';
 import { createDaemon } from 'springbokjs-daemon';
 
 export default async function globalSetup(config) {
@@ -26,6 +26,8 @@ export default async function globalSetup(config) {
     },
   );
 
+  const mongodPromise = MongoMemoryServer.create();
+
   spawnSync(
     process.argv0,
     [
@@ -45,7 +47,7 @@ export default async function globalSetup(config) {
     },
   );
 
-  const mongod = await MongoMemoryServer.create();
+  const mongod = await mongodPromise;
 
   const daemonNext = createDaemon({
     command: process.argv0,
