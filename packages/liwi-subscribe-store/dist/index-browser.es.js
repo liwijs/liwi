@@ -1,6 +1,6 @@
 class SubscribeStore {
+  listeners = new Set();
   constructor(store) {
-    this.listeners = new Set();
     this.store = store;
     this.keyPath = store.keyPath;
   }
