@@ -4224,9 +4224,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-package-dependencies@npm:7.1.1":
-  version: 7.1.1
-  resolution: "check-package-dependencies@npm:7.1.1"
+"check-package-dependencies@npm:7.2.0":
+  version: 7.2.0
+  resolution: "check-package-dependencies@npm:7.2.0"
   dependencies:
     chalk: "npm:^5.2.0"
     glob: "npm:^10.0.0"
@@ -4236,7 +4236,7 @@ __metadata:
     type-fest: "npm:^4.0.0"
   bin:
     check-package-dependencies: ./bin/check-package-dependencies.mjs
-  checksum: 10/d71df0c2f218a4c35adf000c21b743836254f11f717516db71485859b89a3261a23a0cfdd2d792da9efc5ddc61129bebd64d4b796086ea8b7a7829c7aa642858
+  checksum: 10/5940745672418eda8a14c7ef53a53fc833c83f241654bfeae4bf6546decc02a1ddd38f08655b08dfd1b6b93e475c69367a1b990e4f563df319c4969158670226
   languageName: node
   linkType: hard
 
@@ -7713,7 +7713,7 @@ __metadata:
     "@pob/eslint-config-typescript-react": "npm:55.2.1"
     "@pob/root": "npm:9.2.0"
     "@types/jest": "npm:29.5.14"
-    check-package-dependencies: "npm:7.1.1"
+    check-package-dependencies: "npm:7.2.0"
     eslint: "npm:8.57.1"
     jest: "npm:29.7.0"
     pob-babel: "npm:38.1.3"
