@@ -1,7 +1,7 @@
-import { createCheckPackageWithWorkspaces } from 'check-package-dependencies';
+import { createCheckPackageWithWorkspaces } from "check-package-dependencies";
 
 await createCheckPackageWithWorkspaces({
-  isLibrary: (pkg) => !pkg.name.startsWith('@todo-example'),
+  isLibrary: (pkg) => !pkg.name.startsWith("@todo-example"),
 })
   .checkRecommended()
   .run();

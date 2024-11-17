@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from "typescript";
 
 const common = `
 import { OperationDescription, QueryDescription } from 'liwi-resources';
@@ -32,7 +32,7 @@ export interface PostServiceQueriesWithBadQuery {
 //     .concat(emitResult.diagnostics);
 // }
 //
-it('should transpile without error on simple queries', () => {
+it("should transpile without error on simple queries", () => {
   expect(
     ts.transpileModule(
       `${common}

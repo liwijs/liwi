@@ -1,5 +1,5 @@
-import type { ServiceInterface as ClientServiceInterface } from 'liwi-resources';
-import type { TransportClient } from './TransportClient';
+import type { ServiceInterface as ClientServiceInterface } from "liwi-resources";
+import type { TransportClient } from "./TransportClient";
 interface CreateResourceClientOptions<QueryKeys extends keyof any, OperationKeys extends keyof any> {
     queries: Record<QueryKeys, null>;
     operations: Record<OperationKeys, null>;

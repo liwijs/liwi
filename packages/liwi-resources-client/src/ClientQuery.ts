@@ -5,11 +5,11 @@ import type {
   QueryParams,
   QueryResult,
   ToServerQueryPayload,
-} from 'liwi-resources';
-import { Logger } from 'nightingale-logger';
-import type { TransportClient } from './TransportClient';
+} from "liwi-resources";
+import { Logger } from "nightingale-logger";
+import type { TransportClient } from "./TransportClient";
 
-const logger = new Logger('liwi:resources:query');
+const logger = new Logger("liwi:resources:query");
 
 export class ClientQuery<Result, Params extends QueryParams<Params>>
   implements Query<Result, Params>
@@ -54,38 +54,38 @@ export class ClientQuery<Result, Params extends QueryParams<Params>>
   }
 
   fetch<T>(onFulfilled?: (result: QueryResult<Result>) => T): Promise<T> {
-    logger.debug('fetch', {
+    logger.debug("fetch", {
       resourceName: this.resourceName,
       key: this.key,
     });
     return this.transportClient
-      .send<'fetch', QueryResult<Result>>('fetch', this.getTransportPayload())
+      .send<"fetch", QueryResult<Result>>("fetch", this.getTransportPayload())
       .then(onFulfilled);
   }
 
   fetchAndSubscribe(
     callback: SubscribeCallback<any, Result>,
   ): QuerySubscription {
-    logger.debug('fetchAndSubscribe', {
+    logger.debug("fetchAndSubscribe", {
       resourceName: this.resourceName,
       key: this.key,
     });
 
     return this.transportClient.subscribe(
-      'fetchAndSubscribe',
+      "fetchAndSubscribe",
       this.getTransportPayload(),
       callback,
     );
   }
 
   subscribe(callback: SubscribeCallback<any, Result>): QuerySubscription {
-    logger.debug('subscribe', {
+    logger.debug("subscribe", {
       resourceName: this.resourceName,
       key: this.key,
     });
 
     return this.transportClient.subscribe(
-      'subscribe',
+      "subscribe",
       this.getTransportPayload(),
       callback,
     );

@@ -1,21 +1,21 @@
-import type http from 'node:http';
-import type net from 'node:net';
-import { encode, decode } from 'extended-json';
-import type { ExtendedJsonValue } from 'extended-json';
+import type http from "node:http";
+import type net from "node:net";
+import { encode, decode } from "extended-json";
+import type { ExtendedJsonValue } from "extended-json";
 import type {
   AckError,
   ToServerMessage,
   ToClientMessage,
   ResourcesServerService,
   SubscriptionCallback,
-} from 'liwi-resources-server';
+} from "liwi-resources-server";
 import {
   ResourcesServerError,
   createMessageHandler,
-} from 'liwi-resources-server';
-import { Logger } from 'nightingale-logger';
-import type { WebSocket } from 'ws';
-import { WebSocketServer } from 'ws';
+} from "liwi-resources-server";
+import { Logger } from "nightingale-logger";
+import type { WebSocket } from "ws";
+import { WebSocketServer } from "ws";
 
 type GetAuthenticatedUser<AuthenticatedUser> = (
   request: http.IncomingMessage,
@@ -30,7 +30,7 @@ export interface ResourcesWebsocketServer {
   close: () => void;
 }
 
-const logger = new Logger('liwi:resources-websocket-server');
+const logger = new Logger("liwi:resources-websocket-server");
 
 export const createWsServer = <AuthenticatedUser>(
   server: http.Server,
@@ -42,7 +42,7 @@ export const createWsServer = <AuthenticatedUser>(
   const wss = new WebSocketServer({ noServer: true });
 
   wss.on(
-    'connection',
+    "connection",
     (ws: ExtendedWebSocket, authenticatedUser: AuthenticatedUser | null) => {
       ws.isAlive = true;
 
@@ -53,8 +53,8 @@ export const createWsServer = <AuthenticatedUser>(
         result: ToClientMessage[3],
         // eslint-disable-next-line @typescript-eslint/max-params
       ): void => {
-        if (!id) throw new Error('Invalid id');
-        logger.debug('sendMessage', { type, id, error, result });
+        if (!id) throw new Error("Invalid id");
+        logger.debug("sendMessage", { type, id, error, result });
         ws.send(encode([type, id, error, result]));
       };
 
@@ -66,8 +66,8 @@ export const createWsServer = <AuthenticatedUser>(
         logger.error(error);
 
         return {
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Internal Server Error',
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Internal Server Error",
         };
       };
 
@@ -76,7 +76,7 @@ export const createWsServer = <AuthenticatedUser>(
         error: Error | null,
         result?: ExtendedJsonValue,
       ): void => {
-        sendMessage('ack', id, error && createSafeError(error), result);
+        sendMessage("ack", id, error && createSafeError(error), result);
       };
 
       const sendSubscriptionMessage: SubscriptionCallback = (
@@ -85,7 +85,7 @@ export const createWsServer = <AuthenticatedUser>(
         result: ExtendedJsonValue,
       ): void => {
         sendMessage(
-          'subscription',
+          "subscription",
           subscriptionId,
           error && createSafeError(error),
           result,
@@ -116,52 +116,52 @@ export const createWsServer = <AuthenticatedUser>(
         }
       };
 
-      ws.on('pong', () => {
+      ws.on("pong", () => {
         ws.isAlive = true;
       });
 
-      ws.on('close', (code, data) => {
+      ws.on("close", (code, data) => {
         const reason = data.toString();
-        logger.debug('closed', { code, reason });
+        logger.debug("closed", { code, reason });
         close();
       });
 
-      ws.on('error', (error) => {
-        logger.error('ws error', { error });
+      ws.on("error", (error) => {
+        logger.error("ws error", { error });
       });
 
-      ws.on('message', (data, isBinary): void => {
+      ws.on("message", (data, isBinary): void => {
         if (isBinary) return;
 
         // eslint-disable-next-line @typescript-eslint/no-base-to-string
         const message = data.toString();
 
-        if (message === 'close') return;
+        if (message === "close") return;
 
-        if (typeof message !== 'string') {
-          logger.warn('got non string message');
+        if (typeof message !== "string") {
+          logger.warn("got non string message");
           return;
         }
 
         const decoded =
           decode<
             [
-              ToServerMessage['type'],
-              ToServerMessage['id'],
-              ToServerMessage['payload'],
+              ToServerMessage["type"],
+              ToServerMessage["id"],
+              ToServerMessage["payload"],
             ]
           >(message);
         try {
           const [type, id, payload] = decoded;
-          logger.debug('received', { type, id, payload });
+          logger.debug("received", { type, id, payload });
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           handleDecodedMessage({ type, id, payload } as ToServerMessage);
         } catch {
-          logger.notice('invalid message', { decoded });
+          logger.notice("invalid message", { decoded });
         }
       });
 
-      ws.send('connection-ack');
+      ws.send("connection-ack");
     },
   );
 
@@ -194,18 +194,18 @@ export const createWsServer = <AuthenticatedUser>(
       authenticatedUserPromise
         .catch((error: unknown) => {
           logger.warn(
-            'getAuthenticatedUser threw an error, return null instead.',
+            "getAuthenticatedUser threw an error, return null instead.",
             { error },
           );
           return null;
         })
         .then((authenticatedUser) => {
-          wss.emit('connection', ws, authenticatedUser);
+          wss.emit("connection", ws, authenticatedUser);
         });
     });
   };
 
-  server.on('upgrade', handleUpgrade);
+  server.on("upgrade", handleUpgrade);
 
   return {
     wss,
@@ -214,7 +214,7 @@ export const createWsServer = <AuthenticatedUser>(
       for (const ws of wss.clients) {
         ws.terminate();
       }
-      server.removeListener('upgrade', handleUpgrade);
+      server.removeListener("upgrade", handleUpgrade);
       clearInterval(interval);
     },
   };

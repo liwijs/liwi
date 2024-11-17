@@ -22,7 +22,7 @@ npm install --save liwi-rest-websocket
 ## Usage
 
 ```js
-import liwiRestWebsocket from 'liwi-rest-websocket';
+import liwiRestWebsocket from "liwi-rest-websocket";
 
 console.log(liwiRestWebsocket);
 ```

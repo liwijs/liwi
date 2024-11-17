@@ -7,8 +7,8 @@ import type {
   BaseModel,
   InsertType,
   AllowedKeyValue,
-} from 'liwi-store';
-import type SubscribeStore from './SubscribeStore';
+} from "liwi-store";
+import type SubscribeStore from "./SubscribeStore";
 
 export default abstract class AbstractSubscribableStoreQuery<
   KeyPath extends keyof Model,
@@ -20,13 +20,13 @@ export default abstract class AbstractSubscribableStoreQuery<
 > implements Query<Result, Params, KeyValue>
 {
   changeParams(params: Params): never {
-    throw new Error('Method not supported. Please create a new query.');
+    throw new Error("Method not supported. Please create a new query.");
   }
 
   changePartialParams(
     params: Params extends undefined ? never : Partial<Params>,
   ): never {
-    throw new Error('Method not supported. Please create a new query.');
+    throw new Error("Method not supported. Please create a new query.");
   }
 
   private _subscribeStore?: SubscribeStore<
@@ -53,7 +53,7 @@ export default abstract class AbstractSubscribableStoreQuery<
     any
   > {
     if (!this._subscribeStore) {
-      throw new Error('_subscribeStore is not initialized');
+      throw new Error("_subscribeStore is not initialized");
     }
     return this._subscribeStore;
   }

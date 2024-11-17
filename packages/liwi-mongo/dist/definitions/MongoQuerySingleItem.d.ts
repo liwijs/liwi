@@ -1,9 +1,9 @@
-import type { QuerySubscription, SubscribeCallback, QueryResult, QueryParams, QueryOptions, Transformer, AllowedKeyValue } from 'liwi-store';
-import { AbstractSubscribableStoreQuery } from 'liwi-subscribe-store';
-import type { MongoBaseModel, MongoInsertType, MongoKeyPath } from './MongoBaseModel';
-import type MongoStore from './MongoStore';
+import type { QuerySubscription, SubscribeCallback, QueryResult, QueryParams, QueryOptions, Transformer, AllowedKeyValue } from "liwi-store";
+import { AbstractSubscribableStoreQuery } from "liwi-subscribe-store";
+import type { MongoBaseModel, MongoInsertType, MongoKeyPath } from "./MongoBaseModel";
+import type MongoStore from "./MongoStore";
 type TestCriteria = (obj: any) => boolean;
-export default class MongoQuerySingleItem<Model extends MongoBaseModel<KeyValue>, Params extends QueryParams<Params> = never, Result extends Record<MongoKeyPath, KeyValue> | null = Model | null, KeyValue extends AllowedKeyValue = Model['_id']> extends AbstractSubscribableStoreQuery<MongoKeyPath, KeyValue, Model, MongoInsertType<Model, KeyValue>, Params, Result> {
+export default class MongoQuerySingleItem<Model extends MongoBaseModel<KeyValue>, Params extends QueryParams<Params> = never, Result extends Record<MongoKeyPath, KeyValue> | null = Model | null, KeyValue extends AllowedKeyValue = Model["_id"]> extends AbstractSubscribableStoreQuery<MongoKeyPath, KeyValue, Model, MongoInsertType<Model, KeyValue>, Params, Result> {
     private readonly store;
     private readonly options;
     private testCriteria?;

@@ -1,13 +1,13 @@
-import type { Query, QueryParams, QueryResult } from 'liwi-resources-client';
-import { useReducer, useEffect, useRef, useContext, useCallback } from 'react';
-import { TransportClientReadyContext } from './TransportClientProvider';
-import type { ResourceResult } from './createResourceResultFromState';
-import { createResourceResultFromState } from './createResourceResultFromState';
+import type { Query, QueryParams, QueryResult } from "liwi-resources-client";
+import { useReducer, useEffect, useRef, useContext, useCallback } from "react";
+import { TransportClientReadyContext } from "./TransportClientProvider";
+import type { ResourceResult } from "./createResourceResultFromState";
+import { createResourceResultFromState } from "./createResourceResultFromState";
 import type {
   ResourceReducer,
   ResourceReducerInitializerReturn,
-} from './reducer';
-import reducer, { initReducer } from './reducer';
+} from "./reducer";
+import reducer, { initReducer } from "./reducer";
 
 // eslint-disable-next-line @typescript-eslint/max-params
 export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
@@ -48,9 +48,9 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
       return {
         query,
         promise: fetch(query, ({ result, meta, info }) => {
-          dispatch({ type: 'resolve', result, meta, queryInfo: info });
+          dispatch({ type: "resolve", result, meta, queryInfo: info });
         }).catch((error: unknown) => {
-          dispatch({ type: 'error', error: error as Error });
+          dispatch({ type: "error", error: error as Error });
         }),
       };
     },
@@ -64,11 +64,11 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
     wasReady.current = true;
 
     dispatch({
-      type: 'refetch',
+      type: "refetch",
       promise: fetch(state.query, ({ result, meta, info }) => {
-        dispatch({ type: 'resolve', result, meta, queryInfo: info });
+        dispatch({ type: "resolve", result, meta, queryInfo: info });
       }).catch((error: unknown) => {
-        dispatch({ type: 'error', error: error as Error });
+        dispatch({ type: "error", error: error as Error });
       }),
     });
   }, [isTransportReady, fetch, skip, state.query]);
@@ -89,11 +89,11 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
 
     if (!wasReady.current) return;
     dispatch({
-      type: 'refetch',
+      type: "refetch",
       promise: fetch(state.query, ({ result, meta, info }) => {
-        dispatch({ type: 'resolve', result, meta, queryInfo: info });
+        dispatch({ type: "resolve", result, meta, queryInfo: info });
       }).catch((error: unknown) => {
-        dispatch({ type: 'error', error: error as Error });
+        dispatch({ type: "error", error: error as Error });
       }),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

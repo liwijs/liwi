@@ -1,6 +1,6 @@
-import type { ReactElement } from 'react';
+import type { ReactNode } from "react";
 
-export default function Info(): ReactElement {
+export default function Info(): ReactNode {
   return (
     <footer className="info">
       <p>Double-click to edit a todo</p>

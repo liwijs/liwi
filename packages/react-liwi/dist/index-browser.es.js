@@ -6,7 +6,7 @@ import { $sort } from 'mingo/operators/pipeline/sort';
 export { ResourcesServerError } from 'liwi-resources-client';
 
 const TransportClientContext = /*#__PURE__*/createContext(undefined);
-const TransportClientStateContext = /*#__PURE__*/createContext('opening');
+const TransportClientStateContext = /*#__PURE__*/createContext("opening");
 const TransportClientReadyContext = /*#__PURE__*/createContext(false);
 const useTransportClientState = () => useContext(TransportClientStateContext);
 const useTransportClientIsReady = () => useContext(TransportClientReadyContext);
@@ -19,7 +19,7 @@ function TransportClientProvider({
   const [client] = useState(() => {
     return createFn(params);
   });
-  const [connectionState, setConnectionState] = useState('opening');
+  const [connectionState, setConnectionState] = useState("opening");
   useEffect(() => {
     const closeConnectionStateListener = client.listenStateChange(setConnectionState);
     client.connect();
@@ -33,7 +33,7 @@ function TransportClientProvider({
     children: /*#__PURE__*/jsx(TransportClientStateContext.Provider, {
       value: connectionState,
       children: /*#__PURE__*/jsx(TransportClientReadyContext.Provider, {
-        value: connectionState === 'connected',
+        value: connectionState === "connected",
         children: children
       })
     })
@@ -73,7 +73,7 @@ function initReducer(initializer) {
 }
 function reducer(state, action) {
   switch (action.type) {
-    case 'resolve':
+    case "resolve":
       return {
         fetched: true,
         fetching: false,
@@ -83,7 +83,7 @@ function reducer(state, action) {
         queryInfo: action.queryInfo,
         error: undefined
       };
-    case 'refetch':
+    case "refetch":
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       return {
         fetched: state.fetched,
@@ -95,19 +95,19 @@ function reducer(state, action) {
         promise: action.promise,
         error: state.error
       };
-    case 'fetching':
+    case "fetching":
       return {
         ...state,
         fetching: true
       };
-    case 'error':
+    case "error":
       return {
         ...state,
         fetching: false,
         error: action.error
       };
     default:
-      throw new Error('Invalid action');
+      throw new Error("Invalid action");
   }
 }
 
@@ -137,14 +137,14 @@ function useRetrieveResource(createQuery, params, skip, deps) {
         info
       }) => {
         dispatch({
-          type: 'resolve',
+          type: "resolve",
           result,
           meta,
           queryInfo: info
         });
       }).catch(error => {
         dispatch({
-          type: 'error',
+          type: "error",
           error: error
         });
       })
@@ -156,21 +156,21 @@ function useRetrieveResource(createQuery, params, skip, deps) {
     if (skip) return;
     wasReady.current = true;
     dispatch({
-      type: 'refetch',
+      type: "refetch",
       promise: fetch(state.query, ({
         result,
         meta,
         info
       }) => {
         dispatch({
-          type: 'resolve',
+          type: "resolve",
           result,
           meta,
           queryInfo: info
         });
       }).catch(error => {
         dispatch({
-          type: 'error',
+          type: "error",
           error: error
         });
       })
@@ -188,21 +188,21 @@ function useRetrieveResource(createQuery, params, skip, deps) {
     state.query.changeParams(params);
     if (!wasReady.current) return;
     dispatch({
-      type: 'refetch',
+      type: "refetch",
       promise: fetch(state.query, ({
         result,
         meta,
         info
       }) => {
         dispatch({
-          type: 'resolve',
+          type: "resolve",
           result,
           meta,
           queryInfo: info
         });
       }).catch(error => {
         dispatch({
-          type: 'error',
+          type: "error",
           error: error
         });
       })
@@ -214,7 +214,7 @@ function useRetrieveResource(createQuery, params, skip, deps) {
 
 function sortCollection(collection, sort) {
   return $sort(Lazy(collection), sort, {
-    idKey: '_id'
+    idKey: "_id"
   }).value();
 }
 const copy = state => [...state];
@@ -222,7 +222,7 @@ const applyCollectionChange = (state, change, queryMeta, queryInfo
 // eslint-disable-next-line @typescript-eslint/max-params
 ) => {
   switch (change.type) {
-    case 'initial':
+    case "initial":
       {
         const keyPath = queryInfo.keyPath;
 
@@ -236,7 +236,7 @@ const applyCollectionChange = (state, change, queryMeta, queryInfo
           return JSON.stringify(existing) === JSON.stringify(value) ? existing : value;
         });
       }
-    case 'inserted':
+    case "inserted":
       {
         queryMeta.total += change.result.length;
         let newCollection = [...change.result, ...state];
@@ -246,14 +246,14 @@ const applyCollectionChange = (state, change, queryMeta, queryInfo
         if (!queryInfo.limit) return newCollection;
         return newCollection.slice(0, queryInfo.limit - change.result.length);
       }
-    case 'deleted':
+    case "deleted":
       {
         queryMeta.total -= change.keys.length;
         const keyPath = queryInfo.keyPath;
         const deletedKeys = change.keys;
         return state.filter(value => !deletedKeys.includes(value[keyPath]));
       }
-    case 'updated':
+    case "updated":
       {
         const keyPath = queryInfo.keyPath;
         const newState = copy(state);
@@ -265,7 +265,7 @@ const applyCollectionChange = (state, change, queryMeta, queryInfo
         return newState;
       }
     default:
-      throw new Error('Invalid type');
+      throw new Error("Invalid type");
   }
 };
 
@@ -291,21 +291,22 @@ const applySingleItemChange = (state, change, queryMeta
 // eslint-disable-next-line @typescript-eslint/max-params
 ) => {
   switch (change.type) {
-    case 'initial':
+    case "initial":
       queryMeta.total = change.initial === null ? 0 : 1;
       return change.initial;
-    case 'updated':
+    case "updated":
       {
         queryMeta.total = change.result === null ? 0 : 1;
         return change.result;
       }
-    case 'deleted':
+    case "deleted":
       {
         queryMeta.total = 0;
         return null;
       }
+    case "inserted":
     default:
-      throw new Error('Invalid type');
+      throw new Error("Invalid type");
   }
 };
 
@@ -331,11 +332,11 @@ const useVisibilityChangeSubscriber = () => {
   return useMemo(() => ({
     subscribe: handleVisibilityChange => {
       handleVisibilityChangeRef.current = handleVisibilityChange;
-      document.addEventListener('visibilitychange', handleVisibilityChange, false);
+      document.addEventListener("visibilitychange", handleVisibilityChange, false);
     },
     unsubscribe: () => {
       if (handleVisibilityChangeRef.current) {
-        document.removeEventListener('visibilitychange', handleVisibilityChangeRef.current);
+        document.removeEventListener("visibilitychange", handleVisibilityChangeRef.current);
       }
     }
   }), []);
@@ -344,8 +345,8 @@ const useVisibilityChangeSubscriber = () => {
 const defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
 };
-const logger = new Logger('react-liwi:useResourceAndSubscribe');
-const isInitial = changes => changes.length === 1 && changes[0].type === 'initial';
+const logger = new Logger("react-liwi:useResourceAndSubscribe");
+const isInitial = changes => changes.length === 1 && changes[0].type === "initial";
 function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
   visibleTimeout
 } = defaultOptions) {
@@ -356,7 +357,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
   const skipRef = useRef(skip);
   skipRef.current = skip;
   const unsubscribe = () => {
-    logger.info('unsubscribe');
+    logger.info("unsubscribe");
 
     // reset timeout to allow resubscribing
     timeoutRef.current = undefined;
@@ -378,20 +379,20 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
           resourceName: query.resourceName,
           key: query.key
         });
-        queryLogger.debug('init');
+        queryLogger.debug("init");
         const subscribe = () => {
-          queryLogger.debug('subscribing', {
+          queryLogger.debug("subscribing", {
             querySubscriptionRef: querySubscriptionRef.current,
             timeoutRef: timeoutRef.current
           });
           querySubscriptionRef.current = query.fetchAndSubscribe((err, changes) => {
-            queryLogger.debug('received changes', {
+            queryLogger.debug("received changes", {
               err,
               changes
             });
             if (err) {
               dispatch({
-                type: 'error',
+                type: "error",
                 error: err
               });
               return;
@@ -402,7 +403,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
               currentMeta = initialChange.meta;
               currentQueryInfo = initialChange.queryInfo;
               dispatch({
-                type: 'resolve',
+                type: "resolve",
                 result: initialChange.initial,
                 meta: initialChange.meta,
                 queryInfo: currentQueryInfo
@@ -419,7 +420,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
                 currentResult = newResult;
                 currentMeta = newMeta;
                 dispatch({
-                  type: 'resolve',
+                  type: "resolve",
                   result: newResult,
                   meta: newMeta,
                   queryInfo: currentQueryInfo
@@ -428,16 +429,16 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
             }
           });
           querySubscriptionRef.current.then(() => {
-            queryLogger.success('subscribed');
+            queryLogger.success("subscribed");
           }, error => {
             dispatch({
-              type: 'error',
+              type: "error",
               error
             });
           });
         };
         changeParamsRef.current = changedParams => {
-          queryLogger.info('change params', {
+          queryLogger.info("change params", {
             skip: skipRef.current,
             params: changedParams
           });
@@ -447,7 +448,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
           query.changeParams(changedParams);
           if (!document.hidden && !skipRef.current) {
             dispatch({
-              type: 'fetching'
+              type: "fetching"
             });
             subscribe();
           }
@@ -456,20 +457,20 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
           if (skipRef.current) return;
           if (!document.hidden) {
             if (timeoutRef.current !== undefined) {
-              queryLogger.debug('timeout cleared');
+              queryLogger.debug("timeout cleared");
               clearTimeout(timeoutRef.current);
               timeoutRef.current = undefined;
             } else if (!querySubscriptionRef.current) {
-              queryLogger.info('resubscribe');
+              queryLogger.info("resubscribe");
               dispatch({
-                type: 'fetching'
+                type: "fetching"
               });
               subscribe();
             }
             return;
           }
           if (querySubscriptionRef.current === undefined) return;
-          queryLogger.debug('timeout visible');
+          queryLogger.debug("timeout visible");
           timeoutRef.current = setTimeout(unsubscribe, visibleTimeout);
         });
         if (!document.hidden && !skipRef.current) {
@@ -502,7 +503,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
   return useMemo(() => createResourceResultFromState(state), [state]);
 }
 
-const isSSR = typeof window === 'undefined';
+const isSSR = typeof window === "undefined";
 function useResource(createQuery, {
   params,
   skip = false,
@@ -556,7 +557,7 @@ function useOperation(operationCall) {
       }, error => {
         setState({
           loading: false,
-          error
+          error: error instanceof Error ? error : new Error(String(error))
         });
         return [error, undefined];
       });
@@ -573,17 +574,17 @@ function useOperation(operationCall) {
 
 const transportClientStateToSimplifiedState = state => {
   switch (state) {
-    case 'opening':
-    case 'connecting':
-    case 'reconnect-scheduled':
-    case 'wait-for-visibility':
-      return 'connecting';
-    case 'connected':
-      return 'connected';
-    case 'closed':
-      return 'disconnected';
+    case "opening":
+    case "connecting":
+    case "reconnect-scheduled":
+    case "wait-for-visibility":
+      return "connecting";
+    case "connected":
+      return "connected";
+    case "closed":
+      return "disconnected";
     default:
-      throw new Error('Invalid state');
+      throw new Error("Invalid state");
   }
 };
 

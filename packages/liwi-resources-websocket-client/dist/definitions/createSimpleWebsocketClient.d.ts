@@ -1,4 +1,4 @@
-import type { ConnectionStates } from 'liwi-resources-client';
+import type { ConnectionStates } from "liwi-resources-client";
 export type StateChangeListener = (newState: ConnectionStates) => void;
 export type StateChangeListenerCreator = (listener: StateChangeListener) => () => void;
 export interface SimpleWebsocketClientOptions {
@@ -14,7 +14,7 @@ export interface SimpleWebsocketClientOptions {
     onMessage: (message: MessageEvent) => void;
     onError?: (event: Event) => void;
 }
-type Message = Parameters<WebSocket['send']>[0];
+type Message = Parameters<WebSocket["send"]>[0];
 export interface WebsocketTransport {
     connect: () => void;
     close: () => void;

@@ -16,12 +16,12 @@ import type {
   Transformer,
   AllowedKeyValue,
   OptionalBaseModelKeysForInsert,
-} from 'liwi-store';
+} from "liwi-store";
 
 export type Actions<Model> =
-  | { type: 'deleted'; prev: Model[] }
-  | { type: 'inserted'; next: Model[] }
-  | { type: 'updated'; changes: [Model, Model][] };
+  | { type: "deleted"; prev: Model[] }
+  | { type: "inserted"; next: Model[] }
+  | { type: "updated"; changes: [Model, Model][] };
 
 export type Listener<Model> = (action: Actions<Model>) => unknown;
 
@@ -137,20 +137,20 @@ export default class SubscribeStore<
 
   async insertOne(object: ModelInsertType): Promise<Model> {
     const inserted = await this.store.insertOne(object);
-    this.callSubscribed({ type: 'inserted', next: [inserted] });
+    this.callSubscribed({ type: "inserted", next: [inserted] });
     return inserted;
   }
 
   async replaceOne(object: Model): Promise<Model> {
     const replaced = await this.store.replaceOne(object);
-    this.callSubscribed({ type: 'updated', changes: [[object, replaced]] });
+    this.callSubscribed({ type: "updated", changes: [[object, replaced]] });
     return replaced;
   }
 
   async replaceSeveral(objects: Model[]): Promise<Model[]> {
     const replacedObjects = await this.store.replaceSeveral(objects);
     this.callSubscribed({
-      type: 'updated',
+      type: "updated",
       changes: objects.map((prev, index) => [prev, replacedObjects[index]]),
     });
     return replacedObjects;
@@ -160,7 +160,7 @@ export default class SubscribeStore<
     K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
+    setOnInsertPartialObject?: Update<Model>["$setOnInsert"],
   ): Promise<Model> {
     const result = await this.upsertOneWithInfo(
       object,
@@ -173,7 +173,7 @@ export default class SubscribeStore<
     K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
+    setOnInsertPartialObject?: Update<Model>["$setOnInsert"],
   ): Promise<UpsertResult<Model>> {
     const upsertedWithInfo = await this.store.upsertOneWithInfo(
       object,
@@ -181,11 +181,11 @@ export default class SubscribeStore<
     );
     if (upsertedWithInfo.inserted) {
       this.callSubscribed({
-        type: 'inserted',
+        type: "inserted",
         next: [upsertedWithInfo.object],
       });
     } else {
-      throw new Error('TODO');
+      throw new Error("TODO");
     }
     return upsertedWithInfo;
   }
@@ -209,7 +209,7 @@ export default class SubscribeStore<
     partialUpdate: Update<Model>,
   ): Promise<Model> {
     const updated = await this.store.partialUpdateOne(object, partialUpdate);
-    this.callSubscribed({ type: 'updated', changes: [[object, updated]] });
+    this.callSubscribed({ type: "updated", changes: [[object, updated]] });
     return updated;
   }
 
@@ -229,7 +229,7 @@ export default class SubscribeStore<
       );
       changes.push([model, updated]);
     });
-    this.callSubscribed({ type: 'updated', changes });
+    this.callSubscribed({ type: "updated", changes });
   }
 
   async deleteByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<void> {
@@ -238,14 +238,14 @@ export default class SubscribeStore<
 
   async deleteOne(object: Model): Promise<void> {
     await this.store.deleteOne(object);
-    this.callSubscribed({ type: 'deleted', prev: [object] });
+    this.callSubscribed({ type: "deleted", prev: [object] });
   }
 
   async deleteMany(criteria: Criteria<Model>): Promise<void> {
     const cursor = await this.store.cursor(criteria);
     const prev: Model[] = await cursor.toArray();
     await this.store.deleteMany(criteria);
-    this.callSubscribed({ type: 'deleted', prev });
+    this.callSubscribed({ type: "deleted", prev });
   }
 
   async count(criteria?: Criteria<Model>): Promise<number> {

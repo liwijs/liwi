@@ -1,7 +1,7 @@
-import 'nightingale-app-console';
-import Alp from 'alp-node';
-import { createWsServer } from 'liwi-resources-websocket-server';
-import { resourcesServerService } from './resources';
+import "nightingale-app-console";
+import Alp from "alp-node";
+import { createWsServer } from "liwi-resources-websocket-server";
+import { resourcesServerService } from "./resources";
 
 const app = new Alp();
 
@@ -16,7 +16,7 @@ const server = await app.start(() => {
 
 const wss = createWsServer(
   server,
-  '/ws',
+  "/ws",
   resourcesServerService,
   () => undefined,
 );
@@ -27,5 +27,5 @@ const cleanup = (): void => {
   app.close();
 };
 
-process.on('SIGINT', cleanup);
-process.on('SIGTERM', cleanup);
+process.on("SIGINT", cleanup);
+process.on("SIGTERM", cleanup);

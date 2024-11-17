@@ -3,9 +3,9 @@ import type {
   QueryParams,
   QueryMeta,
   ResourcesServerError,
-} from 'liwi-resources-client';
-import type { QueryInfo } from 'liwi-store';
-import type { State } from './reducer';
+} from "liwi-resources-client";
+import type { QueryInfo } from "liwi-store";
+import type { State } from "./reducer";
 
 export interface ResourceResultInitialLoading<
   Data,
@@ -74,4 +74,4 @@ export const createResourceResultFromState = <
     meta: !state.fetched ? undefined : state.meta,
     queryInfo: !state.fetched ? undefined : state.queryInfo,
     error: state.error,
-  } as ResourceResult<Result, Params>);
+  }) as ResourceResult<Result, Params>;

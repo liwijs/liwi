@@ -1,4 +1,4 @@
-import type { Change, Changes, QueryInfo, QueryMeta } from 'liwi-store';
+import type { Change, Changes, QueryInfo, QueryMeta } from "liwi-store";
 
 const applySingleItemChange = <Value extends Record<keyof Value, any>>(
   state: Value | null,
@@ -8,22 +8,23 @@ const applySingleItemChange = <Value extends Record<keyof Value, any>>(
   // eslint-disable-next-line @typescript-eslint/max-params
 ): Value | null => {
   switch (change.type) {
-    case 'initial':
+    case "initial":
       queryMeta.total = change.initial === null ? 0 : 1;
       return change.initial;
 
-    case 'updated': {
+    case "updated": {
       queryMeta.total = change.result === null ? 0 : 1;
       return change.result;
     }
 
-    case 'deleted': {
+    case "deleted": {
       queryMeta.total = 0;
       return null;
     }
 
+    case "inserted":
     default:
-      throw new Error('Invalid type');
+      throw new Error("Invalid type");
   }
 };
 

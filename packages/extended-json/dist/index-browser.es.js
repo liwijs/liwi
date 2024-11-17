@@ -16,7 +16,7 @@ function stringify(value, replacer, space) {
 
 const regexpStringDate = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
 const internalReviver = function (key, value) {
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     const matchDate = regexpStringDate.exec(value);
     if (matchDate) {
       return new Date(Date.UTC(+matchDate[1], +matchDate[2] - 1, +matchDate[3], +matchDate[4], +matchDate[5], +matchDate[6]));

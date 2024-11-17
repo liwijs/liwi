@@ -1,9 +1,9 @@
-import { AbstractStoreCursor } from 'liwi-store';
-import type { AllowedKeyValue } from 'liwi-store';
-import type { FindCursor } from 'mongodb';
-import type { MongoBaseModel } from './MongoBaseModel';
-import type MongoStore from './MongoStore';
-export default class MongoCursor<Model extends MongoBaseModel<KeyValue>, Result extends Partial<Model> = Model, KeyValue extends AllowedKeyValue = Model['_id']> extends AbstractStoreCursor<MongoStore<Model, KeyValue>, KeyValue, Model, Result> {
+import { AbstractStoreCursor } from "liwi-store";
+import type { AllowedKeyValue } from "liwi-store";
+import type { FindCursor } from "mongodb";
+import type { MongoBaseModel } from "./MongoBaseModel";
+import type MongoStore from "./MongoStore";
+export default class MongoCursor<Model extends MongoBaseModel<KeyValue>, Result extends Partial<Model> = Model, KeyValue extends AllowedKeyValue = Model["_id"]> extends AbstractStoreCursor<MongoStore<Model, KeyValue>, KeyValue, Model, Result> {
     private readonly cursor;
     private _result?;
     constructor(store: MongoStore<Model, KeyValue>, cursor: FindCursor<Result>);

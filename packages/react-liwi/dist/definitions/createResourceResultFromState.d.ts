@@ -1,6 +1,6 @@
-import type { Query, QueryParams, QueryMeta, ResourcesServerError } from 'liwi-resources-client';
-import type { QueryInfo } from 'liwi-store';
-import type { State } from './reducer';
+import type { Query, QueryParams, QueryMeta, ResourcesServerError } from "liwi-resources-client";
+import type { QueryInfo } from "liwi-store";
+import type { State } from "./reducer";
 export interface ResourceResultInitialLoading<Data, Params extends QueryParams<Params>> {
     query: Query<Data, Params>;
     initialLoading: true;

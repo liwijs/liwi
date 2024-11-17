@@ -1,7 +1,7 @@
-import type { TasksService, Task } from '@todo-example/modules';
-import type { Update } from 'liwi-mongo';
-import type { ServiceResource } from 'liwi-resources-server';
-import { tasksStore } from '../stores/tasksStores';
+import type { TasksService, Task } from "@todo-example/modules";
+import type { Update } from "liwi-mongo";
+import type { ServiceResource } from "liwi-resources-server";
+import { tasksStore } from "../stores/tasksStores";
 
 export const tasksService: ServiceResource<TasksService> = {
   queries: {
@@ -33,9 +33,9 @@ export const tasksService: ServiceResource<TasksService> = {
     },
     patch: async ({ id, patch }) => {
       const task = await tasksStore.findByKey(id);
-      if (!task) throw new Error('Invalid task');
+      if (!task) throw new Error("Invalid task");
 
-      const update: Update<Task>['$set'] = {};
+      const update: Update<Task>["$set"] = {};
       if (patch.completed != null) update.completed = patch.completed;
       if (patch.label != null) update.label = patch.label;
 

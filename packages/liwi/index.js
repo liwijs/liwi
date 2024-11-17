@@ -1,1 +1,1 @@
-throw new Error('Use `liwi-mongo` instead.');
+throw new Error("Use `liwi-mongo` instead.");

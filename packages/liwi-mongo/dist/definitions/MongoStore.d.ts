@@ -1,10 +1,10 @@
-import type { UpsertResult, SubscribableStore, QueryParams, UpsertPartialObject, Criteria, Sort, Update, QueryOptions, Transformer, AllowedKeyValue, OptionalBaseModelKeysForInsert } from 'liwi-store';
-import type { Collection } from 'mongodb';
-import type { MongoBaseModel, MongoKeyPath, MongoInsertType } from './MongoBaseModel';
-import type MongoConnection from './MongoConnection';
-import MongoCursor from './MongoCursor';
-import MongoQueryCollection from './MongoQueryCollection';
-import MongoQuerySingleItem from './MongoQuerySingleItem';
+import type { UpsertResult, SubscribableStore, QueryParams, UpsertPartialObject, Criteria, Sort, Update, QueryOptions, Transformer, AllowedKeyValue, OptionalBaseModelKeysForInsert } from "liwi-store";
+import type { Collection } from "mongodb";
+import type { MongoBaseModel, MongoKeyPath, MongoInsertType } from "./MongoBaseModel";
+import type MongoConnection from "./MongoConnection";
+import MongoCursor from "./MongoCursor";
+import MongoQueryCollection from "./MongoQueryCollection";
+import MongoQuerySingleItem from "./MongoQuerySingleItem";
 export interface MongoUpsertResult<KeyValue extends AllowedKeyValue, Model extends MongoBaseModel<KeyValue>> extends UpsertResult<Model> {
     object: Model;
     inserted: boolean;
@@ -16,11 +16,11 @@ export default class MongoStore<Model extends MongoBaseModel<KeyValue>, KeyValue
     constructor(connection: MongoConnection, collectionName: string);
     get collection(): Promise<Collection<Model>>;
     createQuerySingleItem<Result extends Record<MongoKeyPath, KeyValue> = Model, Params extends QueryParams<Params> = never>(options: QueryOptions<Model>, transformer?: Transformer<Model, Result>): MongoQuerySingleItem<Model, Params, Result, KeyValue>;
-    createQueryCollection<Item extends Record<MongoKeyPath, KeyValue> = Model, Params extends QueryParams<Params> = never>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): MongoQueryCollection<Model, Params, Model['_id'], Item>;
+    createQueryCollection<Item extends Record<MongoKeyPath, KeyValue> = Model, Params extends QueryParams<Params> = never>(options: QueryOptions<Model>, transformer?: Transformer<Model, Item>): MongoQueryCollection<Model, Params, Model["_id"], Item>;
     insertOne(object: MongoInsertType<Model>): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
-    upsertOne<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']): Promise<Model>;
-    upsertOneWithInfo<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']): Promise<MongoUpsertResult<KeyValue, Model>>;
+    upsertOne<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>["$setOnInsert"]): Promise<Model>;
+    upsertOneWithInfo<K extends Exclude<keyof Model, MongoKeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>["$setOnInsert"]): Promise<MongoUpsertResult<KeyValue, Model>>;
     replaceSeveral(objects: Model[]): Promise<Model[]>;
     partialUpdateByKey(key: KeyValue, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;

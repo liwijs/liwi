@@ -1,5 +1,5 @@
-import Backoff from 'backo2';
-import type { ConnectionStates } from 'liwi-resources-client';
+import Backoff from "backo2";
+import type { ConnectionStates } from "liwi-resources-client";
 
 export type StateChangeListener = (newState: ConnectionStates) => void;
 
@@ -21,7 +21,8 @@ export interface SimpleWebsocketClientOptions {
   onError?: (event: Event) => void;
 }
 
-type Message = Parameters<WebSocket['send']>[0];
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
+type Message = Parameters<WebSocket["send"]>[0];
 
 export interface WebsocketTransport {
   connect: () => void;
@@ -31,7 +32,7 @@ export interface WebsocketTransport {
   listenStateChange: StateChangeListenerCreator;
 }
 
-type Timeouts = 'inactivity' | 'maxConnect' | 'tryReconnect';
+type Timeouts = "inactivity" | "maxConnect" | "tryReconnect";
 
 export default function createSimpleWebsocketClient({
   url,
@@ -44,8 +45,9 @@ export default function createSimpleWebsocketClient({
   onMessage,
   onError,
 }: SimpleWebsocketClientOptions): WebsocketTransport {
+  // eslint-disable-next-line n/no-unsupported-features/node-builtins
   let ws: WebSocket | null = null;
-  let currentState: ConnectionStates = 'closed';
+  let currentState: ConnectionStates = "closed";
   let isConnected = false;
   const stateChangeListeners = new Set<StateChangeListener>();
 
@@ -64,7 +66,7 @@ export default function createSimpleWebsocketClient({
   const setCurrentState = (newState: ConnectionStates): void => {
     if (currentState === newState) return;
     currentState = newState;
-    isConnected = currentState === 'connected';
+    isConnected = currentState === "connected";
     stateChangeListeners.forEach((listener) => {
       listener(newState);
     });
@@ -79,12 +81,12 @@ export default function createSimpleWebsocketClient({
   };
 
   const closeWebsocket = (): void => {
-    clearInternalTimeout('inactivity');
+    clearInternalTimeout("inactivity");
     if (ws) {
-      clearInternalTimeout('maxConnect');
-      clearInternalTimeout('tryReconnect');
+      clearInternalTimeout("maxConnect");
+      clearInternalTimeout("tryReconnect");
       ws = null;
-      setCurrentState('closed');
+      setCurrentState("closed");
     }
   };
 
@@ -93,43 +95,45 @@ export default function createSimpleWebsocketClient({
   const connect = (): void => {
     const webSocket = thirdWebsocketArgument
       ? // @ts-expect-error third argument for react-native
+        // eslint-disable-next-line n/no-unsupported-features/node-builtins
         new WebSocket(url, protocols, thirdWebsocketArgument)
-      : new WebSocket(url, protocols);
+      : // eslint-disable-next-line n/no-unsupported-features/node-builtins
+        new WebSocket(url, protocols);
     ws = webSocket;
-    clearInternalTimeout('maxConnect');
-    setCurrentState('connecting');
+    clearInternalTimeout("maxConnect");
+    setCurrentState("connecting");
 
-    webSocket.addEventListener('open', (): void => {
+    webSocket.addEventListener("open", (): void => {
       backoff.reset();
-      clearInternalTimeout('maxConnect');
+      clearInternalTimeout("maxConnect");
     });
 
     const handleCloseOrError = (): void => {
-      if (currentState === 'closed') return;
+      if (currentState === "closed") return;
       if (!tryReconnect) {
         closeWebsocket();
-      } else if (document.visibilityState === 'hidden') {
-        setCurrentState('wait-for-visibility');
+      } else if (document.visibilityState === "hidden") {
+        setCurrentState("wait-for-visibility");
       } else {
         tryReconnect();
       }
     };
 
-    webSocket.addEventListener('close', handleCloseOrError);
+    webSocket.addEventListener("close", handleCloseOrError);
 
-    webSocket.addEventListener('message', (message): void => {
-      if (message.data === 'connection-ack') {
-        setCurrentState('connected');
+    webSocket.addEventListener("message", (message): void => {
+      if (message.data === "connection-ack") {
+        setCurrentState("connected");
       } else {
         onMessage(message);
       }
     });
 
-    webSocket.addEventListener('error', (event): void => {
+    webSocket.addEventListener("error", (event): void => {
       if (onError) {
         onError(event);
       } else {
-        console.error('ws error', event);
+        console.error("ws error", event);
       }
       handleCloseOrError();
     });
@@ -141,12 +145,12 @@ export default function createSimpleWebsocketClient({
         return;
       }
 
-      if (currentState === 'reconnect-scheduled') {
+      if (currentState === "reconnect-scheduled") {
         return;
       }
 
-      setCurrentState('reconnect-scheduled');
-      clearInternalTimeout('tryReconnect');
+      setCurrentState("reconnect-scheduled");
+      clearInternalTimeout("tryReconnect");
       const delay = backoff.duration();
       timeouts.tryReconnect = setTimeout(() => {
         connect();
@@ -157,16 +161,16 @@ export default function createSimpleWebsocketClient({
   const visibilityChangeHandler: (() => void) | undefined = !tryReconnect
     ? undefined
     : () => {
-        if (document.visibilityState === 'hidden') {
-          if (currentState === 'reconnect-scheduled') {
-            setCurrentState('wait-for-visibility');
+        if (document.visibilityState === "hidden") {
+          if (currentState === "reconnect-scheduled") {
+            setCurrentState("wait-for-visibility");
             if (timeouts.tryReconnect !== null) {
               clearTimeout(timeouts.tryReconnect);
             }
           }
           return;
         }
-        if (currentState !== 'wait-for-visibility') return;
+        if (currentState !== "wait-for-visibility") return;
 
         if (tryReconnect) {
           backoff.reset();
@@ -175,20 +179,20 @@ export default function createSimpleWebsocketClient({
       };
 
   if (visibilityChangeHandler) {
-    window.addEventListener('visibilitychange', visibilityChangeHandler);
+    window.addEventListener("visibilitychange", visibilityChangeHandler);
   }
   const wsTransport: WebsocketTransport = {
     connect,
 
     close() {
       if (ws) {
-        if (currentState === 'connected') {
-          ws.send('close');
+        if (currentState === "connected") {
+          ws.send("close");
         }
         closeWebsocket();
       }
       if (visibilityChangeHandler) {
-        window.removeEventListener('visibilitychange', visibilityChangeHandler);
+        window.removeEventListener("visibilitychange", visibilityChangeHandler);
       }
     },
 
@@ -197,7 +201,7 @@ export default function createSimpleWebsocketClient({
     },
 
     sendMessage(message): void {
-      if (!ws) throw new Error('Cannot send message');
+      if (!ws) throw new Error("Cannot send message");
       ws.send(message);
     },
 

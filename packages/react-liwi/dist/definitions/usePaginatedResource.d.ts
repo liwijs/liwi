@@ -1,6 +1,6 @@
-import type { Query, QueryParams } from 'liwi-resources-client';
-import type { ResourceResultInitialLoading, ResourceResultInitialError, ResourceResultLoaded } from './createResourceResultFromState';
-import type { UseResourceOptions } from './useResource';
+import type { Query, QueryParams } from "liwi-resources-client";
+import type { ResourceResultInitialLoading, ResourceResultInitialError, ResourceResultLoaded } from "./createResourceResultFromState";
+import type { UseResourceOptions } from "./useResource";
 export interface PaginatedQueryRequiredParams {
     page: number;
 }

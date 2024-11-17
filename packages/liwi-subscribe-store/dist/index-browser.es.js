@@ -1,5 +1,5 @@
 class SubscribeStore {
-  listeners = new Set();
+  listeners = (() => new Set())();
   constructor(store) {
     this.store = store;
     this.keyPath = store.keyPath;
@@ -36,7 +36,7 @@ class SubscribeStore {
   async insertOne(object) {
     const inserted = await this.store.insertOne(object);
     this.callSubscribed({
-      type: 'inserted',
+      type: "inserted",
       next: [inserted]
     });
     return inserted;
@@ -44,7 +44,7 @@ class SubscribeStore {
   async replaceOne(object) {
     const replaced = await this.store.replaceOne(object);
     this.callSubscribed({
-      type: 'updated',
+      type: "updated",
       changes: [[object, replaced]]
     });
     return replaced;
@@ -52,7 +52,7 @@ class SubscribeStore {
   async replaceSeveral(objects) {
     const replacedObjects = await this.store.replaceSeveral(objects);
     this.callSubscribed({
-      type: 'updated',
+      type: "updated",
       changes: objects.map((prev, index) => [prev, replacedObjects[index]])
     });
     return replacedObjects;
@@ -65,11 +65,11 @@ class SubscribeStore {
     const upsertedWithInfo = await this.store.upsertOneWithInfo(object, setOnInsertPartialObject);
     if (upsertedWithInfo.inserted) {
       this.callSubscribed({
-        type: 'inserted',
+        type: "inserted",
         next: [upsertedWithInfo.object]
       });
     } else {
-      throw new Error('TODO');
+      throw new Error("TODO");
     }
     return upsertedWithInfo;
   }
@@ -82,7 +82,7 @@ class SubscribeStore {
   async partialUpdateOne(object, partialUpdate) {
     const updated = await this.store.partialUpdateOne(object, partialUpdate);
     this.callSubscribed({
-      type: 'updated',
+      type: "updated",
       changes: [[object, updated]]
     });
     return updated;
@@ -96,7 +96,7 @@ class SubscribeStore {
       changes.push([model, updated]);
     });
     this.callSubscribed({
-      type: 'updated',
+      type: "updated",
       changes
     });
   }
@@ -106,7 +106,7 @@ class SubscribeStore {
   async deleteOne(object) {
     await this.store.deleteOne(object);
     this.callSubscribed({
-      type: 'deleted',
+      type: "deleted",
       prev: [object]
     });
   }
@@ -115,7 +115,7 @@ class SubscribeStore {
     const prev = await cursor.toArray();
     await this.store.deleteMany(criteria);
     this.callSubscribed({
-      type: 'deleted',
+      type: "deleted",
       prev
     });
   }
@@ -131,17 +131,17 @@ class SubscribeStore {
 
 class AbstractSubscribableStoreQuery {
   changeParams() {
-    throw new Error('Method not supported. Please create a new query.');
+    throw new Error("Method not supported. Please create a new query.");
   }
   changePartialParams() {
-    throw new Error('Method not supported. Please create a new query.');
+    throw new Error("Method not supported. Please create a new query.");
   }
   setSubscribeStore(store) {
     this._subscribeStore = store;
   }
   getSubscribeStore() {
     if (!this._subscribeStore) {
-      throw new Error('_subscribeStore is not initialized');
+      throw new Error("_subscribeStore is not initialized");
     }
     return this._subscribeStore;
   }

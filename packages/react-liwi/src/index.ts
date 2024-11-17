@@ -1,14 +1,14 @@
-import type { ConnectionStates } from 'liwi-resources-client';
+import type { ConnectionStates } from "liwi-resources-client";
 
-export { useResource } from './useResource';
+export { useResource } from "./useResource";
 export type {
   PaginatedQueryRequiredParams,
   Pagination,
-} from './usePaginatedResource';
-export { usePaginatedResource } from './usePaginatedResource';
-export { useOperation } from './useOperation';
-export type { OperationCallWrapper } from './useOperation';
-export type { ResourceResult } from './createResourceResultFromState';
+} from "./usePaginatedResource";
+export { usePaginatedResource } from "./usePaginatedResource";
+export { useOperation } from "./useOperation";
+export type { OperationCallWrapper } from "./useOperation";
+export type { ResourceResult } from "./createResourceResultFromState";
 export {
   TransportClientProvider,
   TransportClientContext,
@@ -16,31 +16,31 @@ export {
   TransportClientReadyContext,
   useTransportClientState,
   useTransportClientIsReady,
-} from './TransportClientProvider';
-export { ResourcesServerError } from 'liwi-resources-client';
+} from "./TransportClientProvider";
+export { ResourcesServerError } from "liwi-resources-client";
 
 export type SimplifiedConnectionState =
-  | 'connected'
-  | 'connecting'
-  | 'disconnected';
+  | "connected"
+  | "connecting"
+  | "disconnected";
 
 export const transportClientStateToSimplifiedState = (
   state: ConnectionStates,
 ): SimplifiedConnectionState => {
   switch (state) {
-    case 'opening':
-    case 'connecting':
-    case 'reconnect-scheduled':
-    case 'wait-for-visibility':
-      return 'connecting';
+    case "opening":
+    case "connecting":
+    case "reconnect-scheduled":
+    case "wait-for-visibility":
+      return "connecting";
 
-    case 'connected':
-      return 'connected';
+    case "connected":
+      return "connected";
 
-    case 'closed':
-      return 'disconnected';
+    case "closed":
+      return "disconnected";
 
     default:
-      throw new Error('Invalid state');
+      throw new Error("Invalid state");
   }
 };

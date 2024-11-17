@@ -25,10 +25,10 @@ npm install --save liwi-resources-websocket-client
 import {
   createWebsocketTransportClient,
   WebsocketTransportClientOptions,
-} from 'liwi-resources-websocket-client';
-import React, { ReactElement } from 'react';
-import { TransportClientProvider } from 'react-liwi';
-import App from './core/Layout';
+} from "liwi-resources-websocket-client";
+import React, { ReactElement } from "react";
+import { TransportClientProvider } from "react-liwi";
+import App from "./core/Layout";
 
 export default function BrowserApp(): ReactElement {
   return (

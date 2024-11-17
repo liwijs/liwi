@@ -22,7 +22,7 @@ npm install --save liwi-mongo
 ## Usage
 
 ```js
-import liwiMongo from 'liwi-mongo';
+import liwiMongo from "liwi-mongo";
 
 console.log(liwiMongo);
 ```

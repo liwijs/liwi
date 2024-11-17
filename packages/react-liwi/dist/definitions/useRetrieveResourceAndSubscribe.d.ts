@@ -1,5 +1,5 @@
-import type { Query, QueryParams } from 'liwi-resources-client';
-import type { ResourceResult } from './createResourceResultFromState';
+import type { Query, QueryParams } from "liwi-resources-client";
+import type { ResourceResult } from "./createResourceResultFromState";
 export interface UseResourceAndSubscribeOptions {
     visibleTimeout: number;
 }

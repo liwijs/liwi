@@ -1,5 +1,5 @@
-import type { Query, SubscribeCallback, QuerySubscription, QueryResult, QueryParams, BaseModel, InsertType, AllowedKeyValue } from 'liwi-store';
-import type SubscribeStore from './SubscribeStore';
+import type { Query, SubscribeCallback, QuerySubscription, QueryResult, QueryParams, BaseModel, InsertType, AllowedKeyValue } from "liwi-store";
+import type SubscribeStore from "./SubscribeStore";
 export default abstract class AbstractSubscribableStoreQuery<KeyPath extends keyof Model, KeyValue extends AllowedKeyValue, Model extends BaseModel & Record<KeyPath, KeyValue>, ModelInsertType extends InsertType<Model, KeyPath>, Params extends QueryParams<Params> = never, Result = Model> implements Query<Result, Params, KeyValue> {
     changeParams(params: Params): never;
     changePartialParams(params: Params extends undefined ? never : Partial<Params>): never;

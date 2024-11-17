@@ -22,5 +22,5 @@ npm install --save react-liwi
 ## Usage
 
 ```js
-import { Find, FindAndSubscribe } from 'react-liwi';
+import { Find, FindAndSubscribe } from "react-liwi";
 ```

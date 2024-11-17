@@ -1,5 +1,5 @@
-import type { ServiceQuery } from 'liwi-resources-client';
-import type { DraftTask, Task } from './Task';
+import type { ServiceQuery } from "liwi-resources-client";
+import type { DraftTask, Task } from "./Task";
 
 export interface QueryAllParams {
   completed?: boolean;
@@ -12,8 +12,8 @@ interface CreateParams {
 }
 
 interface PatchParams {
-  id: Task['_id'];
-  patch: Partial<Pick<Task, 'completed' | 'label'>>;
+  id: Task["_id"];
+  patch: Partial<Pick<Task, "completed" | "label">>;
 }
 
 export interface TasksService {

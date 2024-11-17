@@ -2,9 +2,9 @@ import type {
   Query,
   QueryParams,
   ResourcesServerError,
-} from 'liwi-resources-client';
-import type { QueryMeta, QueryInfo } from 'liwi-store';
-import type { Reducer } from 'react';
+} from "liwi-resources-client";
+import type { QueryMeta, QueryInfo } from "liwi-store";
+import type { Reducer } from "react";
 
 export interface InitialState<Result, Params extends QueryParams<Params>> {
   fetched: false;
@@ -40,26 +40,26 @@ export interface FetchedState<Result, Params extends QueryParams<Params>> {
 }
 
 export interface InitAction {
-  type: 'init';
+  type: "init";
 }
 
 export interface FetchingAction {
-  type: 'fetching';
+  type: "fetching";
 }
 
 export interface RefetchAction {
-  type: 'refetch';
+  type: "refetch";
   promise: Promise<void>;
 }
 
 export interface ResolveAction<Result> {
-  type: 'resolve';
+  type: "resolve";
   result: Result;
   meta: QueryMeta;
   queryInfo: QueryInfo<any>;
 }
 export interface ErrorAction {
-  type: 'error';
+  type: "error";
   error: Error | ResourcesServerError;
 }
 
@@ -106,7 +106,7 @@ export default function reducer<Result, Params extends QueryParams<Params>>(
   action: Action<Result>,
 ): State<Result, Params> {
   switch (action.type) {
-    case 'resolve':
+    case "resolve":
       return {
         fetched: true,
         fetching: false,
@@ -116,7 +116,7 @@ export default function reducer<Result, Params extends QueryParams<Params>>(
         queryInfo: action.queryInfo,
         error: undefined,
       };
-    case 'refetch':
+    case "refetch":
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       return {
         fetched: state.fetched,
@@ -128,18 +128,18 @@ export default function reducer<Result, Params extends QueryParams<Params>>(
         promise: action.promise,
         error: state.error,
       } as FetchedState<Result, Params> | InitialState<Result, Params>;
-    case 'fetching':
+    case "fetching":
       return {
         ...state,
         fetching: true,
       };
-    case 'error':
+    case "error":
       return {
         ...state,
         fetching: false,
         error: action.error,
       };
     default:
-      throw new Error('Invalid action');
+      throw new Error("Invalid action");
   }
 }

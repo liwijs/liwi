@@ -1,4 +1,4 @@
-import type { MongoBaseModel } from 'liwi-mongo';
+import type { MongoBaseModel } from "liwi-mongo";
 
 export interface DraftTask {
   completed: boolean;

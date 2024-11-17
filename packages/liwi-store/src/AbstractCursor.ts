@@ -1,4 +1,4 @@
-import type { BaseModel } from './types';
+import type { BaseModel } from "./types";
 
 export default abstract class AbstractCursor<
   Model extends BaseModel,
@@ -21,7 +21,7 @@ export default abstract class AbstractCursor<
   async forEachKeys(
     callback: (key: any) => Promise<void> | void,
   ): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const key = await this.next();

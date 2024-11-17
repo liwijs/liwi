@@ -1,12 +1,12 @@
-import type { Store as StoreInterface, AbstractConnection, UpsertResult, SubscribableStoreQuery, AbstractStoreCursor, SubscribableStore, QueryParams, UpsertPartialObject, BaseModel, InsertType, Update, Criteria, Sort, QueryOptions, Transformer, AllowedKeyValue, OptionalBaseModelKeysForInsert } from 'liwi-store';
+import type { Store as StoreInterface, AbstractConnection, UpsertResult, SubscribableStoreQuery, AbstractStoreCursor, SubscribableStore, QueryParams, UpsertPartialObject, BaseModel, InsertType, Update, Criteria, Sort, QueryOptions, Transformer, AllowedKeyValue, OptionalBaseModelKeysForInsert } from "liwi-store";
 export type Actions<Model> = {
-    type: 'deleted';
+    type: "deleted";
     prev: Model[];
 } | {
-    type: 'inserted';
+    type: "inserted";
     next: Model[];
 } | {
-    type: 'updated';
+    type: "updated";
     changes: [Model, Model][];
 };
 export type Listener<Model> = (action: Actions<Model>) => unknown;
@@ -26,8 +26,8 @@ export default class SubscribeStore<KeyPath extends keyof Model, KeyValue extend
     insertOne(object: ModelInsertType): Promise<Model>;
     replaceOne(object: Model): Promise<Model>;
     replaceSeveral(objects: Model[]): Promise<Model[]>;
-    upsertOne<K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']): Promise<Model>;
-    upsertOneWithInfo<K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']): Promise<UpsertResult<Model>>;
+    upsertOne<K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>["$setOnInsert"]): Promise<Model>;
+    upsertOneWithInfo<K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>["$setOnInsert"]): Promise<UpsertResult<Model>>;
     partialUpdateByKey(key: KeyValue, partialUpdate: Update<Model>, criteria?: Criteria<Model>): Promise<Model>;
     partialUpdateOne(object: Model, partialUpdate: Update<Model>): Promise<Model>;
     partialUpdateMany(criteria: Criteria<Model>, partialUpdate: Update<Model>): Promise<void>;

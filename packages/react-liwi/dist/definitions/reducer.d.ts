@@ -1,6 +1,6 @@
-import type { Query, QueryParams, ResourcesServerError } from 'liwi-resources-client';
-import type { QueryMeta, QueryInfo } from 'liwi-store';
-import type { Reducer } from 'react';
+import type { Query, QueryParams, ResourcesServerError } from "liwi-resources-client";
+import type { QueryMeta, QueryInfo } from "liwi-store";
+import type { Reducer } from "react";
 export interface InitialState<Result, Params extends QueryParams<Params>> {
     fetched: false;
     fetching: true;
@@ -32,23 +32,23 @@ export interface FetchedState<Result, Params extends QueryParams<Params>> {
     error: Error | ResourcesServerError | undefined;
 }
 export interface InitAction {
-    type: 'init';
+    type: "init";
 }
 export interface FetchingAction {
-    type: 'fetching';
+    type: "fetching";
 }
 export interface RefetchAction {
-    type: 'refetch';
+    type: "refetch";
     promise: Promise<void>;
 }
 export interface ResolveAction<Result> {
-    type: 'resolve';
+    type: "resolve";
     result: Result;
     meta: QueryMeta;
     queryInfo: QueryInfo<any>;
 }
 export interface ErrorAction {
-    type: 'error';
+    type: "error";
     error: Error | ResourcesServerError;
 }
 export type Action<Result> = ErrorAction | FetchingAction | RefetchAction | ResolveAction<Result>;

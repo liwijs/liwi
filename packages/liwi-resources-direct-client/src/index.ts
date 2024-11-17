@@ -1,9 +1,9 @@
 import type {
   TransportClient,
   TransportClientSubscribeResult,
-} from 'liwi-resources-client';
-import type { ResourcesServerService } from 'liwi-resources-server';
-import { createMessageHandler } from 'liwi-resources-server';
+} from "liwi-resources-client";
+import type { ResourcesServerService } from "liwi-resources-server";
+import { createMessageHandler } from "liwi-resources-server";
 
 export interface DirectTransportClientOptions<AuthenticatedUser> {
   resourcesServerService: ResourcesServerService;
@@ -28,7 +28,7 @@ export const createDirectTransportClient = <AuthenticatedUser>({
     },
     send: (type, message) => {
       return messageHandler({ type, id: 0, payload: message } as any, () => {
-        throw new Error('Unsupported');
+        throw new Error("Unsupported");
       }) as any;
     },
 

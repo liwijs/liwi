@@ -22,7 +22,7 @@ npm install --save liwi-subscribe-store
 ## Usage
 
 ```js
-import liwiStore from 'liwi-subscribe-store';
+import liwiStore from "liwi-subscribe-store";
 
 console.log(liwiStore);
 ```

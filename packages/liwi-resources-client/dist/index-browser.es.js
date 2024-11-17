@@ -1,7 +1,7 @@
 import { Logger } from 'nightingale-logger';
 export { ResourcesServerError } from 'liwi-resources';
 
-const logger = new Logger('liwi:resources:query');
+const logger = new Logger("liwi:resources:query");
 class ClientQuery {
   // eslint-disable-next-line @typescript-eslint/max-params
   constructor(resourceName, transportClient, key, params) {
@@ -27,25 +27,25 @@ class ClientQuery {
     };
   }
   fetch(onFulfilled) {
-    logger.debug('fetch', {
+    logger.debug("fetch", {
       resourceName: this.resourceName,
       key: this.key
     });
-    return this.transportClient.send('fetch', this.getTransportPayload()).then(onFulfilled);
+    return this.transportClient.send("fetch", this.getTransportPayload()).then(onFulfilled);
   }
   fetchAndSubscribe(callback) {
-    logger.debug('fetchAndSubscribe', {
+    logger.debug("fetchAndSubscribe", {
       resourceName: this.resourceName,
       key: this.key
     });
-    return this.transportClient.subscribe('fetchAndSubscribe', this.getTransportPayload(), callback);
+    return this.transportClient.subscribe("fetchAndSubscribe", this.getTransportPayload(), callback);
   }
   subscribe(callback) {
-    logger.debug('subscribe', {
+    logger.debug("subscribe", {
       resourceName: this.resourceName,
       key: this.key
     });
-    return this.transportClient.subscribe('subscribe', this.getTransportPayload(), callback);
+    return this.transportClient.subscribe("subscribe", this.getTransportPayload(), callback);
   }
 }
 
@@ -58,7 +58,7 @@ const createResourceClientService = (resourceName, options) => {
       queries[queryKey] = params => new ClientQuery(resourceName, transportClient, queryKey, params);
     });
     getKeys(options.operations).forEach(operationKey => {
-      operations[operationKey] = params => transportClient.send('do', {
+      operations[operationKey] = params => transportClient.send("do", {
         resourceName,
         operationKey: operationKey,
         params

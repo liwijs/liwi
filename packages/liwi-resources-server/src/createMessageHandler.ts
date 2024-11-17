@@ -1,18 +1,18 @@
 /* eslint-disable complexity */
-import 'pob-babel';
+import "pob-babel";
 import type {
   Query,
   QuerySubscription,
   ToServerMessage,
   ToServerSubscribeQueryPayload,
   ToServerQueryPayload,
-} from 'liwi-resources';
-import { ResourcesServerError } from 'liwi-resources';
-import { Logger } from 'nightingale-logger';
-import type { ResourcesServerService } from './ResourcesServerService';
-import type { ServiceResource, SubscribeHook } from './ServiceResource';
+} from "liwi-resources";
+import { ResourcesServerError } from "liwi-resources";
+import { Logger } from "nightingale-logger";
+import type { ResourcesServerService } from "./ResourcesServerService";
+import type { ServiceResource, SubscribeHook } from "./ServiceResource";
 
-const logger = new Logger('liwi:resources-websocket-client');
+const logger = new Logger("liwi:resources-websocket-client");
 
 export type SubscriptionCallback = (
   subscriptionId: number,
@@ -39,7 +39,7 @@ const logUnexpectedError = (
   if (!(error instanceof ResourcesServerError)) {
     logger.error(message, {
       error,
-      payload: !__DEV__ ? 'redacted' : payload,
+      payload: !__DEV__ ? "redacted" : payload,
     });
   } else if (__DEV__) {
     logger.info(`ResourcesServerError in ${message}`, {
@@ -65,7 +65,7 @@ export const createMessageHandler = <AuthenticatedUser>(
   const getResource = (payload: {
     resourceName: string;
   }): ServiceResource<any, any> => {
-    logger.debug('resource', {
+    logger.debug("resource", {
       resourceName: payload.resourceName,
     });
     const resource = resourcesServerService.getServiceResource(
@@ -76,13 +76,13 @@ export const createMessageHandler = <AuthenticatedUser>(
 
   const createQuery = async <
     Service extends ServiceResource<any, any>,
-    Key extends string & keyof Service['queries'],
+    Key extends string & keyof Service["queries"],
   >(
     payload: ToServerQueryPayload<Key>,
     resource: Service,
   ): Promise<Query<any, any>> => {
-    if (!payload.key.startsWith('query')) {
-      throw new Error('Invalid query key');
+    if (!payload.key.startsWith("query")) {
+      throw new Error("Invalid query key");
     }
 
     const result = await resource.queries[payload.key](
@@ -93,7 +93,7 @@ export const createMessageHandler = <AuthenticatedUser>(
   };
 
   const createSubscription = (
-    type: 'fetchAndSubscribe' | 'subscribe',
+    type: "fetchAndSubscribe" | "subscribe",
     payload: ToServerSubscribeQueryPayload,
     resource: ServiceResource<any, any>,
     query: Query<any, any>,
@@ -101,14 +101,14 @@ export const createMessageHandler = <AuthenticatedUser>(
     // eslint-disable-next-line @typescript-eslint/max-params
   ): PromiseLike<null> => {
     if (!openedSubscriptions) {
-      throw new Error('Subscriptions not allowed');
+      throw new Error("Subscriptions not allowed");
     }
 
     const { subscriptionId } = payload;
     if (openedSubscriptions.has(subscriptionId)) {
-      const error = 'Already have a watcher for this id. Cannot add a new one';
+      const error = "Already have a watcher for this id. Cannot add a new one";
       logger.warn(error, { subscriptionId, key: payload.key });
-      throw new ResourcesServerError('ALREADY_HAVE_WATCHER', error);
+      throw new ResourcesServerError("ALREADY_HAVE_WATCHER", error);
     }
 
     const subscription = query[type]((error: Error | null, result: any) => {
@@ -150,7 +150,7 @@ export const createMessageHandler = <AuthenticatedUser>(
     },
     messageHandler: async (message, subscriptionCallback): Promise<unknown> => {
       switch (message.type) {
-        case 'fetch': {
+        case "fetch": {
           try {
             const resource = getResource(message.payload);
             const query = await createQuery(message.payload, resource);
@@ -160,13 +160,13 @@ export const createMessageHandler = <AuthenticatedUser>(
             throw error;
           }
         }
-        case 'fetchAndSubscribe': {
+        case "fetchAndSubscribe": {
           try {
             const resource = getResource(message.payload);
             const query = await createQuery(message.payload, resource);
 
             return await createSubscription(
-              'fetchAndSubscribe',
+              "fetchAndSubscribe",
               message.payload,
               resource,
               query,
@@ -177,12 +177,12 @@ export const createMessageHandler = <AuthenticatedUser>(
             throw error;
           }
         }
-        case 'subscribe': {
+        case "subscribe": {
           try {
             const resource = getResource(message.payload);
             const query = await createQuery(message.payload, resource);
             await createSubscription(
-              'subscribe',
+              "subscribe",
               message.payload,
               resource,
               query,
@@ -197,16 +197,16 @@ export const createMessageHandler = <AuthenticatedUser>(
         // case 'subscribe:changePayload': {
         //   break;
         // }
-        case 'subscribe:close': {
+        case "subscribe:close": {
           if (!openedSubscriptions) {
-            throw new Error('Subscriptions not allowed');
+            throw new Error("Subscriptions not allowed");
           }
           try {
             const { subscriptionId } = message.payload;
             const SubscriptionAndSubscribeHook =
               openedSubscriptions.get(subscriptionId);
             if (!SubscriptionAndSubscribeHook) {
-              logger.warn('tried to unsubscribe non existing watcher', {
+              logger.warn("tried to unsubscribe non existing watcher", {
                 subscriptionId,
               });
             } else {
@@ -218,7 +218,7 @@ export const createMessageHandler = <AuthenticatedUser>(
           }
           return;
         }
-        case 'do': {
+        case "do": {
           try {
             const resource = getResource(message.payload);
             const { operationKey, params } = message.payload;
@@ -227,7 +227,7 @@ export const createMessageHandler = <AuthenticatedUser>(
 
             if (!operation) {
               throw new ResourcesServerError(
-                'OPERATION_NOT_FOUND',
+                "OPERATION_NOT_FOUND",
                 `Operation not found: ${operationKey}`,
               );
             }
@@ -240,8 +240,8 @@ export const createMessageHandler = <AuthenticatedUser>(
         }
         default:
           throw new ResourcesServerError(
-            'INVALID_MESSAGE_TYPE',
-            'Invalid message type',
+            "INVALID_MESSAGE_TYPE",
+            "Invalid message type",
           );
       }
     },

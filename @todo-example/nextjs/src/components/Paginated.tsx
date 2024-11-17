@@ -1,7 +1,7 @@
-import type { ReactElement } from 'react';
-import { useContext, useState } from 'react';
-import { usePaginatedResource } from 'react-liwi';
-import { TodoServicesContext } from 'app/services/TodoServicesProvider';
+import type { ReactElement } from "react";
+import { useContext, useState } from "react";
+import { usePaginatedResource } from "react-liwi";
+import { TodoServicesContext } from "../app/services/TodoServicesProvider";
 
 interface PaginatedProps {
   subscribe: boolean;
@@ -34,7 +34,7 @@ export default function Paginated({
         <select
           defaultValue="active"
           onChange={(e) => {
-            setCompleted(e.target.value === 'completed');
+            setCompleted(e.target.value === "completed");
           }}
         >
           <option value="active">Active</option>
@@ -42,7 +42,7 @@ export default function Paginated({
         </select>
       </div>
       {tasksResourceResult.initialLoading ? (
-        'Loading...'
+        "Loading..."
       ) : (
         <>
           {tasksResourceResult.error ? <b>Error!</b> : null}
@@ -71,7 +71,7 @@ export default function Paginated({
                             }}
                           >
                             {i + 1}
-                          </button>{' '}
+                          </button>{" "}
                         </span>
                       );
                     })}

@@ -1,4 +1,4 @@
-import type { ExtendedJsonValue } from './ExtendedJsonValue';
+import type { ExtendedJsonValue } from "./ExtendedJsonValue";
 type JsonReviver = <T extends ExtendedJsonValue>(key: string, value: T) => ExtendedJsonValue;
 /**
  * @param  {string}   text      The string to parse as JSON

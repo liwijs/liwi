@@ -1,6 +1,6 @@
-export { createResourceClientService } from './createResourceClientService';
-export type { ServiceInterface as ClientServiceInterface } from 'liwi-resources';
-export { ResourcesServerError } from 'liwi-resources';
+export { createResourceClientService } from "./createResourceClientService";
+export type { ServiceInterface as ClientServiceInterface } from "liwi-resources";
+export { ResourcesServerError } from "liwi-resources";
 export type {
   AckError,
   ToClientMessage,
@@ -15,8 +15,8 @@ export type {
   QueryMeta,
   SubscribeCallback,
   ServiceQuery,
-} from 'liwi-resources';
-export type { ClientQuery } from './ClientQuery';
+} from "liwi-resources";
+export type { ClientQuery } from "./ClientQuery";
 export type {
   TransportClient,
   TransportClientSubscribeCallback,
@@ -24,4 +24,4 @@ export type {
   ConnectionStateChangeListener,
   ConnectionStateChangeListenerCreator,
   ConnectionStates,
-} from './TransportClient';
+} from "./TransportClient";

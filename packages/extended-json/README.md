@@ -23,7 +23,7 @@ npm install --save extended-json
 ## Usage
 
 ```js
-import extendedJson from 'extended-json';
+import extendedJson from "extended-json";
 
 console.log(extendedJson);
 ```

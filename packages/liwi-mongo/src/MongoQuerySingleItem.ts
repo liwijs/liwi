@@ -7,17 +7,17 @@ import type {
   QueryOptions,
   Transformer,
   AllowedKeyValue,
-} from 'liwi-store';
-import type { Actions } from 'liwi-subscribe-store';
-import { AbstractSubscribableStoreQuery } from 'liwi-subscribe-store';
-import mingo from 'mingo';
+} from "liwi-store";
+import type { Actions } from "liwi-subscribe-store";
+import { AbstractSubscribableStoreQuery } from "liwi-subscribe-store";
+import mingo from "mingo";
 import type {
   MongoBaseModel,
   MongoInsertType,
   MongoKeyPath,
-} from './MongoBaseModel';
-import type MongoCursor from './MongoCursor';
-import type MongoStore from './MongoStore';
+} from "./MongoBaseModel";
+import type MongoCursor from "./MongoCursor";
+import type MongoStore from "./MongoStore";
 
 const identityTransformer = <
   Model extends MongoBaseModel<any>,
@@ -32,7 +32,7 @@ export default class MongoQuerySingleItem<
   Model extends MongoBaseModel<KeyValue>,
   Params extends QueryParams<Params> = never,
   Result extends Record<MongoKeyPath, KeyValue> | null = Model | null,
-  KeyValue extends AllowedKeyValue = Model['_id'],
+  KeyValue extends AllowedKeyValue = Model["_id"],
 > extends AbstractSubscribableStoreQuery<
   MongoKeyPath,
   KeyValue,
@@ -101,7 +101,7 @@ export default class MongoQuerySingleItem<
       ? this.fetch(({ result, meta, info }: QueryResult<Result>) => {
           callback(null, [
             {
-              type: 'initial',
+              type: "initial",
               initial: result,
               queryInfo: info,
               meta,
@@ -113,27 +113,27 @@ export default class MongoQuerySingleItem<
     const unsubscribe = store.subscribe(async (action: Actions<Model>) => {
       const changes: Changes<KeyValue, Result> = [];
       switch (action.type) {
-        case 'inserted': {
+        case "inserted": {
           const filtered = action.next.filter(testCriteria);
           if (filtered.length > 0) {
             changes.push({
-              type: 'updated',
+              type: "updated",
               result: this.transformer(filtered[0]),
             });
           }
           break;
         }
-        case 'deleted': {
+        case "deleted": {
           const filtered = action.prev.filter(testCriteria);
           if (filtered.length > 0) {
             changes.push({
-              type: 'deleted',
+              type: "deleted",
               keys: filtered.map((object) => object[this.store.keyPath]),
             });
           }
           break;
         }
-        case 'updated': {
+        case "updated": {
           const filtered = action.changes.filter(([prev, next]) =>
             testCriteria(prev),
           );
@@ -141,17 +141,17 @@ export default class MongoQuerySingleItem<
             if (this.options.sort) {
               const { result } = await this.fetch((res) => res);
               changes.push({
-                type: 'updated',
+                type: "updated",
                 result,
               });
             } else if (filtered.length !== 1) {
               throw new Error(
-                'should not match more than 1, use sort if you can have multiple match',
+                "should not match more than 1, use sort if you can have multiple match",
               );
             } else {
               const [, next] = filtered[0];
               changes.push({
-                type: 'updated',
+                type: "updated",
                 result: testCriteria(next) ? this.transformer(next) : null!,
               });
             }
@@ -160,7 +160,7 @@ export default class MongoQuerySingleItem<
           break;
         }
         default:
-          throw new Error('Unsupported type');
+          throw new Error("Unsupported type");
       }
 
       if (changes.length === 0) return;

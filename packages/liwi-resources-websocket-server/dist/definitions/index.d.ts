@@ -1,7 +1,7 @@
 /// <reference types="node" />
-import type http from 'node:http';
-import type { ResourcesServerService } from 'liwi-resources-server';
-import { WebSocketServer } from 'ws';
+import type http from "node:http";
+import type { ResourcesServerService } from "liwi-resources-server";
+import { WebSocketServer } from "ws";
 type GetAuthenticatedUser<AuthenticatedUser> = (request: http.IncomingMessage) => AuthenticatedUser | Promise<AuthenticatedUser | null> | null;
 export interface ResourcesWebsocketServer {
     wss: WebSocketServer;

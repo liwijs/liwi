@@ -1,6 +1,6 @@
-import type { BaseModel, Criteria, Sort } from 'liwi-store';
+import type { BaseModel, Criteria, Sort } from "liwi-store";
 // import ResourceServerCursor from './ResourceServerCursor';
-import type { ServiceResource } from './ServiceResource';
+import type { ServiceResource } from "./ServiceResource";
 
 // import { CursorResource } from './CursorResource';
 

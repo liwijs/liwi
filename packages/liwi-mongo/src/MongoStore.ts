@@ -10,24 +10,24 @@ import type {
   Transformer,
   AllowedKeyValue,
   OptionalBaseModelKeysForInsert,
-} from 'liwi-store';
+} from "liwi-store";
 import type {
   Collection,
   Filter,
   FindCursor,
   MongoClient,
   UpdateFilter,
-} from 'mongodb';
-import mongodb from 'mongodb';
+} from "mongodb";
+import mongodb from "mongodb";
 import type {
   MongoBaseModel,
   MongoKeyPath,
   MongoInsertType,
-} from './MongoBaseModel';
-import type MongoConnection from './MongoConnection';
-import MongoCursor from './MongoCursor';
-import MongoQueryCollection from './MongoQueryCollection';
-import MongoQuerySingleItem from './MongoQuerySingleItem';
+} from "./MongoBaseModel";
+import type MongoConnection from "./MongoConnection";
+import MongoCursor from "./MongoCursor";
+import MongoQueryCollection from "./MongoQueryCollection";
+import MongoQuerySingleItem from "./MongoQuerySingleItem";
 
 export interface MongoUpsertResult<
   KeyValue extends AllowedKeyValue,
@@ -49,7 +49,7 @@ export default class MongoStore<
       MongoConnection
     >
 {
-  readonly keyPath: MongoKeyPath = '_id';
+  readonly keyPath: MongoKeyPath = "_id";
 
   readonly connection: MongoConnection;
 
@@ -76,7 +76,7 @@ export default class MongoStore<
 
   get collection(): Promise<Collection<Model>> {
     if (this.connection.connectionFailed) {
-      return Promise.reject(new Error('MongoDB connection failed'));
+      return Promise.reject(new Error("MongoDB connection failed"));
     }
 
     return Promise.resolve(this._collection);
@@ -102,7 +102,7 @@ export default class MongoStore<
   >(
     options: QueryOptions<Model>,
     transformer?: Transformer<Model, Item>,
-  ): MongoQueryCollection<Model, Params, Model['_id'], Item> {
+  ): MongoQueryCollection<Model, Params, Model["_id"], Item> {
     return new MongoQueryCollection<Model, Params, KeyValue, Item>(
       this,
       options,
@@ -112,7 +112,7 @@ export default class MongoStore<
 
   async insertOne(object: MongoInsertType<Model>): Promise<Model> {
     if (!object._id) {
-      object._id = new mongodb.ObjectId().toString() as Model['_id'];
+      object._id = new mongodb.ObjectId().toString() as Model["_id"];
     }
 
     if (!object.created) object.created = new Date();
@@ -124,7 +124,7 @@ export default class MongoStore<
       object as any,
     );
     if (!isAcknowledged) {
-      throw new Error('Fail to insert');
+      throw new Error("Fail to insert");
     }
 
     return object as Model;
@@ -145,7 +145,7 @@ export default class MongoStore<
     >,
   >(
     object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
+    setOnInsertPartialObject?: Update<Model>["$setOnInsert"],
   ): Promise<Model> {
     const result = await this.upsertOneWithInfo(
       object,
@@ -161,9 +161,9 @@ export default class MongoStore<
     >,
   >(
     object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
+    setOnInsertPartialObject?: Update<Model>["$setOnInsert"],
   ): Promise<MongoUpsertResult<KeyValue, Model>> {
-    const $setOnInsert: Update<Model>['$setOnInsert'] = {
+    const $setOnInsert: Update<Model>["$setOnInsert"] = {
       // @ts-expect-error -- created is Date as set in BaseModel
       created: object.created || new Date(),
       ...setOnInsertPartialObject,
@@ -207,7 +207,7 @@ export default class MongoStore<
     );
     if (!commandResult.acknowledged) {
       console.error(commandResult);
-      throw new Error('Update failed');
+      throw new Error("Update failed");
     }
     const object = await this.findByKey(key);
     return object!;

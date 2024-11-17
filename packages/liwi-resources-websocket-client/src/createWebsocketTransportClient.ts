@@ -1,6 +1,6 @@
-import type { ExtendedJsonValue } from 'extended-json';
-import { encode, decode } from 'extended-json';
-import { ResourcesServerError } from 'liwi-resources-client';
+import type { ExtendedJsonValue } from "extended-json";
+import { encode, decode } from "extended-json";
+import { ResourcesServerError } from "liwi-resources-client";
 import type {
   TransportClient,
   TransportClientSubscribeCallback,
@@ -9,12 +9,12 @@ import type {
   ToServerMessages,
   ToServerSubscribeMessages,
   AckError,
-} from 'liwi-resources-client';
-import { Logger } from 'nightingale-logger';
-import type { SimpleWebsocketClientOptions } from './createSimpleWebsocketClient';
-import createSimpleWebsocketClient from './createSimpleWebsocketClient';
+} from "liwi-resources-client";
+import { Logger } from "nightingale-logger";
+import type { SimpleWebsocketClientOptions } from "./createSimpleWebsocketClient";
+import createSimpleWebsocketClient from "./createSimpleWebsocketClient";
 
-const logger = new Logger('liwi:resources-websocket-client');
+const logger = new Logger("liwi:resources-websocket-client");
 
 type Resolve<T> = (result: T) => void;
 type Reject = (reason?: any) => void;
@@ -36,9 +36,9 @@ interface Subscription<
 
 export type WebsocketTransportClientOptions = Omit<
   SimpleWebsocketClientOptions,
-  'onMessage' | 'url'
+  "onMessage" | "url"
 > &
-  Partial<Pick<SimpleWebsocketClientOptions, 'url'>>;
+  Partial<Pick<SimpleWebsocketClientOptions, "url">>;
 
 type PromiseExecutor<T> = (
   resolve: (value: PromiseLike<T> | T) => void,
@@ -48,17 +48,21 @@ type PromiseExecutor<T> = (
 type Handler<T> = (id: number, error: AckError | null, result: T) => void;
 
 class SubscribeResultPromise<
-  Result,
-  Payload extends Record<string & keyof Payload, ExtendedJsonValue | undefined>,
-> implements
+    Result,
+    Payload extends Record<
+      string & keyof Payload,
+      ExtendedJsonValue | undefined
+    >,
+  >
+  implements
     TransportClientSubscribeResult<Result, Payload>,
     PromiseLike<Result>
 {
   private readonly promise: Promise<Result>;
 
-  readonly stop: TransportClientSubscribeResult<Result, Payload>['stop'];
+  readonly stop: TransportClientSubscribeResult<Result, Payload>["stop"];
 
-  readonly cancel: TransportClientSubscribeResult<Result, Payload>['cancel'];
+  readonly cancel: TransportClientSubscribeResult<Result, Payload>["cancel"];
 
   // readonly changePayload: TransportClientSubscribeResult<
   //   Result,
@@ -70,7 +74,7 @@ class SubscribeResultPromise<
     stop,
   }: {
     executor: PromiseExecutor<Result>;
-    stop: TransportClientSubscribeResult<Result, Payload>['stop'];
+    stop: TransportClientSubscribeResult<Result, Payload>["stop"];
     // changePayload: TransportClientSubscribeResult<
     //   Result,
     //   Payload
@@ -85,23 +89,14 @@ class SubscribeResultPromise<
   }
 
   then<TResult1 = Result, TResult2 = never>(
-    onfulfilled?:
-      | ((value: Result) => PromiseLike<TResult1> | TResult1)
-      | null
-      | undefined,
-    onrejected?:
-      | ((reason: any) => PromiseLike<TResult2> | TResult2)
-      | null
-      | undefined,
+    onfulfilled?: ((value: Result) => PromiseLike<TResult1> | TResult1) | null,
+    onrejected?: ((reason: any) => PromiseLike<TResult2> | TResult2) | null,
   ): PromiseLike<TResult1 | TResult2> {
     return this.promise.then(onfulfilled, onrejected);
   }
 
   catch<TResult2 = never>(
-    onrejected?:
-      | ((reason: unknown) => PromiseLike<TResult2> | TResult2)
-      | null
-      | undefined,
+    onrejected?: ((reason: unknown) => PromiseLike<TResult2> | TResult2) | null,
   ): PromiseLike<Result | TResult2> {
     return this.promise.catch(onrejected);
   }
@@ -119,7 +114,7 @@ export default function createResourcesWebsocketClient({
   url,
   ...options
 }: WebsocketTransportClientOptions): TransportClient {
-  const isSSR = typeof window === 'undefined';
+  const isSSR = typeof window === "undefined";
 
   if (isSSR) {
     return {
@@ -129,11 +124,11 @@ export default function createResourcesWebsocketClient({
         return () => {};
       },
       send: (type, message) => {
-        throw new Error('Cannot work on SSR.');
+        throw new Error("Cannot work on SSR.");
       },
 
       subscribe: (type, messageWithoutSubscriptionId, callback) => {
-        throw new Error('Cannot work on SSR.');
+        throw new Error("Cannot work on SSR.");
       },
     };
   }
@@ -144,18 +139,18 @@ export default function createResourcesWebsocketClient({
   const subscriptions = new Map<number, Subscription<any, any>>();
 
   if (!url) {
-    url = `ws${window.location.protocol === 'https:' ? 's' : ''}://${
+    url = `ws${window.location.protocol === "https:" ? "s" : ""}://${
       window.location.host
     }/ws`;
   }
-  logger.info('create', { url });
+  logger.info("create", { url });
 
   const handlers: Record<ToClientMessage[0], Handler<any>> = {
     ack: (id, error, result) => {
-      logger.debug('ack', { id });
+      logger.debug("ack", { id });
       const ack = acks.get(id);
       if (!ack) {
-        logger.warn('no ack found', { id });
+        logger.warn("no ack found", { id });
       } else if (error) {
         ack.reject(createSafeError(error));
       } else {
@@ -163,13 +158,13 @@ export default function createResourcesWebsocketClient({
       }
     },
     subscription: (id, error, result) => {
-      logger.debug('subscription', { id });
+      logger.debug("subscription", { id });
       const subscription = subscriptions.get(id);
       if (!subscription) {
         if (id < currentSubscriptionId) {
-          logger.warn('subscription previously closed', { id });
+          logger.warn("subscription previously closed", { id });
         } else {
-          logger.warn('no subscription found', { id });
+          logger.warn("no subscription found", { id });
         }
       } else if (error) {
         subscription.callback(createSafeError(error), null);
@@ -183,7 +178,7 @@ export default function createResourcesWebsocketClient({
     ...options,
     url,
     onMessage: (event) => {
-      logger.debug('message', { data: event.data });
+      logger.debug("message", { data: event.data });
       const [type, id, error, result] = decode<ToClientMessage>(
         event.data as string,
       );
@@ -212,7 +207,7 @@ export default function createResourcesWebsocketClient({
       acks.set(id, {
         resolve: (result) => {
           acks.delete(id);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
           resolve(result);
         },
         reject: (err: Error) => {
@@ -225,18 +220,18 @@ export default function createResourcesWebsocketClient({
   };
 
   const sendThrowNotConnected = (): never => {
-    const error = new Error('Websocket not connected');
-    error.name = 'NetworkError';
+    const error = new Error("Websocket not connected");
+    error.name = "NetworkError";
     throw error;
   };
 
   const resourcesClient: TransportClient = {
     connect: () => {
-      logger.debug('connect');
+      logger.debug("connect");
       wsClient.connect();
     },
     close: () => {
-      logger.debug('close');
+      logger.debug("close");
       wsClient.close();
     },
     listenStateChange: wsClient.listenStateChange,
@@ -251,11 +246,11 @@ export default function createResourcesWebsocketClient({
       type: T,
       messageWithoutSubscriptionId: Omit<
         ToServerSubscribeMessages<Payload, Result>[T][0],
-        'subscriptionId'
+        "subscriptionId"
       >,
       callback: TransportClientSubscribeCallback<V>,
     ): TransportClientSubscribeResult<Result, Payload> => {
-      if (isSSR) throw new Error('subscribing is not allowed in SSR');
+      if (isSSR) throw new Error("subscribing is not allowed in SSR");
       const id = currentId++;
       const subscriptionId = currentSubscriptionId++;
       const message = { ...messageWithoutSubscriptionId, subscriptionId };
@@ -280,7 +275,7 @@ export default function createResourcesWebsocketClient({
           subscriptions.delete(subscriptionId);
           // TODO what if reconnect (backend keeps subscription) and closed at this time ?
           if (wsClient.isConnected()) {
-            sendMessage('subscribe:close', null, { subscriptionId });
+            sendMessage("subscribe:close", null, { subscriptionId });
           }
         },
 
@@ -304,9 +299,9 @@ export default function createResourcesWebsocketClient({
   };
 
   wsClient.listenStateChange((newState) => {
-    logger.info('newState', { newState });
-    if (newState === 'connected') {
-      resourcesClient.send = sendWithAck as TransportClient['send'];
+    logger.info("newState", { newState });
+    if (newState === "connected") {
+      resourcesClient.send = sendWithAck as TransportClient["send"];
       subscriptions.forEach((subscription, subscriptionId) => {
         sendWithAck(subscription.type, subscription.message).then(
           subscription.resolve,
@@ -322,9 +317,9 @@ export default function createResourcesWebsocketClient({
       });
       acks.clear();
 
-      if (newState === 'closed') {
+      if (newState === "closed") {
         subscriptions.forEach((subscription) => {
-          subscription.reject(new Error('Subscription closed'));
+          subscription.reject(new Error("Subscription closed"));
         });
       }
     }

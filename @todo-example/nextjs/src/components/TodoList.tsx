@@ -1,7 +1,7 @@
-import type { Task, TasksService } from '@todo-example/modules';
-import type { ReactElement, MouseEventHandler } from 'react';
-import { useState, useRef, useEffect } from 'react';
-import type { OperationCallWrapper } from 'react-liwi';
+import type { Task, TasksService } from "@todo-example/modules";
+import type { MouseEventHandler, ReactNode } from "react";
+import { useState, useRef, useEffect } from "react";
+import type { OperationCallWrapper } from "react-liwi";
 
 export interface TaskItemProps {
   task: Task;
@@ -13,7 +13,7 @@ function TaskItem({
   task,
   onChangeCompleted,
   onChangeLabel,
-}: TaskItemProps): ReactElement {
+}: TaskItemProps): ReactNode {
   const [optimisticUpdatedTask, setOptimisticUpdatedTask] = useState(task);
   const [editing, setEditing] = useState(false);
   const [editText, setEditText] = useState(task.label);
@@ -85,11 +85,11 @@ function TaskItem({
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <li
       className={[
-        optimisticUpdatedTask.completed && 'completed',
-        editing && 'editing',
+        optimisticUpdatedTask.completed && "completed",
+        editing && "editing",
       ]
         .filter(Boolean)
-        .join(' ')}
+        .join(" ")}
       onDoubleClick={handleDoubleClick}
     >
       <div className="view">
@@ -117,10 +117,10 @@ function TaskItem({
 
 export interface TodoListProps {
   tasks: Task[];
-  patchTask: OperationCallWrapper<TasksService['operations']['patch']>;
+  patchTask: OperationCallWrapper<TasksService["operations"]["patch"]>;
 }
 
-export function TodoList({ tasks, patchTask }: TodoListProps): ReactElement {
+export function TodoList({ tasks, patchTask }: TodoListProps): ReactNode {
   return (
     <ul className="todo-list">
       {/* List items should get the class `editing` when editing and `completed` when marked as completed */}

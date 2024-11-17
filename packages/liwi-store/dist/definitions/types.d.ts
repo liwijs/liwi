@@ -15,28 +15,22 @@ type KeysOfAType<Model, Type> = {
 type KeysOfOtherType<Model, Type> = {
     [key in keyof Model]: NonNullable<Model[key]> extends Type ? never : key;
 }[keyof Model];
-type AcceptedFields<Model, FieldType, AssignableType> = {
-    readonly [key in KeysOfAType<Model, FieldType>]?: AssignableType;
-};
-type NotAcceptedFields<Model, FieldType> = {
-    readonly [key in KeysOfOtherType<Model, FieldType>]?: never;
-};
+type AcceptedFields<Model, FieldType, AssignableType> = Readonly<Partial<Record<KeysOfAType<Model, FieldType>, AssignableType>>>;
+type NotAcceptedFields<Model, FieldType> = Readonly<Partial<Record<KeysOfOtherType<Model, FieldType>, never>>>;
 type OnlyFieldsOfType<Model, FieldType, AssignableType = FieldType> = AcceptedFields<Model, FieldType, AssignableType> & NotAcceptedFields<Model, FieldType> & Record<string, AssignableType>;
 type NestedPathsOfType<Model, Type> = KeysOfAType<{
-    [Property in Join<NestedPaths<Model, []>, '.'>]: PropertyType<Model, Property>;
+    [Property in Join<NestedPaths<Model, []>, ".">]: PropertyType<Model, Property>;
 }, Type>;
 export type $CurrentDateSpec = true | {
-    $type: 'date';
+    $type: "date";
 } | {
-    $type: 'timestamp';
+    $type: "timestamp";
 };
 type ArrayElement<Type> = Type extends readonly (infer Item)[] ? Item : never;
-type MatchKeysAndValues<Model extends BaseModel> = {
-    [Property in `${NestedPathsOfType<Model, any[]>}.$${'' | `[${string}]`}`]?: ArrayElement<PropertyType<Model, Property extends `${infer Key}.$${string}` ? Key : never>>;
+type MatchKeysAndValues<Model extends BaseModel> = Partial<Record<`${NestedPathsOfType<Model, Record<string, any>[]>}.$${"" | `[${string}]`}.${string}`, any>> & {
+    [Property in `${NestedPathsOfType<Model, any[]>}.$${"" | `[${string}]`}`]?: ArrayElement<PropertyType<Model, Property extends `${infer Key}.$${string}` ? Key : never>>;
 } & {
-    [Property in `${NestedPathsOfType<Model, Record<string, any>[]>}.$${'' | `[${string}]`}.${string}`]?: any;
-} & {
-    [Property in Join<NestedPaths<Model, []>, '.'>]?: PropertyType<Model, Property>;
+    [Property in Join<NestedPaths<Model, []>, ".">]?: PropertyType<Model, Property>;
 };
 type NumericType = number;
 interface AddToSetOperators<Type> {
@@ -127,8 +121,8 @@ interface FilterOperators<TValue> {
     $bitsAnySet?: BitwiseFilter;
     $rand?: Record<string, never>;
 }
-type Join<T extends unknown[], D extends string> = T extends [] ? '' : T extends [number | string] ? `${T[0]}` : T extends [number | string, ...infer R] ? `${T[0]}${D}${Join<R, D>}` : string;
-type NestedPaths<Type, Depth extends number[]> = Depth['length'] extends 8 ? [] : Type extends Buffer | Date | RegExp | Uint8Array | boolean | number | string | ((...args: any[]) => any) | {
+type Join<T extends unknown[], D extends string> = T extends [] ? "" : T extends [number | string] ? `${T[0]}` : T extends [number | string, ...infer R] ? `${T[0]}${D}${Join<R, D>}` : string;
+type NestedPaths<Type, Depth extends number[]> = Depth["length"] extends 8 ? [] : Type extends Buffer | Date | RegExp | Uint8Array | boolean | number | string | ((...args: any[]) => any) | {
     _bsontype: string;
 } ? [] : Type extends readonly (infer ArrayType)[] ? [] | [number, ...NestedPaths<ArrayType, [...Depth, 1]>] : Type extends Map<string, any> ? [string] : Type extends object ? {
     [Key in Extract<keyof Type, string>]: Type[Key] extends Type ? [Key] : Type extends Type[Key] ? [Key] : Type[Key] extends readonly (infer ArrayType)[] ? Type extends ArrayType ? [Key] : ArrayType extends Type ? [Key] : [Key, ...NestedPaths<Type[Key], [...Depth, 1]>] : [Key, ...NestedPaths<Type[Key], [...Depth, 1]>] | [Key];
@@ -138,7 +132,7 @@ type RegExpOrString<T> = T extends string ? RegExp | T : T;
 type AlternativeType<T> = T extends readonly (infer U)[] ? RegExpOrString<U> | T : RegExpOrString<T>;
 type Condition<T> = AlternativeType<T> | FilterOperators<AlternativeType<T>>;
 export type Criteria<Model extends BaseModel> = Partial<Model> | ({
-    [Property in Join<NestedPaths<Model, []>, '.'>]?: Condition<PropertyType<Model, Property>>;
+    [Property in Join<NestedPaths<Model, []>, ".">]?: Condition<PropertyType<Model, Property>>;
 } & {
     $and?: Criteria<Model>[];
     $nor?: Criteria<Model>[];
@@ -165,19 +159,19 @@ export interface QueryInfo<Item extends Record<keyof Item, unknown>> {
     keyPath: keyof Item;
 }
 export interface InitialChange<Value = any> {
-    type: 'initial';
+    type: "initial";
     initial: Value;
     meta: QueryMeta;
     queryInfo: QueryInfo<any>;
 }
 export type Change<KeyValue, Result> = InitialChange<Result> | {
-    type: 'deleted';
+    type: "deleted";
     keys: KeyValue[];
 } | {
-    type: 'inserted';
+    type: "inserted";
     result: Result;
 } | {
-    type: 'updated';
+    type: "updated";
     result: Result;
 };
 export type Changes<KeyValue, Result> = Change<KeyValue, Result>[];
@@ -187,7 +181,7 @@ export interface QueryOptions<Model extends BaseModel> {
     limit?: number;
     skip?: number;
 }
-export type ResourceOperationKey = 'cursor toArray' | 'cursor' | 'do' | 'fetch' | 'fetchAndSubscribe' | 'subscribe' | 'unsubscribe';
+export type ResourceOperationKey = "cursor toArray" | "cursor" | "do" | "fetch" | "fetchAndSubscribe" | "subscribe" | "unsubscribe";
 export type Transformer<Model extends BaseModel, Transformed = Model> = (model: Model) => Transformed;
 export {};
 //# sourceMappingURL=types.d.ts.map

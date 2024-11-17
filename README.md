@@ -39,7 +39,7 @@ npm install --save liwi
 ## Usage
 
 ```js
-import liwi from 'liwi';
+import liwi from "liwi";
 
 console.log(liwi);
 ```

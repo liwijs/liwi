@@ -5,7 +5,7 @@ class AbstractCursor {
     return this.next().then(() => this.result());
   }
   async forEachKeys(callback) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const key = await this.next();
@@ -58,7 +58,7 @@ class AbstractStoreCursor extends AbstractCursor {
     this._store = store;
   }
   result() {
-    if (!this.key) throw new Error('Cannot call result() before next()');
+    if (!this.key) throw new Error("Cannot call result() before next()");
     return this.store.findByKey(this.key);
   }
   delete() {

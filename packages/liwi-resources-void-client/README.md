@@ -22,7 +22,7 @@ npm install --save liwi-resources-void-client
 ## Usage
 
 ```js
-import liwiResourcesVoidClient from 'liwi-resources-void-client';
+import liwiResourcesVoidClient from "liwi-resources-void-client";
 
 console.log(liwiResourcesVoidClient);
 ```

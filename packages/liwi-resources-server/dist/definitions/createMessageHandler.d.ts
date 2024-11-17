@@ -1,7 +1,7 @@
-import 'pob-babel';
-import type { QuerySubscription, ToServerMessage } from 'liwi-resources';
-import type { ResourcesServerService } from './ResourcesServerService';
-import type { SubscribeHook } from './ServiceResource';
+import "pob-babel";
+import type { QuerySubscription, ToServerMessage } from "liwi-resources";
+import type { ResourcesServerService } from "./ResourcesServerService";
+import type { SubscribeHook } from "./ServiceResource";
 export type SubscriptionCallback = (subscriptionId: number, error: Error | null, result: any) => void;
 export type MessageHandler = (message: ToServerMessage, subscriptionCallback: SubscriptionCallback) => Promise<unknown>;
 export interface SubscriptionAndSubscribeHook {

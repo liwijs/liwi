@@ -14,7 +14,7 @@ npm install --save liwi-mongo-example
 ## Usage
 
 ```js
-import liwiMongoExample from 'liwi-mongo-example';
+import liwiMongoExample from "liwi-mongo-example";
 
 console.log(liwiMongoExample);
 ```

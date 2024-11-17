@@ -1,9 +1,9 @@
-import type { Change, Changes, QueryInfo, QueryMeta } from 'liwi-store';
-import { Lazy } from 'mingo/lazy';
-import { $sort } from 'mingo/operators/pipeline/sort';
+import type { Change, Changes, QueryInfo, QueryMeta } from "liwi-store";
+import { Lazy } from "mingo/lazy";
+import { $sort } from "mingo/operators/pipeline/sort";
 
 function sortCollection<T>(collection: T[], sort: Record<string, -1 | 1>): T[] {
-  return $sort(Lazy(collection), sort, { idKey: '_id' }).value() as T[];
+  return $sort(Lazy(collection), sort, { idKey: "_id" }).value() as T[];
 }
 
 const copy = <Value>(state: Value[]): Value[] => [...state];
@@ -16,7 +16,7 @@ const applyCollectionChange = <Value>(
   // eslint-disable-next-line @typescript-eslint/max-params
 ): Value[] => {
   switch (change.type) {
-    case 'initial': {
+    case "initial": {
       const keyPath = queryInfo.keyPath;
 
       // update meta
@@ -33,7 +33,7 @@ const applyCollectionChange = <Value>(
               : value;
           });
     }
-    case 'inserted': {
+    case "inserted": {
       queryMeta.total += change.result.length;
 
       let newCollection = [...change.result, ...state];
@@ -47,7 +47,7 @@ const applyCollectionChange = <Value>(
       return newCollection.slice(0, queryInfo.limit - change.result.length);
     }
 
-    case 'deleted': {
+    case "deleted": {
       queryMeta.total -= change.keys.length;
 
       const keyPath = queryInfo.keyPath;
@@ -55,7 +55,7 @@ const applyCollectionChange = <Value>(
       return state.filter((value) => !deletedKeys.includes(value[keyPath]));
     }
 
-    case 'updated': {
+    case "updated": {
       const keyPath = queryInfo.keyPath;
       const newState = copy(state);
       change.result.forEach((newObject) => {
@@ -69,7 +69,7 @@ const applyCollectionChange = <Value>(
     }
 
     default:
-      throw new Error('Invalid type');
+      throw new Error("Invalid type");
   }
 };
 

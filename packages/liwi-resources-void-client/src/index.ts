@@ -1,5 +1,5 @@
-import type { TransportClient } from 'liwi-resources-client';
-import type { ResourcesServerService } from 'liwi-resources-server';
+import type { TransportClient } from "liwi-resources-client";
+import type { ResourcesServerService } from "liwi-resources-server";
 
 export interface DirectTransportClientOptions<AuthenticatedUser> {
   resourcesServerService: ResourcesServerService;
@@ -14,11 +14,11 @@ export const createVoidTransportClient = (): TransportClient => {
       return () => {};
     },
     send: (type, message) => {
-      throw new Error('Void client: send should not be called');
+      throw new Error("Void client: send should not be called");
     },
 
     subscribe: (type, messageWithoutSubscriptionId, callback) => {
-      throw new Error('Void client: subscribe should not be called');
+      throw new Error("Void client: subscribe should not be called");
     },
   };
 

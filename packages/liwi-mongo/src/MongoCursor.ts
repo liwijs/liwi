@@ -1,13 +1,13 @@
-import { AbstractStoreCursor } from 'liwi-store';
-import type { AllowedKeyValue } from 'liwi-store';
-import type { FindCursor } from 'mongodb';
-import type { MongoBaseModel } from './MongoBaseModel';
-import type MongoStore from './MongoStore';
+import { AbstractStoreCursor } from "liwi-store";
+import type { AllowedKeyValue } from "liwi-store";
+import type { FindCursor } from "mongodb";
+import type { MongoBaseModel } from "./MongoBaseModel";
+import type MongoStore from "./MongoStore";
 
 export default class MongoCursor<
   Model extends MongoBaseModel<KeyValue>,
   Result extends Partial<Model> = Model,
-  KeyValue extends AllowedKeyValue = Model['_id'],
+  KeyValue extends AllowedKeyValue = Model["_id"],
 > extends AbstractStoreCursor<
   MongoStore<Model, KeyValue>,
   KeyValue,
@@ -51,7 +51,7 @@ export default class MongoCursor<
   }
 
   override result(): Promise<Result> {
-    if (!this._result) throw new Error('Cannot call result() before next()');
+    if (!this._result) throw new Error("Cannot call result() before next()");
     return Promise.resolve(this._result);
   }
 

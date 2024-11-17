@@ -1,4 +1,4 @@
-import type { ExtendedJsonValue } from './ExtendedJsonValue';
+import type { ExtendedJsonValue } from "./ExtendedJsonValue";
 
 type JsonReplacer = (
   key: string,

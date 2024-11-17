@@ -8,17 +8,17 @@ import type {
   QueryOptions,
   Transformer,
   AllowedKeyValue,
-} from 'liwi-store';
-import type { Actions } from 'liwi-subscribe-store';
-import { AbstractSubscribableStoreQuery } from 'liwi-subscribe-store';
-import mingo from 'mingo';
+} from "liwi-store";
+import type { Actions } from "liwi-subscribe-store";
+import { AbstractSubscribableStoreQuery } from "liwi-subscribe-store";
+import mingo from "mingo";
 import type {
   MongoBaseModel,
   MongoInsertType,
   MongoKeyPath,
-} from './MongoBaseModel';
-import type MongoCursor from './MongoCursor';
-import type MongoStore from './MongoStore';
+} from "./MongoBaseModel";
+import type MongoCursor from "./MongoCursor";
+import type MongoStore from "./MongoStore";
 
 const identityTransformer = <
   Model extends MongoBaseModel<any>,
@@ -32,7 +32,7 @@ type TestCriteria = (obj: any) => boolean;
 export default class MongoQueryCollection<
   Model extends MongoBaseModel<KeyValue>,
   Params extends QueryParams<Params> = never,
-  KeyValue extends AllowedKeyValue = Model['_id'],
+  KeyValue extends AllowedKeyValue = Model["_id"],
   Item extends Record<MongoKeyPath, KeyValue> = Model,
 > extends AbstractSubscribableStoreQuery<
   MongoKeyPath,
@@ -68,7 +68,7 @@ export default class MongoQueryCollection<
       }
 
       // criteria not supported by mingo: updates will not work
-      if ('$text' in this.options.criteria) {
+      if ("$text" in this.options.criteria) {
         return () => false;
       }
 
@@ -106,7 +106,7 @@ export default class MongoQueryCollection<
       ? this.fetch(({ result, meta, info }: QueryResult<Item[]>) => {
           callback(null, [
             {
-              type: 'initial',
+              type: "initial",
               initial: result,
               queryInfo: info,
               meta,
@@ -118,27 +118,27 @@ export default class MongoQueryCollection<
     const unsubscribe = store.subscribe((action: Actions<Model>) => {
       const changes: Changes<KeyValue, Item[]> = [];
       switch (action.type) {
-        case 'inserted': {
+        case "inserted": {
           const filtered = action.next.filter(testCriteria);
           if (filtered.length > 0) {
             changes.push({
-              type: 'inserted',
+              type: "inserted",
               result: filtered.map(this.transformer),
             });
           }
           break;
         }
-        case 'deleted': {
+        case "deleted": {
           const filtered = action.prev.filter(testCriteria);
           if (filtered.length > 0) {
             changes.push({
-              type: 'deleted',
+              type: "deleted",
               keys: filtered.map((object) => object[this.store.keyPath]),
             });
           }
           break;
         }
-        case 'updated': {
+        case "updated": {
           const {
             deleted,
             updated,
@@ -162,19 +162,19 @@ export default class MongoQueryCollection<
           });
 
           if (deleted.length > 0) {
-            changes.push({ type: 'deleted', keys: deleted });
+            changes.push({ type: "deleted", keys: deleted });
           }
           if (updated.length > 0) {
-            changes.push({ type: 'updated', result: updated });
+            changes.push({ type: "updated", result: updated });
           }
           if (inserted.length > 0) {
-            changes.push({ type: 'inserted', result: inserted });
+            changes.push({ type: "inserted", result: inserted });
           }
 
           break;
         }
         default:
-          throw new Error('Unsupported type');
+          throw new Error("Unsupported type");
       }
 
       if (changes.length === 0) return;

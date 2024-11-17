@@ -1,9 +1,9 @@
-import type { Task } from '@todo-example/modules';
-import type { ReactElement } from 'react';
-import { useContext, useMemo, useState } from 'react';
-import { useResource, useOperation } from 'react-liwi';
-import { TodoServicesContext } from 'app/services/TodoServicesProvider';
-import { TodoList } from './TodoList';
+import type { Task } from "@todo-example/modules";
+import type { ReactElement } from "react";
+import { useContext, useMemo, useState } from "react";
+import { useResource, useOperation } from "react-liwi";
+import { TodoServicesContext } from "../app/services/TodoServicesProvider";
+import { TodoList } from "./TodoList";
 
 export default function Main(): ReactElement | null {
   const todoServices = useContext(TodoServicesContext);
@@ -20,7 +20,7 @@ export default function Main(): ReactElement | null {
   );
 
   const [hash, setHash] = useState(
-    typeof window === 'undefined' ? '#/' : window.location.hash,
+    typeof window === "undefined" ? "#/" : window.location.hash,
   );
 
   const [clearCompleted] = useOperation(
@@ -40,9 +40,9 @@ export default function Main(): ReactElement | null {
 
   const tasksToShow = useMemo((): Task[] => {
     switch (hash) {
-      case '#/active':
+      case "#/active":
         return activeTasks;
-      case '#/completed':
+      case "#/completed":
         return completedTasks;
       default:
         return tasksResourceResult.data || [];
@@ -67,10 +67,10 @@ export default function Main(): ReactElement | null {
         <ul className="filters">
           <li>
             <a
-              className={hash === '#/' ? 'selected' : ''}
+              className={hash === "#/" ? "selected" : ""}
               href="#/"
               onClick={() => {
-                setHash('#/');
+                setHash("#/");
               }}
             >
               All
@@ -78,10 +78,10 @@ export default function Main(): ReactElement | null {
           </li>
           <li>
             <a
-              className={hash === '#/active' ? 'selected' : ''}
+              className={hash === "#/active" ? "selected" : ""}
               href="#/active"
               onClick={() => {
-                setHash('#/active');
+                setHash("#/active");
               }}
             >
               Active
@@ -89,10 +89,10 @@ export default function Main(): ReactElement | null {
           </li>
           <li>
             <a
-              className={hash === '#/completed' ? 'selected' : ''}
+              className={hash === "#/completed" ? "selected" : ""}
               href="#/completed"
               onClick={() => {
-                setHash('#/completed');
+                setHash("#/completed");
               }}
             >
               Completed

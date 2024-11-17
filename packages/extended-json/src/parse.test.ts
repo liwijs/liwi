@@ -1,11 +1,11 @@
-import parse from './parse';
+import parse from "./parse";
 
-test('simple string', () => {
-  expect(parse('"test"')).toBe('test');
+test("simple string", () => {
+  expect(parse('"test"')).toBe("test");
 });
 
-test('Date', () => {
+test("Date", () => {
   const date = parse('"2016-12-24T00:00:00.000Z"');
   expect(date).toBeInstanceOf(Date);
-  expect((date as Date).getTime()).toBe(new Date('2016-12-24').getTime());
+  expect((date as Date).getTime()).toBe(new Date("2016-12-24").getTime());
 });

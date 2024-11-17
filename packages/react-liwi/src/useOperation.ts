@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 
 export interface OperationState {
   loading: boolean;
@@ -33,10 +33,10 @@ export function useOperation<T extends (...args: any) => Promise<any>>(
             });
             return [undefined, result];
           },
-          (error) => {
+          (error: unknown) => {
             setState({
               loading: false,
-              error,
+              error: error instanceof Error ? error : new Error(String(error)),
             });
             return [error, undefined];
           },

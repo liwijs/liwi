@@ -1,8 +1,8 @@
-import type AbstractConnection from './AbstractConnection';
-import type AbstractStoreCursor from './AbstractStoreCursor';
-import type { InternalCommonStoreClient } from './InternalCommonStoreClient';
-import type { Query, QueryParams } from './Query';
-import type { BaseModel, Criteria, InsertType, QueryOptions, Sort, Transformer, Update, AllowedKeyValue, SetOptional, OptionalBaseModelKeysForInsert } from './types';
+import type AbstractConnection from "./AbstractConnection";
+import type AbstractStoreCursor from "./AbstractStoreCursor";
+import type { InternalCommonStoreClient } from "./InternalCommonStoreClient";
+import type { Query, QueryParams } from "./Query";
+import type { BaseModel, Criteria, InsertType, QueryOptions, Sort, Transformer, Update, AllowedKeyValue, SetOptional, OptionalBaseModelKeysForInsert } from "./types";
 export type UpsertPartialObject<KeyPath extends keyof Model, KeyValue extends AllowedKeyValue, Model extends BaseModel & Record<KeyPath, KeyValue>, K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>> = SetOptional<Model, K | KeyPath | OptionalBaseModelKeysForInsert>;
 export interface UpsertResult<Model extends BaseModel> {
     object: Model;
@@ -21,8 +21,8 @@ export interface Store<KeyPath extends keyof Model, KeyValue extends AllowedKeyV
     insertOne: (object: ModelInsertType) => Promise<Model>;
     replaceOne: (object: Model) => Promise<Model>;
     replaceSeveral: (objects: Model[]) => Promise<Model[]>;
-    upsertOne: <K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']) => Promise<Model>;
-    upsertOneWithInfo: <K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>['$setOnInsert']) => Promise<UpsertResult<Model>>;
+    upsertOne: <K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>["$setOnInsert"]) => Promise<Model>;
+    upsertOneWithInfo: <K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>>(object: UpsertPartialObject<KeyPath, KeyValue, Model, K>, setOnInsertPartialObject?: Update<Model>["$setOnInsert"]) => Promise<UpsertResult<Model>>;
     partialUpdateByKey: (key: KeyValue, partialUpdate: Update<Model>, criteria?: Criteria<Model>) => Promise<Model>;
     partialUpdateOne: (object: Model, partialUpdate: Update<Model>) => Promise<Model>;
     partialUpdateMany: (criteria: Criteria<Model>, partialUpdate: Update<Model>) => Promise<void>;

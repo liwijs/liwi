@@ -1,6 +1,6 @@
-import type { ExtendedJsonValue } from 'extended-json';
-import type { Query, QueryParams } from 'liwi-store';
-export type { Query, QuerySubscription, QueryParams, QueryResult, QueryMeta, SubscribeCallback, } from 'liwi-store';
+import type { ExtendedJsonValue } from "extended-json";
+import type { Query, QueryParams } from "liwi-store";
+export type { Query, QuerySubscription, QueryParams, QueryResult, QueryMeta, SubscribeCallback, } from "liwi-store";
 export interface ResourceSubscribePayload<Options> {
     resourceName: string;
     type: string;
@@ -24,7 +24,7 @@ export type AckError = {
     message: string;
 };
 export type ToClientMessage<T = ExtendedJsonValue> = [
-    'ack' | 'subscription',
+    "ack" | "subscription",
     number,
     // id
     AckError | null,
@@ -56,7 +56,7 @@ type SubscribeMessage<RequestPayload extends {
 export interface ToServerSimpleMessages {
     do: Message<DoPayload, undefined>;
     fetch: Message<ToServerQueryPayload, unknown>;
-    'subscribe:close': Message<ToServerSubscribeClose, undefined>;
+    "subscribe:close": Message<ToServerSubscribeClose, undefined>;
 }
 export interface ToServerSubscribeMessages<Params extends Record<keyof Params, ExtendedJsonValue> | undefined = never, Result = unknown> {
     subscribe: SubscribeMessage<ToServerSubscribeQueryPayload, undefined, Result>;
@@ -66,20 +66,20 @@ export type ToServerMessages = ToServerSimpleMessages & ToServerSubscribeMessage
 export type ToServerMessage = {
     id: number;
 } & ({
-    type: 'do';
-    payload: ToServerSimpleMessages['do'][0];
+    type: "do";
+    payload: ToServerSimpleMessages["do"][0];
 } | {
-    type: 'fetch';
-    payload: ToServerSimpleMessages['fetch'][0];
+    type: "fetch";
+    payload: ToServerSimpleMessages["fetch"][0];
 } | {
-    type: 'subscribe:close';
-    payload: ToServerSimpleMessages['subscribe:close'][0];
+    type: "subscribe:close";
+    payload: ToServerSimpleMessages["subscribe:close"][0];
 } | {
-    type: 'subscribe';
-    payload: ToServerSubscribeMessages['subscribe'][0];
+    type: "subscribe";
+    payload: ToServerSubscribeMessages["subscribe"][0];
 } | {
-    type: 'fetchAndSubscribe';
-    payload: ToServerSubscribeMessages['fetchAndSubscribe'][0];
+    type: "fetchAndSubscribe";
+    payload: ToServerSubscribeMessages["fetchAndSubscribe"][0];
 });
 export declare class ResourcesServerError extends Error {
     code: string;

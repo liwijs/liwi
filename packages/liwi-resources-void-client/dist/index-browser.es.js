@@ -6,10 +6,10 @@ const createVoidTransportClient = () => {
       return () => {};
     },
     send: () => {
-      throw new Error('Void client: send should not be called');
+      throw new Error("Void client: send should not be called");
     },
     subscribe: () => {
-      throw new Error('Void client: subscribe should not be called');
+      throw new Error("Void client: subscribe should not be called");
     }
   };
 };

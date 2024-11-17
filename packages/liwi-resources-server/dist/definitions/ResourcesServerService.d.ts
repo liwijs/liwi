@@ -1,5 +1,5 @@
-import type { BaseModel, Criteria, Sort } from 'liwi-store';
-import type { ServiceResource } from './ServiceResource';
+import type { BaseModel, Criteria, Sort } from "liwi-store";
+import type { ServiceResource } from "./ServiceResource";
 export interface CreateCursorOptions<Model extends BaseModel> {
     criteria?: Criteria<Model>;
     sort?: Sort<Model>;

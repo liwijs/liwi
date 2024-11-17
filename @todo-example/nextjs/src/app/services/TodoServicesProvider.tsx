@@ -1,11 +1,11 @@
-import type { TasksService } from '@todo-example/modules';
-import { createResourceClientService } from 'liwi-resources-client';
-import type { ReactElement, ReactNode } from 'react';
-import { createContext, useState, useContext } from 'react';
-import { TransportClientContext } from 'react-liwi';
+import type { TasksService } from "@todo-example/modules";
+import { createResourceClientService } from "liwi-resources-client";
+import type { ReactNode } from "react";
+import { createContext, useState, useContext } from "react";
+import { TransportClientContext } from "react-liwi";
 
 const createTasksServiceClient = createResourceClientService<TasksService>(
-  'tasks',
+  "tasks",
   {
     queries: { queryAll: null, queryWithoutParams: null },
     operations: { create: null, patch: null, clearCompleted: null },
@@ -24,7 +24,7 @@ export function TodoServicesProvider({
   children,
 }: {
   children: ReactNode;
-}): ReactElement {
+}): ReactNode {
   const transportClient = useContext(TransportClientContext);
   // eslint-disable-next-line react/hook-use-state
   const [todoServices] = useState(() => ({

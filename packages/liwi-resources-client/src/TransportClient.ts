@@ -1,8 +1,8 @@
-import type { ExtendedJsonValue } from 'extended-json';
+import type { ExtendedJsonValue } from "extended-json";
 import type {
   ToServerSimpleMessages,
   ToServerSubscribeMessages,
-} from 'liwi-resources';
+} from "liwi-resources";
 
 export type TransportClientSubscribeCallback<Result = ExtendedJsonValue> = (
   err: Error | null,
@@ -19,12 +19,12 @@ export interface TransportClientSubscribeResult<
 }
 
 export type ConnectionStates =
-  | 'closed'
-  | 'connected'
-  | 'connecting'
-  | 'opening'
-  | 'reconnect-scheduled'
-  | 'wait-for-visibility';
+  | "closed"
+  | "connected"
+  | "connecting"
+  | "opening"
+  | "reconnect-scheduled"
+  | "wait-for-visibility";
 
 export type ConnectionStateChangeListener = (
   newState: ConnectionStates,
@@ -56,7 +56,7 @@ export interface TransportClient {
     type: T,
     message: Omit<
       ToServerSubscribeMessages<Payload, Result>[T][0],
-      'subscriptionId'
+      "subscriptionId"
     >,
     callback: TransportClientSubscribeCallback<V>,
   ) => TransportClientSubscribeResult<Result, Payload>;

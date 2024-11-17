@@ -1,12 +1,12 @@
-import type { Query, QueryParams } from 'liwi-resources-client';
-import { useMemo } from 'react';
+import type { Query, QueryParams } from "liwi-resources-client";
+import { useMemo } from "react";
 import type {
   ResourceResultInitialLoading,
   ResourceResultInitialError,
   ResourceResultLoaded,
-} from './createResourceResultFromState';
-import type { UseResourceOptions } from './useResource';
-import { useResource } from './useResource';
+} from "./createResourceResultFromState";
+import type { UseResourceOptions } from "./useResource";
+import { useResource } from "./useResource";
 
 export interface PaginatedQueryRequiredParams {
   page: number;
@@ -74,7 +74,7 @@ export function usePaginatedResource<
   return useMemo(
     () =>
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      ({ ...result, pagination } as PaginatedResourceResult<Result, Params>),
+      ({ ...result, pagination }) as PaginatedResourceResult<Result, Params>,
     [result, pagination],
   );
 }

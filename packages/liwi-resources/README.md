@@ -22,7 +22,7 @@ npm install --save liwi-resources
 ## Usage
 
 ```js
-import liwiResources from 'liwi-resources';
+import liwiResources from "liwi-resources";
 
 console.log(liwiResources);
 ```

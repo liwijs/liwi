@@ -1,7 +1,7 @@
-import type AbstractConnection from './AbstractConnection';
-import type AbstractStoreCursor from './AbstractStoreCursor';
-import type { InternalCommonStoreClient } from './InternalCommonStoreClient';
-import type { Query, QueryParams } from './Query';
+import type AbstractConnection from "./AbstractConnection";
+import type AbstractStoreCursor from "./AbstractStoreCursor";
+import type { InternalCommonStoreClient } from "./InternalCommonStoreClient";
+import type { Query, QueryParams } from "./Query";
 import type {
   BaseModel,
   Criteria,
@@ -13,7 +13,7 @@ import type {
   AllowedKeyValue,
   SetOptional,
   OptionalBaseModelKeysForInsert,
-} from './types';
+} from "./types";
 
 export type UpsertPartialObject<
   KeyPath extends keyof Model,
@@ -82,14 +82,14 @@ export interface Store<
     K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
+    setOnInsertPartialObject?: Update<Model>["$setOnInsert"],
   ) => Promise<Model>;
 
   upsertOneWithInfo: <
     K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>,
   >(
     object: UpsertPartialObject<KeyPath, KeyValue, Model, K>,
-    setOnInsertPartialObject?: Update<Model>['$setOnInsert'],
+    setOnInsertPartialObject?: Update<Model>["$setOnInsert"],
   ) => Promise<UpsertResult<Model>>;
 
   partialUpdateByKey: (

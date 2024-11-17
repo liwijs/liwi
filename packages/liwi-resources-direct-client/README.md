@@ -22,7 +22,7 @@ npm install --save liwi-direct-client
 ## Usage
 
 ```js
-import liwidirectClient from 'liwi-direct-client';
+import liwidirectClient from "liwi-direct-client";
 
 console.log(liwidirectClient);
 ```

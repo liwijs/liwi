@@ -5,7 +5,7 @@
 class ResourcesServerError extends Error {
   constructor(code, message) {
     super(message);
-    this.name = 'ResourcesServerError';
+    this.name = "ResourcesServerError";
     this.code = code;
   }
 }

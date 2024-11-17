@@ -7,7 +7,7 @@ import type {
   AllowedKeyValue,
   QueryMeta,
   QueryInfo,
-} from './types';
+} from "./types";
 
 export interface QueryOptions<Model extends BaseModel> {
   fields?: Fields<Model>;

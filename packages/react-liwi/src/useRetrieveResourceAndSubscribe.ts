@@ -2,21 +2,21 @@ import type {
   Query,
   QueryParams,
   QuerySubscription,
-} from 'liwi-resources-client';
-import type { Changes, InitialChange, QueryInfo, QueryMeta } from 'liwi-store';
-import { Logger } from 'nightingale-logger';
-import { useEffect, useReducer, useRef, useMemo } from 'react';
-import type { ApplyChanges } from './applyChanges/ApplyChanges';
-import { applyCollectionChanges } from './applyChanges/applyCollectionChanges';
-import { applySingleItemChanges } from './applyChanges/applySingleItemChanges';
-import type { ResourceResult } from './createResourceResultFromState';
-import { createResourceResultFromState } from './createResourceResultFromState';
+} from "liwi-resources-client";
+import type { Changes, InitialChange, QueryInfo, QueryMeta } from "liwi-store";
+import { Logger } from "nightingale-logger";
+import { useEffect, useReducer, useRef, useMemo } from "react";
+import type { ApplyChanges } from "./applyChanges/ApplyChanges";
+import { applyCollectionChanges } from "./applyChanges/applyCollectionChanges";
+import { applySingleItemChanges } from "./applyChanges/applySingleItemChanges";
+import type { ResourceResult } from "./createResourceResultFromState";
+import { createResourceResultFromState } from "./createResourceResultFromState";
 import type {
   ResourceReducer,
   ResourceReducerInitializerReturn,
-} from './reducer';
-import reducer, { initReducer } from './reducer';
-import { useVisibilityChangeSubscriber } from './utils/useVisibilityChangeSubscriber';
+} from "./reducer";
+import reducer, { initReducer } from "./reducer";
+import { useVisibilityChangeSubscriber } from "./utils/useVisibilityChangeSubscriber";
 
 export interface UseResourceAndSubscribeOptions {
   visibleTimeout: number;
@@ -26,12 +26,12 @@ const defaultOptions = {
   visibleTimeout: 1000 * 60 * 2, // 2 minutes
 };
 
-const logger = new Logger('react-liwi:useResourceAndSubscribe');
+const logger = new Logger("react-liwi:useResourceAndSubscribe");
 
 const isInitial = <Result>(
   changes: Changes<any, Result>,
 ): changes is [InitialChange<Result>] =>
-  changes.length === 1 && changes[0].type === 'initial';
+  changes.length === 1 && changes[0].type === "initial";
 
 export function useRetrieveResourceAndSubscribe<
   Result,
@@ -56,7 +56,7 @@ export function useRetrieveResourceAndSubscribe<
   skipRef.current = skip;
 
   const unsubscribe = (): void => {
-    logger.info('unsubscribe');
+    logger.info("unsubscribe");
 
     // reset timeout to allow resubscribing
     timeoutRef.current = undefined;
@@ -87,22 +87,22 @@ export function useRetrieveResourceAndSubscribe<
             resourceName: (query as any).resourceName,
             key: (query as any).key,
           });
-          queryLogger.debug('init');
+          queryLogger.debug("init");
 
           const subscribe = (): void => {
-            queryLogger.debug('subscribing', {
+            queryLogger.debug("subscribing", {
               querySubscriptionRef: querySubscriptionRef.current,
               timeoutRef: timeoutRef.current,
             });
             querySubscriptionRef.current = query.fetchAndSubscribe(
               (err: Error | null, changes: Changes<any, Result>) => {
-                queryLogger.debug('received changes', {
+                queryLogger.debug("received changes", {
                   err,
                   changes,
                 });
 
                 if (err) {
-                  dispatch({ type: 'error', error: err });
+                  dispatch({ type: "error", error: err });
                   return;
                 }
 
@@ -112,7 +112,7 @@ export function useRetrieveResourceAndSubscribe<
                   currentMeta = initialChange.meta;
                   currentQueryInfo = initialChange.queryInfo;
                   dispatch({
-                    type: 'resolve',
+                    type: "resolve",
                     result: initialChange.initial,
                     meta: initialChange.meta,
                     queryInfo: currentQueryInfo,
@@ -136,7 +136,7 @@ export function useRetrieveResourceAndSubscribe<
                     currentResult = newResult;
                     currentMeta = newMeta;
                     dispatch({
-                      type: 'resolve',
+                      type: "resolve",
                       result: newResult,
                       meta: newMeta,
                       queryInfo: currentQueryInfo!,
@@ -147,11 +147,11 @@ export function useRetrieveResourceAndSubscribe<
             );
             querySubscriptionRef.current.then(
               () => {
-                queryLogger.success('subscribed');
+                queryLogger.success("subscribed");
               },
-              (error) => {
+              (error): any => {
                 dispatch({
-                  type: 'error',
+                  type: "error",
                   error,
                 });
               },
@@ -159,7 +159,7 @@ export function useRetrieveResourceAndSubscribe<
           };
 
           changeParamsRef.current = (changedParams: Params): void => {
-            queryLogger.info('change params', {
+            queryLogger.info("change params", {
               skip: skipRef.current,
               params: changedParams,
             });
@@ -172,7 +172,7 @@ export function useRetrieveResourceAndSubscribe<
 
             if (!document.hidden && !skipRef.current) {
               dispatch({
-                type: 'fetching',
+                type: "fetching",
               });
               subscribe();
             }
@@ -182,13 +182,13 @@ export function useRetrieveResourceAndSubscribe<
             if (skipRef.current) return;
             if (!document.hidden) {
               if (timeoutRef.current !== undefined) {
-                queryLogger.debug('timeout cleared');
+                queryLogger.debug("timeout cleared");
                 clearTimeout(timeoutRef.current);
                 timeoutRef.current = undefined;
               } else if (!querySubscriptionRef.current) {
-                queryLogger.info('resubscribe');
+                queryLogger.info("resubscribe");
                 dispatch({
-                  type: 'fetching',
+                  type: "fetching",
                 });
                 subscribe();
               }
@@ -197,7 +197,7 @@ export function useRetrieveResourceAndSubscribe<
 
             if (querySubscriptionRef.current === undefined) return;
 
-            queryLogger.debug('timeout visible');
+            queryLogger.debug("timeout visible");
             timeoutRef.current = setTimeout(unsubscribe, visibleTimeout);
           };
 

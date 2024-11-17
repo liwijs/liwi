@@ -22,7 +22,7 @@ npm install --save liwi-store
 ## Usage
 
 ```js
-import liwiStore from 'liwi-store';
+import liwiStore from "liwi-store";
 
 console.log(liwiStore);
 ```

@@ -1,10 +1,10 @@
-import type { ReactElement, FormEventHandler } from 'react';
-import { useState, useContext, useEffect } from 'react';
-import { useOperation, TransportClientReadyContext } from 'react-liwi';
-import { TodoServicesContext } from 'app/services/TodoServicesProvider';
+import type { FormEventHandler, ReactNode } from "react";
+import { useState, useContext, useEffect } from "react";
+import { useOperation, TransportClientReadyContext } from "react-liwi";
+import { TodoServicesContext } from "../app/services/TodoServicesProvider";
 
-export function NewTaskForm(): ReactElement {
-  const [newTaskInput, setNewTaskInput] = useState('');
+export function NewTaskForm(): ReactNode {
+  const [newTaskInput, setNewTaskInput] = useState("");
   const todoServices = useContext(TodoServicesContext);
   const isReady = useContext(TransportClientReadyContext);
   const [createTask, { loading: taskCreating, error: taskCreateFailed }] =
@@ -27,10 +27,10 @@ export function NewTaskForm(): ReactElement {
       }).then(
         ([err]) => {
           if (!err) {
-            setNewTaskInput('');
+            setNewTaskInput("");
           }
         },
-        (error) => {},
+        (error: unknown) => {},
       );
     }
     return false;

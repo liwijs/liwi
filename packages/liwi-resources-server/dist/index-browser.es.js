@@ -55,12 +55,12 @@ class ResourcesServerService {
 
 /* eslint-disable complexity */
 
-const logger = new Logger('liwi:resources-websocket-client');
+const logger = new Logger("liwi:resources-websocket-client");
 const logUnexpectedError = (error, message, payload) => {
   if (!(error instanceof ResourcesServerError)) {
     logger.error(message, {
       error,
-      payload: !(process.env.NODE_ENV !== "production") ? 'redacted' : payload
+      payload: !(process.env.NODE_ENV !== "production") ? "redacted" : payload
     });
   } else if (process.env.NODE_ENV !== "production") {
     logger.info(`ResourcesServerError in ${message}`, {
@@ -73,15 +73,15 @@ const logUnexpectedError = (error, message, payload) => {
 const createMessageHandler = (resourcesServerService, authenticatedUser, allowSubscriptions) => {
   const openedSubscriptions = allowSubscriptions ? new Map() : null;
   const getResource = payload => {
-    logger.debug('resource', {
+    logger.debug("resource", {
       resourceName: payload.resourceName
     });
     const resource = resourcesServerService.getServiceResource(payload.resourceName);
     return resource;
   };
   const createQuery = async (payload, resource) => {
-    if (!payload.key.startsWith('query')) {
-      throw new Error('Invalid query key');
+    if (!payload.key.startsWith("query")) {
+      throw new Error("Invalid query key");
     }
     const result = await resource.queries[payload.key](payload.params, authenticatedUser);
     return result;
@@ -90,7 +90,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
   // eslint-disable-next-line @typescript-eslint/max-params
   ) => {
     if (!openedSubscriptions) {
-      throw new Error('Subscriptions not allowed');
+      throw new Error("Subscriptions not allowed");
     }
     const {
       subscriptionId
@@ -100,7 +100,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
         subscriptionId,
         key: payload.key
       });
-      throw new ResourcesServerError('ALREADY_HAVE_WATCHER', "Already have a watcher for this id. Cannot add a new one");
+      throw new ResourcesServerError("ALREADY_HAVE_WATCHER", "Already have a watcher for this id. Cannot add a new one");
     }
     const subscription = query[type]((error, result) => {
       if (error) {
@@ -137,7 +137,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
     },
     messageHandler: async (message, subscriptionCallback) => {
       switch (message.type) {
-        case 'fetch':
+        case "fetch":
           {
             try {
               const resource = getResource(message.payload);
@@ -148,23 +148,23 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               throw error;
             }
           }
-        case 'fetchAndSubscribe':
+        case "fetchAndSubscribe":
           {
             try {
               const resource = getResource(message.payload);
               const query = await createQuery(message.payload, resource);
-              return await createSubscription('fetchAndSubscribe', message.payload, resource, query, subscriptionCallback);
+              return await createSubscription("fetchAndSubscribe", message.payload, resource, query, subscriptionCallback);
             } catch (error) {
               logUnexpectedError(error, message.type, message.payload);
               throw error;
             }
           }
-        case 'subscribe':
+        case "subscribe":
           {
             try {
               const resource = getResource(message.payload);
               const query = await createQuery(message.payload, resource);
-              await createSubscription('subscribe', message.payload, resource, query, subscriptionCallback);
+              await createSubscription("subscribe", message.payload, resource, query, subscriptionCallback);
             } catch (error) {
               logUnexpectedError(error, message.type, message.payload);
               throw error;
@@ -174,10 +174,10 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
         // case 'subscribe:changePayload': {
         //   break;
         // }
-        case 'subscribe:close':
+        case "subscribe:close":
           {
             if (!openedSubscriptions) {
-              throw new Error('Subscriptions not allowed');
+              throw new Error("Subscriptions not allowed");
             }
             try {
               const {
@@ -185,7 +185,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               } = message.payload;
               const SubscriptionAndSubscribeHook = openedSubscriptions.get(subscriptionId);
               if (!SubscriptionAndSubscribeHook) {
-                logger.warn('tried to unsubscribe non existing watcher', {
+                logger.warn("tried to unsubscribe non existing watcher", {
                   subscriptionId
                 });
               } else {
@@ -197,7 +197,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
             }
             return;
           }
-        case 'do':
+        case "do":
           {
             try {
               const resource = getResource(message.payload);
@@ -207,7 +207,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
               } = message.payload;
               const operation = resource.operations[operationKey];
               if (!operation) {
-                throw new ResourcesServerError('OPERATION_NOT_FOUND', `Operation not found: ${operationKey}`);
+                throw new ResourcesServerError("OPERATION_NOT_FOUND", `Operation not found: ${operationKey}`);
               }
               return operation(params, authenticatedUser);
             } catch (error) {
@@ -216,7 +216,7 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
             }
           }
         default:
-          throw new ResourcesServerError('INVALID_MESSAGE_TYPE', 'Invalid message type');
+          throw new ResourcesServerError("INVALID_MESSAGE_TYPE", "Invalid message type");
       }
     }
   };

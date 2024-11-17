@@ -1,10 +1,10 @@
-import { POB_TARGET } from 'pob-babel';
-import type { Query, QueryParams } from 'liwi-resources-client';
-import type { SetOptional } from 'liwi-store';
-import type { ResourceResult } from './createResourceResultFromState';
-import { useRetrieveResource } from './useRetrieveResource';
-import type { UseResourceAndSubscribeOptions } from './useRetrieveResourceAndSubscribe';
-import { useRetrieveResourceAndSubscribe } from './useRetrieveResourceAndSubscribe';
+import type { Query, QueryParams } from "liwi-resources-client";
+import type { SetOptional } from "liwi-store";
+import { POB_TARGET } from "pob-babel";
+import type { ResourceResult } from "./createResourceResultFromState";
+import { useRetrieveResource } from "./useRetrieveResource";
+import type { UseResourceAndSubscribeOptions } from "./useRetrieveResourceAndSubscribe";
+import { useRetrieveResourceAndSubscribe } from "./useRetrieveResourceAndSubscribe";
 
 interface UseResourceOptionsRequiredParams<Params extends QueryParams<Params>> {
   params: Params;
@@ -15,10 +15,10 @@ interface UseResourceOptionsRequiredParams<Params extends QueryParams<Params>> {
 
 export type UseResourceOptions<Params extends QueryParams<Params>> =
   Params extends Record<string, never>
-    ? SetOptional<UseResourceOptionsRequiredParams<Params>, 'params'>
+    ? SetOptional<UseResourceOptionsRequiredParams<Params>, "params">
     : UseResourceOptionsRequiredParams<Params>;
 
-const isSSR = typeof window === 'undefined';
+const isSSR = typeof window === "undefined";
 
 export function useResource<Result, Params extends QueryParams<Params>>(
   createQuery: (initialParams: Params) => Query<Result, Params>,
@@ -30,7 +30,7 @@ export function useResource<Result, Params extends QueryParams<Params>>(
   }: UseResourceOptions<Params>,
   deps: any[],
 ): ResourceResult<Result, Params> {
-  if (POB_TARGET === 'node') {
+  if (POB_TARGET === "node") {
     return {
       query: undefined as any,
       initialLoading: true,

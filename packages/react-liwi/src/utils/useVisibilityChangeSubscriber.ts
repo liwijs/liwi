@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef } from "react";
 
 type VisibilityChangeHandler = () => void;
 
@@ -16,7 +16,7 @@ export const useVisibilityChangeSubscriber = (): VisibilityChangeSubscriber => {
       subscribe: (handleVisibilityChange: VisibilityChangeHandler) => {
         handleVisibilityChangeRef.current = handleVisibilityChange;
         document.addEventListener(
-          'visibilitychange',
+          "visibilitychange",
           handleVisibilityChange,
           false,
         );
@@ -24,7 +24,7 @@ export const useVisibilityChangeSubscriber = (): VisibilityChangeSubscriber => {
       unsubscribe: () => {
         if (handleVisibilityChangeRef.current) {
           document.removeEventListener(
-            'visibilitychange',
+            "visibilitychange",
             handleVisibilityChangeRef.current,
           );
         }

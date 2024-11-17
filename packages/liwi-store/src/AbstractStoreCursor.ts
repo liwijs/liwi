@@ -1,6 +1,6 @@
-import AbstractCursor from './AbstractCursor';
-import type { InternalCommonStoreClient } from './InternalCommonStoreClient';
-import type { BaseModel, AllowedKeyValue } from './types';
+import AbstractCursor from "./AbstractCursor";
+import type { InternalCommonStoreClient } from "./InternalCommonStoreClient";
+import type { BaseModel, AllowedKeyValue } from "./types";
 
 export default abstract class AbstractStoreCursor<
   Store extends InternalCommonStoreClient<Model>,
@@ -26,7 +26,7 @@ export default abstract class AbstractStoreCursor<
   }
 
   result(): Promise<Result> {
-    if (!this.key) throw new Error('Cannot call result() before next()');
+    if (!this.key) throw new Error("Cannot call result() before next()");
     return this.store.findByKey(this.key) as unknown as Promise<Result>;
   }
 

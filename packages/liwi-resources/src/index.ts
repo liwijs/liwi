@@ -1,5 +1,5 @@
-import type { ExtendedJsonValue } from 'extended-json';
-import type { Query, QueryParams } from 'liwi-store';
+import type { ExtendedJsonValue } from "extended-json";
+import type { Query, QueryParams } from "liwi-store";
 
 export type {
   Query,
@@ -8,7 +8,7 @@ export type {
   QueryResult,
   QueryMeta,
   SubscribeCallback,
-} from 'liwi-store';
+} from "liwi-store";
 
 export interface ResourceSubscribePayload<Options> {
   resourceName: string;
@@ -61,7 +61,7 @@ export type AckError = {
 };
 
 export type ToClientMessage<T = ExtendedJsonValue> = [
-  'ack' | 'subscription', // type
+  "ack" | "subscription", // type
   number, // id
   AckError | null, // error
   T, // result
@@ -110,7 +110,7 @@ export interface ToServerSimpleMessages {
   //   ToServerSubscribeClose & Record<string, ExtendedJsonValue | undefined>,
   //   undefined
   // >;
-  'subscribe:close': Message<ToServerSubscribeClose, undefined>;
+  "subscribe:close": Message<ToServerSubscribeClose, undefined>;
 }
 
 export interface ToServerSubscribeMessages<
@@ -132,28 +132,28 @@ export type ToServerMessage = {
   id: number;
 } & ( // eslint-disable-next-line @typescript-eslint/sort-type-constituents
   | {
-      type: 'do';
-      payload: ToServerSimpleMessages['do'][0];
+      type: "do";
+      payload: ToServerSimpleMessages["do"][0];
     }
   | {
-      type: 'fetch';
-      payload: ToServerSimpleMessages['fetch'][0];
+      type: "fetch";
+      payload: ToServerSimpleMessages["fetch"][0];
     }
   // | {
   //     type: 'subscribe:changePayload';
   //     payload: ToServerSimpleMessages['subscribe:changePayload'][0];
   //   }
   | {
-      type: 'subscribe:close';
-      payload: ToServerSimpleMessages['subscribe:close'][0];
+      type: "subscribe:close";
+      payload: ToServerSimpleMessages["subscribe:close"][0];
     }
   | {
-      type: 'subscribe';
-      payload: ToServerSubscribeMessages['subscribe'][0];
+      type: "subscribe";
+      payload: ToServerSubscribeMessages["subscribe"][0];
     }
   | {
-      type: 'fetchAndSubscribe';
-      payload: ToServerSubscribeMessages['fetchAndSubscribe'][0];
+      type: "fetchAndSubscribe";
+      payload: ToServerSubscribeMessages["fetchAndSubscribe"][0];
     }
 );
 
@@ -162,7 +162,7 @@ export class ResourcesServerError extends Error {
 
   constructor(code: string, message: string) {
     super(message);
-    this.name = 'ResourcesServerError';
+    this.name = "ResourcesServerError";
     this.code = code;
   }
 }
