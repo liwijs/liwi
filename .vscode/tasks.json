@@ -27,7 +27,6 @@
       "presentation": {
         "panel": "dedicated",
         "group": "start",
-
         "clear": true
       },
       "problemMatcher": []
