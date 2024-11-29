@@ -60,6 +60,6 @@
     "alp-rollup-plugin-config": "2.2.1",
     "pob-babel": "42.0.0",
     "rollup-plugin-copy": "3.5.0",
-    "typescript": "5.3.3"
+    "typescript": "5.7.2"
   }
 }
