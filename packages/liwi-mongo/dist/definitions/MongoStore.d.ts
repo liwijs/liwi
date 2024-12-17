@@ -1,6 +1,6 @@
-import type { UpsertResult, SubscribableStore, QueryParams, UpsertPartialObject, Criteria, Sort, Update, QueryOptions, Transformer, AllowedKeyValue, OptionalBaseModelKeysForInsert } from "liwi-store";
+import type { AllowedKeyValue, Criteria, OptionalBaseModelKeysForInsert, QueryOptions, QueryParams, Sort, SubscribableStore, Transformer, Update, UpsertPartialObject, UpsertResult } from "liwi-store";
 import type { Collection } from "mongodb";
-import type { MongoBaseModel, MongoKeyPath, MongoInsertType } from "./MongoBaseModel";
+import type { MongoBaseModel, MongoInsertType, MongoKeyPath } from "./MongoBaseModel";
 import type MongoConnection from "./MongoConnection";
 import MongoCursor from "./MongoCursor";
 import MongoQueryCollection from "./MongoQueryCollection";

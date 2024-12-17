@@ -1,4 +1,4 @@
-import type { QuerySubscription, SubscribeCallback, QueryResult, QueryParams, QueryOptions, Transformer, AllowedKeyValue } from "liwi-store";
+import type { AllowedKeyValue, QueryOptions, QueryParams, QueryResult, QuerySubscription, SubscribeCallback, Transformer } from "liwi-store";
 import { AbstractSubscribableStoreQuery } from "liwi-subscribe-store";
 import type { MongoBaseModel, MongoInsertType, MongoKeyPath } from "./MongoBaseModel";
 import type MongoStore from "./MongoStore";

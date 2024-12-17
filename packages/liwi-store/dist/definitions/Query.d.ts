@@ -1,4 +1,4 @@
-import type { BaseModel, Changes, Fields, Criteria, Sort, AllowedKeyValue, QueryMeta, QueryInfo } from "./types";
+import type { AllowedKeyValue, BaseModel, Changes, Criteria, Fields, QueryInfo, QueryMeta, Sort } from "./types";
 export interface QueryOptions<Model extends BaseModel> {
     fields?: Fields<Model>;
     criteria?: Criteria<Model>;

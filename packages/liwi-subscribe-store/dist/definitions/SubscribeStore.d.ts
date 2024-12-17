@@ -1,4 +1,4 @@
-import type { Store as StoreInterface, AbstractConnection, UpsertResult, SubscribableStoreQuery, AbstractStoreCursor, SubscribableStore, QueryParams, UpsertPartialObject, BaseModel, InsertType, Update, Criteria, Sort, QueryOptions, Transformer, AllowedKeyValue, OptionalBaseModelKeysForInsert } from "liwi-store";
+import type { AbstractConnection, AbstractStoreCursor, AllowedKeyValue, BaseModel, Criteria, InsertType, OptionalBaseModelKeysForInsert, QueryOptions, QueryParams, Sort, Store as StoreInterface, SubscribableStore, SubscribableStoreQuery, Transformer, Update, UpsertPartialObject, UpsertResult } from "liwi-store";
 export type Actions<Model> = {
     type: "deleted";
     prev: Model[];

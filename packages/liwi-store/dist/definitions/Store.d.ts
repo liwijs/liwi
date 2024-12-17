@@ -2,7 +2,7 @@ import type AbstractConnection from "./AbstractConnection";
 import type AbstractStoreCursor from "./AbstractStoreCursor";
 import type { InternalCommonStoreClient } from "./InternalCommonStoreClient";
 import type { Query, QueryParams } from "./Query";
-import type { BaseModel, Criteria, InsertType, QueryOptions, Sort, Transformer, Update, AllowedKeyValue, SetOptional, OptionalBaseModelKeysForInsert } from "./types";
+import type { AllowedKeyValue, BaseModel, Criteria, InsertType, OptionalBaseModelKeysForInsert, QueryOptions, SetOptional, Sort, Transformer, Update } from "./types";
 export type UpsertPartialObject<KeyPath extends keyof Model, KeyValue extends AllowedKeyValue, Model extends BaseModel & Record<KeyPath, KeyValue>, K extends Exclude<keyof Model, KeyPath | OptionalBaseModelKeysForInsert>> = SetOptional<Model, K | KeyPath | OptionalBaseModelKeysForInsert>;
 export interface UpsertResult<Model extends BaseModel> {
     object: Model;
