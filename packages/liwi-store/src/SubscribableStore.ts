@@ -3,11 +3,11 @@ import type { QueryParams } from "./Query";
 import type { Store } from "./Store";
 import type { SubscribableStoreQuery } from "./SubscribableStoreQuery";
 import type {
+  AllowedKeyValue,
   BaseModel,
   InsertType,
   QueryOptions,
   Transformer,
-  AllowedKeyValue,
 } from "./types";
 
 export interface SubscribableStore<

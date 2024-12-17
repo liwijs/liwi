@@ -1,4 +1,4 @@
-import type { BaseModel, AllowedKeyValue, InsertType } from "liwi-store";
+import type { AllowedKeyValue, BaseModel, InsertType } from "liwi-store";
 
 export type MongoKeyPath = "_id";
 

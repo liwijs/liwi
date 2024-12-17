@@ -1,4 +1,4 @@
-import type { TransportClient, ConnectionStates } from "liwi-resources-client";
+import type { ConnectionStates, TransportClient } from "liwi-resources-client";
 import type { ReactNode } from "react";
 export declare const TransportClientContext: import("react").Context<TransportClient>;
 export declare const TransportClientStateContext: import("react").Context<ConnectionStates>;

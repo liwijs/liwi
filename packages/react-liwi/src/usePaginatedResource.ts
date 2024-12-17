@@ -1,8 +1,8 @@
 import type { Query, QueryParams } from "liwi-resources-client";
 import { useMemo } from "react";
 import type {
-  ResourceResultInitialLoading,
   ResourceResultInitialError,
+  ResourceResultInitialLoading,
   ResourceResultLoaded,
 } from "./createResourceResultFromState";
 import type { UseResourceOptions } from "./useResource";

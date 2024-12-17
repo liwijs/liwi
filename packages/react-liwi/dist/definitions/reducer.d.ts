@@ -1,5 +1,5 @@
 import type { Query, QueryParams, ResourcesServerError } from "liwi-resources-client";
-import type { QueryMeta, QueryInfo } from "liwi-store";
+import type { QueryInfo, QueryMeta } from "liwi-store";
 import type { Reducer } from "react";
 export interface InitialState<Result, Params extends QueryParams<Params>> {
     fetched: false;

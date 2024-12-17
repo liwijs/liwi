@@ -1,6 +1,6 @@
-import type { TransportClient, ConnectionStates } from "liwi-resources-client";
+import type { ConnectionStates, TransportClient } from "liwi-resources-client";
 import type { ReactNode } from "react";
-import { useContext, createContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export const TransportClientContext = createContext<TransportClient>(
   undefined as unknown as TransportClient,

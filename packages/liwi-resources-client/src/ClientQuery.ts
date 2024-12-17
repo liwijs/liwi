@@ -1,9 +1,9 @@
 import type {
   Query,
-  QuerySubscription,
-  SubscribeCallback,
   QueryParams,
   QueryResult,
+  QuerySubscription,
+  SubscribeCallback,
   ToServerQueryPayload,
 } from "liwi-resources";
 import { Logger } from "nightingale-logger";

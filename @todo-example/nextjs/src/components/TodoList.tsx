@@ -1,6 +1,6 @@
 import type { Task, TasksService } from "@todo-example/modules";
 import type { MouseEventHandler, ReactNode } from "react";
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { OperationCallWrapper } from "react-liwi";
 
 export interface TaskItemProps {

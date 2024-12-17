@@ -1,6 +1,6 @@
 import AbstractCursor from "./AbstractCursor";
 import type { InternalCommonStoreClient } from "./InternalCommonStoreClient";
-import type { BaseModel, AllowedKeyValue } from "./types";
+import type { AllowedKeyValue, BaseModel } from "./types";
 
 export default abstract class AbstractStoreCursor<
   Store extends InternalCommonStoreClient<Model>,

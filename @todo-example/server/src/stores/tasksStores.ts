@@ -1,7 +1,7 @@
 import type { Task } from "@todo-example/modules";
 import {
-  createMongoSubscribeStore,
   createMongoStore,
+  createMongoSubscribeStore,
 } from "./createMongoStore";
 
 export const tasksStore = createMongoSubscribeStore<Task>(

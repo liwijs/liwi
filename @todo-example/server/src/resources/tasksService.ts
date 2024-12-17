@@ -1,4 +1,4 @@
-import type { TasksService, Task } from "@todo-example/modules";
+import type { Task, TasksService } from "@todo-example/modules";
 import type { Update } from "liwi-mongo";
 import type { ServiceResource } from "liwi-resources-server";
 import { tasksStore } from "../stores/tasksStores";

@@ -1,12 +1,12 @@
 import type {
-  QuerySubscription,
-  SubscribeCallback,
-  QueryResult,
-  QueryParams,
+  AllowedKeyValue,
   Changes,
   QueryOptions,
+  QueryParams,
+  QueryResult,
+  QuerySubscription,
+  SubscribeCallback,
   Transformer,
-  AllowedKeyValue,
 } from "liwi-store";
 import type { Actions } from "liwi-subscribe-store";
 import { AbstractSubscribableStoreQuery } from "liwi-subscribe-store";
