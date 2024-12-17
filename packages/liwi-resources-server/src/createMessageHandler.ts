@@ -4,8 +4,8 @@ import type {
   Query,
   QuerySubscription,
   ToServerMessage,
-  ToServerSubscribeQueryPayload,
   ToServerQueryPayload,
+  ToServerSubscribeQueryPayload,
 } from "liwi-resources";
 import { ResourcesServerError } from "liwi-resources";
 import { Logger } from "nightingale-logger";

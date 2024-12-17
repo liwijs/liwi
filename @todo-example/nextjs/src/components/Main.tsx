@@ -1,7 +1,7 @@
 import type { Task } from "@todo-example/modules";
 import type { ReactElement } from "react";
 import { useContext, useMemo, useState } from "react";
-import { useResource, useOperation } from "react-liwi";
+import { useOperation, useResource } from "react-liwi";
 import { TodoServicesContext } from "../app/services/TodoServicesProvider";
 import { TodoList } from "./TodoList";
 

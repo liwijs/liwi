@@ -3,16 +3,16 @@ import type AbstractStoreCursor from "./AbstractStoreCursor";
 import type { InternalCommonStoreClient } from "./InternalCommonStoreClient";
 import type { Query, QueryParams } from "./Query";
 import type {
+  AllowedKeyValue,
   BaseModel,
   Criteria,
   InsertType,
+  OptionalBaseModelKeysForInsert,
   QueryOptions,
+  SetOptional,
   Sort,
   Transformer,
   Update,
-  AllowedKeyValue,
-  SetOptional,
-  OptionalBaseModelKeysForInsert,
 } from "./types";
 
 export type UpsertPartialObject<

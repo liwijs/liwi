@@ -1,7 +1,7 @@
 import type {
   Query,
-  QueryParams,
   QueryMeta,
+  QueryParams,
   ResourcesServerError,
 } from "liwi-resources-client";
 import type { QueryInfo } from "liwi-store";

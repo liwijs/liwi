@@ -5,7 +5,7 @@ import type {
 } from "liwi-resources-client";
 import type { Changes, InitialChange, QueryInfo, QueryMeta } from "liwi-store";
 import { Logger } from "nightingale-logger";
-import { useEffect, useReducer, useRef, useMemo } from "react";
+import { useEffect, useMemo, useReducer, useRef } from "react";
 import type { ApplyChanges } from "./applyChanges/ApplyChanges";
 import { applyCollectionChanges } from "./applyChanges/applyCollectionChanges";
 import { applySingleItemChanges } from "./applyChanges/applySingleItemChanges";

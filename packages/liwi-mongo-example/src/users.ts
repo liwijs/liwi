@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { MongoConnection, MongoStore } from "liwi-mongo";
-import type { MongoInsertType, MongoBaseModel } from "liwi-mongo";
+import type { MongoBaseModel, MongoInsertType } from "liwi-mongo";
 
 const connection = new MongoConnection(
   new Map([["database", "liwi-mongo-example"]]),

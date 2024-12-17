@@ -1,12 +1,12 @@
 import type {
-  Query,
-  SubscribeCallback,
-  QuerySubscription,
-  QueryResult,
-  QueryParams,
+  AllowedKeyValue,
   BaseModel,
   InsertType,
-  AllowedKeyValue,
+  Query,
+  QueryParams,
+  QueryResult,
+  QuerySubscription,
+  SubscribeCallback,
 } from "liwi-store";
 import type SubscribeStore from "./SubscribeStore";
 

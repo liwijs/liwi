@@ -1,12 +1,12 @@
 import type {
+  AllowedKeyValue,
   BaseModel,
   Changes,
-  Fields,
   Criteria,
-  Sort,
-  AllowedKeyValue,
-  QueryMeta,
+  Fields,
   QueryInfo,
+  QueryMeta,
+  Sort,
 } from "./types";
 
 export interface QueryOptions<Model extends BaseModel> {

@@ -1,6 +1,6 @@
 // e2e/example.spec.ts
 
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 const TODO_NAME = "Bake a cake";
 
