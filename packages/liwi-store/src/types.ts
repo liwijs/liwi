@@ -219,13 +219,18 @@ type Join<T extends unknown[], D extends string> = T extends []
     : T extends [number | string, ...infer R]
       ? `${T[0]}${D}${Join<R, D>}`
       : string;
-type NestedPaths<Type, Depth extends number[]> = Depth["length"] extends 8
+
+export declare type NestedPaths<
+  Type,
+  Depth extends number[],
+> = Depth["length"] extends 8
   ? []
   : Type extends
         | Buffer
         | Date
         | RegExp
         | Uint8Array
+        | bigint
         | boolean
         | number
         | string
@@ -235,7 +240,7 @@ type NestedPaths<Type, Depth extends number[]> = Depth["length"] extends 8
           }
     ? []
     : Type extends readonly (infer ArrayType)[]
-      ? [] | [number, ...NestedPaths<ArrayType, [...Depth, 1]>]
+      ? [number, ...NestedPaths<ArrayType, [...Depth, 1]>] | [number]
       : Type extends Map<string, any>
         ? [string]
         : Type extends object
@@ -249,7 +254,9 @@ type NestedPaths<Type, Depth extends number[]> = Depth["length"] extends 8
                       ? [Key]
                       : ArrayType extends Type
                         ? [Key]
-                        : [Key, ...NestedPaths<Type[Key], [...Depth, 1]>]
+                        :
+                            | [Key, ...NestedPaths<Type[Key], [...Depth, 1]>]
+                            | [Key]
                     : [Key, ...NestedPaths<Type[Key], [...Depth, 1]>] | [Key];
             }[Extract<keyof Type, string>]
           : [];
@@ -298,7 +305,6 @@ export type Criteria<Model extends BaseModel> =
       };
       $where?: string | ((this: Model) => boolean);
       $comment?: Document | string;
-      [key: string]: any;
     });
 
 export type Sort<Model extends BaseModel> = Record<string, -1 | 1> & {

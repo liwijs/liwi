@@ -122,10 +122,10 @@ interface FilterOperators<TValue> {
     $rand?: Record<string, never>;
 }
 type Join<T extends unknown[], D extends string> = T extends [] ? "" : T extends [number | string] ? `${T[0]}` : T extends [number | string, ...infer R] ? `${T[0]}${D}${Join<R, D>}` : string;
-type NestedPaths<Type, Depth extends number[]> = Depth["length"] extends 8 ? [] : Type extends Buffer | Date | RegExp | Uint8Array | boolean | number | string | ((...args: any[]) => any) | {
+export declare type NestedPaths<Type, Depth extends number[]> = Depth["length"] extends 8 ? [] : Type extends Buffer | Date | RegExp | Uint8Array | bigint | boolean | number | string | ((...args: any[]) => any) | {
     _bsontype: string;
-} ? [] : Type extends readonly (infer ArrayType)[] ? [] | [number, ...NestedPaths<ArrayType, [...Depth, 1]>] : Type extends Map<string, any> ? [string] : Type extends object ? {
-    [Key in Extract<keyof Type, string>]: Type[Key] extends Type ? [Key] : Type extends Type[Key] ? [Key] : Type[Key] extends readonly (infer ArrayType)[] ? Type extends ArrayType ? [Key] : ArrayType extends Type ? [Key] : [Key, ...NestedPaths<Type[Key], [...Depth, 1]>] : [Key, ...NestedPaths<Type[Key], [...Depth, 1]>] | [Key];
+} ? [] : Type extends readonly (infer ArrayType)[] ? [number, ...NestedPaths<ArrayType, [...Depth, 1]>] | [number] : Type extends Map<string, any> ? [string] : Type extends object ? {
+    [Key in Extract<keyof Type, string>]: Type[Key] extends Type ? [Key] : Type extends Type[Key] ? [Key] : Type[Key] extends readonly (infer ArrayType)[] ? Type extends ArrayType ? [Key] : ArrayType extends Type ? [Key] : [Key, ...NestedPaths<Type[Key], [...Depth, 1]>] | [Key] : [Key, ...NestedPaths<Type[Key], [...Depth, 1]>] | [Key];
 }[Extract<keyof Type, string>] : [];
 type PropertyType<Type, Property extends string> = string extends Property ? unknown : Property extends keyof Type ? Type[Property] : Property extends `${number}` ? Type extends readonly (infer ArrayType)[] ? ArrayType : unknown : Property extends `${infer Key}.${infer Rest}` ? Key extends `${number}` ? Type extends readonly (infer ArrayType)[] ? PropertyType<ArrayType, Rest> : unknown : Key extends keyof Type ? Type[Key] extends Map<string, infer MapType> ? MapType : PropertyType<Type[Key], Rest> : unknown : unknown;
 type RegExpOrString<T> = T extends string ? RegExp | T : T;
@@ -145,7 +145,6 @@ export type Criteria<Model extends BaseModel> = Partial<Model> | ({
     };
     $where?: string | ((this: Model) => boolean);
     $comment?: Document | string;
-    [key: string]: any;
 });
 export type Sort<Model extends BaseModel> = Record<string, -1 | 1> & {
     [P in keyof Model]?: -1 | 1;
