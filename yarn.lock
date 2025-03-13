@@ -3320,12 +3320,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ws@npm:8.5.14":
-  version: 8.5.14
-  resolution: "@types/ws@npm:8.5.14"
+"@types/ws@npm:8.18.0":
+  version: 8.18.0
+  resolution: "@types/ws@npm:8.18.0"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 10c0/be88a0b6252f939cb83340bd1b4d450287f752c19271195cd97564fd94047259a9bb8c31c585a61b69d8a1b069a99df9dd804db0132d3359c54d3890c501416a
+  checksum: 10c0/a56d2e0d1da7411a1f3548ce02b51a50cbe9e23f025677d03df48f87e4a3c72e1342fbf1d12e487d7eafa8dc670c605152b61bbf9165891ec0e9694b0d3ea8d4
   languageName: node
   linkType: hard
 
@@ -8112,7 +8112,7 @@ __metadata:
     "@babel/core": "npm:7.26.10"
     "@babel/preset-env": "npm:7.26.9"
     "@babel/runtime": "npm:^7.26.10"
-    "@types/ws": "npm:8.5.14"
+    "@types/ws": "npm:8.18.0"
     bufferutil: "npm:^4.0.3"
     extended-json: "npm:12.0.0"
     liwi-resources-server: "npm:12.0.0"
