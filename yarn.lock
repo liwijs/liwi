@@ -1616,6 +1616,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@eslint/core@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "@eslint/core@npm:0.12.0"
+  dependencies:
+    "@types/json-schema": "npm:^7.0.15"
+  checksum: 10c0/d032af81195bb28dd800c2b9617548c6c2a09b9490da3c5537fd2a1201501666d06492278bb92cfccac1f7ac249e58601dd87f813ec0d6a423ef0880434fa0c3
+  languageName: node
+  linkType: hard
+
 "@eslint/core@npm:^0.9.0":
   version: 0.9.1
   resolution: "@eslint/core@npm:0.9.1"
@@ -1656,12 +1665,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/plugin-kit@npm:^0.2.3":
-  version: 0.2.4
-  resolution: "@eslint/plugin-kit@npm:0.2.4"
+"@eslint/plugin-kit@npm:^0.2.3, @eslint/plugin-kit@npm:^0.2.5":
+  version: 0.2.7
+  resolution: "@eslint/plugin-kit@npm:0.2.7"
   dependencies:
+    "@eslint/core": "npm:^0.12.0"
     levn: "npm:^0.4.1"
-  checksum: 10c0/1bcfc0a30b1df891047c1d8b3707833bded12a057ba01757a2a8591fdc8d8fe0dbb8d51d4b0b61b2af4ca1d363057abd7d2fb4799f1706b105734f4d3fa0dbf1
+  checksum: 10c0/0a1aff1ad63e72aca923217e556c6dfd67d7cd121870eb7686355d7d1475d569773528a8b2111b9176f3d91d2ea81f7413c34600e8e5b73d59e005d70780b633
   languageName: node
   linkType: hard
 
@@ -4372,7 +4382,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^5.2.0, chalk@npm:^5.3.0, chalk@npm:~5.3.0":
+"chalk@npm:^5.3.0, chalk@npm:^5.4.1":
+  version: 5.4.1
+  resolution: "chalk@npm:5.4.1"
+  checksum: 10c0/b23e88132c702f4855ca6d25cb5538b1114343e41472d5263ee8a37cccfccd9c4216d111e1097c6a27830407a1dc81fecdf2a56f2c63033d4dbbd88c10b0dcef
+  languageName: node
+  linkType: hard
+
+"chalk@npm:~5.3.0":
   version: 5.3.0
   resolution: "chalk@npm:5.3.0"
   checksum: 10c0/8297d436b2c0f95801103ff2ef67268d362021b8210daf8ddbe349695333eb3610a71122172ff3b0272f1ef2cf7cc2c41fdaa4715f52e49ffe04c56340feed09
@@ -4386,20 +4403,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-package-dependencies@npm:9.0.0":
-  version: 9.0.0
-  resolution: "check-package-dependencies@npm:9.0.0"
+"check-package-dependencies@npm:9.2.0":
+  version: 9.2.0
+  resolution: "check-package-dependencies@npm:9.2.0"
   dependencies:
-    chalk: "npm:^5.2.0"
+    "@eslint/plugin-kit": "npm:^0.2.5"
+    chalk: "npm:^5.4.1"
     import-meta-resolve: "npm:^4.1.0"
     jsonc-parser: "npm:^3.3.1"
-    semver: "npm:^7.5.4"
+    semver: "npm:^7.7.1"
     semver-utils: "npm:^1.1.4"
     tslib: "npm:^2.8.1"
-    type-fest: "npm:^4.0.0"
+    type-fest: "npm:^4.34.0"
   bin:
     check-package-dependencies: ./bin/check-package-dependencies.mjs
-  checksum: 10c0/21871f571194db2db89fc96ff593a706ce5b3e167ff7c6660c77199db15ad6ad53e769e6a40c68a6849dd188e1708eb83c9d07197ba8ed54dedd59092a8c6178
+  checksum: 10c0/c5f7f45bb920224a96bb43fd5ef3a39b13105dca8486fa38bc236b56e69e5d9399ea0db86ed772575a088a010e7428171c4927182af5136236a46940287f991f
   languageName: node
   linkType: hard
 
@@ -8020,7 +8038,7 @@ __metadata:
     "@pob/eslint-config-typescript-react": "npm:59.2.0"
     "@pob/root": "npm:14.1.0"
     "@types/jest": "npm:29.5.14"
-    check-package-dependencies: "npm:9.0.0"
+    check-package-dependencies: "npm:9.2.0"
     eslint: "npm:9.17.0"
     jest: "npm:29.7.0"
     pob-babel: "npm:42.0.0"
@@ -10339,7 +10357,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.6.3, semver@npm:^7.1.1, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0, semver@npm:^7.6.3":
+"semver@npm:7.6.3":
   version: 7.6.3
   resolution: "semver@npm:7.6.3"
   bin:
@@ -10354,6 +10372,15 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 10c0/e3d79b609071caa78bcb6ce2ad81c7966a46a7431d9d58b8800cfa9cb6a63699b3899a0e4bcce36167a284578212d9ae6942b6929ba4aa5015c079a67751d42d
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.1.1, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0, semver@npm:^7.6.3, semver@npm:^7.7.1":
+  version: 7.7.1
+  resolution: "semver@npm:7.7.1"
+  bin:
+    semver: bin/semver.js
+  checksum: 10c0/fd603a6fb9c399c6054015433051bdbe7b99a940a8fb44b85c2b524c4004b023d7928d47cb22154f8d054ea7ee8597f586605e05b52047f048278e4ac56ae958
   languageName: node
   linkType: hard
 
@@ -11146,10 +11173,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^4.0.0, type-fest@npm:^4.6.0, type-fest@npm:^4.7.1":
-  version: 4.27.0
-  resolution: "type-fest@npm:4.27.0"
-  checksum: 10c0/30c8ebe1219725021f5b5006081bd828c4e915de0de65e9a87065f566a96ece706846b2c874ac04c0dcfdfe6b4ae47ad15d3285c9aab162cb79c026dfb2e7556
+"type-fest@npm:^4.34.0, type-fest@npm:^4.6.0, type-fest@npm:^4.7.1":
+  version: 4.37.0
+  resolution: "type-fest@npm:4.37.0"
+  checksum: 10c0/5bad189f66fbe3431e5d36befa08cab6010e56be68b7467530b7ef94c3cf81ef775a8ac3047c8bbda4dd3159929285870357498d7bc1df062714f9c5c3a84926
   languageName: node
   linkType: hard
 
