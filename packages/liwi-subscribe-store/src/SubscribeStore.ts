@@ -151,7 +151,7 @@ export default class SubscribeStore<
     const replacedObjects = await this.store.replaceSeveral(objects);
     this.callSubscribed({
       type: "updated",
-      changes: objects.map((prev, index) => [prev, replacedObjects[index]]),
+      changes: objects.map((prev, index) => [prev, replacedObjects[index]!]),
     });
     return replacedObjects;
   }

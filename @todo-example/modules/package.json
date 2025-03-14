@@ -12,7 +12,7 @@
   "homepage": "https://github.com/liwijs/liwi",
   "type": "module",
   "engines": {
-    "node": ">=22.11.0"
+    "node": ">=22.14.0"
   },
   "sideEffects": false,
   "main": "./build/index-node.mjs",
@@ -73,7 +73,7 @@
   "devDependencies": {
     "@babel/core": "7.26.10",
     "@babel/preset-env": "7.26.9",
-    "pob-babel": "42.0.0",
+    "pob-babel": "43.4.0",
     "typescript": "5.3.3"
   }
 }

@@ -12,7 +12,7 @@
   "homepage": "https://github.com/liwijs/liwi",
   "type": "module",
   "engines": {
-    "node": ">=22.11.0"
+    "node": ">=22.14.0"
   },
   "main": "./build/index-node.mjs",
   "exports": {
@@ -58,7 +58,7 @@
   "devDependencies": {
     "@babel/core": "7.26.10",
     "alp-rollup-plugin-config": "2.2.1",
-    "pob-babel": "42.0.0",
+    "pob-babel": "43.4.0",
     "rollup-plugin-copy": "3.5.0",
     "typescript": "5.3.3"
   }

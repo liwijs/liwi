@@ -346,7 +346,7 @@ const defaultOptions = {
   visibleTimeout: 120000 // 2 minutes
 };
 const logger = new Logger("react-liwi:useResourceAndSubscribe");
-const isInitial = changes => changes.length === 1 && changes[0].type === "initial";
+const isInitial = changes => changes.length === 1 && changes[0]?.type === "initial";
 function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, {
   visibleTimeout
 } = defaultOptions) {

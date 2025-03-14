@@ -31,7 +31,7 @@ const logger = new Logger("react-liwi:useResourceAndSubscribe");
 const isInitial = <Result>(
   changes: Changes<any, Result>,
 ): changes is [InitialChange<Result>] =>
-  changes.length === 1 && changes[0].type === "initial";
+  changes.length === 1 && changes[0]?.type === "initial";
 
 export function useRetrieveResourceAndSubscribe<
   Result,
@@ -96,10 +96,7 @@ export function useRetrieveResourceAndSubscribe<
             });
             querySubscriptionRef.current = query.fetchAndSubscribe(
               (err: Error | null, changes: Changes<any, Result>) => {
-                queryLogger.debug("received changes", {
-                  err,
-                  changes,
-                });
+                queryLogger.debug("received changes", { err, changes });
 
                 if (err) {
                   dispatch({ type: "error", error: err });
@@ -149,11 +146,8 @@ export function useRetrieveResourceAndSubscribe<
               () => {
                 queryLogger.success("subscribed");
               },
-              (error): any => {
-                dispatch({
-                  type: "error",
-                  error,
-                });
+              (error: any) => {
+                dispatch({ type: "error", error });
               },
             );
           };
@@ -171,9 +165,7 @@ export function useRetrieveResourceAndSubscribe<
             query.changeParams(changedParams);
 
             if (!document.hidden && !skipRef.current) {
-              dispatch({
-                type: "fetching",
-              });
+              dispatch({ type: "fetching" });
               subscribe();
             }
           };
@@ -187,9 +179,7 @@ export function useRetrieveResourceAndSubscribe<
                 timeoutRef.current = undefined;
               } else if (!querySubscriptionRef.current) {
                 queryLogger.info("resubscribe");
-                dispatch({
-                  type: "fetching",
-                });
+                dispatch({ type: "fetching" });
                 subscribe();
               }
               return;

@@ -8,7 +8,6 @@ export type ExtendedJsonValue =
   | null
   | undefined;
 
-// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 export interface ExtendedJsonRecord {
   [key: string]: ExtendedJsonValue;
 }

@@ -78,7 +78,7 @@ export default class MongoQuerySingleItem<
     await cursor.limit(1);
     return cursor.toArray().then((result: Model[]) => {
       const item: Result =
-        result.length === 0 ? (null as Result) : this.transformer(result[0]);
+        result.length === 0 ? (null as Result) : this.transformer(result[0]!);
       return onFulfilled({
         result: item,
         meta: { total: result === null ? 0 : 1 },
@@ -118,7 +118,7 @@ export default class MongoQuerySingleItem<
           if (filtered.length > 0) {
             changes.push({
               type: "updated",
-              result: this.transformer(filtered[0]),
+              result: this.transformer(filtered[0]!),
             });
           }
           break;
@@ -149,7 +149,7 @@ export default class MongoQuerySingleItem<
                 "should not match more than 1, use sort if you can have multiple match",
               );
             } else {
-              const [, next] = filtered[0];
+              const [, next] = filtered[0]!;
               changes.push({
                 type: "updated",
                 result: testCriteria(next) ? this.transformer(next) : null!,

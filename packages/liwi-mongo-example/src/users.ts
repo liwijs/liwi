@@ -19,7 +19,7 @@ const users = new MongoStore<User>(connection, "users");
 await users.deleteMany({});
 const allUsers = await users.findAll();
 
-assert(allUsers.length === 0, "Database is not empty");
+assert.ok(allUsers.length === 0, "Database is not empty");
 
 const user: MongoInsertType<User> = {
   firstname: "John",
@@ -28,17 +28,17 @@ const user: MongoInsertType<User> = {
 };
 const insertedUser = await users.insertOne(user);
 
-assert(insertedUser === user);
+assert.ok(insertedUser === user);
 
-assert(insertedUser.created);
-assert(insertedUser.updated);
+assert.ok(insertedUser.created);
+assert.ok(insertedUser.updated);
 
 await users.partialUpdateMany(
   { firstname: "John" },
   { $set: { firstname: "Johnny" } },
 );
 const modifiedUser = await users.findOne({ firstname: "Johnny" });
-assert(modifiedUser?._id === insertedUser._id);
+assert.ok(modifiedUser?._id === insertedUser._id);
 
 await users.partialUpdateMany(
   { firstname: "Johnny" },
@@ -46,6 +46,6 @@ await users.partialUpdateMany(
 );
 
 const modifiedUserWithGroup = await users.findByKey(insertedUser._id);
-assert(modifiedUserWithGroup?.groups.length === 1);
+assert.ok(modifiedUserWithGroup?.groups.length === 1);
 
 await connection.close();

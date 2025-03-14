@@ -85,7 +85,7 @@ export const createMessageHandler = <AuthenticatedUser>(
       throw new Error("Invalid query key");
     }
 
-    const result = await resource.queries[payload.key](
+    const result = await resource.queries[payload.key]!(
       payload.params,
       authenticatedUser,
     );

@@ -1,6 +1,6 @@
-<h3 align="center">
+<h1 align="center">
   @todo-example/babel-preset-nextjs-babel-config
-</h3>
+</h1>
 
 <p align="center">
 </p>
