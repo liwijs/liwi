@@ -72,4 +72,4 @@ const createResourceClientService = (resourceName, options) => {
 };
 
 export { createResourceClientService };
-//# sourceMappingURL=index-node20.mjs.map
+//# sourceMappingURL=index-node22.mjs.map

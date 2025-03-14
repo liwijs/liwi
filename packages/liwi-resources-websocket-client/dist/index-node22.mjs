@@ -3,8 +3,6 @@ import { ResourcesServerError } from 'liwi-resources-client';
 import { Logger } from 'nightingale-logger';
 import Backoff from 'backo2';
 
-// eslint-disable-next-line n/no-unsupported-features/node-builtins
-
 function createSimpleWebsocketClient({
   url,
   protocols,
@@ -16,7 +14,6 @@ function createSimpleWebsocketClient({
   onMessage,
   onError
 }) {
-  // eslint-disable-next-line n/no-unsupported-features/node-builtins
   let ws = null;
   let currentState = "closed";
   let isConnected = false;
@@ -59,10 +56,8 @@ function createSimpleWebsocketClient({
   const connect = () => {
     const webSocket = thirdWebsocketArgument ?
     // @ts-expect-error third argument for react-native
-    // eslint-disable-next-line n/no-unsupported-features/node-builtins
-    new WebSocket(url, protocols, thirdWebsocketArgument) :
-    // eslint-disable-next-line n/no-unsupported-features/node-builtins
-    new WebSocket(url, protocols);
+
+    new WebSocket(url, protocols, thirdWebsocketArgument) : new WebSocket(url, protocols);
     ws = webSocket;
     clearInternalTimeout("maxConnect");
     setCurrentState("connecting");
@@ -130,7 +125,7 @@ function createSimpleWebsocketClient({
     }
   };
   if (visibilityChangeHandler) {
-    window.addEventListener("visibilitychange", visibilityChangeHandler);
+    globalThis.addEventListener("visibilitychange", visibilityChangeHandler);
   }
   return {
     connect,
@@ -142,7 +137,7 @@ function createSimpleWebsocketClient({
         closeWebsocket();
       }
       if (visibilityChangeHandler) {
-        window.removeEventListener("visibilitychange", visibilityChangeHandler);
+        globalThis.removeEventListener("visibilitychange", visibilityChangeHandler);
       }
     },
     isConnected() {
@@ -389,4 +384,4 @@ function createResourcesWebsocketClient({
 }
 
 export { createResourcesWebsocketClient as createWebsocketTransportClient };
-//# sourceMappingURL=index-node20.mjs.map
+//# sourceMappingURL=index-node22.mjs.map

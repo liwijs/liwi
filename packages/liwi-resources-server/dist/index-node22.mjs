@@ -223,4 +223,4 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
 };
 
 export { ResourcesServerService, createMessageHandler };
-//# sourceMappingURL=index-node20.mjs.map
+//# sourceMappingURL=index-node22.mjs.map

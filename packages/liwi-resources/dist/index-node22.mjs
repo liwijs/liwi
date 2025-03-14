@@ -11,4 +11,4 @@ class ResourcesServerError extends Error {
 }
 
 export { ResourcesServerError };
-//# sourceMappingURL=index-node20.mjs.map
+//# sourceMappingURL=index-node22.mjs.map
