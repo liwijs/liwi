@@ -21,7 +21,6 @@ export interface SimpleWebsocketClientOptions {
   onError?: (event: Event) => void;
 }
 
-// eslint-disable-next-line n/no-unsupported-features/node-builtins
 type Message = Parameters<WebSocket["send"]>[0];
 
 export interface WebsocketTransport {
@@ -45,7 +44,6 @@ export default function createSimpleWebsocketClient({
   onMessage,
   onError,
 }: SimpleWebsocketClientOptions): WebsocketTransport {
-  // eslint-disable-next-line n/no-unsupported-features/node-builtins
   let ws: WebSocket | null = null;
   let currentState: ConnectionStates = "closed";
   let isConnected = false;
@@ -95,10 +93,9 @@ export default function createSimpleWebsocketClient({
   const connect = (): void => {
     const webSocket = thirdWebsocketArgument
       ? // @ts-expect-error third argument for react-native
-        // eslint-disable-next-line n/no-unsupported-features/node-builtins
+
         new WebSocket(url, protocols, thirdWebsocketArgument)
-      : // eslint-disable-next-line n/no-unsupported-features/node-builtins
-        new WebSocket(url, protocols);
+      : new WebSocket(url, protocols);
     ws = webSocket;
     clearInternalTimeout("maxConnect");
     setCurrentState("connecting");
@@ -179,7 +176,7 @@ export default function createSimpleWebsocketClient({
       };
 
   if (visibilityChangeHandler) {
-    window.addEventListener("visibilitychange", visibilityChangeHandler);
+    globalThis.addEventListener("visibilitychange", visibilityChangeHandler);
   }
   const wsTransport: WebsocketTransport = {
     connect,
@@ -192,7 +189,10 @@ export default function createSimpleWebsocketClient({
         closeWebsocket();
       }
       if (visibilityChangeHandler) {
-        window.removeEventListener("visibilitychange", visibilityChangeHandler);
+        globalThis.removeEventListener(
+          "visibilitychange",
+          visibilityChangeHandler,
+        );
       }
     },
 
