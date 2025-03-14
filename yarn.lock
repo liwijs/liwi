@@ -4314,10 +4314,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bson@npm:^6.10.1":
-  version: 6.10.1
-  resolution: "bson@npm:6.10.1"
-  checksum: 10c0/89f0ee7a45211648afa5a32d7f4d7ce436e20614b7c5d37c9fd6bc6e9464eec0ddeab8432a836d819bef1f4896256d874044603cf5f4b2123c00734842799601
+"bson@npm:^6.10.3":
+  version: 6.10.3
+  resolution: "bson@npm:6.10.3"
+  checksum: 10c0/15ad7a9b3bf8090add5fea1761b1ba7d75e5256efcfbb8c9ca448ca98e59c3b079c37c36c7aca0cc916236bd2d4684a5525c68f3d76da8a13d55dc230abbdd21
   languageName: node
   linkType: hard
 
@@ -4335,13 +4335,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bufferutil@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "bufferutil@npm:4.0.3"
+"bufferutil@npm:^4.0.9":
+  version: 4.0.9
+  resolution: "bufferutil@npm:4.0.9"
   dependencies:
     node-gyp: "npm:latest"
-    node-gyp-build: "npm:^4.2.0"
-  checksum: 10c0/492753de10c5ccbe52afd0a1aa9f99e22fad7df4cfd21585c50da59c05ba1c4d76837853a69c661d01cc9bca73ae8a1f65599cbcf9ef8b32a7712e67ef360907
+    node-gyp-build: "npm:^4.3.0"
+  checksum: 10c0/f8a93279fc9bdcf32b42eba97edc672b39ca0fe5c55a8596099886cffc76ea9dd78e0f6f51ecee3b5ee06d2d564aa587036b5d4ea39b8b5ac797262a363cdf7d
   languageName: node
   linkType: hard
 
@@ -8146,7 +8146,7 @@ __metadata:
     liwi-store: "npm:12.0.0"
     liwi-subscribe-store: "npm:12.0.0"
     mingo: "npm:^6.2.7"
-    mongodb: "npm:^6.12.0"
+    mongodb: "npm:^6.14.2"
     nightingale-logger: "npm:^15.0.0"
     pob-babel: "npm:43.4.0"
     typescript: "npm:5.3.3"
@@ -8257,14 +8257,14 @@ __metadata:
     "@babel/preset-env": "npm:7.26.9"
     "@babel/runtime": "npm:^7.26.10"
     "@types/ws": "npm:8.18.0"
-    bufferutil: "npm:^4.0.3"
+    bufferutil: "npm:^4.0.9"
     extended-json: "npm:12.0.0"
     liwi-resources-server: "npm:12.0.0"
     liwi-store: "npm:12.0.0"
     nightingale-logger: "npm:^15.0.0"
     pob-babel: "npm:43.4.0"
     typescript: "npm:5.3.3"
-    utf-8-validate: "npm:^6.0.0"
+    utf-8-validate: "npm:^6.0.5"
     ws: "npm:^8.4.2"
   dependenciesMeta:
     bufferutil:
@@ -8803,12 +8803,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb@npm:^6.12.0, mongodb@npm:^6.9.0":
-  version: 6.12.0
-  resolution: "mongodb@npm:6.12.0"
+"mongodb@npm:^6.14.2, mongodb@npm:^6.9.0":
+  version: 6.14.2
+  resolution: "mongodb@npm:6.14.2"
   dependencies:
     "@mongodb-js/saslprep": "npm:^1.1.9"
-    bson: "npm:^6.10.1"
+    bson: "npm:^6.10.3"
     mongodb-connection-string-url: "npm:^3.0.0"
   peerDependencies:
     "@aws-sdk/credential-providers": ^3.188.0
@@ -8833,7 +8833,7 @@ __metadata:
       optional: true
     socks:
       optional: true
-  checksum: 10c0/627d28e1ac6380b81e90880cf88f1bacac9109e18301dd6506d67b0ef58fcc1d15acd3e2527820dfedd81860be737a115f4bd48d6d4a689531c5a1d58587606e
+  checksum: 10c0/f95ce58defb2ad884250119f904b6ccbc11fd293515fb2cb2b1612200ef26211b0e2c3740bb9cb2481af993fca826453a4a5feb3916b34a9d7f25175342fbebc
   languageName: node
   linkType: hard
 
@@ -9105,7 +9105,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp-build@npm:^4.2.0, node-gyp-build@npm:^4.3.0":
+"node-gyp-build@npm:^4.3.0":
   version: 4.6.0
   resolution: "node-gyp-build@npm:4.6.0"
   bin:
@@ -11565,13 +11565,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"utf-8-validate@npm:^6.0.0":
-  version: 6.0.2
-  resolution: "utf-8-validate@npm:6.0.2"
+"utf-8-validate@npm:^6.0.5":
+  version: 6.0.5
+  resolution: "utf-8-validate@npm:6.0.5"
   dependencies:
     node-gyp: "npm:latest"
     node-gyp-build: "npm:^4.3.0"
-  checksum: 10c0/9e95936ab10c57001c01f6a2556193a57335d0f4d504b7290bbc14bf1f8f225b6a02cd32034872d451dc6e59e44b003fdc95ff88aa55c2bf2974c89750f0c98e
+  checksum: 10c0/6dc63c513adb001e47a51819072cdd414158430091c49c21d4947ea99f16df5167b671f680df8fb2b6f2ae6a7f30264b4ec111bd3e573720dfe371da1ab99a81
   languageName: node
   linkType: hard
 
