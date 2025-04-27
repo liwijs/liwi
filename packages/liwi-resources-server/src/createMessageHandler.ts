@@ -1,5 +1,4 @@
 /* eslint-disable complexity */
-import "pob-babel";
 import type {
   Query,
   QuerySubscription,
