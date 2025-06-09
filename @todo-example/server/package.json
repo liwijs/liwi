@@ -58,7 +58,7 @@
   "devDependencies": {
     "@babel/core": "7.27.4",
     "alp-rollup-plugin-config": "2.2.1",
-    "pob-babel": "43.4.0",
+    "pob-babel": "43.6.1",
     "rollup-plugin-copy": "3.5.0",
     "typescript": "5.3.3"
   }
