@@ -1,6 +1,6 @@
-export type { ExtendedJsonValue } from "./ExtendedJsonValue";
-export { default as stringify } from "./stringify";
-export { default as parse } from "./parse";
-export { default as encode } from "./stringify";
-export { default as decode } from "./parse";
+export type { ExtendedJsonValue } from "./ExtendedJsonValue.ts";
+export { default as stringify } from "./stringify.ts";
+export { default as parse } from "./parse.ts";
+export { default as encode } from "./stringify.ts";
+export { default as decode } from "./parse.ts";
 //# sourceMappingURL=index.d.ts.map

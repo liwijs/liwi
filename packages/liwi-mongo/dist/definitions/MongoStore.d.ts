@@ -1,10 +1,10 @@
 import type { AllowedKeyValue, Criteria, OptionalBaseModelKeysForInsert, QueryOptions, QueryParams, Sort, SubscribableStore, Transformer, Update, UpsertPartialObject, UpsertResult } from "liwi-store";
 import type { Collection } from "mongodb";
-import type { MongoBaseModel, MongoInsertType, MongoKeyPath } from "./MongoBaseModel";
-import type MongoConnection from "./MongoConnection";
-import MongoCursor from "./MongoCursor";
-import MongoQueryCollection from "./MongoQueryCollection";
-import MongoQuerySingleItem from "./MongoQuerySingleItem";
+import type { MongoBaseModel, MongoInsertType, MongoKeyPath } from "./MongoBaseModel.ts";
+import type MongoConnection from "./MongoConnection.ts";
+import MongoCursor from "./MongoCursor.ts";
+import MongoQueryCollection from "./MongoQueryCollection.ts";
+import MongoQuerySingleItem from "./MongoQuerySingleItem.ts";
 export interface MongoUpsertResult<KeyValue extends AllowedKeyValue, Model extends MongoBaseModel<KeyValue>> extends UpsertResult<Model> {
     object: Model;
     inserted: boolean;
