@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import type {
   Query,
   QuerySubscription,
@@ -38,9 +37,9 @@ const logUnexpectedError = (
   if (!(error instanceof ResourcesServerError)) {
     logger.error(message, {
       error,
-      payload: !__DEV__ ? "redacted" : payload,
+      payload: process.env.NODE_ENV === "production" ? "redacted" : payload,
     });
-  } else if (__DEV__) {
+  } else if (process.env.NODE_ENV !== "production") {
     logger.info(`ResourcesServerError in ${message}`, {
       code: error.code,
       message: error.message,

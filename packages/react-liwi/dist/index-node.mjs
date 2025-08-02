@@ -127,4 +127,4 @@ const transportClientStateToSimplifiedState = state => {
 };
 
 export { TransportClientContext, TransportClientProvider, TransportClientReadyContext, TransportClientStateContext, transportClientStateToSimplifiedState, useOperation, usePaginatedResource, useResource, useTransportClientIsReady, useTransportClientState };
-//# sourceMappingURL=index-node22.mjs.map
+//# sourceMappingURL=index-node.mjs.map

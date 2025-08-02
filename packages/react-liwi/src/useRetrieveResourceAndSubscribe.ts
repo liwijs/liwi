@@ -12,8 +12,9 @@ import { applySingleItemChanges } from "./applyChanges/applySingleItemChanges";
 import type { ResourceResult } from "./createResourceResultFromState";
 import { createResourceResultFromState } from "./createResourceResultFromState";
 import type {
-  ResourceReducer,
+  Action,
   ResourceReducerInitializerReturn,
+  State,
 } from "./reducer";
 import reducer, { initReducer } from "./reducer";
 import { useVisibilityChangeSubscriber } from "./utils/useVisibilityChangeSubscriber";
@@ -68,8 +69,9 @@ export function useRetrieveResourceAndSubscribe<
   };
 
   const [state, dispatch] = useReducer<
-    ResourceReducer<Result, Params>,
-    () => ResourceReducerInitializerReturn<Result, Params>
+    State<Result, Params>,
+    () => ResourceReducerInitializerReturn<Result, Params>,
+    [Action<Result>]
   >(
     reducer,
     () => {

@@ -154,4 +154,4 @@ class AbstractSubscribableStoreQuery {
 }
 
 export { AbstractSubscribableStoreQuery, SubscribeStore };
-//# sourceMappingURL=index-node22.mjs.map
+//# sourceMappingURL=index-node.mjs.map

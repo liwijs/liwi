@@ -1,7 +1,7 @@
 import type { Task, TasksService } from "@todo-example/modules";
 import type { Update } from "liwi-mongo";
 import type { ServiceResource } from "liwi-resources-server";
-import { tasksStore } from "../stores/tasksStores";
+import { tasksStore } from "../stores/tasksStores.ts";
 
 export const tasksService: ServiceResource<TasksService> = {
   queries: {

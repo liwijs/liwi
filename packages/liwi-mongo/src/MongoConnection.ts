@@ -4,6 +4,14 @@ import { Logger } from "nightingale-logger";
 
 const logger = new Logger("liwi:mongo:MongoConnection");
 
+export interface MongoConfig {
+  host?: string;
+  port?: number | string;
+  database: string;
+  user?: string;
+  password?: string;
+}
+
 export default class MongoConnection extends AbstractConnection {
   _connection?: mongodb.MongoClient;
 
@@ -12,36 +20,33 @@ export default class MongoConnection extends AbstractConnection {
   connectionFailed?: boolean;
 
   // TODO interface
-  constructor(config: Map<string, number | string>) {
+  constructor({
+    host = "localhost",
+    port = "27017",
+    database,
+    user,
+    password,
+  }: MongoConfig) {
     super();
 
-    if (!config.has("host")) {
-      config.set("host", "localhost");
-    }
-    if (!config.has("port")) {
-      config.set("port", "27017");
-    }
-    if (!config.has("database")) {
+    if (!database) {
       throw new Error("Missing config database");
     }
 
     const buildConnectionString = (redactCredentials: boolean): string =>
       `mongodb://${
-        config.has("user")
+        user
           ? `${
               redactCredentials
-                ? `${(config.get("user") as string).slice(0, 2)}[redacted]`
-                : encodeURIComponent(config.get("user") as string)
+                ? `${user.slice(0, 2)}[redacted]`
+                : encodeURIComponent(user)
             }:${
               redactCredentials
                 ? "[redacted]"
-                : encodeURIComponent(config.get("password") as string)
+                : encodeURIComponent(password ?? "")
             }@`
           : ""
-      }` +
-      `${config.get("host") as string}:${
-        config.get("port") as string
-      }/${encodeURIComponent(config.get("database") as string)}`;
+      }${host}:${port}/${encodeURIComponent(database)}`;
 
     const connectionString = buildConnectionString(false);
     const connectionStringRedacted = buildConnectionString(true);

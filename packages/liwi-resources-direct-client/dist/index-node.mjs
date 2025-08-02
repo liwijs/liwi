@@ -46,4 +46,4 @@ const createDirectTransportClient = ({
 };
 
 export { createDirectTransportClient };
-//# sourceMappingURL=index-node22.mjs.map
+//# sourceMappingURL=index-node.mjs.map

@@ -2,9 +2,7 @@ import assert from "node:assert";
 import { MongoConnection, MongoStore } from "liwi-mongo";
 import type { MongoBaseModel, MongoInsertType } from "liwi-mongo";
 
-const connection = new MongoConnection(
-  new Map([["database", "liwi-mongo-example"]]),
-);
+const connection = new MongoConnection({ database: "liwi-mongo-example" });
 
 interface User extends MongoBaseModel {
   created: Date;

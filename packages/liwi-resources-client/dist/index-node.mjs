@@ -1,5 +1,5 @@
-import { Logger } from 'nightingale-logger';
 export { ResourcesServerError } from 'liwi-resources';
+import { Logger } from 'nightingale-logger';
 
 const logger = new Logger("liwi:resources:query");
 class ClientQuery {
@@ -72,4 +72,4 @@ const createResourceClientService = (resourceName, options) => {
 };
 
 export { createResourceClientService };
-//# sourceMappingURL=index-node22.mjs.map
+//# sourceMappingURL=index-node.mjs.map

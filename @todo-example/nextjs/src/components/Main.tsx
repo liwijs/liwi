@@ -20,7 +20,8 @@ export default function Main(): ReactElement | null {
   );
 
   const [hash, setHash] = useState(
-    typeof window === "undefined" ? "#/" : window.location.hash,
+    // eslint-disable-next-line unicorn/prefer-global-this, @typescript-eslint/no-unnecessary-condition
+    global.window === undefined ? "#/" : global.location.hash,
   );
 
   const [clearCompleted] = useOperation(
@@ -105,8 +106,10 @@ export default function Main(): ReactElement | null {
             type="button"
             className="clear-completed"
             onClick={() => {
-              // eslint-disable-next-line @typescript-eslint/no-floating-promises
-              clearCompleted();
+              clearCompleted().catch((error) => {
+                console.error(error);
+                alert("Error clearing completed tasks");
+              });
             }}
           >
             Clear completed

@@ -4,8 +4,9 @@ import { TransportClientReadyContext } from "./TransportClientProvider";
 import type { ResourceResult } from "./createResourceResultFromState";
 import { createResourceResultFromState } from "./createResourceResultFromState";
 import type {
-  ResourceReducer,
+  Action,
   ResourceReducerInitializerReturn,
+  State,
 } from "./reducer";
 import reducer, { initReducer } from "./reducer";
 
@@ -36,8 +37,9 @@ export function useRetrieveResource<Result, Params extends QueryParams<Params>>(
   );
 
   const [state, dispatch] = useReducer<
-    ResourceReducer<Result, Params>,
-    () => ResourceReducerInitializerReturn<Result, Params>
+    State<Result, Params>,
+    () => ResourceReducerInitializerReturn<Result, Params>,
+    [Action<Result>]
   >(
     reducer,
     () => {

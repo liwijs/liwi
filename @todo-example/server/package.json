@@ -48,18 +48,18 @@
   "prettier": "@pob/root/prettier-config",
   "dependencies": {
     "@todo-example/modules": "12.0.0",
-    "alp-node": "7.0.0",
+    "alp-node": "8.0.0",
     "liwi-mongo": "12.0.0",
     "liwi-resources-server": "12.0.0",
     "liwi-resources-websocket-server": "12.0.0",
     "nightingale-app-console": "15.0.0",
-    "router-segments": "9.1.0"
+    "router-segments": "11.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.27.4",
-    "alp-rollup-plugin-config": "2.2.1",
-    "pob-babel": "43.6.1",
+    "@babel/core": "7.28.0",
+    "alp-rollup-plugin-config": "3.0.0",
+    "pob-babel": "43.7.0",
     "rollup-plugin-copy": "3.5.0",
-    "typescript": "5.3.3"
+    "typescript": "5.9.2"
   }
 }

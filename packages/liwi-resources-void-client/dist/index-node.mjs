@@ -15,4 +15,4 @@ const createVoidTransportClient = () => {
 };
 
 export { createVoidTransportClient };
-//# sourceMappingURL=index-node22.mjs.map
+//# sourceMappingURL=index-node.mjs.map

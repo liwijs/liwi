@@ -8,9 +8,9 @@ interface VisibilityChangeSubscriber {
 }
 
 export const useVisibilityChangeSubscriber = (): VisibilityChangeSubscriber => {
-  const handleVisibilityChangeRef = useRef<
-    VisibilityChangeHandler | undefined
-  >();
+  const handleVisibilityChangeRef = useRef<VisibilityChangeHandler | undefined>(
+    undefined,
+  );
   return useMemo(
     () => ({
       subscribe: (handleVisibilityChange: VisibilityChangeHandler) => {

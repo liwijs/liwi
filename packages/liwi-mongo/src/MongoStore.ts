@@ -23,11 +23,11 @@ import type {
   MongoBaseModel,
   MongoInsertType,
   MongoKeyPath,
-} from "./MongoBaseModel";
-import type MongoConnection from "./MongoConnection";
-import MongoCursor from "./MongoCursor";
-import MongoQueryCollection from "./MongoQueryCollection";
-import MongoQuerySingleItem from "./MongoQuerySingleItem";
+} from "./MongoBaseModel.ts";
+import type MongoConnection from "./MongoConnection.ts";
+import MongoCursor from "./MongoCursor.ts";
+import MongoQueryCollection from "./MongoQueryCollection.ts";
+import MongoQuerySingleItem from "./MongoQuerySingleItem.ts";
 
 export interface MongoUpsertResult<
   KeyValue extends AllowedKeyValue,

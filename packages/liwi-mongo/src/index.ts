@@ -6,6 +6,12 @@ export type {
 
 export type { Update } from "liwi-store";
 
-export { default as MongoStore } from "./MongoStore";
-export { default as MongoConnection } from "./MongoConnection";
-export { default as createMongoSubscribeStore } from "./createMongoSubscribeStore";
+export { default as MongoStore } from "./MongoStore.ts";
+export {
+  default as MongoConnection,
+  type MongoConfig,
+} from "./MongoConnection.ts";
+export {
+  default as createMongoSubscribeStore,
+  type SubscribeStore,
+} from "./createMongoSubscribeStore.ts";

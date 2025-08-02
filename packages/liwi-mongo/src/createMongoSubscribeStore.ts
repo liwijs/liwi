@@ -23,3 +23,5 @@ export default function createMongoSubscribeStore<
 > {
   return new SubscribeStore(mongoStore);
 }
+
+export { type SubscribeStore } from "liwi-subscribe-store";

@@ -5,13 +5,11 @@ export interface SubscribeHook<LoggedInUser = unknown, P = unknown> {
   unsubscribed: (loggedInUser: LoggedInUser | undefined, params: P) => void;
 }
 
-export interface ServiceResource<
-  ClientService extends ServiceInterface<
-    ClientService["queries"],
-    ClientService["operations"]
-  >,
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type ServiceResource<
+  ClientService extends ServiceInterface<any, any>,
   LoggedInUser = unknown,
-> {
+> = {
   queries: {
     [P in keyof ClientService["queries"]]: (
       params: Parameters<ClientService["queries"][P]>[0],
@@ -32,4 +30,4 @@ export interface ServiceResource<
       loggedInUser: LoggedInUser | undefined,
     ) => ReturnType<ClientService["operations"][P]>;
   };
-}
+};

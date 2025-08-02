@@ -1,5 +1,3 @@
-/// <reference types="node" />
-/// <reference types="node" />
 export type Except<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type SetOptional<T, K extends keyof T> = Except<T, K> & Partial<Pick<T, K>>;
 type Flatten<Type> = Type extends readonly (infer Item)[] ? Item : Type;

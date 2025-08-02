@@ -14,21 +14,17 @@ interface CreateResourceClientOptions<
 }
 
 export const createResourceClientService = <
-  Service extends ClientServiceInterface<
-    Service["queries"],
-    Service["operations"]
-  >,
+  Service extends ClientServiceInterface<any, any>,
 >(
   resourceName: string,
   options: CreateResourceClientOptions<
     keyof Service["queries"],
     keyof Service["operations"]
   >,
-) => {
+): ((transportClient: TransportClient) => Service) => {
   return (transportClient: TransportClient): Service => {
     const queries: Partial<Service["queries"]> = {};
     const operations: Partial<Service["operations"]> = {};
-
     getKeys(options.queries).forEach((queryKey) => {
       queries[queryKey] = ((params: any) =>
         new ClientQuery(
@@ -38,7 +34,6 @@ export const createResourceClientService = <
           params,
         )) as any;
     });
-
     getKeys(options.operations).forEach((operationKey) => {
       operations[operationKey] = ((params: any) =>
         transportClient.send("do", {
@@ -47,7 +42,6 @@ export const createResourceClientService = <
           params,
         })) as any;
     });
-
     return {
       queries,
       operations,

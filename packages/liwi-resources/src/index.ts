@@ -50,8 +50,8 @@ export interface ServiceInterface<
   Queries extends ServiceInterfaceQueries<Queries>,
   Operations extends ServiceInterfaceOperations<Operations>,
 > {
-  queries: ServiceInterfaceQueries<Queries>;
-  operations: ServiceInterfaceOperations<Operations>;
+  queries: Queries;
+  operations: Operations;
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions

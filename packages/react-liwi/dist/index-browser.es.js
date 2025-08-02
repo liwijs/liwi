@@ -328,7 +328,7 @@ function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
 }
 
 const useVisibilityChangeSubscriber = () => {
-  const handleVisibilityChangeRef = useRef();
+  const handleVisibilityChangeRef = useRef(undefined);
   return useMemo(() => ({
     subscribe: handleVisibilityChange => {
       handleVisibilityChangeRef.current = handleVisibilityChange;

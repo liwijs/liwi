@@ -67,4 +67,4 @@ class AbstractStoreCursor extends AbstractCursor {
 }
 
 export { AbstractConnection, AbstractCursor, AbstractStoreCursor };
-//# sourceMappingURL=index-node22.mjs.map
+//# sourceMappingURL=index-node.mjs.map

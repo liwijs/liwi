@@ -71,9 +71,9 @@
     "liwi-resources-client": "12.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.27.4",
-    "@babel/preset-env": "7.27.2",
-    "pob-babel": "43.6.1",
-    "typescript": "5.3.3"
+    "@babel/core": "7.28.0",
+    "@babel/preset-env": "7.28.0",
+    "pob-babel": "43.7.0",
+    "typescript": "5.9.2"
   }
 }

@@ -1,4 +1,4 @@
-import stringify from "./stringify";
+import stringify from "./stringify.ts";
 
 test("simple string", () => {
   expect(stringify("test")).toBe('"test"');

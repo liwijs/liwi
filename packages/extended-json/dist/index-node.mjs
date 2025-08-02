@@ -35,4 +35,4 @@ function parse(text, reviver) {
 }
 
 export { parse as decode, stringify as encode, parse, stringify };
-//# sourceMappingURL=index-node22.mjs.map
+//# sourceMappingURL=index-node.mjs.map

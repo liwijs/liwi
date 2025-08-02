@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import type http from "node:http";
 import type { ResourcesServerService } from "liwi-resources-server";
 import { WebSocketServer } from "ws";

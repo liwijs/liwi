@@ -92,7 +92,9 @@ export default [
   }),
   ...applyTs({
     mode: "directory",
-    files: ["packages/react-liwi/src/"],
+    files: [
+      "packages/{react-liwi,liwi-resources-client,liwi-resources-websocket-client,liwi-resources,liwi-store,liwi-subscribe-store}/src/",
+    ],
     configs: [
       ...pobTypescriptReactConfigs.base,
       warnUnsafeConfig,

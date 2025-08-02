@@ -16,14 +16,14 @@
     "node": ">=22.14.0"
   },
   "sideEffects": false,
-  "main": "./dist/index-node22.mjs",
+  "main": "./dist/index-node.mjs",
   "types": "./dist/definitions/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/definitions/index.d.ts",
       "node": {
-        "import": "./dist/index-node22.mjs"
+        "import": "./dist/index-node.mjs"
       }
     }
   },
@@ -48,7 +48,8 @@
     "envs": [
       {
         "target": "node",
-        "version": "22"
+        "version": "22",
+        "omitVersionInFileName": true
       }
     ]
   },
@@ -61,8 +62,8 @@
     "nightingale-logger": "^15.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.27.4",
-    "pob-babel": "43.6.1",
-    "typescript": "5.3.3"
+    "@babel/core": "7.28.0",
+    "pob-babel": "43.7.0",
+    "typescript": "5.9.2"
   }
 }

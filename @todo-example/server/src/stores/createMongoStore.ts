@@ -1,15 +1,17 @@
 import { config } from "alp-node";
-import type { MongoBaseModel } from "liwi-mongo";
 import { MongoConnection, MongoStore } from "liwi-mongo";
+import type { MongoBaseModel, MongoConfig } from "liwi-mongo";
 
-export { createMongoSubscribeStore } from "liwi-mongo";
+export { createMongoSubscribeStore, type SubscribeStore } from "liwi-mongo";
 
-type DbConfig = Map<"mongodb", Map<string, number | string>>;
+interface DbConfig {
+  mongodb: MongoConfig;
+}
 
-const mongoConfig = config.get<DbConfig>("db").get("mongodb");
+const mongoConfig = config.get<DbConfig | undefined>("db")?.mongodb;
 if (!mongoConfig) throw new Error("Invalid mongo config (db.mongodb)");
 
-if (process.env.MONGO_PORT) mongoConfig.set("port", process.env.MONGO_PORT);
+if (process.env.MONGO_PORT) mongoConfig.port = process.env.MONGO_PORT;
 
 export const mongoConnection: MongoConnection = new MongoConnection(
   mongoConfig,

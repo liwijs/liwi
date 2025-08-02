@@ -149,4 +149,4 @@ const createWsServer = (server, path, resourcesServerService, getAuthenticatedUs
 };
 
 export { createWsServer };
-//# sourceMappingURL=index-node22.mjs.map
+//# sourceMappingURL=index-node.mjs.map

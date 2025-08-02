@@ -1,7 +1,7 @@
 import "nightingale-app-console";
 import Alp from "alp-node";
 import { createWsServer } from "liwi-resources-websocket-server";
-import { resourcesServerService } from "./resources";
+import { resourcesServerService } from "./resources/index.ts";
 
 const app = new Alp();
 

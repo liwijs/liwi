@@ -487,18 +487,18 @@ class MongoStore {
 const logger = new Logger("liwi:mongo:MongoConnection");
 class MongoConnection extends AbstractConnection {
   // TODO interface
-  constructor(config) {
+  constructor({
+    host = "localhost",
+    port = "27017",
+    database,
+    user,
+    password
+  }) {
     super();
-    if (!config.has("host")) {
-      config.set("host", "localhost");
-    }
-    if (!config.has("port")) {
-      config.set("port", "27017");
-    }
-    if (!config.has("database")) {
+    if (!database) {
       throw new Error("Missing config database");
     }
-    const buildConnectionString = redactCredentials => `mongodb://${config.has("user") ? `${redactCredentials ? `${config.get("user").slice(0, 2)}[redacted]` : encodeURIComponent(config.get("user"))}:${redactCredentials ? "[redacted]" : encodeURIComponent(config.get("password"))}@` : ""}` + `${config.get("host")}:${config.get("port")}/${encodeURIComponent(config.get("database"))}`;
+    const buildConnectionString = redactCredentials => `mongodb://${user ? `${redactCredentials ? `${user.slice(0, 2)}[redacted]` : encodeURIComponent(user)}:${redactCredentials ? "[redacted]" : encodeURIComponent(password ?? "")}@` : ""}${host}:${port}/${encodeURIComponent(database)}`;
     const connectionString = buildConnectionString(false);
     const connectionStringRedacted = buildConnectionString(true);
     this.connect(connectionString, connectionStringRedacted);
@@ -581,4 +581,4 @@ function createMongoSubscribeStore(mongoStore) {
 }
 
 export { MongoConnection, MongoStore, createMongoSubscribeStore };
-//# sourceMappingURL=index-node22.mjs.map
+//# sourceMappingURL=index-node.mjs.map

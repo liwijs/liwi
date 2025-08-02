@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
     <TransportClientProvider<WebsocketTransportClientOptions>
       url="ws://localhost:4005/ws"
       createFn={
-        typeof window === "undefined"
+        globalThis.window === undefined
           ? createVoidTransportClient
           : createWebsocketTransportClient
       }

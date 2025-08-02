@@ -1,13 +1,13 @@
-import { AbstractCursor } from 'liwi-store';
-import { BaseModel, QueryOptions } from 'liwi-store';
-import Client from './Client';
+import type { BaseModel, QueryOptions } from "liwi-store";
+import { AbstractCursor } from "liwi-store";
+import type Client from "./Client.ts";
 
 export default class ClientCursor<
   Model extends BaseModel,
   KeyPath extends string,
-  Result extends Partial<Model> = Model
+  Result extends Partial<Model> = Model,
 > extends AbstractCursor<Model, Result> {
-  key: any;
+  key: Model[KeyPath];
 
   private _idCursor?: number;
 
@@ -26,15 +26,15 @@ export default class ClientCursor<
   /* options */
 
   limit(newLimit: number): Promise<this> {
-    if (this._idCursor) throw new Error('Cursor already created');
+    if (this._idCursor) throw new Error("Cursor already created");
     this.options.limit = newLimit;
     return Promise.resolve(this);
   }
 
   /* results */
 
-  private _create() {
-    if (this._idCursor) throw new Error('Cursor already created');
+  private _create(): Promise<void> {
+    if (this._idCursor) throw new Error("Cursor already created");
     return this.client.createCursor(this.options).then((idCursor: number) => {
       if (!idCursor) return;
       this._idCursor = idCursor;
@@ -46,35 +46,35 @@ export default class ClientCursor<
       return this._create().then(() => this.emit(type, value));
     }
 
-    return this.client.send('cursor', [type, this._idCursor, value]);
+    return this.client.send("cursor", [type, this._idCursor, value]);
   }
 
-  advance(count: number) {
-    this.emit('advance', count);
+  advance(count: number): this {
+    this.emit("advance", count);
     return this;
   }
 
-  async next(): Promise<any> {
-    const result = await this.emit('next');
+  async next(): Promise<Model[KeyPath]> {
+    const result = await this.emit("next");
     this._result = result;
     this.key = result?.[this.client.keyPath];
     return this.key;
   }
 
   result(): Promise<Result> {
-    if (!this._result) throw new Error('Cannot call result() before next()');
+    if (!this._result) throw new Error("Cannot call result() before next()");
     return Promise.resolve(this._result);
   }
 
   count(applyLimit = false) {
-    return this.emit('count', applyLimit);
+    return this.emit("count", applyLimit);
   }
 
   close(): Promise<void> {
     if (!this.client) return Promise.resolve();
 
     const closedPromise = this._idCursor
-      ? this.emit('close')
+      ? this.emit("close")
       : Promise.resolve();
     this._idCursor = undefined;
     this._result = undefined;
@@ -82,7 +82,7 @@ export default class ClientCursor<
   }
 
   toArray(): Promise<Result[]> {
-    if (this._idCursor) throw new Error('Cursor created, cannot call toArray');
-    return this.client.send('cursor toArray', [this.options]);
+    if (this._idCursor) throw new Error("Cursor created, cannot call toArray");
+    return this.client.send("cursor toArray", [this.options]);
   }
 }

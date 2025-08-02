@@ -16,8 +16,8 @@ type ServiceInterfaceOperations<Operations extends Record<keyof Operations, Serv
     [key in keyof Operations]: (params: QueryParams<Parameters<Operations[key]>[0]>) => ReturnType<Operations[key]>;
 };
 export interface ServiceInterface<Queries extends ServiceInterfaceQueries<Queries>, Operations extends ServiceInterfaceOperations<Operations>> {
-    queries: ServiceInterfaceQueries<Queries>;
-    operations: ServiceInterfaceOperations<Operations>;
+    queries: Queries;
+    operations: Operations;
 }
 export type AckError = {
     code: string;

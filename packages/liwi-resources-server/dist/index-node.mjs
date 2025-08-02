@@ -53,14 +53,12 @@ class ResourcesServerService {
   // }
 }
 
-/* eslint-disable complexity */
-
 const logger = new Logger("liwi:resources-websocket-client");
 const logUnexpectedError = (error, message, payload) => {
   if (!(error instanceof ResourcesServerError)) {
     logger.error(message, {
       error,
-      payload: !(process.env.NODE_ENV !== "production") ? "redacted" : payload
+      payload: process.env.NODE_ENV === "production" ? "redacted" : payload
     });
   } else if (process.env.NODE_ENV !== "production") {
     logger.info(`ResourcesServerError in ${message}`, {
@@ -223,4 +221,4 @@ const createMessageHandler = (resourcesServerService, authenticatedUser, allowSu
 };
 
 export { ResourcesServerService, createMessageHandler };
-//# sourceMappingURL=index-node22.mjs.map
+//# sourceMappingURL=index-node.mjs.map

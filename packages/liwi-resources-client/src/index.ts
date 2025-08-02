@@ -1,6 +1,6 @@
-export { createResourceClientService } from "./createResourceClientService";
 export type { ServiceInterface as ClientServiceInterface } from "liwi-resources";
 export { ResourcesServerError } from "liwi-resources";
+export { createResourceClientService } from "./createResourceClientService";
 export type {
   AckError,
   ToClientMessage,

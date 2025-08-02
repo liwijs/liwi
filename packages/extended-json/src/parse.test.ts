@@ -1,4 +1,4 @@
-import parse from "./parse";
+import parse from "./parse.ts";
 
 test("simple string", () => {
   expect(parse('"test"')).toBe("test");
