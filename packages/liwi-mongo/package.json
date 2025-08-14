@@ -62,7 +62,7 @@
     "nightingale-logger": "^15.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.28.0",
+    "@babel/core": "7.28.3",
     "pob-babel": "43.7.0",
     "typescript": "5.9.2"
   }
