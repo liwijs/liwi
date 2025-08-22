@@ -62,7 +62,7 @@
     "@pob/root": "18.2.0",
     "@types/jest": "30.0.0",
     "check-package-dependencies": "10.4.0",
-    "eslint": "9.32.0",
+    "eslint": "9.34.0",
     "jest": "30.0.5",
     "pob-babel": "43.7.0",
     "typescript": "5.9.2"
