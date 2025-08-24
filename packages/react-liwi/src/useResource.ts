@@ -1,6 +1,5 @@
 import type { Query, QueryParams } from "liwi-resources-client";
 import type { SetOptional } from "liwi-store";
-import { POB_TARGET } from "pob-babel";
 import type { ResourceResult } from "./createResourceResultFromState";
 import { useRetrieveResource } from "./useRetrieveResource";
 import type { UseResourceAndSubscribeOptions } from "./useRetrieveResourceAndSubscribe";
@@ -18,6 +17,7 @@ export type UseResourceOptions<Params extends QueryParams<Params>> =
     ? SetOptional<UseResourceOptionsRequiredParams<Params>, "params">
     : UseResourceOptionsRequiredParams<Params>;
 
+// eslint-disable-next-line unicorn/prefer-global-this
 const isSSR = typeof window === "undefined";
 
 export function useResource<Result, Params extends QueryParams<Params>>(
@@ -30,20 +30,6 @@ export function useResource<Result, Params extends QueryParams<Params>>(
   }: UseResourceOptions<Params>,
   deps: any[],
 ): ResourceResult<Result, Params> {
-  if (POB_TARGET === "node") {
-    return {
-      query: undefined as any,
-      initialLoading: true,
-      initialError: false,
-      fetched: false,
-      fetching: true,
-      data: undefined,
-      meta: undefined,
-      queryInfo: undefined,
-      error: undefined,
-    };
-  }
-
   const result =
     subscribe && !isSSR
       ? // eslint-disable-next-line react-hooks/rules-of-hooks

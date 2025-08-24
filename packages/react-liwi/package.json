@@ -40,7 +40,7 @@
     "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
     "build:definitions": "tsc -p tsconfig.json",
     "clean": "yarn clean:build",
-    "clean:build": "pob-babel-clean-out dist",
+    "clean:build": "pob-esbuild-clean-out dist",
     "lint": "yarn run lint:eslint",
     "lint:eslint": "yarn ../.. run eslint --quiet packages/react-liwi",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
@@ -55,7 +55,7 @@
     ]
   },
   "pob": {
-    "bundler": "rollup-babel",
+    "bundler": "rollup-esbuild",
     "entries": [
       "index"
     ],
@@ -69,24 +69,21 @@
         "target": "browser"
       }
     ],
-    "jsx": true
+    "jsx": true,
+    "typescript": true
   },
   "prettier": "@pob/root/prettier-config",
   "peerDependencies": {
     "react": "^19.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.28.3",
     "liwi-resources-client": "12.0.0",
     "mingo": "^6.2.7",
     "nightingale-logger": "^15.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.28.3",
-    "@babel/preset-env": "7.28.3",
-    "@babel/preset-react": "7.27.1",
+    "@pob/rollup-esbuild": "7.0.0",
     "@types/react": "19.1.9",
-    "pob-babel": "44.0.0",
     "react": "19.1.1",
     "typescript": "5.9.2"
   }

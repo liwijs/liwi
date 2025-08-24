@@ -1,6 +1,6 @@
 class SubscribeStore {
-  listeners = (() => new Set())();
   constructor(store) {
+    this.listeners = /* @__PURE__ */ new Set();
     this.store = store;
     this.keyPath = store.keyPath;
   }
@@ -12,7 +12,7 @@ class SubscribeStore {
     return () => this.listeners.delete(callback);
   }
   callSubscribed(action) {
-    this.listeners.forEach(listener => listener(action));
+    this.listeners.forEach((listener) => listener(action));
   }
   createQuerySingleItem(options, transformer) {
     const query = this.store.createQuerySingleItem(options, transformer);
@@ -35,18 +35,12 @@ class SubscribeStore {
   }
   async insertOne(object) {
     const inserted = await this.store.insertOne(object);
-    this.callSubscribed({
-      type: "inserted",
-      next: [inserted]
-    });
+    this.callSubscribed({ type: "inserted", next: [inserted] });
     return inserted;
   }
   async replaceOne(object) {
     const replaced = await this.store.replaceOne(object);
-    this.callSubscribed({
-      type: "updated",
-      changes: [[object, replaced]]
-    });
+    this.callSubscribed({ type: "updated", changes: [[object, replaced]] });
     return replaced;
   }
   async replaceSeveral(objects) {
@@ -58,11 +52,17 @@ class SubscribeStore {
     return replacedObjects;
   }
   async upsertOne(object, setOnInsertPartialObject) {
-    const result = await this.upsertOneWithInfo(object, setOnInsertPartialObject);
+    const result = await this.upsertOneWithInfo(
+      object,
+      setOnInsertPartialObject
+    );
     return result.object;
   }
   async upsertOneWithInfo(object, setOnInsertPartialObject) {
-    const upsertedWithInfo = await this.store.upsertOneWithInfo(object, setOnInsertPartialObject);
+    const upsertedWithInfo = await this.store.upsertOneWithInfo(
+      object,
+      setOnInsertPartialObject
+    );
     if (upsertedWithInfo.inserted) {
       this.callSubscribed({
         type: "inserted",
@@ -74,50 +74,45 @@ class SubscribeStore {
     return upsertedWithInfo;
   }
   async partialUpdateByKey(key, partialUpdate, criteria) {
-    return this.partialUpdateOne(await this.findOne({
-      [this.store.keyPath]: key,
-      ...criteria
-    }), partialUpdate);
+    return this.partialUpdateOne(
+      await this.findOne({
+        [this.store.keyPath]: key,
+        ...criteria
+      }),
+      partialUpdate
+    );
   }
   async partialUpdateOne(object, partialUpdate) {
     const updated = await this.store.partialUpdateOne(object, partialUpdate);
-    this.callSubscribed({
-      type: "updated",
-      changes: [[object, updated]]
-    });
+    this.callSubscribed({ type: "updated", changes: [[object, updated]] });
     return updated;
   }
   async partialUpdateMany(criteria, partialUpdate) {
     const cursor = await this.store.cursor(criteria);
     const changes = [];
-    await cursor.forEach(async model => {
+    await cursor.forEach(async (model) => {
       const key = model[this.store.keyPath];
-      const updated = await this.store.partialUpdateByKey(key, partialUpdate, criteria);
+      const updated = await this.store.partialUpdateByKey(
+        key,
+        partialUpdate,
+        criteria
+      );
       changes.push([model, updated]);
     });
-    this.callSubscribed({
-      type: "updated",
-      changes
-    });
+    this.callSubscribed({ type: "updated", changes });
   }
   async deleteByKey(key, criteria) {
     return this.deleteOne(await this.findByKey(key, criteria));
   }
   async deleteOne(object) {
     await this.store.deleteOne(object);
-    this.callSubscribed({
-      type: "deleted",
-      prev: [object]
-    });
+    this.callSubscribed({ type: "deleted", prev: [object] });
   }
   async deleteMany(criteria) {
     const cursor = await this.store.cursor(criteria);
     const prev = await cursor.toArray();
     await this.store.deleteMany(criteria);
-    this.callSubscribed({
-      type: "deleted",
-      prev
-    });
+    this.callSubscribed({ type: "deleted", prev });
   }
   async count(criteria) {
     return this.store.count(criteria);
@@ -130,10 +125,10 @@ class SubscribeStore {
 }
 
 class AbstractSubscribableStoreQuery {
-  changeParams() {
+  changeParams(params) {
     throw new Error("Method not supported. Please create a new query.");
   }
-  changePartialParams() {
+  changePartialParams(params) {
     throw new Error("Method not supported. Please create a new query.");
   }
   setSubscribeStore(store) {

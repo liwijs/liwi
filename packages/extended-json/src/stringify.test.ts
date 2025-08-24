@@ -1,9 +1,11 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
 import stringify from "./stringify.ts";
 
 test("simple string", () => {
-  expect(stringify("test")).toBe('"test"');
+  assert.equal(stringify("test"), '"test"');
 });
 
 test("Date", () => {
-  expect(stringify(new Date("2016-12-24"))).toBe('"2016-12-24T00:00:00.000Z"');
+  assert.equal(stringify(new Date("2016-12-24")), '"2016-12-24T00:00:00.000Z"');
 });

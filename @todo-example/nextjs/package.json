@@ -24,7 +24,6 @@
   },
   "prettier": "@pob/root/prettier-config",
   "dependencies": {
-    "@todo-example/babel-preset-nextjs-babel-config": "12.0.0",
     "@todo-example/modules": "workspace:*",
     "liwi-resources-client": "12.0.0",
     "liwi-resources-void-client": "12.0.0",

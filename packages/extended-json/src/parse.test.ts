@@ -1,11 +1,13 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
 import parse from "./parse.ts";
 
 test("simple string", () => {
-  expect(parse('"test"')).toBe("test");
+  assert.equal(parse('"test"'), "test");
 });
 
 test("Date", () => {
   const date = parse('"2016-12-24T00:00:00.000Z"');
-  expect(date).toBeInstanceOf(Date);
-  expect((date as Date).getTime()).toBe(new Date("2016-12-24").getTime());
+  assert.ok(date instanceof Date);
+  assert.equal(date.getTime(), new Date("2016-12-24").getTime());
 });

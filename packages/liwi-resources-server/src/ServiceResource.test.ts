@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { it } from "node:test";
 import ts from "typescript";
 
 const common = `
@@ -33,7 +35,7 @@ export interface PostServiceQueriesWithBadQuery {
 // }
 //
 it("should transpile without error on simple queries", () => {
-  expect(
+  assert.equal(
     ts.transpileModule(
       `${common}
 export const postsResource1: ServiceResource<PostServiceQueries> = {
@@ -49,8 +51,23 @@ export const postsResource1: ServiceResource<PostServiceQueries> = {
 };
 `,
       {},
-    ),
-  ).toMatchSnapshot();
+    ).outputText,
+    `"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.postsResource1 = void 0;
+exports.postsResource1 = {
+    queries: {
+        queryAll: function (params, loggedInUser) {
+            return {};
+        },
+        queryDetailedPost: function (params, loggedInUser) {
+            return {};
+        },
+    },
+    operations: {},
+};
+`,
+  );
 });
 //
 // it('should throw', () => {

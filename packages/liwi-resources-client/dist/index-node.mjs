@@ -14,10 +14,7 @@ class ClientQuery {
     this.params = params;
   }
   changePartialParams(params) {
-    this.params = {
-      ...this.params,
-      ...params
-    };
+    this.params = { ...this.params, ...params };
   }
   getTransportPayload() {
     return {
@@ -38,31 +35,44 @@ class ClientQuery {
       resourceName: this.resourceName,
       key: this.key
     });
-    return this.transportClient.subscribe("fetchAndSubscribe", this.getTransportPayload(), callback);
+    return this.transportClient.subscribe(
+      "fetchAndSubscribe",
+      this.getTransportPayload(),
+      callback
+    );
   }
   subscribe(callback) {
     logger.debug("subscribe", {
       resourceName: this.resourceName,
       key: this.key
     });
-    return this.transportClient.subscribe("subscribe", this.getTransportPayload(), callback);
+    return this.transportClient.subscribe(
+      "subscribe",
+      this.getTransportPayload(),
+      callback
+    );
   }
 }
 
-const getKeys = o => Object.keys(o);
+const getKeys = (o) => Object.keys(o);
 const createResourceClientService = (resourceName, options) => {
-  return transportClient => {
+  return (transportClient) => {
     const queries = {};
     const operations = {};
-    getKeys(options.queries).forEach(queryKey => {
-      queries[queryKey] = params => new ClientQuery(resourceName, transportClient, queryKey, params);
-    });
-    getKeys(options.operations).forEach(operationKey => {
-      operations[operationKey] = params => transportClient.send("do", {
+    getKeys(options.queries).forEach((queryKey) => {
+      queries[queryKey] = ((params) => new ClientQuery(
         resourceName,
-        operationKey: operationKey,
+        transportClient,
+        queryKey,
         params
-      });
+      ));
+    });
+    getKeys(options.operations).forEach((operationKey) => {
+      operations[operationKey] = ((params) => transportClient.send("do", {
+        resourceName,
+        operationKey,
+        params
+      }));
     });
     return {
       queries,

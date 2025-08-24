@@ -40,7 +40,7 @@
     "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
     "build:definitions": "tsc -p tsconfig.json",
     "clean": "yarn clean:build",
-    "clean:build": "pob-babel-clean-out dist",
+    "clean:build": "pob-esbuild-clean-out dist",
     "lint": "yarn run lint:eslint",
     "lint:eslint": "yarn ../.. run eslint --quiet packages/liwi-resources-void-client",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
@@ -55,7 +55,7 @@
     ]
   },
   "pob": {
-    "bundler": "rollup-babel",
+    "bundler": "rollup-esbuild",
     "entries": [
       "index"
     ],
@@ -68,7 +68,8 @@
       {
         "target": "browser"
       }
-    ]
+    ],
+    "typescript": true
   },
   "prettier": "@pob/root/prettier-config",
   "dependencies": {
@@ -76,9 +77,7 @@
     "liwi-resources-server": "12.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.28.3",
-    "@babel/preset-env": "7.28.3",
-    "pob-babel": "44.0.0",
+    "@pob/rollup-esbuild": "7.0.0",
     "typescript": "5.9.2"
   }
 }

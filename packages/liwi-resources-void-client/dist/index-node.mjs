@@ -1,17 +1,21 @@
 const createVoidTransportClient = () => {
-  return {
-    connect: () => {},
-    close: () => {},
-    listenStateChange: () => {
-      return () => {};
+  const transportClient = {
+    connect: () => {
     },
-    send: () => {
+    close: () => {
+    },
+    listenStateChange: () => {
+      return () => {
+      };
+    },
+    send: (type, message) => {
       throw new Error("Void client: send should not be called");
     },
-    subscribe: () => {
+    subscribe: (type, messageWithoutSubscriptionId, callback) => {
       throw new Error("Void client: subscribe should not be called");
     }
   };
+  return transportClient;
 };
 
 export { createVoidTransportClient };

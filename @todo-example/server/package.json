@@ -27,13 +27,13 @@
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs",
     "clean": "yarn clean:build",
-    "clean:build": "pob-babel-clean-out build",
+    "clean:build": "pob-esbuild-clean-out build",
     "lint": "yarn run lint:eslint",
     "lint:eslint": "yarn ../.. run eslint --quiet @todo-example/server",
     "start": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "pob": {
-    "bundler": "rollup-babel",
+    "bundler": "rollup-esbuild",
     "entries": [
       "index"
     ],
@@ -43,7 +43,8 @@
         "version": "22",
         "omitVersionInFileName": true
       }
-    ]
+    ],
+    "typescript": true
   },
   "prettier": "@pob/root/prettier-config",
   "dependencies": {
@@ -56,9 +57,8 @@
     "router-segments": "11.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.28.3",
+    "@pob/rollup-esbuild": "7.0.0",
     "alp-rollup-plugin-config": "3.0.0",
-    "pob-babel": "44.0.0",
     "rollup-plugin-copy": "3.5.0",
     "typescript": "5.9.2"
   }

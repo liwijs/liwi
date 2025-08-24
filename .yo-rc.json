@@ -3,13 +3,13 @@
     "monorepo": {
       "ci": true,
       "testing": true,
+      "testRunner": "node",
       "e2eTesting": "@todo-example/nextjs",
       "codecov": false,
       "documentation": false,
       "eslint": true,
       "typescript": true,
       "packageNames": [
-        "@todo-example/babel-preset-nextjs-babel-config",
         "extended-json",
         "liwi",
         "liwi-store",
