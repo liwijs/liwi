@@ -12,7 +12,7 @@
   "homepage": "https://github.com/liwijs/liwi",
   "type": "module",
   "engines": {
-    "node": ">=22.14.0"
+    "node": ">=22.18.0"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -50,8 +50,8 @@
     "liwi-mongo": "12.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.28.0",
-    "pob-babel": "43.7.0",
+    "@babel/core": "7.28.3",
+    "pob-babel": "44.0.0",
     "typescript": "5.9.2"
   }
 }

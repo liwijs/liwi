@@ -13,7 +13,7 @@
   "homepage": "https://github.com/liwijs/liwi",
   "type": "module",
   "engines": {
-    "node": ">=22.14.0"
+    "node": ">=22.18.0"
   },
   "sideEffects": false,
   "main": "./dist/index-node.mjs",
@@ -55,16 +55,16 @@
   },
   "prettier": "@pob/root/prettier-config",
   "dependencies": {
-    "@babel/runtime": "^7.28.2",
+    "@babel/runtime": "^7.28.3",
     "extended-json": "12.0.0",
     "liwi-resources-client": "12.0.0",
     "liwi-resources-server": "12.0.0",
     "nightingale-logger": "^15.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.28.0",
+    "@babel/core": "7.28.3",
     "@types/backo2": "1.0.4",
-    "pob-babel": "43.7.0",
+    "pob-babel": "44.0.0",
     "typescript": "5.9.2"
   }
 }
