@@ -11,11 +11,10 @@ interface DbConfig {
 const mongoConfig = config.get<DbConfig | undefined>("db")?.mongodb;
 if (!mongoConfig) throw new Error("Invalid mongo config (db.mongodb)");
 
-if (process.env.MONGO_PORT) mongoConfig.port = process.env.MONGO_PORT;
-
-export const mongoConnection: MongoConnection = new MongoConnection(
-  mongoConfig,
-);
+export const mongoConnection: MongoConnection = new MongoConnection({
+  ...mongoConfig,
+  ...(process.env.MONGO_PORT ? { port: process.env.MONGO_PORT } : {}),
+});
 
 export const createMongoStore = <Model extends MongoBaseModel>(
   collectionName: string,
