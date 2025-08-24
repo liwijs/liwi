@@ -3,7 +3,7 @@
     "@pob/root/tsconfigs/strict.json",
     "@pob/root/tsconfigs/targets/webpack.json"
   ],
-  "include": ["src/**/*.ts", "src/**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "rootDir": "src",
@@ -11,6 +11,7 @@
     "noEmit": true,
     "tsBuildInfoFile": "node_modules/.cache/tsc/tsbuildinfo",
     "incremental": true,
+
     "jsx": "preserve" /* 'react-jsx' is used with react/jsx-runtime (react >=17 || >= 16.14.0 | >= 15.7.0) */,
     "allowJs": true,
     "strictNullChecks": true,
@@ -20,11 +21,8 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
+
     "paths": {
       "liwi-resources-client": ["../../packages/liwi-resources-client/src"],
       "liwi-resources-client/*": ["../../packages/liwi-resources-client/src/*"],
@@ -47,20 +45,10 @@
     }
   },
   "references": [
-    {
-      "path": "../../packages/liwi-resources-client/tsconfig.json"
-    },
-    {
-      "path": "../../@todo-example/modules/tsconfig.json"
-    },
-    {
-      "path": "../../packages/liwi-resources-void-client/tsconfig.json"
-    },
-    {
-      "path": "../../packages/liwi-resources-websocket-client/tsconfig.json"
-    },
-    {
-      "path": "../../packages/react-liwi/tsconfig.json"
-    }
+    { "path": "../../packages/liwi-resources-client/tsconfig.json" },
+    { "path": "../../@todo-example/modules/tsconfig.json" },
+    { "path": "../../packages/liwi-resources-void-client/tsconfig.json" },
+    { "path": "../../packages/liwi-resources-websocket-client/tsconfig.json" },
+    { "path": "../../packages/react-liwi/tsconfig.json" }
   ]
 }
