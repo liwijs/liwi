@@ -83,7 +83,7 @@
   },
   "devDependencies": {
     "@pob/rollup-esbuild": "7.0.0",
-    "@types/react": "19.1.9",
+    "@types/react": "19.1.11",
     "react": "19.1.1",
     "typescript": "5.9.2"
   }
