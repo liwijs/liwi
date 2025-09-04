@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.55.0",
-    "@types/node": "22.18.0",
+    "@types/node": "22.18.1",
     "@types/react": "19.1.12",
     "mongodb-memory-server-core": "10.2.0",
     "springbokjs-daemon": "10.1.0",
