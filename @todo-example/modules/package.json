@@ -72,7 +72,7 @@
     "liwi-resources-client": "12.0.0"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "7.0.0",
+    "@pob/rollup-esbuild": "7.1.0",
     "typescript": "5.9.2"
   }
 }
