@@ -1648,7 +1648,7 @@ __metadata:
     liwi-resources-client: "npm:12.0.0"
     liwi-resources-void-client: "npm:12.0.0"
     liwi-resources-websocket-client: "npm:12.0.0"
-    mongodb-memory-server-core: "npm:10.2.0"
+    mongodb-memory-server-core: "npm:10.2.1"
     next: "npm:15.4.5"
     nightingale-app-console: "npm:16.2.0"
     react: "npm:19.1.1"
@@ -6326,9 +6326,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb-memory-server-core@npm:10.2.0":
-  version: 10.2.0
-  resolution: "mongodb-memory-server-core@npm:10.2.0"
+"mongodb-memory-server-core@npm:10.2.1":
+  version: 10.2.1
+  resolution: "mongodb-memory-server-core@npm:10.2.1"
   dependencies:
     async-mutex: "npm:^0.5.0"
     camelcase: "npm:^6.3.0"
@@ -6342,7 +6342,7 @@ __metadata:
     tar-stream: "npm:^3.1.7"
     tslib: "npm:^2.8.1"
     yauzl: "npm:^3.2.0"
-  checksum: 10c0/9261ef37502121659a4b64fd55734c5306146f62470cb9964a84063882568611d4f0a2b02f5aaf21962b6a2be7ff82ff6da3eda958cf5308cf1dee7ae640bb7b
+  checksum: 10c0/cd09caf698bd1782936f059e1560ef0a201e34f5df2eb742adceda97376fffdc3a768dec9175b80e23e7e61fb9c997c5f08dd8e1f9f2d9db7c54d892006271ac
   languageName: node
   linkType: hard
 
