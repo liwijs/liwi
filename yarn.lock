@@ -1664,7 +1664,7 @@ __metadata:
     liwi-resources-websocket-server: "npm:12.0.0"
     nightingale-app-console: "npm:16.2.0"
     rollup-plugin-copy: "npm:3.5.0"
-    router-segments: "npm:11.0.0"
+    router-segments: "npm:12.0.0"
     typescript: "npm:5.9.3"
   languageName: unknown
   linkType: soft
@@ -7083,10 +7083,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:^6.2.1":
-  version: 6.3.0
-  resolution: "path-to-regexp@npm:6.3.0"
-  checksum: 10c0/73b67f4638b41cde56254e6354e46ae3a2ebc08279583f6af3d96fe4664fc75788f74ed0d18ca44fa4a98491b69434f9eee73b97bb5314bd1b5adb700f5c18d6
+"path-to-regexp@npm:^8.2.0":
+  version: 8.3.0
+  resolution: "path-to-regexp@npm:8.3.0"
+  checksum: 10c0/ee1544a73a3f294a97a4c663b0ce71bbf1621d732d80c9c9ed201b3e911a86cb628ebad691b9d40f40a3742fe22011e5a059d8eed2cf63ec2cb94f6fb4efe67c
   languageName: node
   linkType: hard
 
@@ -7724,13 +7724,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"router-segments@npm:11.0.0":
-  version: 11.0.0
-  resolution: "router-segments@npm:11.0.0"
+"router-segments@npm:12.0.0":
+  version: 12.0.0
+  resolution: "router-segments@npm:12.0.0"
   dependencies:
-    nightingale-logger: "npm:^15.0.0"
-    path-to-regexp: "npm:^6.2.1"
-  checksum: 10c0/30d74fa944c889debf38ed76497669d16ca5d27e491de93881bd713b374163b2d71217da40d0c2f4b439f0307245f4655405470e17e8e44999eb8d9fa15651eb
+    nightingale-logger: "npm:^16.0.0"
+    path-to-regexp: "npm:^8.2.0"
+  checksum: 10c0/1fbcd191a405d1427d99e8e141cd0004c942977fc4adca660d93f5aa5f7f71c01fdc2c8c57cc71b496df5f9a7006bf6e200a14d8645c0efa27092c8bd0cf2a4f
   languageName: node
   linkType: hard
 
