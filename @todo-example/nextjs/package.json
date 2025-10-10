@@ -44,6 +44,6 @@
     "@types/react": "19.1.13",
     "mongodb-memory-server-core": "10.2.0",
     "springbokjs-daemon": "10.1.0",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   }
 }
