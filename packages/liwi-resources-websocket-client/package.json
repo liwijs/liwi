@@ -81,6 +81,6 @@
   "devDependencies": {
     "@pob/rollup-esbuild": "7.0.0",
     "@types/backo2": "1.0.4",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   }
 }

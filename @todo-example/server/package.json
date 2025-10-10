@@ -60,6 +60,6 @@
     "@pob/rollup-esbuild": "7.0.0",
     "alp-rollup-plugin-config": "3.0.0",
     "rollup-plugin-copy": "3.5.0",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   }
 }
