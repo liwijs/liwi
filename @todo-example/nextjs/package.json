@@ -34,7 +34,7 @@
     "react-alp-connection-state": "9.0.0",
     "react-dom": "19.1.1",
     "react-liwi": "12.0.0",
-    "react-native-web": "0.21.0",
+    "react-native-web": "0.21.2",
     "todomvc-app-css": "2.4.3",
     "todomvc-common": "1.0.5"
   },

@@ -1643,7 +1643,7 @@ __metadata:
     react-alp-connection-state: "npm:9.0.0"
     react-dom: "npm:19.1.1"
     react-liwi: "npm:12.0.0"
-    react-native-web: "npm:0.21.0"
+    react-native-web: "npm:0.21.2"
     springbokjs-daemon: "npm:10.1.0"
     todomvc-app-css: "npm:2.4.3"
     todomvc-common: "npm:1.0.5"
@@ -7336,9 +7336,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-native-web@npm:0.21.0":
-  version: 0.21.0
-  resolution: "react-native-web@npm:0.21.0"
+"react-native-web@npm:0.21.2":
+  version: 0.21.2
+  resolution: "react-native-web@npm:0.21.2"
   dependencies:
     "@babel/runtime": "npm:^7.18.6"
     "@react-native/normalize-colors": "npm:^0.74.1"
@@ -7351,7 +7351,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
-  checksum: 10c0/942f8696281927dfc2970b08939fce62d1dec9486e41ce913f659f132a7fa35d704e18b48d79df9407d17ff51a4986c872c79852616e522f11fa6f41286b6510
+  checksum: 10c0/8c184fef0045c25deff765c8e80963454a5dffd8e389a9e11cf2fec9e769ff0f82c3d56d082b1897a7ded8374d9ae8a49dac7f09377a104f1995a5ddea645095
   languageName: node
   linkType: hard
 
