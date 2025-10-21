@@ -39,7 +39,7 @@
     "todomvc-common": "1.0.5"
   },
   "devDependencies": {
-    "@playwright/test": "1.55.1",
+    "@playwright/test": "1.56.1",
     "@types/node": "22.18.9",
     "@types/react": "19.1.13",
     "mongodb-memory-server-core": "10.2.0",
