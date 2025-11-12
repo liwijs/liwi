@@ -5452,7 +5452,7 @@ __metadata:
     "@pob/rollup-esbuild": "npm:7.3.2"
     liwi-store: "npm:12.0.0"
     liwi-subscribe-store: "npm:12.0.0"
-    mingo: "npm:^6.2.7"
+    mingo: "npm:^6.7.2"
     mongodb: "npm:^6.20.0"
     nightingale-logger: "npm:^16.0.0"
     typescript: "npm:5.9.3"
@@ -5843,10 +5843,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mingo@npm:^6.2.7":
-  version: 6.2.7
-  resolution: "mingo@npm:6.2.7"
-  checksum: 10c0/5aaa55648ece27b5889bbe8cf3293ff743ad0236ebd3deb1b8a3f256acdd1e4e907250a46f97bc4dd37ff9f8bda3e66310239aea05df1654230fa3b05b7c95e4
+"mingo@npm:^6.7.2":
+  version: 6.7.2
+  resolution: "mingo@npm:6.7.2"
+  checksum: 10c0/c264f97bbbcebe9dc21b922144dbd686506babb3f175bc202e59b6b3da69006a3de9e2631d4d0bda651e2a6a37f0a8944368acb596baa17b7971c531bc9034e9
   languageName: node
   linkType: hard
 
@@ -6998,7 +6998,7 @@ __metadata:
     "@pob/rollup-esbuild": "npm:7.3.2"
     "@types/react": "npm:19.1.13"
     liwi-resources-client: "npm:12.0.0"
-    mingo: "npm:^6.2.7"
+    mingo: "npm:^6.7.2"
     nightingale-logger: "npm:^16.0.0"
     react: "npm:19.1.1"
     typescript: "npm:5.9.3"
