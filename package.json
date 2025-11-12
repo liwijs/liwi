@@ -60,7 +60,7 @@
     "@pob/eslint-config-typescript-react": "61.1.0",
     "@pob/rollup-esbuild": "7.0.0",
     "@pob/root": "19.1.0",
-    "check-package-dependencies": "10.4.1",
+    "check-package-dependencies": "10.5.0",
     "eslint": "9.36.0",
     "typescript": "5.9.3"
   }
