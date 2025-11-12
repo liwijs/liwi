@@ -1631,7 +1631,7 @@ __metadata:
   dependencies:
     "@playwright/test": "npm:1.55.1"
     "@todo-example/modules": "workspace:*"
-    "@types/node": "npm:22.18.9"
+    "@types/node": "npm:22.19.1"
     "@types/react": "npm:19.1.13"
     liwi-resources-client: "npm:12.0.0"
     liwi-resources-void-client: "npm:12.0.0"
@@ -1869,12 +1869,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:22.18.9, @types/node@npm:>=18.0.0, @types/node@npm:>=20.0.0":
-  version: 22.18.9
-  resolution: "@types/node@npm:22.18.9"
+"@types/node@npm:*, @types/node@npm:22.19.1, @types/node@npm:>=18.0.0, @types/node@npm:>=20.0.0":
+  version: 22.19.1
+  resolution: "@types/node@npm:22.19.1"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/0d342e17e0b36a4475ba36f0a0b9d7e28cf85ae44b1ea1f218c8cffe8c9519820eef9b97c171b0b93d8066c8710d7660e31660678bac0842655dff2118a23248
+  checksum: 10c0/6edd93aea86da740cb7872626839cd6f4a67a049d3a3a6639cb592c620ec591408a30989ab7410008d1a0b2d4985ce50f1e488e79c033e4476d3bec6833b0a2f
   languageName: node
   linkType: hard
 
