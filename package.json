@@ -30,7 +30,6 @@
     "test": "TZ=UTC node  --test @(packages|@todo-example)/*/src/**/*.test.ts",
     "test:coverage": "TZ=UTC npx c8 --all --src ./src node  --test @(packages|@todo-example)/*/src/**/*.test.ts",
     "test:coverage:json": "TZ=UTC npx c8 --reporter=json --all --src ./src node  --test @(packages|@todo-example)/*/src/**/*.test.ts",
-    "test:coverage:lcov": "NODE_OPTIONS=--experimental-vm-modules jest --coverage --coverageReporters=lcov",
     "test:watch": "TZ=UTC node  --test @(packages|@todo-example)/*/src/**/*.test.ts",
     "tsc": "tsc -b",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
@@ -49,17 +48,16 @@
   },
   "commitlint": {
     "extends": [
-      "@pob/commitlint-config"
+      "@pob/root/commitlint-config"
     ]
   },
   "prettier": "@pob/root/prettier-config",
   "devDependencies": {
-    "@pob/commitlint-config": "11.0.0",
     "@pob/eslint-config": "62.0.0",
     "@pob/eslint-config-typescript": "62.0.0",
     "@pob/eslint-config-typescript-react": "62.0.0",
-    "@pob/rollup-esbuild": "7.0.0",
-    "@pob/root": "19.1.0",
+    "@pob/rollup-esbuild": "7.3.2",
+    "@pob/root": "19.7.1",
     "check-package-dependencies": "10.5.0",
     "eslint": "9.39.1",
     "typescript": "5.9.3"

@@ -76,7 +76,7 @@
     "liwi-store": "12.0.0"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "7.0.0",
+    "@pob/rollup-esbuild": "7.3.2",
     "typescript": "5.9.3"
   }
 }

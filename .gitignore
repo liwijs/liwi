@@ -6,6 +6,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+/@todo-example/nextjs/playwright-report/
+/@todo-example/nextjs/test-results/
+
 # IDE
 /.settings
 /.project

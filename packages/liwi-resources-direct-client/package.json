@@ -62,7 +62,7 @@
     "nightingale-logger": "^16.0.0"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "7.0.0",
+    "@pob/rollup-esbuild": "7.3.2",
     "@types/backo2": "1.0.4",
     "typescript": "5.9.3"
   }
