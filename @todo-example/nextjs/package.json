@@ -42,7 +42,7 @@
     "@playwright/test": "1.55.1",
     "@types/node": "22.18.9",
     "@types/react": "19.1.13",
-    "mongodb-memory-server-core": "10.2.0",
+    "mongodb-memory-server-core": "10.3.0",
     "springbokjs-daemon": "10.1.0",
     "typescript": "5.9.3"
   }
