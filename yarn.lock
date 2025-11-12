@@ -30,7 +30,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.28.2":
+"@babel/runtime@npm:^7.18.6":
   version: 7.28.3
   resolution: "@babel/runtime@npm:7.28.3"
   checksum: 10c0/b360f82c2c5114f2a062d4d143d7b4ec690094764853937110585a9497977aed66c102166d0e404766c274e02a50ffb8f6d77fef7251ecf3f607f0e03e6397bc
@@ -1540,7 +1540,7 @@ __metadata:
     next: "npm:15.4.7"
     nightingale-app-console: "npm:16.2.0"
     react: "npm:19.1.1"
-    react-alp-connection-state: "npm:9.0.0"
+    react-alp-connection-state: "npm:10.0.2"
     react-dom: "npm:19.1.1"
     react-liwi: "npm:12.0.0"
     react-native-web: "npm:0.21.0"
@@ -1557,14 +1557,13 @@ __metadata:
   dependencies:
     "@pob/rollup-esbuild": "npm:7.3.2"
     "@todo-example/modules": "npm:12.0.0"
-    alp-node: "npm:8.0.0"
-    alp-rollup-plugin-config: "npm:4.0.0"
+    alp-node: "npm:10.0.0"
+    alp-rollup-plugin-config: "npm:4.0.1"
     liwi-mongo: "npm:12.0.0"
     liwi-resources-server: "npm:12.0.0"
     liwi-resources-websocket-server: "npm:12.0.0"
     nightingale-app-console: "npm:16.2.0"
     rollup-plugin-copy: "npm:3.5.0"
-    router-segments: "npm:11.0.0"
     typescript: "npm:5.9.3"
   languageName: unknown
   linkType: soft
@@ -1769,7 +1768,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:24.10.1, @types/node@npm:>=18.0.0, @types/node@npm:>=20.0.0":
+"@types/node@npm:*, @types/node@npm:24.10.1, @types/node@npm:>=18.0.0, @types/node@npm:>=20.0.0, @types/node@npm:>=22.0.0":
   version: 24.10.1
   resolution: "@types/node@npm:24.10.1"
   dependencies:
@@ -2167,12 +2166,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alp-node@npm:8.0.0":
-  version: 8.0.0
-  resolution: "alp-node@npm:8.0.0"
+"alp-node@npm:10.0.0":
+  version: 10.0.0
+  resolution: "alp-node@npm:10.0.0"
   dependencies:
     "@types/koa": "npm:^3.0.0"
-    "@types/node": "npm:>=20.0.0"
+    "@types/node": "npm:>=22.0.0"
     deep-freeze-es6: "npm:^4.0.1"
     error-html: "npm:^0.3.5"
     intl-messageformat: "npm:^10.0.0"
@@ -2180,23 +2179,26 @@ __metadata:
     koa-compress: "npm:^5.1.1"
     koa-static: "npm:^5.0.0"
     minimist: "npm:^1.2.8"
-    nightingale-logger: "npm:^15.0.0"
+    nightingale-logger: "npm:^16.0.0"
     object-properties: "npm:^9.0.1"
   peerDependencies:
-    router-segments: ^11.0.0
-  checksum: 10c0/05c26ed3fa5181dc116da19bf3eb05b22c62789e6410a61d177d9db3f8acc1612a0a9aea77a8c9587dda4ba9f10daff85cc3b332a10878bbdbfb7ba43e60ca09
+    router-segments: ^11.0.0 || ^12.0.0
+  peerDependenciesMeta:
+    router-segments:
+      optional: true
+  checksum: 10c0/ea4affab61ba2ad58cff84346e2846316603e38f9fe6436a1e3636e0eff617fcc0c7c0d698e257f6806f82e9167a3d195110c8be8222418f8854136789110603
   languageName: node
   linkType: hard
 
-"alp-rollup-plugin-config@npm:4.0.0":
-  version: 4.0.0
-  resolution: "alp-rollup-plugin-config@npm:4.0.0"
+"alp-rollup-plugin-config@npm:4.0.1":
+  version: 4.0.1
+  resolution: "alp-rollup-plugin-config@npm:4.0.1"
   dependencies:
     "@guanghechen/rollup-plugin-copy": "npm:1.8.6"
     js-yaml: "npm:4.1.0"
   peerDependencies:
     rollup: ^2.64.0 || ^3.0.0 || ^4.0.0
-  checksum: 10c0/2b53361135794fb9fe28019fed68565c88b1573638fb6524118be8566ad6fefdcf74b09dd56e6f7317bcccf4863c11e3e85df8ddfdcd04c6df49d41d8837d257
+  checksum: 10c0/8075758d0d57fe32d574e488df72000457cc3a0efd4ab3032f07525315b1c87e1417800e1914557a8c7c7d356c85262fa24b244cc0d0bc97617e51b514126bce
   languageName: node
   linkType: hard
 
@@ -6747,13 +6749,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:^6.2.1":
-  version: 6.3.0
-  resolution: "path-to-regexp@npm:6.3.0"
-  checksum: 10c0/73b67f4638b41cde56254e6354e46ae3a2ebc08279583f6af3d96fe4664fc75788f74ed0d18ca44fa4a98491b69434f9eee73b97bb5314bd1b5adb700f5c18d6
-  languageName: node
-  linkType: hard
-
 "path-type@npm:^4.0.0":
   version: 4.0.0
   resolution: "path-type@npm:4.0.0"
@@ -6958,18 +6953,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-alp-connection-state@npm:9.0.0":
-  version: 9.0.0
-  resolution: "react-alp-connection-state@npm:9.0.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.28.2"
+"react-alp-connection-state@npm:10.0.2":
+  version: 10.0.2
+  resolution: "react-alp-connection-state@npm:10.0.2"
   peerDependencies:
     react: ^19.0.0
     react-native: "*"
   peerDependenciesMeta:
     react-native:
       optional: true
-  checksum: 10c0/a851b38447a80b58b2c7d30a0bca2a51b5511b975cad5c9a75e988589eae1563e995cb16d37e8055f3335283b07f8d763097600c0da7a257e837837c1af30bd3
+  checksum: 10c0/5010a4a3d113118e2c11c8c4210578babea8d8a805ee9ecf25864fc91978aa5c210a2b09b55ab6503363c16bc2a84fb4a6538efb9bbc3bbb4da0b1e42306eda3
   languageName: node
   linkType: hard
 
@@ -7353,16 +7346,6 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: 10c0/faf1697b305d13a149bb64a2bb7378344becc7c8580f56225c4c00adbf493d82480a44b3e3b1cc82a3ac5d1d4cab6dfc89e6635443895a2dc488969075f5b94d
-  languageName: node
-  linkType: hard
-
-"router-segments@npm:11.0.0":
-  version: 11.0.0
-  resolution: "router-segments@npm:11.0.0"
-  dependencies:
-    nightingale-logger: "npm:^15.0.0"
-    path-to-regexp: "npm:^6.2.1"
-  checksum: 10c0/30d74fa944c889debf38ed76497669d16ca5d27e491de93881bd713b374163b2d71217da40d0c2f4b439f0307245f4655405470e17e8e44999eb8d9fa15651eb
   languageName: node
   linkType: hard
 

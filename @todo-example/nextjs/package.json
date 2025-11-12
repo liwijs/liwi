@@ -31,7 +31,7 @@
     "next": "15.4.7",
     "nightingale-app-console": "16.2.0",
     "react": "19.1.1",
-    "react-alp-connection-state": "9.0.0",
+    "react-alp-connection-state": "10.0.2",
     "react-dom": "19.1.1",
     "react-liwi": "12.0.0",
     "react-native-web": "0.21.0",
