@@ -58,7 +58,6 @@
   "devDependencies": {
     "@pob/rollup-esbuild": "7.3.2",
     "alp-rollup-plugin-config": "4.0.1",
-    "rollup-plugin-copy": "3.5.0",
     "typescript": "5.9.3"
   }
 }
