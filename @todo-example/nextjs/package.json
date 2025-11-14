@@ -30,9 +30,9 @@
     "liwi-resources-websocket-client": "12.0.0",
     "next": "15.4.7",
     "nightingale-app-console": "16.2.0",
-    "react": "19.1.1",
+    "react": "19.2.0",
     "react-alp-connection-state": "10.0.2",
-    "react-dom": "19.1.1",
+    "react-dom": "19.2.0",
     "react-liwi": "12.0.0",
     "react-native-web": "0.21.0",
     "todomvc-app-css": "2.4.3",
@@ -41,7 +41,7 @@
   "devDependencies": {
     "@playwright/test": "1.56.1",
     "@types/node": "24.10.1",
-    "@types/react": "19.1.13",
+    "@types/react": "19.2.5",
     "mongodb-memory-server-core": "10.3.0",
     "springbokjs-daemon": "10.1.0",
     "typescript": "5.9.3"
