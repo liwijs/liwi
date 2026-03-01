@@ -10,7 +10,12 @@ test("should add, filter then clear", async ({ page }) => {
     page.$$eval("ul.todo-list > li", (el) => el.length);
 
   // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
-  await page.goto("http://localhost:3000/");
+  await page.goto("http://127.0.0.1:3000/", {
+    waitUntil: "load",
+  });
+
+  // check if the page loaded correctly
+  await expect(page.locator("h1")).toHaveText("todos");
 
   // Initially there should be 0 entries
   expect(await getCountOfTodos()).toBe(0);
