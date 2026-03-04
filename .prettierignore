@@ -1,8 +1,8 @@
 CHANGELOG.md
 /.yarnrc.yml
 /.yarn/**/*
-/@todo-example/nextjs/playwright-report/
-/@todo-example/nextjs/test-results/
+/playwright-report/
+/test-results/
 /packages/*/dist
 /packages/*/build
 /packages/*/data
