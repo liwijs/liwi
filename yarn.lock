@@ -1558,7 +1558,7 @@ __metadata:
     "@pob/rollup-esbuild": "npm:7.4.2"
     "@todo-example/modules": "npm:12.0.0"
     alp-node: "npm:10.0.0"
-    alp-rollup-plugin-config: "npm:4.0.1"
+    alp-rollup-plugin-config: "npm:4.0.2"
     liwi-mongo: "npm:12.0.0"
     liwi-resources-server: "npm:12.0.0"
     liwi-resources-websocket-server: "npm:12.0.0"
@@ -2164,15 +2164,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alp-rollup-plugin-config@npm:4.0.1":
-  version: 4.0.1
-  resolution: "alp-rollup-plugin-config@npm:4.0.1"
+"alp-rollup-plugin-config@npm:4.0.2":
+  version: 4.0.2
+  resolution: "alp-rollup-plugin-config@npm:4.0.2"
   dependencies:
     "@guanghechen/rollup-plugin-copy": "npm:1.8.6"
-    js-yaml: "npm:4.1.0"
+    js-yaml: "npm:4.1.1"
   peerDependencies:
     rollup: ^2.64.0 || ^3.0.0 || ^4.0.0
-  checksum: 10c0/8075758d0d57fe32d574e488df72000457cc3a0efd4ab3032f07525315b1c87e1417800e1914557a8c7c7d356c85262fa24b244cc0d0bc97617e51b514126bce
+  checksum: 10c0/e5ae76d7eb8f5a16ed9607650a1ce15284b2c387f33860293faae6f7495c2d80bf3fce6fe1475f027c07c706697fe827446cf678fcbaaf76bd8ea7fd15e3413e
   languageName: node
   linkType: hard
 
@@ -5072,18 +5072,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:4.1.0":
-  version: 4.1.0
-  resolution: "js-yaml@npm:4.1.0"
-  dependencies:
-    argparse: "npm:^2.0.1"
-  bin:
-    js-yaml: bin/js-yaml.js
-  checksum: 10c0/184a24b4eaacfce40ad9074c64fd42ac83cf74d8c8cd137718d456ced75051229e5061b8633c3366b8aada17945a7a356b337828c19da92b51ae62126575018f
-  languageName: node
-  linkType: hard
-
-"js-yaml@npm:^4.1.0, js-yaml@npm:^4.1.1":
+"js-yaml@npm:4.1.1, js-yaml@npm:^4.1.0, js-yaml@npm:^4.1.1":
   version: 4.1.1
   resolution: "js-yaml@npm:4.1.1"
   dependencies:
