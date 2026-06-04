@@ -5485,7 +5485,7 @@ __metadata:
     nightingale-logger: "npm:^16.0.0"
     typescript: "npm:5.9.3"
     utf-8-validate: "npm:^6.0.6"
-    ws: "npm:^8.18.3"
+    ws: "npm:^8.21.0"
   dependenciesMeta:
     bufferutil:
       optional: true
@@ -8638,7 +8638,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.18.3":
+"ws@npm:^8.21.0":
   version: 8.21.0
   resolution: "ws@npm:8.21.0"
   peerDependencies:
