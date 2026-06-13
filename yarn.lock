@@ -5376,7 +5376,7 @@ __metadata:
     liwi-store: "npm:12.0.0"
     liwi-subscribe-store: "npm:12.0.0"
     mingo: "npm:^6.2.7"
-    mongodb: "npm:^6.20.0"
+    mongodb: "npm:^6.21.0"
     nightingale-logger: "npm:^16.0.0"
     typescript: "npm:5.9.3"
   languageName: unknown
@@ -5930,7 +5930,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb@npm:^6.20.0, mongodb@npm:^6.9.0":
+"mongodb@npm:^6.21.0, mongodb@npm:^6.9.0":
   version: 6.21.0
   resolution: "mongodb@npm:6.21.0"
   dependencies:
