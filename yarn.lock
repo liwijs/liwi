@@ -1538,7 +1538,7 @@ __metadata:
     liwi-resources-websocket-client: "npm:12.0.0"
     mongodb-memory-server-core: "npm:10.4.3"
     next: "npm:15.5.18"
-    nightingale-app-console: "npm:16.2.0"
+    nightingale-app-console: "npm:18.2.0"
     react: "npm:19.1.1"
     react-alp-connection-state: "npm:10.0.2"
     react-dom: "npm:19.1.1"
@@ -1562,7 +1562,7 @@ __metadata:
     liwi-mongo: "npm:12.0.0"
     liwi-resources-server: "npm:12.0.0"
     liwi-resources-websocket-server: "npm:12.0.0"
-    nightingale-app-console: "npm:16.2.0"
+    nightingale-app-console: "npm:18.2.0"
     router-segments: "npm:12.0.0"
     typescript: "npm:5.9.3"
   languageName: unknown
@@ -2209,10 +2209,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-styles@npm:^6.1.0, ansi-styles@npm:^6.2.1":
-  version: 6.2.1
-  resolution: "ansi-styles@npm:6.2.1"
-  checksum: 10c0/5d1ec38c123984bcedd996eac680d548f31828bd679a66db2bdf11844634dde55fec3efa9c6bb1d89056a5e79c1ac540c4c784d592ea1d25028a92227d2f2d5c
+"ansi-styles@npm:^6.1.0, ansi-styles@npm:^6.2.1, ansi-styles@npm:^6.2.3":
+  version: 6.2.3
+  resolution: "ansi-styles@npm:6.2.3"
+  checksum: 10c0/23b8a4ce14e18fb854693b95351e286b771d23d8844057ed2e7d083cd3e708376c3323707ec6a24365f7d7eda3ca00327fe04092e29e551499ec4c8b7bfac868
   languageName: node
   linkType: hard
 
@@ -5377,7 +5377,7 @@ __metadata:
     liwi-subscribe-store: "npm:12.0.0"
     mingo: "npm:^6.2.7"
     mongodb: "npm:^6.21.0"
-    nightingale-logger: "npm:^16.0.0"
+    nightingale-logger: "npm:^18.2.0"
     typescript: "npm:5.9.3"
   languageName: unknown
   linkType: soft
@@ -5405,7 +5405,7 @@ __metadata:
     extended-json: "npm:12.0.0"
     liwi-resources: "npm:12.0.0"
     liwi-store: "npm:12.0.0"
-    nightingale-logger: "npm:^16.0.0"
+    nightingale-logger: "npm:^18.2.0"
     typescript: "npm:5.9.3"
   languageName: unknown
   linkType: soft
@@ -5419,7 +5419,7 @@ __metadata:
     extended-json: "npm:12.0.0"
     liwi-resources-client: "npm:12.0.0"
     liwi-resources-server: "npm:12.0.0"
-    nightingale-logger: "npm:^16.0.0"
+    nightingale-logger: "npm:^18.2.0"
     typescript: "npm:5.9.3"
   languageName: unknown
   linkType: soft
@@ -5431,7 +5431,7 @@ __metadata:
     "@pob/rollup-esbuild": "npm:7.4.2"
     extended-json: "npm:12.0.0"
     liwi-resources: "npm:12.0.0"
-    nightingale-logger: "npm:^16.0.0"
+    nightingale-logger: "npm:^18.2.0"
     typescript: "npm:5.9.3"
   languageName: unknown
   linkType: soft
@@ -5456,7 +5456,7 @@ __metadata:
     backo2: "npm:^1.0.2"
     extended-json: "npm:12.0.0"
     liwi-resources-client: "npm:12.0.0"
-    nightingale-logger: "npm:^16.0.0"
+    nightingale-logger: "npm:^18.2.0"
     typescript: "npm:5.9.3"
   languageName: unknown
   linkType: soft
@@ -5471,7 +5471,7 @@ __metadata:
     extended-json: "npm:12.0.0"
     liwi-resources-server: "npm:12.0.0"
     liwi-store: "npm:12.0.0"
-    nightingale-logger: "npm:^16.0.0"
+    nightingale-logger: "npm:^18.2.0"
     typescript: "npm:5.9.3"
     utf-8-validate: "npm:^6.0.6"
     ws: "npm:^8.21.0"
@@ -6098,13 +6098,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nightingale-app-console@npm:16.2.0":
-  version: 16.2.0
-  resolution: "nightingale-app-console@npm:16.2.0"
+"nightingale-app-console@npm:18.2.0":
+  version: 18.2.0
+  resolution: "nightingale-app-console@npm:18.2.0"
   dependencies:
-    "@types/node": "npm:>=20.0.0"
-    nightingale: "npm:16.2.0"
-  checksum: 10c0/85ad1c49e04f1ae9a9e91884f22f3f9e0d61fec93c22fd3d576bc1dc7b382a53fa3f0588979f366511a667ad00a3934dae4ee2593f637bbc62cacef366f43af1
+    "@types/node": "npm:>=22.0.0"
+    nightingale: "npm:18.2.0"
+  checksum: 10c0/2ec8b2868ab35c670eadc1a53d900d7bbb2d6b57be6d39ea06c1728020c9d5283fd81ced3685ef88e3ee8a0aada5cc901486b930aa49d626055a6115852cf0e6
   languageName: node
   linkType: hard
 
@@ -6184,6 +6184,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nightingale-levels@npm:18.2.0":
+  version: 18.2.0
+  resolution: "nightingale-levels@npm:18.2.0"
+  checksum: 10c0/cd93481242012b072d392773640db703a3b0aa00fe45d76299247598ba654fc3750d5b4605031e8260b5c24d222d1c403d892da3367a0fe5668d0fe8c42f3cc8
+  languageName: node
+  linkType: hard
+
 "nightingale-logger@npm:15.0.0, nightingale-logger@npm:^15.0.0":
   version: 15.0.0
   resolution: "nightingale-logger@npm:15.0.0"
@@ -6195,17 +6202,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nightingale-logger@npm:16.0.0, nightingale-logger@npm:^16.0.0":
-  version: 16.0.0
-  resolution: "nightingale-logger@npm:16.0.0"
-  dependencies:
-    "@types/node": "npm:>=20.0.0"
-    nightingale-levels: "npm:16.0.0"
-    nightingale-types: "npm:16.0.0"
-  checksum: 10c0/5ee0592bfe6a8ac66495c7b8c5a62f335924bbbf4fecbb53ca0bbc0541ef67ef5050442a5077b1d38e71350dca094ab5f0b3851146ed1ac5366ef02e150ab1ed
-  languageName: node
-  linkType: hard
-
 "nightingale-logger@npm:17.0.0":
   version: 17.0.0
   resolution: "nightingale-logger@npm:17.0.0"
@@ -6214,6 +6210,28 @@ __metadata:
     nightingale-levels: "npm:17.0.0"
     nightingale-types: "npm:17.0.0"
   checksum: 10c0/c26f0acadd8af3821abd6b9b9d3fc6c19e18521d1faa9ef1454b53a2c0f3b5deea819f9024cfd880b427598c531a2e0967a002b2aa8b102680e4ab8bb1fc8db8
+  languageName: node
+  linkType: hard
+
+"nightingale-logger@npm:18.2.0, nightingale-logger@npm:^18.2.0":
+  version: 18.2.0
+  resolution: "nightingale-logger@npm:18.2.0"
+  dependencies:
+    "@types/node": "npm:>=22.0.0"
+    nightingale-levels: "npm:18.2.0"
+    nightingale-types: "npm:18.2.0"
+  checksum: 10c0/5e493d1d44836e61ecc576d157a8ee042a3a580f8d83e26a32fca59c2b664aedb0f99b4d925fd6dcec43c8d1c8eb0bb5c54d13b584fb232132faa06e3e1f979a
+  languageName: node
+  linkType: hard
+
+"nightingale-logger@npm:^16.0.0":
+  version: 16.0.0
+  resolution: "nightingale-logger@npm:16.0.0"
+  dependencies:
+    "@types/node": "npm:>=20.0.0"
+    nightingale-levels: "npm:16.0.0"
+    nightingale-types: "npm:16.0.0"
+  checksum: 10c0/5ee0592bfe6a8ac66495c7b8c5a62f335924bbbf4fecbb53ca0bbc0541ef67ef5050442a5077b1d38e71350dca094ab5f0b3851146ed1ac5366ef02e150ab1ed
   languageName: node
   linkType: hard
 
@@ -6244,16 +6262,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nightingale@npm:16.2.0":
-  version: 16.2.0
-  resolution: "nightingale@npm:16.2.0"
+"nightingale-types@npm:18.2.0":
+  version: 18.2.0
+  resolution: "nightingale-types@npm:18.2.0"
   dependencies:
-    "@types/node": "npm:>=20.0.0"
-    ansi-styles: "npm:^6.2.1"
-    nightingale-levels: "npm:16.0.0"
-    nightingale-logger: "npm:16.0.0"
-    nightingale-types: "npm:16.0.0"
-  checksum: 10c0/6b33c44a3527e82d2318bf88b98494b3c28e46c0eb56e20efdc2569a39eef090e26df99ef5ee947e2886c98bdf52e2e69ffffd7aa08ff6f4ecb2ee2ec8a34c73
+    nightingale-levels: "npm:18.2.0"
+  checksum: 10c0/2ee076ad4c1da981853098039e399e23db934d9e57a65284c66259f1eb98f07b5d140c15df00487ba35330c2975d2655504dfd787197bd13666e4f24cdbe2721
   languageName: node
   linkType: hard
 
@@ -6267,6 +6281,19 @@ __metadata:
     nightingale-logger: "npm:17.0.0"
     nightingale-types: "npm:17.0.0"
   checksum: 10c0/fd73460c4a20120944dddb48bbc9585b041680792b7ffe6ec8485ab3825d8a9083762150af5c2add0bf786d29ce1e69c21120e23d270e7f8c8feec0a0b60888f
+  languageName: node
+  linkType: hard
+
+"nightingale@npm:18.2.0":
+  version: 18.2.0
+  resolution: "nightingale@npm:18.2.0"
+  dependencies:
+    "@types/node": "npm:>=22.0.0"
+    ansi-styles: "npm:^6.2.3"
+    nightingale-levels: "npm:18.2.0"
+    nightingale-logger: "npm:18.2.0"
+    nightingale-types: "npm:18.2.0"
+  checksum: 10c0/530005f0ed063209100deeea4df5b42b0312541b206e8f3808677f4f6861de296d72dce09000bef4ed1e4dc499bc0d6b62196ad56d76e83074fd5f39b4d5e0b3
   languageName: node
   linkType: hard
 
@@ -6920,7 +6947,7 @@ __metadata:
     "@types/react": "npm:19.1.13"
     liwi-resources-client: "npm:12.0.0"
     mingo: "npm:^6.2.7"
-    nightingale-logger: "npm:^16.0.0"
+    nightingale-logger: "npm:^18.2.0"
     react: "npm:19.1.1"
     typescript: "npm:5.9.3"
   peerDependencies:
