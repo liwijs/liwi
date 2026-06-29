@@ -1,11 +1,14 @@
 import type { Change, Changes, QueryInfo, QueryMeta } from "liwi-store";
+import { initOptions } from "mingo/core";
 import { Lazy } from "mingo/lazy";
-// @ts-expect-error mingo missing types
-// eslint-disable-next-line import-x/no-unresolved
-import { $sort } from "mingo/operators/pipeline/sort";
+import { $sort } from "mingo/operators/pipeline";
 
 function sortCollection<T>(collection: T[], sort: Record<string, -1 | 1>): T[] {
-  return $sort(Lazy(collection), sort, { idKey: "_id" }).value() as T[];
+  return $sort(
+    Lazy(collection),
+    sort,
+    initOptions({ idKey: "_id" }),
+  ).value() as T[];
 }
 
 const copy = <Value>(state: Value[]): Value[] => [...state];

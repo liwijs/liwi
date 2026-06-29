@@ -49,7 +49,7 @@
   "dependencies": {
     "liwi-resources-client": "workspace:*",
     "liwi-store": "workspace:*",
-    "mingo": "^6.2.7",
+    "mingo": "~6.2.7",
     "nightingale-logger": "^16.0.0"
   },
   "devDependencies": {

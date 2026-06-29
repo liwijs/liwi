@@ -46,7 +46,7 @@ export function applySingleItemChanges<
     // eslint-disable-next-line unicorn/no-array-reduce
     state: changes.reduce<Value | null>(
       (result: Value | null, change: Change<any, Value | null>) =>
-        applySingleItemChange<Value>(result, change, queryMeta, queryInfo),
+        applySingleItemChange<Value>(result, change, newQueryMeta, queryInfo),
       state,
     ),
     meta: newQueryMeta,

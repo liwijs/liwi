@@ -1,8 +1,9 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback, useReducer, useMemo } from 'react';
 import { jsx } from 'react/jsx-runtime';
 import { Logger } from 'nightingale-logger';
+import { initOptions } from 'mingo/core';
 import { Lazy } from 'mingo/lazy';
-import { $sort } from 'mingo/operators/pipeline/sort';
+import { $sort } from 'mingo/operators/pipeline';
 export { ResourcesServerError } from 'liwi-resources-client';
 
 const TransportClientContext = createContext(
@@ -175,7 +176,11 @@ function useRetrieveResource(createQuery, params, skip, deps) {
 }
 
 function sortCollection(collection, sort) {
-  return $sort(Lazy(collection), sort, { idKey: "_id" }).value();
+  return $sort(
+    Lazy(collection),
+    sort,
+    initOptions({ idKey: "_id" })
+  ).value();
 }
 const copy = (state) => [...state];
 const applyCollectionChange = (state, change, queryMeta, queryInfo) => {
@@ -257,7 +262,7 @@ function applySingleItemChanges(state, changes, queryMeta, queryInfo) {
   return {
     // eslint-disable-next-line unicorn/no-array-reduce
     state: changes.reduce(
-      (result, change) => applySingleItemChange(result, change, queryMeta),
+      (result, change) => applySingleItemChange(result, change, newQueryMeta),
       state
     ),
     meta: newQueryMeta
