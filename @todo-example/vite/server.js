@@ -54,7 +54,13 @@ app.use(async (req, res) => {
       render = (await vite.ssrLoadModule("/src/entry-server.tsx")).render;
     } else {
       template = templateProd;
-      render = (await import("./dist/server/entry-server.js")).render;
+      // Built artifact only present after `vite build`; resolve at runtime so
+      // import-x/no-unresolved doesn't fail when dist is absent (CI/dev).
+      const entryServerPath = path.resolve(
+        __dirname,
+        "dist/server/entry-server.js",
+      );
+      render = (await import(entryServerPath)).render;
     }
 
     const { html } = render();
