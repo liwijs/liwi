@@ -20,8 +20,8 @@ export default function Main(): ReactElement | null {
   );
 
   const [hash, setHash] = useState(
-    // eslint-disable-next-line unicorn/prefer-global-this, @typescript-eslint/no-unnecessary-condition
-    global.window === undefined ? "#/" : global.location.hash,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    globalThis.window === undefined ? "#/" : globalThis.location.hash,
   );
 
   const [clearCompleted] = useOperation(
@@ -108,6 +108,7 @@ export default function Main(): ReactElement | null {
             onClick={() => {
               clearCompleted().catch((error) => {
                 console.error(error);
+                // eslint-disable-next-line no-alert
                 alert("Error clearing completed tasks");
               });
             }}

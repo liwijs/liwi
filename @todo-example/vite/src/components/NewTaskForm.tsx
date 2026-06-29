@@ -1,4 +1,4 @@
-import type { FormEventHandler, ReactNode } from "react";
+import type { ReactNode, SubmitEventHandler } from "react";
 import { useContext, useEffect, useState } from "react";
 import { TransportClientReadyContext, useOperation } from "react-liwi";
 import { TodoServicesContext } from "../app/services/TodoServicesProvider";
@@ -12,10 +12,11 @@ export function NewTaskForm(): ReactNode {
 
   useEffect(() => {
     if (taskCreateFailed === undefined) return;
+    // eslint-disable-next-line no-alert
     alert(taskCreateFailed);
   }, [taskCreateFailed]);
 
-  const handleSubmit: FormEventHandler = (e) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (!isReady) return;
     if (newTaskInput) {

@@ -1,0 +1,9 @@
+
+# build output
+/dist
+/out
+/build
+/.env.local
+
+# test output
+/test-results

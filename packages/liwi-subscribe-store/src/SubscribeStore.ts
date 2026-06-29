@@ -199,7 +199,7 @@ export default class SubscribeStore<
       (await this.findOne({
         [this.store.keyPath]: key,
         ...criteria,
-      } as Criteria<Model>))!,
+      }))!,
       partialUpdate,
     );
   }

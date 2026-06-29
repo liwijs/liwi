@@ -1,7 +1,7 @@
-import pobTypescriptConfig, { applyTs } from "@pob/eslint-config-typescript";
+import pobConfig, { applyTs } from "@pob/eslint-config";
 import pobTypescriptReactConfig from "@pob/eslint-config-typescript-react";
 
-const pobTypescriptConfigs = pobTypescriptConfig(import.meta.url).configs;
+const pobConfigs = pobConfig(import.meta.url).configs;
 const pobTypescriptReactConfigs = pobTypescriptReactConfig(
   import.meta.url,
 ).configs;
@@ -18,27 +18,30 @@ const warnUnsafeConfig = {
 };
 
 export default [
-  ...pobTypescriptConfigs.node,
+  {
+    ignores: ["@todo-example/vite/dist"],
+  },
+  ...pobConfigs.node,
 
   ...applyTs({
     mode: "directory",
     files: ["@todo-example/server/src/"],
-    configs: [...pobTypescriptConfigs.node],
+    configs: [...pobConfigs.node],
   }),
 
   ...applyTs({
     mode: "directory",
     files: ["packages/liwi-mongo-example/src/"],
-    configs: [...pobTypescriptConfigs.app],
+    configs: [...pobConfigs.app],
   }),
   ...applyTs({
     mode: "directory",
     files: ["@todo-example/*/src/"],
-    configs: [...pobTypescriptConfigs.app, warnUnsafeConfig],
+    configs: [...pobConfigs.app, warnUnsafeConfig],
   }),
   {
     files: [
-      "@todo-example/nextjs/src/**/*.{ts,tsx}",
+      "@todo-example/vite/src/**/*.{ts,tsx}",
       "@todo-example/server/src/**/*.ts",
     ],
 
@@ -50,18 +53,12 @@ export default [
       },
     },
   },
-  {
-    ignores: [
-      "@todo-example/nextjs/.next",
-      "@todo-example/nextjs/out",
-      "@todo-example/nextjs/build",
-    ],
-  },
   ...applyTs({
     mode: "directory",
-    files: ["@todo-example/nextjs/src/"],
+    files: ["@todo-example/vite/src/"],
     configs: [
       ...pobTypescriptReactConfigs.base,
+      ...pobTypescriptReactConfigs["react-native-web"],
       warnUnsafeConfig,
       {
         rules: {
@@ -86,6 +83,7 @@ export default [
       {
         rules: {
           "@typescript-eslint/no-floating-promises": "warn",
+          "import-x/no-unresolved": "warn",
         },
       },
     ],
@@ -101,8 +99,14 @@ export default [
       {
         rules: {
           "@typescript-eslint/no-floating-promises": "warn",
+          "import-x/no-unresolved": "warn",
         },
       },
     ],
+  }),
+  ...applyTs({
+    mode: "directory",
+    files: ["packages/react-liwi/src/"],
+    configs: [...pobTypescriptReactConfigs["react-native-web"]],
   }),
 ];

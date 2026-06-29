@@ -114,7 +114,7 @@ export default function createResourcesWebsocketClient({
   url,
   ...options
 }: WebsocketTransportClientOptions): TransportClient {
-  const isSSR = typeof window === "undefined";
+  const isSSR = globalThis.window === undefined;
 
   if (isSSR) {
     return {
@@ -139,8 +139,8 @@ export default function createResourcesWebsocketClient({
   const subscriptions = new Map<number, Subscription<any, any>>();
 
   if (!url) {
-    url = `ws${window.location.protocol === "https:" ? "s" : ""}://${
-      window.location.host
+    url = `ws${globalThis.location.protocol === "https:" ? "s" : ""}://${
+      globalThis.location.host
     }/ws`;
   }
   logger.info("create", { url });

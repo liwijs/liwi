@@ -16,7 +16,7 @@ export class ResourcesServerService {
   // readonly cursorResources: Map<string, CursorResource<any, any, any>>;
 
   constructor({
-    serviceResources = new Map(),
+    serviceResources,
   }: // cursorResources = new Map(),
   {
     serviceResources: Map<string, ServiceResource<any, any>>;

@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 80,
+  "sortPackageJson": { "sortScripts": true },
+  "ignorePatterns": [
+    "/.yarnrc.yml",
+    "/.yarn/**/*",
+    "/@todo-example/vite/playwright-report/",
+    "/@todo-example/vite/test-results/",
+    "/packages/*/dist",
+    "/packages/*/build",
+    "/packages/*/data",
+    "/@todo-example/*/dist",
+    "/@todo-example/*/build",
+    "/@todo-example/*/data",
+    "CHANGELOG.md",
+  ],
+}

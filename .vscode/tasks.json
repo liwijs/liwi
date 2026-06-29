@@ -18,11 +18,11 @@
       "problemMatcher": []
     },
     {
-      "label": "TODO Example - Nextjs App Start",
+      "label": "TODO Example - Vite App Start",
       "type": "shell",
       "command": "yarn start",
       "options": {
-        "cwd": "${workspaceFolder}/@todo-example/nextjs"
+        "cwd": "${workspaceFolder}/@todo-example/vite"
       },
       "presentation": {
         "panel": "dedicated",

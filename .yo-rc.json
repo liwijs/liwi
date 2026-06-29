@@ -4,7 +4,7 @@
       "ci": true,
       "testing": true,
       "testRunner": "node",
-      "e2eTesting": "@todo-example/nextjs",
+      "e2eTesting": "@todo-example/vite",
       "codecov": false,
       "documentation": false,
       "eslint": true,
@@ -25,8 +25,8 @@
         "liwi-resources-websocket-client",
         "liwi-resources-websocket-server",
         "react-liwi",
-        "@todo-example/nextjs",
-        "@todo-example/server"
+        "@todo-example/server",
+        "@todo-example/vite"
       ]
     },
     "renovate": {

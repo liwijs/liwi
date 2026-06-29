@@ -118,4 +118,4 @@ jobs:
         run: yarn install --immutable
 
       - name: E2E testing
-        run: yarn ./@todo-example/nextjs run test:e2e
+        run: yarn ./@todo-example/vite run test:e2e
