@@ -1,24 +1,21 @@
 {
   "name": "@todo-example/modules",
-  "private": true,
   "version": "12.0.0",
-  "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
+  "private": true,
+  "homepage": "https://github.com/liwijs/liwi",
   "license": "ISC",
+  "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "repository": {
     "type": "git",
     "url": "https://github.com/liwijs/liwi.git",
     "directory": "@todo-example/modules"
   },
-  "homepage": "https://github.com/liwijs/liwi",
   "type": "module",
-  "engines": {
-    "node": ">=22.18.0"
-  },
   "sideEffects": false,
   "main": "./build/index-node.mjs",
-  "types": "./src/index.ts",
   "module": "./build/index-browser.es.js",
   "browser": "./build/index-browser.es.js",
+  "types": "./src/index.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -32,13 +29,22 @@
     }
   },
   "scripts": {
-    "build": "yarn clean:build && rollup --config rollup.config.mjs",
-    "clean": "yarn clean:build",
+    "build": "yarn run clean:build && rollup --config rollup.config.mjs",
+    "clean": "yarn run clean:build",
     "clean:build": "pob-esbuild-clean-out build",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn ../.. run eslint --quiet @todo-example/modules",
-    "start": "yarn clean:build && rollup --config rollup.config.mjs --watch",
+    "lint:eslint": "yarn '../..' run eslint --quiet '@todo-example/modules'",
+    "start": "yarn run clean:build && rollup --config rollup.config.mjs --watch",
+    "tsc": "tsc",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
+  },
+  "dependencies": {
+    "liwi-mongo": "12.0.0",
+    "liwi-resources-client": "12.0.0"
+  },
+  "devDependencies": {
+    "@pob/rollup-esbuild": "9.1.1",
+    "typescript": "6.0.3"
   },
   "browserslist": {
     "production": [
@@ -49,6 +55,9 @@
       "not ios_saf < 10"
     ]
   },
+  "engines": {
+    "node": ">=24.14.1"
+  },
   "pob": {
     "bundler": "rollup-esbuild",
     "entries": [
@@ -57,7 +66,7 @@
     "envs": [
       {
         "target": "node",
-        "version": "22",
+        "version": "24",
         "omitVersionInFileName": true
       },
       {
@@ -65,14 +74,5 @@
       }
     ],
     "typescript": true
-  },
-  "prettier": "@pob/root/prettier-config",
-  "dependencies": {
-    "liwi-mongo": "12.0.0",
-    "liwi-resources-client": "12.0.0"
-  },
-  "devDependencies": {
-    "@pob/rollup-esbuild": "7.4.2",
-    "typescript": "5.9.3"
   }
 }

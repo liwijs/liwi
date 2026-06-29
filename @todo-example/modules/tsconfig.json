@@ -6,7 +6,6 @@
   "include": ["src/**/*.ts"],
   "compilerOptions": {
     "rootDir": "src",
-    "baseUrl": "" /* Base directory to resolve non-absolute module names. */,
     "outDir": "node_modules/.cache/tsc",
     "tsBuildInfoFile": "node_modules/.cache/tsc/tsbuildinfo",
     "noEmitOnError": true,

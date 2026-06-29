@@ -1,7 +1,7 @@
 {
   "pob": {
     "app": {
-      "type": "vite",
+      "type": "vite-with-server",
       "export": false,
       "testing": false,
       "e2e": true

@@ -22,8 +22,8 @@ This repository is a monorepo that we manage using [Yarn Workspaces](https://yar
 | [liwi-subscribe-store](packages/liwi-subscribe-store)                       | <a href="https://npmjs.org/package/liwi-subscribe-store"><img src="https://img.shields.io/npm/v/liwi-subscribe-store.svg?style=flat-square"></a>                       | subscribe store proxy                              |
 | [react-liwi](packages/react-liwi)                                           | <a href="https://npmjs.org/package/react-liwi"><img src="https://img.shields.io/npm/v/react-liwi.svg?style=flat-square"></a>                                           | react with liwi                                    |
 | [@todo-example/modules](@todo-example/modules)                              |                                                                                                                                                                        |
-| [@todo-example/vite](@todo-example/vite)                                    |                                                                                                                                                                        |
 | [@todo-example/server](@todo-example/server)                                |                                                                                                                                                                        |
+| [@todo-example/vite](@todo-example/vite)                                    |                                                                                                                                                                        |
 
 ## Install
 

@@ -3,18 +3,22 @@
   "version": "12.0.0",
   "description": "mongo implementation for liwi",
   "keywords": [],
-  "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
+  "homepage": "https://github.com/liwijs/liwi",
+  "bugs": {
+    "url": "https://github.com/liwijs/liwi/issues"
+  },
   "license": "ISC",
+  "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "repository": {
     "type": "git",
     "url": "https://github.com/liwijs/liwi.git",
     "directory": "packages/liwi-mongo"
   },
-  "homepage": "https://github.com/liwijs/liwi",
+  "files": [
+    "src",
+    "dist"
+  ],
   "type": "module",
-  "engines": {
-    "node": ">=22.18.0"
-  },
   "sideEffects": false,
   "main": "./dist/index-node.mjs",
   "types": "./dist/definitions/index.d.ts",
@@ -27,18 +31,29 @@
       }
     }
   },
-  "files": [
-    "src",
-    "dist"
-  ],
   "scripts": {
-    "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
+    "build": "yarn run clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
     "build:definitions": "tsc -p tsconfig.json",
     "clean": "yarn clean:build",
     "clean:build": "pob-esbuild-clean-out dist",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn ../.. run eslint --quiet packages/liwi-mongo",
+    "lint:eslint": "yarn '../..' run eslint --quiet 'packages/liwi-mongo'",
+    "tsc": "tsc",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
+  },
+  "dependencies": {
+    "liwi-store": "12.0.0",
+    "liwi-subscribe-store": "12.0.0",
+    "mingo": "^6.2.7",
+    "mongodb": "^6.21.0",
+    "nightingale-logger": "^16.0.0"
+  },
+  "devDependencies": {
+    "@pob/rollup-esbuild": "9.1.1",
+    "typescript": "6.0.3"
+  },
+  "engines": {
+    "node": ">=22.18.0"
   },
   "pob": {
     "bundler": "rollup-esbuild",
@@ -53,17 +68,5 @@
       }
     ],
     "typescript": true
-  },
-  "prettier": "@pob/root/prettier-config",
-  "dependencies": {
-    "liwi-store": "12.0.0",
-    "liwi-subscribe-store": "12.0.0",
-    "mingo": "^6.2.7",
-    "mongodb": "^6.21.0",
-    "nightingale-logger": "^16.0.0"
-  },
-  "devDependencies": {
-    "@pob/rollup-esbuild": "7.4.2",
-    "typescript": "5.9.3"
   }
 }

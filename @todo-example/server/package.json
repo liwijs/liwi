@@ -1,20 +1,20 @@
 {
   "name": "@todo-example/server",
-  "private": true,
   "version": "12.0.0",
-  "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
+  "private": true,
+  "homepage": "https://github.com/liwijs/liwi",
   "license": "ISC",
+  "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "repository": {
     "type": "git",
     "url": "https://github.com/liwijs/liwi.git",
     "directory": "@todo-example/server"
   },
-  "homepage": "https://github.com/liwijs/liwi",
   "type": "module",
-  "engines": {
-    "node": ">=22.18.0"
-  },
   "main": "./build/index-node.mjs",
+  "imports": {
+    "#/*": "./src/*"
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -25,28 +25,14 @@
     }
   },
   "scripts": {
-    "build": "yarn clean:build && rollup --config rollup.config.mjs",
-    "clean": "yarn clean:build",
+    "build": "yarn run clean:build && rollup --config rollup.config.mjs",
+    "clean": "yarn run clean:build",
     "clean:build": "pob-esbuild-clean-out build",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn ../.. run eslint --quiet @todo-example/server",
-    "start": "yarn clean:build && rollup --config rollup.config.mjs --watch"
+    "lint:eslint": "yarn '../..' run eslint --quiet '@todo-example/server'",
+    "start": "yarn run clean:build && rollup --config rollup.config.mjs --watch",
+    "tsc": "tsc"
   },
-  "pob": {
-    "bundler": "rollup-esbuild",
-    "entries": [
-      "index"
-    ],
-    "envs": [
-      {
-        "target": "node",
-        "version": "22",
-        "omitVersionInFileName": true
-      }
-    ],
-    "typescript": true
-  },
-  "prettier": "@pob/root/prettier-config",
   "dependencies": {
     "@todo-example/modules": "12.0.0",
     "alp-node": "10.0.0",
@@ -57,8 +43,25 @@
     "router-segments": "12.0.0"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "7.4.2",
+    "@pob/rollup-esbuild": "9.1.1",
     "alp-rollup-plugin-config": "4.0.2",
-    "typescript": "5.9.3"
+    "typescript": "6.0.3"
+  },
+  "engines": {
+    "node": ">=24.14.1"
+  },
+  "pob": {
+    "bundler": "rollup-esbuild",
+    "entries": [
+      "index"
+    ],
+    "envs": [
+      {
+        "target": "node",
+        "version": "24",
+        "omitVersionInFileName": true
+      }
+    ],
+    "typescript": true
   }
 }

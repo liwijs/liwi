@@ -1,5 +1,6 @@
 name: Push CI
-
+permissions:
+  contents: read
 on: [push]
 
 jobs:
@@ -7,15 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Enable Corepack
         run: corepack enable
 
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
-          check-latest: true
+          node-version: 24
 
       - name: Install Dependencies
         run: yarn install --immutable
@@ -27,15 +27,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Enable Corepack
         run: corepack enable
 
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
-          check-latest: true
+          node-version: 24
 
       - name: Install Dependencies
         run: yarn install --immutable
@@ -44,27 +43,26 @@ jobs:
         run: yarn run build
 
       - name: Check nothing was forgotten before commit
-        run: yarn run repository-check-dirty
+        run: yarn repository-check-dirty
 
   lint:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Enable Corepack
         run: corepack enable
 
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
-          check-latest: true
+          node-version: 24
 
       - name: Install Dependencies
         run: yarn install --immutable
 
-      - name: Prettier
-        run: yarn run lint:prettier
+      - name: Format
+        run: yarn run format:check
 
       - name: Typescript
         run: yarn run tsc
@@ -77,10 +75,10 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22]
+        node-version: [22, 24]
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Enable Corepack
         run: corepack enable
@@ -88,7 +86,6 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          check-latest: true
 
       - name: Install Dependencies
         run: yarn install --immutable
@@ -101,10 +98,10 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22]
+        node-version: [24]
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Enable Corepack
         run: corepack enable
@@ -112,7 +109,6 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          check-latest: true
 
       - name: Install Dependencies
         run: yarn install --immutable

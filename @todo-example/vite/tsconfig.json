@@ -1,26 +1,20 @@
 {
   "extends": [
     "@pob/root/tsconfigs/strict.json",
-    "@pob/root/tsconfigs/targets/webpack.json"
+    "@pob/root/tsconfigs/targets/vite.json"
   ],
-  "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts"],
-  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "compilerOptions": {
-    "baseUrl": "./src" /* Base directory to resolve non-absolute module names. */,
+    "rootDir": "src",
     "noEmit": true,
     "tsBuildInfoFile": "node_modules/.cache/tsc/tsbuildinfo",
     "incremental": true,
-    "jsx": "react-jsx" /* react/jsx-runtime (react >=17) */,
-    "allowJs": true,
-    "strictNullChecks": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["vite/client", "node"],
-    "esModuleInterop": true,
-    "isolatedModules": true,
+
+    "jsx": "react-jsx" /* 'react-jsx' is used with react/jsx-runtime (react >=17 || >= 16.14.0 | >= 15.7.0) */,
     "resolveJsonModule": true,
+
     "paths": {
+      "#/*": ["./src/*"],
       "liwi-resources-client": ["../../packages/liwi-resources-client/src"],
       "liwi-resources-client/*": ["../../packages/liwi-resources-client/src/*"],
       "@todo-example/modules": ["../../@todo-example/modules/src"],
@@ -42,20 +36,10 @@
     }
   },
   "references": [
-    {
-      "path": "../../packages/liwi-resources-client/tsconfig.json"
-    },
-    {
-      "path": "../../@todo-example/modules/tsconfig.json"
-    },
-    {
-      "path": "../../packages/liwi-resources-void-client/tsconfig.json"
-    },
-    {
-      "path": "../../packages/liwi-resources-websocket-client/tsconfig.json"
-    },
-    {
-      "path": "../../packages/react-liwi/tsconfig.json"
-    }
+    { "path": "../../packages/liwi-resources-client/tsconfig.json" },
+    { "path": "../../@todo-example/modules/tsconfig.json" },
+    { "path": "../../packages/liwi-resources-void-client/tsconfig.json" },
+    { "path": "../../packages/liwi-resources-websocket-client/tsconfig.json" },
+    { "path": "../../packages/react-liwi/tsconfig.json" }
   ]
 }
