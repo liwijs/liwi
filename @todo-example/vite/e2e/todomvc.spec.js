@@ -9,8 +9,8 @@ test("should add, filter then clear", async ({ page }) => {
   const getCountOfTodos = () =>
     page.$$eval("ul.todo-list > li", (el) => el.length);
 
-  // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
-  await page.goto("http://127.0.0.1:3001/", {
+  // Start from the index page (the baseURL is set in playwright.config.js)
+  await page.goto("/", {
     waitUntil: "load",
   });
 

@@ -2,6 +2,7 @@ import { execSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { MongoMemoryServer } from "mongodb-memory-server-core";
 import { createDaemon } from "springbokjs-daemon";
+import { WEB_PORT, WS_PORT } from "./ports.js";
 
 export default async function globalSetup(config) {
   const cwd = fileURLToPath(new URL("..", import.meta.url));
@@ -19,7 +20,11 @@ export default async function globalSetup(config) {
     spawnSync(process.execPath, [viteBin, ...args], {
       cwd,
       stdio: "inherit",
-      env: { ...process.env, NODE_ENV: "production" },
+      env: {
+        ...process.env,
+        NODE_ENV: "production",
+        VITE_WS_URL: `ws://localhost:${WS_PORT}/ws`,
+      },
     });
 
   runVite(["build", "--outDir", "dist/client"]);
@@ -62,7 +67,7 @@ export default async function globalSetup(config) {
     env: {
       ...process.env,
       NODE_ENV: "production",
-      PORT: "3001",
+      PORT: String(WEB_PORT),
     },
   });
   const daemonServer = createDaemon({
@@ -73,6 +78,7 @@ export default async function globalSetup(config) {
     env: {
       ...process.env,
       NODE_ENV: "test",
+      PORT: String(WS_PORT),
       MONGO_PORT: String(mongod.instanceInfo?.port),
     },
   });

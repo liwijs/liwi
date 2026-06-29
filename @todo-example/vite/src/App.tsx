@@ -64,7 +64,7 @@ function Home(): ReactNode {
 export function App(): ReactNode {
   return (
     <TransportClientProvider<WebsocketTransportClientOptions>
-      url="ws://localhost:4005/ws"
+      url={import.meta.env.VITE_WS_URL ?? "ws://localhost:4005/ws"}
       createFn={
         globalThis.window === undefined
           ? createVoidTransportClient
