@@ -1,0 +1,19 @@
+allowBuilds:
+  bufferutil: true
+  esbuild: true
+  unrs-resolver: true
+  utf-8-validate: true
+dedupePeerDependents: true
+minimumReleaseAge: 4320
+minimumReleaseAgeExclude:
+  - "@pob/*"
+  - pob-dependencies
+  - alouette
+  - alouette-icons
+  - nightingale
+  - nightingale-logger
+nodeLinker: hoisted
+packages:
+  - packages/*
+  - "@todo-example/*"
+savePrefix: ^

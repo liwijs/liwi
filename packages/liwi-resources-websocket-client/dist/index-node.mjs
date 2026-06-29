@@ -162,6 +162,9 @@ function createSimpleWebsocketClient({
 
 const logger = new Logger("liwi:resources-websocket-client");
 class SubscribeResultPromise {
+  promise;
+  stop;
+  cancel;
   // readonly changePayload: TransportClientSubscribeResult<
   //   Result,
   //   Payload
@@ -190,7 +193,7 @@ function createResourcesWebsocketClient({
   url,
   ...options
 }) {
-  const isSSR = typeof window === "undefined";
+  const isSSR = globalThis.window === void 0;
   if (isSSR) {
     return {
       connect: () => {
@@ -214,7 +217,7 @@ function createResourcesWebsocketClient({
   const acks = /* @__PURE__ */ new Map();
   const subscriptions = /* @__PURE__ */ new Map();
   if (!url) {
-    url = `ws${window.location.protocol === "https:" ? "s" : ""}://${window.location.host}/ws`;
+    url = `ws${globalThis.location.protocol === "https:" ? "s" : ""}://${globalThis.location.host}/ws`;
   }
   logger.info("create", { url });
   const handlers = {

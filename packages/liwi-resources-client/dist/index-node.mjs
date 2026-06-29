@@ -3,6 +3,10 @@ import { Logger } from 'nightingale-logger';
 
 const logger = new Logger("liwi:resources:query");
 class ClientQuery {
+  resourceName;
+  transportClient;
+  key;
+  params;
   // eslint-disable-next-line @typescript-eslint/max-params
   constructor(resourceName, transportClient, key, params) {
     this.resourceName = resourceName;

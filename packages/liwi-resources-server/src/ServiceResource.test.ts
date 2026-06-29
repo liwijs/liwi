@@ -52,15 +52,12 @@ export const postsResource1: ServiceResource<PostServiceQueries> = {
 `,
       {},
     ).outputText,
-    `"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.postsResource1 = void 0;
-exports.postsResource1 = {
+    `export const postsResource1 = {
     queries: {
-        queryAll: function (params, loggedInUser) {
+        queryAll: (params, loggedInUser) => {
             return {};
         },
-        queryDetailedPost: function (params, loggedInUser) {
+        queryDetailedPost: (params, loggedInUser) => {
             return {};
         },
     },

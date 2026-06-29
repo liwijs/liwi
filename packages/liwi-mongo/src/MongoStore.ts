@@ -40,15 +40,13 @@ export interface MongoUpsertResult<
 export default class MongoStore<
   Model extends MongoBaseModel<KeyValue>,
   KeyValue extends AllowedKeyValue = Model[MongoKeyPath],
-> implements
-    SubscribableStore<
-      MongoKeyPath,
-      KeyValue,
-      Model,
-      MongoInsertType<Model>,
-      MongoConnection
-    >
-{
+> implements SubscribableStore<
+  MongoKeyPath,
+  KeyValue,
+  Model,
+  MongoInsertType<Model>,
+  MongoConnection
+> {
   readonly keyPath: MongoKeyPath = "_id";
 
   readonly connection: MongoConnection;

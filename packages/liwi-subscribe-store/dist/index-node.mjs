@@ -1,6 +1,8 @@
 class SubscribeStore {
+  store;
+  listeners = /* @__PURE__ */ new Set();
+  keyPath;
   constructor(store) {
-    this.listeners = /* @__PURE__ */ new Set();
     this.store = store;
     this.keyPath = store.keyPath;
   }
@@ -131,6 +133,7 @@ class AbstractSubscribableStoreQuery {
   changePartialParams(params) {
     throw new Error("Method not supported. Please create a new query.");
   }
+  _subscribeStore;
   setSubscribeStore(store) {
     this._subscribeStore = store;
   }

@@ -54,6 +54,7 @@ app.use(async (req, res) => {
       render = (await vite.ssrLoadModule("/src/entry-server.tsx")).render;
     } else {
       template = templateProd;
+      // eslint-disable-next-line import-x/no-unresolved
       render = (await import("./dist/server/entry-server.js")).render;
     }
 

@@ -3,9 +3,10 @@ export { ResourcesServerError } from 'liwi-resources';
 import { Logger } from 'nightingale-logger';
 
 class ResourcesServerService {
+  serviceResources;
   // readonly cursorResources: Map<string, CursorResource<any, any, any>>;
   constructor({
-    serviceResources = /* @__PURE__ */ new Map()
+    serviceResources
   }) {
     this.serviceResources = serviceResources;
   }

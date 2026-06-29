@@ -47,6 +47,8 @@ class AbstractCursor {
 }
 
 class AbstractStoreCursor extends AbstractCursor {
+  key;
+  _store;
   constructor(store) {
     super();
     this._store = store;

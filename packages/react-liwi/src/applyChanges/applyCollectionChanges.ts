@@ -1,5 +1,7 @@
 import type { Change, Changes, QueryInfo, QueryMeta } from "liwi-store";
 import { Lazy } from "mingo/lazy";
+// @ts-expect-error mingo missing types
+// eslint-disable-next-line import-x/no-unresolved
 import { $sort } from "mingo/operators/pipeline/sort";
 
 function sortCollection<T>(collection: T[], sort: Record<string, -1 | 1>): T[] {
@@ -58,6 +60,7 @@ const applyCollectionChange = <Value>(
     case "updated": {
       const keyPath = queryInfo.keyPath;
       const newState = copy(state);
+
       change.result.forEach((newObject) => {
         const index = newState.findIndex(
           (o: Value) => o[keyPath] === newObject[keyPath],

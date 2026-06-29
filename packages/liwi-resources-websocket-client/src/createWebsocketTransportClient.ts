@@ -48,12 +48,9 @@ type PromiseExecutor<T> = (
 type Handler<T> = (id: number, error: AckError | null, result: T) => void;
 
 class SubscribeResultPromise<
-    Result,
-    Payload extends Record<
-      string & keyof Payload,
-      ExtendedJsonValue | undefined
-    >,
-  >
+  Result,
+  Payload extends Record<string & keyof Payload, ExtendedJsonValue | undefined>,
+>
   implements
     TransportClientSubscribeResult<Result, Payload>,
     PromiseLike<Result>

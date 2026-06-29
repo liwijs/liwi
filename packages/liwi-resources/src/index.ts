@@ -79,8 +79,9 @@ export interface ToServerQueryPayload<Key extends string = string> {
   params: Record<string, ExtendedJsonValue> | undefined;
 }
 
-export interface ToServerSubscribeQueryPayload<Key extends string = string>
-  extends ToServerQueryPayload<Key> {
+export interface ToServerSubscribeQueryPayload<
+  Key extends string = string,
+> extends ToServerQueryPayload<Key> {
   subscriptionId: number;
 }
 

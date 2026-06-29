@@ -130,12 +130,12 @@ export function TodoList({ tasks, patchTask }: TodoListProps): ReactNode {
           task={task}
           onChangeLabel={(newLabel): Promise<boolean> => {
             return patchTask({ id: task._id, patch: { label: newLabel } }).then(
-              ([err]) => !err,
+              ([err]: any) => !err,
             );
           }}
           onChangeCompleted={(completed): Promise<boolean> => {
             return patchTask({ id: task._id, patch: { completed } }).then(
-              ([err]) => !err,
+              ([err]: any) => !err,
             );
           }}
         />

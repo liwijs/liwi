@@ -37,19 +37,19 @@
     }
   },
   "scripts": {
-    "build": "yarn run clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
+    "build": "pnpm run clean:build && rollup --config rollup.config.mjs && pnpm run build:definitions",
     "build:definitions": "tsc -p tsconfig.json",
     "clean": "yarn clean:build",
     "clean:build": "pob-esbuild-clean-out dist",
-    "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn '../..' run eslint --quiet 'packages/liwi-resources-websocket-client'",
+    "lint": "pnpm run lint:eslint",
+    "lint:eslint": "pnpm run --dir '../..' eslint --quiet 'packages/liwi-resources-websocket-client'",
     "tsc": "tsc",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "dependencies": {
     "backo2": "^1.0.2",
-    "extended-json": "12.0.0",
-    "liwi-resources-client": "12.0.0",
+    "extended-json": "workspace:*",
+    "liwi-resources-client": "workspace:*",
     "nightingale-logger": "^16.0.0"
   },
   "devDependencies": {

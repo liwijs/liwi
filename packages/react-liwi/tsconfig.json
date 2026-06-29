@@ -18,11 +18,14 @@
     "jsx": "react-jsx" /* 'react-jsx' is used with react/jsx-runtime (react >=17 || >= 16.14.0 | >= 15.7.0) */,
 
     "paths": {
+      "liwi-store": ["../../packages/liwi-store/src"],
+      "liwi-store/*": ["../../packages/liwi-store/src/*"],
       "liwi-resources-client": ["../../packages/liwi-resources-client/src"],
       "liwi-resources-client/*": ["../../packages/liwi-resources-client/src/*"]
     }
   },
   "references": [
+    { "path": "../../packages/liwi-store/tsconfig.json" },
     { "path": "../../packages/liwi-resources-client/tsconfig.json" }
   ]
 }

@@ -123,12 +123,13 @@ export function useRetrieveResourceAndSubscribe<
                   ) as ApplyChanges<Result, any>;
                 }
                 // if a change happen before the initial result, applyChanges will be undefined
-                else if (applyChanges) {
+                else if (applyChanges && currentMeta && currentQueryInfo) {
+                  const queryInfo = currentQueryInfo;
                   const { state: newResult, meta: newMeta } = applyChanges(
                     currentResult,
                     changes,
-                    currentMeta!,
-                    currentQueryInfo!,
+                    currentMeta,
+                    queryInfo,
                   );
 
                   if (newResult && newResult !== currentResult) {
@@ -138,7 +139,7 @@ export function useRetrieveResourceAndSubscribe<
                       type: "resolve",
                       result: newResult,
                       meta: newMeta,
-                      queryInfo: currentQueryInfo!,
+                      queryInfo,
                     });
                   }
                 }

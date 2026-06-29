@@ -38,9 +38,13 @@ export default class SubscribeStore<
     ModelInsertType,
     Connection
   >,
-> implements
-    StoreInterface<KeyPath, KeyValue, Model, ModelInsertType, Connection>
-{
+> implements StoreInterface<
+  KeyPath,
+  KeyValue,
+  Model,
+  ModelInsertType,
+  Connection
+> {
   private readonly store: Store;
 
   private readonly listeners = new Set<Listener<Model>>();

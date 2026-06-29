@@ -37,19 +37,20 @@
     }
   },
   "scripts": {
-    "build": "yarn run clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
+    "build": "pnpm run clean:build && rollup --config rollup.config.mjs && pnpm run build:definitions",
     "build:definitions": "tsc -p tsconfig.json",
     "clean": "yarn clean:build",
     "clean:build": "pob-esbuild-clean-out dist",
-    "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn '../..' run eslint --quiet 'packages/liwi-resources-server'",
-    "test": "yarn '../..' run test -- 'packages/liwi-resources-server'",
+    "lint": "pnpm run lint:eslint",
+    "lint:eslint": "pnpm run --dir '../..' eslint --quiet 'packages/liwi-resources-server'",
+    "test": "pnpm run --dir '../..' test -- 'packages/liwi-resources-server'",
     "tsc": "tsc",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "dependencies": {
-    "extended-json": "12.0.0",
-    "liwi-resources": "12.0.0",
+    "extended-json": "workspace:*",
+    "liwi-resources": "workspace:*",
+    "liwi-store": "workspace:*",
     "nightingale-logger": "^16.0.0"
   },
   "devDependencies": {

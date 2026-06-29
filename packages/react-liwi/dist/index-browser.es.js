@@ -356,12 +356,13 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, { visi
                     queryInfo: currentQueryInfo
                   });
                   applyChanges = Array.isArray(initialChange.initial) ? applyCollectionChanges : applySingleItemChanges;
-                } else if (applyChanges) {
+                } else if (applyChanges && currentMeta && currentQueryInfo) {
+                  const queryInfo = currentQueryInfo;
                   const { state: newResult, meta: newMeta } = applyChanges(
                     currentResult,
                     changes,
                     currentMeta,
-                    currentQueryInfo
+                    queryInfo
                   );
                   if (newResult && newResult !== currentResult) {
                     currentResult = newResult;
@@ -370,7 +371,7 @@ function useRetrieveResourceAndSubscribe(createQuery, params, skip, deps, { visi
                       type: "resolve",
                       result: newResult,
                       meta: newMeta,
-                      queryInfo: currentQueryInfo
+                      queryInfo
                     });
                   }
                 }

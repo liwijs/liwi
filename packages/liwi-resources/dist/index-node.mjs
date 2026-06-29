@@ -1,4 +1,5 @@
 class ResourcesServerError extends Error {
+  code;
   constructor(code, message) {
     super(message);
     this.name = "ResourcesServerError";
