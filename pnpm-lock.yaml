@@ -116,8 +116,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/react-liwi
       react-native-web:
-        specifier: 0.21.0
-        version: 0.21.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: 0.21.2
+        version: 0.21.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       sirv:
         specifier: 3.0.2
         version: 3.0.2
@@ -3294,8 +3294,8 @@ packages:
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
-  react-native-web@0.21.0:
-    resolution: {integrity: sha512-S0mtV7wMPeet1kCRnrEmo1bTUJeFsKebleCbRwbBRBUg/BWS64bfsnnm+ArC+QtjlbZFSZmtvv8imzOIuOOa3Q==}
+  react-native-web@0.21.2:
+    resolution: {integrity: sha512-SO2t9/17zM4iEnFvlu2DA9jqNbzNhoUP+AItkoCOyFmDMOhUnBBznBDCYN92fGdfAkfQlWzPoez6+zLxFNsZEg==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -6760,7 +6760,7 @@ snapshots:
 
   react-is@16.13.1: {}
 
-  react-native-web@0.21.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
+  react-native-web@0.21.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
     dependencies:
       '@babel/runtime': 7.29.7
       '@react-native/normalize-colors': 0.74.89
