@@ -16,7 +16,7 @@ export default async function globalSetup(config) {
   );
 
   const runVite = (args) =>
-    spawnSync(process.argv0, [viteBin, ...args], {
+    spawnSync(process.execPath, [viteBin, ...args], {
       cwd,
       stdio: "inherit",
       env: { ...process.env, NODE_ENV: "production" },
@@ -34,7 +34,7 @@ export default async function globalSetup(config) {
   const mongodPromise = MongoMemoryServer.create();
 
   spawnSync(
-    process.argv0,
+    process.execPath,
     [
       fileURLToPath(
         new URL(
@@ -48,7 +48,7 @@ export default async function globalSetup(config) {
     {
       cwd: cwdServer,
       stdio: "inherit",
-      env: { NODE_ENV: "production" },
+      env: { ...process.env, NODE_ENV: "production" },
     },
   );
 
@@ -56,20 +56,22 @@ export default async function globalSetup(config) {
 
   const daemonWeb = createDaemon({
     displayName: "web",
-    command: process.argv0,
+    command: process.execPath,
     cwd,
     args: ["server.js"],
     env: {
+      ...process.env,
       NODE_ENV: "production",
       PORT: "3001",
     },
   });
   const daemonServer = createDaemon({
     displayName: "server",
-    command: process.argv0,
+    command: process.execPath,
     cwd: cwdServer,
     args: ["build/index-node.mjs"],
     env: {
+      ...process.env,
       NODE_ENV: "test",
       MONGO_PORT: String(mongod.instanceInfo?.port),
     },
