@@ -45,7 +45,7 @@
     "extended-json": "workspace:*",
     "liwi-resources-client": "workspace:*",
     "liwi-resources-server": "workspace:*",
-    "nightingale-logger": "^16.0.0"
+    "nightingale-logger": "^18.2.0"
   },
   "devDependencies": {
     "@pob/rollup-esbuild": "9.1.1",

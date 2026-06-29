@@ -33,7 +33,7 @@
     "liwi-resources-client": "workspace:*",
     "liwi-resources-void-client": "workspace:*",
     "liwi-resources-websocket-client": "workspace:*",
-    "nightingale-app-console": "16.2.0",
+    "nightingale-app-console": "18.2.0",
     "react": "19.1.1",
     "react-alp-connection-state": "10.0.2",
     "react-dom": "19.1.1",
