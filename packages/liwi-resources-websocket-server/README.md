@@ -16,13 +16,13 @@
 ## Install
 
 ```bash
-npm install --save liwi-rest-websocket
+npm install --save liwi-resources-websocket-server
 ```
 
 ## Usage
 
 ```js
-import liwiRestWebsocket from "liwi-rest-websocket";
+import liwiRestWebsocket from "liwi-resources-websocket-server";
 
 console.log(liwiRestWebsocket);
 ```
