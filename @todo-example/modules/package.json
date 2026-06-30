@@ -2,12 +2,12 @@
   "name": "@todo-example/modules",
   "version": "13.0.0",
   "private": true,
-  "homepage": "https://github.com/liwijs/liwi",
+  "homepage": "https://github.com/christophehurpeau/liwi",
   "license": "ISC",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/liwijs/liwi.git",
+    "url": "https://github.com/christophehurpeau/liwi.git",
     "directory": "@todo-example/modules"
   },
   "type": "module",

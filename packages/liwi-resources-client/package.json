@@ -3,15 +3,15 @@
   "version": "13.0.0",
   "description": "resources client for liwi",
   "keywords": [],
-  "homepage": "https://github.com/liwijs/liwi",
+  "homepage": "https://github.com/christophehurpeau/liwi",
   "bugs": {
-    "url": "https://github.com/liwijs/liwi/issues"
+    "url": "https://github.com/christophehurpeau/liwi/issues"
   },
   "license": "ISC",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/liwijs/liwi.git",
+    "url": "https://github.com/christophehurpeau/liwi.git",
     "directory": "packages/liwi-resources-client"
   },
   "files": [

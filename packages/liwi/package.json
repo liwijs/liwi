@@ -3,10 +3,10 @@
   "version": "13.0.0",
   "description": "db abstraction",
   "keywords": [],
-  "homepage": "https://github.com/liwijs/liwi",
+  "homepage": "https://github.com/christophehurpeau/liwi",
   "license": "ISC",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
-  "repository": "git@github.com:liwijs/liwi.git",
+  "repository": "git@github.com:christophehurpeau/liwi.git",
   "scripts": {
     "test": "echo"
   }

@@ -1,6 +1,6 @@
 # @todo-example/vite
 
-TodoMVC example for [liwi](https://github.com/liwijs/liwi), built with [Vite](https://vite.dev/) and React 19 with server-side rendering.
+TodoMVC example for [liwi](https://github.com/christophehurpeau/liwi), built with [Vite](https://vite.dev/) and React 19 with server-side rendering.
 
 The UI talks to the `@todo-example/server` websocket backend (default `ws://localhost:4005/ws`) through the liwi resources clients. During SSR a void transport client is used; on the client a websocket transport client takes over after hydration.
 

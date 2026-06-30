@@ -3,13 +3,13 @@
   "version": "13.0.0",
   "private": true,
   "description": "db abstraction",
-  "homepage": "https://github.com/liwijs/liwi",
+  "homepage": "https://github.com/christophehurpeau/liwi",
   "bugs": {
-    "url": "https://github.com/liwijs/liwi/issues"
+    "url": "https://github.com/christophehurpeau/liwi/issues"
   },
   "license": "ISC",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
-  "repository": "https://github.com/liwijs/liwi.git",
+  "repository": "https://github.com/christophehurpeau/liwi.git",
   "workspaces": [
     "packages/*",
     "@todo-example/*"
