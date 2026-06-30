@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.0](https://github.com/liwijs/liwi/compare/v12.0.0...v13.0.0) (2026-06-30)
+
+### Features
+
+* **deps:** update nightingale to v18 ([#679](https://github.com/liwijs/liwi/issues/679))
+
+### Bug Fixes
+
+* **deps:** update dependency react-native-web to v0.21.2 ([#643](https://github.com/liwijs/liwi/issues/643))
+* remove eslint disable for unresolved import in server rendering
+* resolve runtime import for entry server to handle missing built artifacts
+
+Version bump for dependency: @todo-example/modules
+Version bump for dependency: liwi-resources-client
+Version bump for dependency: liwi-resources-void-client
+Version bump for dependency: liwi-resources-websocket-client
+Version bump for dependency: react-liwi
+
+
 ## 12.0.0 (2024-03-30)
 
 

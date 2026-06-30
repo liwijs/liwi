@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.0](https://github.com/liwijs/liwi/compare/v12.0.0...v13.0.0) (2026-06-30)
+
+### ⚠ BREAKING CHANGES
+
+* use esbuild instead of pob-babel
+* drop node 20
+* update dependencies, change config from map to object
+* require node 22
+* drop node 18
+
+### Features
+
+* drop node 20
+* update
+* update dependencies, change config from map to object
+* use esbuild instead of pob-babel
+
+### Miscellaneous Chores
+
+* require node 22
+
 ## 12.0.0 (2024-03-30)
 
 

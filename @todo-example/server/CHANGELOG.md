@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.0](https://github.com/liwijs/liwi/compare/v12.0.0...v13.0.0) (2026-06-30)
+
+### ⚠ BREAKING CHANGES
+
+* use esbuild instead of pob-babel
+* drop node 20
+* update dependencies, change config from map to object
+* drop node 18
+
+### Features
+
+* **deps:** update nightingale to v16 (major) ([#606](https://github.com/liwijs/liwi/issues/606))
+* **deps:** update nightingale to v18 ([#679](https://github.com/liwijs/liwi/issues/679))
+* drop node 20
+* update
+* update dependencies, change config from map to object
+* use esbuild instead of pob-babel
+
+### Bug Fixes
+
+* mongoConfig readonly object
+* update alp
+* update playwright and add missing router-segments
+
+Version bump for dependency: @todo-example/modules
+Version bump for dependency: liwi-mongo
+Version bump for dependency: liwi-resources-server
+Version bump for dependency: liwi-resources-websocket-server
+
+
 ## 12.0.0 (2024-03-30)
 
 

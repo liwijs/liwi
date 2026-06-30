@@ -3,6 +3,43 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.0](https://github.com/liwijs/liwi/compare/v12.0.0...v13.0.0) (2026-06-30)
+
+### ⚠ BREAKING CHANGES
+
+* update mongodb to v7
+* use esbuild instead of pob-babel
+* drop node 20
+* update dependencies, change config from map to object
+* require node 22
+* drop node 18
+
+### Features
+
+* **deps:** update dependency mongodb to ^6.20.0 ([#673](https://github.com/liwijs/liwi/issues/673))
+* **deps:** update nightingale to v16 (major) ([#606](https://github.com/liwijs/liwi/issues/606))
+* **deps:** update nightingale to v18 ([#679](https://github.com/liwijs/liwi/issues/679))
+* drop node 20
+* update
+* update dependencies
+* update dependencies, change config from map to object
+* update mongodb
+* update mongodb to v7
+* use esbuild instead of pob-babel
+
+### Bug Fixes
+
+* **deps:** update dependency mongodb to ^6.21.0 ([#680](https://github.com/liwijs/liwi/issues/680))
+* **liwi-mongo:** use encodeURIComponent on user password database when building connection string
+
+### Miscellaneous Chores
+
+* require node 22
+
+Version bump for dependency: liwi-store
+Version bump for dependency: liwi-subscribe-store
+
+
 ## 12.0.0 (2024-03-30)
 
 

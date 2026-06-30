@@ -3,6 +3,65 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.0](https://github.com/liwijs/liwi/compare/v12.0.0...v13.0.0) (2026-06-30)
+
+### ⚠ BREAKING CHANGES
+
+* update mongodb to v7
+* use esbuild instead of pob-babel
+* drop node 20
+* update dependencies, change config from map to object
+* require node 22
+* drop node 18
+
+### Features
+
+* **deps:** update dependency mongodb to ^6.20.0 ([#673](https://github.com/liwijs/liwi/issues/673))
+* **deps:** update dependency next to v14.2.10 [security] ([#532](https://github.com/liwijs/liwi/issues/532))
+* **deps:** update dependency next to v15.3.0 ([#619](https://github.com/liwijs/liwi/issues/619))
+* **deps:** update dependency next to v15.5.14 [security] ([#682](https://github.com/liwijs/liwi/issues/682))
+* **deps:** update dependency ws to v8.17.1 [security] ([#535](https://github.com/liwijs/liwi/issues/535))
+* **deps:** update dependency ws to v8.20.1 [security] ([#700](https://github.com/liwijs/liwi/issues/700))
+* **deps:** update nightingale to v16 (major) ([#606](https://github.com/liwijs/liwi/issues/606))
+* **deps:** update nightingale to v18 ([#679](https://github.com/liwijs/liwi/issues/679))
+* drop node 20
+* improve typings
+* update
+* update dependencies
+* update dependencies, change config from map to object
+* update mongodb
+* update mongodb to v7
+* update next
+* update ws
+* use esbuild instead of pob-babel
+
+### Bug Fixes
+
+* **deps:** update dependency classnames to v2.5.1 ([#420](https://github.com/liwijs/liwi/issues/420))
+* **deps:** update dependency mongodb to ^6.21.0 ([#680](https://github.com/liwijs/liwi/issues/680))
+* **deps:** update dependency next to v14.2.15 [security] ([#560](https://github.com/liwijs/liwi/issues/560))
+* **deps:** update dependency next to v14.2.21 [security] ([#572](https://github.com/liwijs/liwi/issues/572))
+* **deps:** update dependency next to v14.2.24 ([#584](https://github.com/liwijs/liwi/issues/584))
+* **deps:** update dependency next to v15.2.3 [security] ([#599](https://github.com/liwijs/liwi/issues/599))
+* **deps:** update dependency next to v15.2.4 [security] ([#613](https://github.com/liwijs/liwi/issues/613))
+* **deps:** update dependency next to v15.3.3 [security] ([#632](https://github.com/liwijs/liwi/issues/632))
+* **deps:** update dependency next to v15.5.18 [security] ([#699](https://github.com/liwijs/liwi/issues/699))
+* **deps:** update dependency react-native-web to v0.19.13 ([#523](https://github.com/liwijs/liwi/issues/523))
+* **deps:** update dependency react-native-web to v0.21.2 ([#643](https://github.com/liwijs/liwi/issues/643))
+* **deps:** update dependency ws to ^8.21.0 ([#698](https://github.com/liwijs/liwi/issues/698))
+* **deps:** update ip and socks dependencies in yarn.lock
+* **liwi-mongo:** use encodeURIComponent on user password database when building connection string
+* mongoConfig readonly object
+* remove eslint disable for unresolved import in server rendering
+* remove unwanted import pob-babel
+* resolve runtime import for entry server to handle missing built artifacts
+* update alp
+* update playwright and add missing router-segments
+
+### Miscellaneous Chores
+
+* require node 22
+
 ## 12.0.0 (2024-03-30)
 
 
