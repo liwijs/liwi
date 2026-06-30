@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.1](https://github.com/christophehurpeau/liwi/compare/v13.0.0...v13.0.1) (2026-06-30)
+
+Version bump for dependency: liwi-mongo
+
+
 ## [13.0.0](https://github.com/liwijs/liwi/compare/v12.0.0...v13.0.0) (2026-06-30)
 
 ### ⚠ BREAKING CHANGES
