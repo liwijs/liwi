@@ -64,8 +64,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/liwi-resources-websocket-server
       nightingale-app-console:
-        specifier: 16.2.0
-        version: 16.2.0
+        specifier: 18.2.0
+        version: 18.2.0
       router-segments:
         specifier: 12.0.0
         version: 12.0.0
@@ -101,8 +101,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/liwi-resources-websocket-client
       nightingale-app-console:
-        specifier: 16.2.0
-        version: 16.2.0
+        specifier: 18.2.0
+        version: 18.2.0
       react:
         specifier: 19.1.1
         version: 19.1.1
@@ -191,8 +191,8 @@ importers:
         specifier: ^7.4.0
         version: 7.4.0
       nightingale-logger:
-        specifier: ^16.0.0
-        version: 16.0.0
+        specifier: ^18.2.0
+        version: 18.2.0
     devDependencies:
       '@pob/rollup-esbuild':
         specifier: 9.1.1
@@ -242,8 +242,8 @@ importers:
         specifier: workspace:*
         version: link:../liwi-store
       nightingale-logger:
-        specifier: ^16.0.0
-        version: 16.0.0
+        specifier: ^18.2.0
+        version: 18.2.0
     devDependencies:
       '@pob/rollup-esbuild':
         specifier: 9.1.1
@@ -264,8 +264,8 @@ importers:
         specifier: workspace:*
         version: link:../liwi-resources-server
       nightingale-logger:
-        specifier: ^16.0.0
-        version: 16.0.0
+        specifier: ^18.2.0
+        version: 18.2.0
     devDependencies:
       '@pob/rollup-esbuild':
         specifier: 9.1.1
@@ -289,8 +289,8 @@ importers:
         specifier: workspace:*
         version: link:../liwi-store
       nightingale-logger:
-        specifier: ^16.0.0
-        version: 16.0.0
+        specifier: ^18.2.0
+        version: 18.2.0
     devDependencies:
       '@pob/rollup-esbuild':
         specifier: 9.1.1
@@ -327,8 +327,8 @@ importers:
         specifier: workspace:*
         version: link:../liwi-resources-client
       nightingale-logger:
-        specifier: ^16.0.0
-        version: 16.0.0
+        specifier: ^18.2.0
+        version: 18.2.0
     devDependencies:
       '@pob/rollup-esbuild':
         specifier: 9.1.1
@@ -352,8 +352,8 @@ importers:
         specifier: workspace:*
         version: link:../liwi-store
       nightingale-logger:
-        specifier: ^16.0.0
-        version: 16.0.0
+        specifier: ^18.2.0
+        version: 18.2.0
       ws:
         specifier: ^8.21.0
         version: 8.21.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
@@ -409,8 +409,8 @@ importers:
         specifier: ~6.2.7
         version: 6.2.7
       nightingale-logger:
-        specifier: ^16.0.0
-        version: 16.0.0
+        specifier: ^18.2.0
+        version: 18.2.0
     devDependencies:
       '@pob/rollup-esbuild':
         specifier: 9.1.1
@@ -2987,9 +2987,9 @@ packages:
     resolution: {integrity: sha512-KB9QgoAqs16mBpYcXdSrHF1aISwkCvQbpxEpVM6BSXMIzhfG5n7bJKD0t548jtr84aQSZO8lOvxslpgWW+/vug==}
     engines: {node: '>=18.12.0'}
 
-  nightingale-app-console@16.2.0:
-    resolution: {integrity: sha512-K/8HnQP/qOCHvYxpaJB+0Gzeib1DD0h/+8CZm0swyEcyFKchvWKhrScYs5di0xWsUF+v7W3uBbS+A1mP1XOCfg==}
-    engines: {node: '>=20.9.0'}
+  nightingale-app-console@18.2.0:
+    resolution: {integrity: sha512-QrAKF8i73hi9amEKa1EtNSvxmKbyJNuSF3PQm0LQpTc8C8IxPTXNKUSJFrRlcxIm2V1Ece62RXRiMjR6I+6/1g==}
+    engines: {node: '>=22.18.0'}
 
   nightingale-console-output@15.0.0:
     resolution: {integrity: sha512-grTWPd3GbVAPHtk2oqTV5Lo9t4mzw2RQBVOm1GOkFP+H1vSCJaiJs0rnWxPURbl4nB6dJORH3SQ4WmTRmEE1vg==}
@@ -3023,6 +3023,10 @@ packages:
     resolution: {integrity: sha512-0n5DFGXACLAbFlJGagWHAyS75Z4oedC3R3cA4VkI1fjhaooixXTcm70/Sz/8t0U/HJmDvffcLFvhPym+sKKQZg==}
     engines: {node: '>=22.18.0'}
 
+  nightingale-levels@18.2.0:
+    resolution: {integrity: sha512-kl3OKYQCWjcTvlTDgwBq2QcRajmEyD5VV9jf2sHF27SOgY/Fhf2YxSzeqFO6u+GSyU1uNMD9xg2N04949022aA==}
+    engines: {node: '>=22.18.0'}
+
   nightingale-logger@15.0.0:
     resolution: {integrity: sha512-0WxPE/JWK2T9Tbpwg7hL4aaRiDp/iOgCrZO2s1mTsG1U0avwWy7gm2NCzPx/+L/nlED4ebBOqlW3xqG03R8BeA==}
     engines: {node: '>=18.12.0'}
@@ -3033,6 +3037,10 @@ packages:
 
   nightingale-logger@18.1.0:
     resolution: {integrity: sha512-DJ2L+7c4H5BQ2Y9xPTbevtQYOGD+cYBc3rQGL2Ca3Tc5bYDe8AeLrl39TUC4LsORwfoGXJXGgATvS6G4tPNVLQ==}
+    engines: {node: '>=22.18.0'}
+
+  nightingale-logger@18.2.0:
+    resolution: {integrity: sha512-ni7Qztw3bb2GTuNyyo0YxHEDaUNL14lP/fhJOjNFUqK8nc9ZGpBWmdp3+3MKrZbonEEvK7vkHo8ktTb+grqsOQ==}
     engines: {node: '>=22.18.0'}
 
   nightingale-types@15.0.0:
@@ -3047,16 +3055,20 @@ packages:
     resolution: {integrity: sha512-M++L17z15mZDUs2IEF0YiC1tOdVlXyJwUbgTwgP8GX+n1Z9oDn6G4FKsEfBeXwsXZP4fRuGy61ikMyVHKIoAag==}
     engines: {node: '>=22.18.0'}
 
+  nightingale-types@18.2.0:
+    resolution: {integrity: sha512-4eGgasLzIzyeAXz2ASosL3RHZ8awLMLrYV/xCeYbFN+dJFJ9Wx0y/vztFrOno2QmWXiDrYpyaH6Vi3Jdc389QQ==}
+    engines: {node: '>=22.18.0'}
+
   nightingale@15.0.0:
     resolution: {integrity: sha512-co66sUA3OMfTCmTn4MbE+BozDQ3Ij13FDD2P+FJl9arxsiBw8QaCKZYspw1Id11ndTXfqqA6vJgulShQE7umzA==}
     engines: {node: '>=18.12.0'}
 
-  nightingale@16.2.0:
-    resolution: {integrity: sha512-C3ptyQHNhxm0qxDxDBpFwNzA1WhN0gPjsuJ17C+gbnGD28BYACO4mhg9dUtu/l3fU9WodPTBK2Q3FgD/uvWD6Q==}
-    engines: {node: '>=20.9.0'}
-
   nightingale@18.1.0:
     resolution: {integrity: sha512-gcXDXprH38JeUmISYk9PxvDe+LROIu+LyKrjCmLHL3UYKY8MOqFVt9NrbVSSblhax/tAkrtG0rOx5tpRRxVVUw==}
+    engines: {node: '>=22.18.0'}
+
+  nightingale@18.2.0:
+    resolution: {integrity: sha512-MGsxgfDURV6LOLc5joCtlD4HjraGQSZcdXz72O8NI+hEy838UhV+BT2bMy7asAB7cbwMfACZL7WyrqoLbHDwbg==}
     engines: {node: '>=22.18.0'}
 
   node-exports-info@1.6.2:
@@ -6444,10 +6456,10 @@ snapshots:
       nightingale-formatter: 15.0.0
       nightingale-types: 15.0.0
 
-  nightingale-app-console@16.2.0:
+  nightingale-app-console@18.2.0:
     dependencies:
       '@types/node': 24.10.1
-      nightingale: 16.2.0
+      nightingale: 18.2.0
 
   nightingale-console-output@15.0.0:
     dependencies:
@@ -6485,6 +6497,8 @@ snapshots:
 
   nightingale-levels@18.0.0: {}
 
+  nightingale-levels@18.2.0: {}
+
   nightingale-logger@15.0.0:
     dependencies:
       '@types/node': 24.10.1
@@ -6503,6 +6517,12 @@ snapshots:
       nightingale-levels: 18.0.0
       nightingale-types: 18.0.0
 
+  nightingale-logger@18.2.0:
+    dependencies:
+      '@types/node': 24.10.1
+      nightingale-levels: 18.2.0
+      nightingale-types: 18.2.0
+
   nightingale-types@15.0.0:
     dependencies:
       nightingale-levels: 15.0.0
@@ -6515,20 +6535,16 @@ snapshots:
     dependencies:
       nightingale-levels: 18.0.0
 
+  nightingale-types@18.2.0:
+    dependencies:
+      nightingale-levels: 18.2.0
+
   nightingale@15.0.0:
     dependencies:
       '@types/node': 24.10.1
       nightingale-levels: 15.0.0
       nightingale-logger: 15.0.0
       nightingale-types: 15.0.0
-
-  nightingale@16.2.0:
-    dependencies:
-      '@types/node': 24.10.1
-      ansi-styles: 6.2.3
-      nightingale-levels: 16.0.0
-      nightingale-logger: 16.0.0
-      nightingale-types: 16.0.0
 
   nightingale@18.1.0:
     dependencies:
@@ -6537,6 +6553,14 @@ snapshots:
       nightingale-levels: 18.0.0
       nightingale-logger: 18.1.0
       nightingale-types: 18.0.0
+
+  nightingale@18.2.0:
+    dependencies:
+      '@types/node': 24.10.1
+      ansi-styles: 6.2.3
+      nightingale-levels: 18.2.0
+      nightingale-logger: 18.2.0
+      nightingale-types: 18.2.0
 
   node-exports-info@1.6.2:
     dependencies:

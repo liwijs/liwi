@@ -50,7 +50,7 @@
     "extended-json": "workspace:*",
     "liwi-resources-server": "workspace:*",
     "liwi-store": "workspace:*",
-    "nightingale-logger": "^16.0.0",
+    "nightingale-logger": "^18.2.0",
     "ws": "^8.21.0"
   },
   "devDependencies": {
