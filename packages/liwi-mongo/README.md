@@ -81,7 +81,9 @@ interface MongoBaseModel<KeyValue extends AllowedKeyValue = string> {
 }
 ```
 
-The key path is always `_id`. `MongoInsertType<Model>` makes `_id`, `created` and `updated` optional. The store fills `created` / `updated` on insert, and `updated` on `replaceOne` / `upsertOne` only when the object has none; partial updates never touch it. `insertOne` mutates and returns the object you passed; `replaceOne` sets `updated` on the object you passed and returns a copy.
+The key path is always `_id`. `MongoInsertType<Model>` makes `_id`, `created` and `updated` optional. Every write sets `updated` to the write time from the app clock, and an update or a replace never changes `created`: see [`created` and `updated`](../liwi-store#created-and-updated) for the rule of each method. `insertOne` and `upsertOne` mutate and return the object you passed; `replaceOne` leaves it untouched and returns the stored document.
+
+Requires MongoDB ≥ 4.2: replaces are update pipelines.
 
 ## `MongoConnection`
 
@@ -115,19 +117,22 @@ The store also exposes the underlying driver handles when you need them: `store.
 
 The plain methods do one round trip and do not read the previous document:
 
-| Method               | Driver call                                       | Missing key            |
-| -------------------- | ------------------------------------------------- | ---------------------- |
-| `partialUpdateByKey` | `findOneAndUpdate` with `returnDocument: "after"` | throws `NotFoundError` |
-| `replaceOne`         | `replaceOne`, checking `matchedCount`             | throws `NotFoundError` |
-| `deleteByKey`        | `deleteOne`                                       | no-op                  |
+| Method               | Driver call                                                           | Missing key            |
+| -------------------- | --------------------------------------------------------------------- | ---------------------- |
+| `partialUpdateByKey` | `findOneAndUpdate` with `returnDocument: "after"`                     | throws `NotFoundError` |
+| `partialUpdateMany`  | one `updateMany`; every document gets the same `updated`              | —                      |
+| `replaceOne`         | `findOneAndUpdate` with a replace pipeline, `returnDocument: "after"` | throws `NotFoundError` |
+| `deleteByKey`        | `deleteOne`                                                           | no-op                  |
+
+The replace pipeline is `$replaceWith` of the object (wrapped in `$literal`, so string values starting with `$` stay data) merged with the stored `created`. A plain `replaceOne` command could not keep `created`.
 
 The [`…WithInfo` variants](../liwi-store#writes-with-info) also return the previous document, read atomically with the write. The subscribe store uses them:
 
-| Method                       | Driver calls                                                                                 |
-| ---------------------------- | -------------------------------------------------------------------------------------------- |
-| `partialUpdateByKeyWithInfo` | `findOneAndUpdate` with `returnDocument: "before"`, then `findOne` for `next`                |
-| `replaceOneWithInfo`         | `findOneAndReplace` with `returnDocument: "before"`; `next` is the replacement, no read back |
-| `deleteByKeyWithInfo`        | `findOneAndDelete`                                                                           |
+| Method                       | Driver calls                                                                                                            |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `partialUpdateByKeyWithInfo` | `findOneAndUpdate` with `returnDocument: "before"`, then `findOne` for `next`                                           |
+| `replaceOneWithInfo`         | the replace pipeline with `returnDocument: "before"`; `next` is the replacement with the stored `created`, no read back |
+| `deleteByKeyWithInfo`        | `findOneAndDelete`                                                                                                      |
 
 Mongo cannot return both the before and after documents of one update, so `partialUpdateByKeyWithInfo` reads `next` back. That read may already include a later concurrent write (which emits its own change), and it finds nothing if a concurrent delete landed first: `next` is then `undefined` although the update was applied.
 
