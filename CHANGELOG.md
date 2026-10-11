@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.0.1](https://github.com/christophehurpeau/liwi/compare/v14.0.0...v14.0.1) (2026-10-11)
+
+### Bug Fixes
+
+* **deps:** bump brace-expansion to 1.1.21 and 5.0.12 ([#761](https://github.com/christophehurpeau/liwi/issues/761))
+* **react-liwi:** lower react peer dependency to ^19.0.0
+
 ## [14.0.0](https://github.com/christophehurpeau/liwi/compare/v13.4.0...v14.0.0) (2026-10-11)
 
 ### ⚠ BREAKING CHANGES
