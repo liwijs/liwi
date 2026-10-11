@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-websocket-server",
-  "version": "13.4.0",
+  "version": "14.0.0",
   "description": "liwi resources server implementation for websocket",
   "keywords": [
     "liwi",

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.0.0](https://github.com/christophehurpeau/liwi/compare/v13.4.0...v14.0.0) (2026-10-11)
+
+Version bump for dependency: @todo-example/modules
+Version bump for dependency: liwi-resources-client
+Version bump for dependency: liwi-resources-void-client
+Version bump for dependency: liwi-resources-websocket-client
+Version bump for dependency: react-liwi
+
+
 ## [13.4.0](https://github.com/christophehurpeau/liwi/compare/v13.3.3...v13.4.0) (2026-10-06)
 
 ### Features

@@ -126,7 +126,9 @@ describe("SubscribeStore over a store with …WithInfo methods", () => {
     });
 
     assert.equal(result, next);
-    assert.deepEqual(calls, [["1", { $set: { label: "next" } }, undefined]]);
+    assert.deepEqual(calls, [
+      ["1", { $set: { label: "next" } }, undefined, undefined],
+    ]);
     assert.deepEqual(actions, [{ type: "updated", changes: [[stored, next]] }]);
   });
 
@@ -280,6 +282,28 @@ describe("SubscribeStore over a store with …WithInfo methods", () => {
     assert.deepEqual(actions, []);
   });
 
+  it("passes the partial update options to every document of partialUpdateMany", async () => {
+    const options: unknown[] = [];
+    const { subscribeStore } = createSubscribeStore({
+      ...createCursorStore([staleCopy, { ...staleCopy, _id: "2" }]),
+      partialUpdateByKeyWithInfo: (key, update, criteria, option) => {
+        options.push(option);
+        return Promise.resolve({ prev: stored, next });
+      },
+    });
+
+    await subscribeStore.partialUpdateMany(
+      { label: "stale" },
+      { $set: { label: "next" } },
+      { touchUpdated: false },
+    );
+
+    assert.deepEqual(options, [
+      { touchUpdated: false },
+      { touchUpdated: false },
+    ]);
+  });
+
   it("emits only the documents partialUpdateMany actually modified", async () => {
     const { subscribeStore, actions } = createSubscribeStore({
       ...createCursorStore([staleCopy, { ...staleCopy, _id: "2" }]),
@@ -387,5 +411,200 @@ describe("SubscribeStore over a store without …WithInfo methods", () => {
 
     assert.deepEqual(deletedKeys, ["1"]);
     assert.deepEqual(actions, [{ type: "deleted", prev: [stored] }]);
+  });
+
+  it("reads all documents then deletes once on deleteMany", async () => {
+    const deletedCriteria: unknown[] = [];
+    const { subscribeStore, actions } = createSubscribeStore({
+      cursor: (() =>
+        Promise.resolve({
+          toArray: () => Promise.resolve([stored]),
+        })) as unknown as TestStore["cursor"],
+      deleteMany: (criteria) => {
+        deletedCriteria.push(criteria);
+        return Promise.resolve();
+      },
+    });
+
+    await subscribeStore.deleteMany({ label: "stored" });
+
+    assert.deepEqual(deletedCriteria, [{ label: "stored" }]);
+    assert.deepEqual(actions, [{ type: "deleted", prev: [stored] }]);
+  });
+});
+
+describe("SubscribeStore deleteMany over a store with deleteByKeyWithInfo", () => {
+  it("emits exactly the documents deleted, re-checking the criteria", async () => {
+    const calls: unknown[][] = [];
+    const { subscribeStore, actions } = createSubscribeStore({
+      ...createCursorStore([staleCopy, { ...staleCopy, _id: "2" }]),
+      deleteByKeyWithInfo: (...args) => {
+        calls.push(args);
+        return Promise.resolve(args[0] === "1" ? { prev: stored } : undefined);
+      },
+    });
+
+    await subscribeStore.deleteMany({ label: "stale" });
+
+    assert.deepEqual(calls, [
+      ["1", { label: "stale" }],
+      ["2", { label: "stale" }],
+    ]);
+    assert.deepEqual(actions, [{ type: "deleted", prev: [stored] }]);
+  });
+
+  it("emits the deletes done before a failure", async () => {
+    const failure = new Error("delete failed");
+    const { subscribeStore, actions } = createSubscribeStore({
+      ...createCursorStore([staleCopy, { ...staleCopy, _id: "2" }]),
+      deleteByKeyWithInfo: (key) =>
+        key === "1"
+          ? Promise.resolve({ prev: stored })
+          : Promise.reject(failure),
+    });
+
+    await assert.rejects(
+      subscribeStore.deleteMany({ label: "stale" }),
+      failure,
+    );
+    assert.deepEqual(actions, [{ type: "deleted", prev: [stored] }]);
+  });
+
+  it("emits nothing when no document is deleted", async () => {
+    const { subscribeStore, actions } = createSubscribeStore({
+      ...createCursorStore([staleCopy]),
+      deleteByKeyWithInfo: () => Promise.resolve(undefined),
+    });
+
+    await subscribeStore.deleteMany({ label: "stale" });
+
+    assert.deepEqual(actions, []);
+  });
+});
+
+describe("SubscribeStore bulk writes with listeners", () => {
+  it("reads every key before the first write of partialUpdateMany", async () => {
+    const events: string[] = [];
+    const { subscribeStore } = createSubscribeStore({
+      cursor: (() =>
+        Promise.resolve({
+          forEach: async (
+            callback: (model: TestModel) => Promise<void> | void,
+          ) => {
+            for (const _id of ["1", "2"]) {
+              events.push(`read ${_id}`);
+              await callback({ ...staleCopy, _id });
+            }
+          },
+        })) as unknown as TestStore["cursor"],
+      partialUpdateByKeyWithInfo: (key) => {
+        events.push(`write ${key}`);
+        return Promise.resolve({ prev: stored, next });
+      },
+    });
+
+    await subscribeStore.partialUpdateMany(
+      { label: "stale" },
+      { $set: { label: "next" } },
+    );
+
+    assert.deepEqual(events, ["read 1", "read 2", "write 1", "write 2"]);
+  });
+});
+
+describe("SubscribeStore without listeners", () => {
+  const createUnsubscribedStore = (
+    store: Partial<TestStore>,
+  ): TestSubscribeStore =>
+    new SubscribeStore({ keyPath: "_id", ...store } as TestStore);
+
+  const unexpected = (): Promise<never> =>
+    Promise.reject(new Error("per-document path used without listeners"));
+
+  it("delegates partial updates to the wrapped store", async () => {
+    const calls: unknown[][] = [];
+    const subscribeStore = createUnsubscribedStore({
+      partialUpdateByKey: (...args) => {
+        calls.push(["partialUpdateByKey", ...args]);
+        return Promise.resolve(next);
+      },
+      partialUpdateMany: (...args) => {
+        calls.push(["partialUpdateMany", ...args]);
+        return Promise.resolve();
+      },
+      partialUpdateByKeyWithInfo: unexpected,
+      cursor: unexpected,
+    });
+
+    const result = await subscribeStore.partialUpdateOne(
+      staleCopy,
+      { $set: { label: "next" } },
+      { touchUpdated: false },
+    );
+    await subscribeStore.partialUpdateMany(
+      { label: "stale" },
+      { $set: { label: "next" } },
+      { touchUpdated: false },
+    );
+
+    assert.equal(result, next);
+    assert.deepEqual(calls, [
+      [
+        "partialUpdateByKey",
+        "1",
+        { $set: { label: "next" } },
+        undefined,
+        { touchUpdated: false },
+      ],
+      [
+        "partialUpdateMany",
+        { label: "stale" },
+        { $set: { label: "next" } },
+        { touchUpdated: false },
+      ],
+    ]);
+  });
+
+  it("delegates replaces to the wrapped store", async () => {
+    const replaced: unknown[] = [];
+    const subscribeStore = createUnsubscribedStore({
+      replaceOne: (object) => {
+        replaced.push(object);
+        return Promise.resolve(next);
+      },
+      replaceSeveral: (objects) => {
+        replaced.push(objects);
+        return Promise.resolve([next]);
+      },
+      replaceOneWithInfo: unexpected,
+    });
+
+    assert.equal(await subscribeStore.replaceOne(staleCopy), next);
+    assert.deepEqual(await subscribeStore.replaceSeveral([staleCopy]), [next]);
+    assert.deepEqual(replaced, [staleCopy, [staleCopy]]);
+  });
+
+  it("delegates deletes to the wrapped store", async () => {
+    const calls: unknown[][] = [];
+    const subscribeStore = createUnsubscribedStore({
+      deleteByKey: (...args) => {
+        calls.push(["deleteByKey", ...args]);
+        return Promise.resolve();
+      },
+      deleteMany: (...args) => {
+        calls.push(["deleteMany", ...args]);
+        return Promise.resolve();
+      },
+      deleteByKeyWithInfo: unexpected,
+      cursor: unexpected,
+    });
+
+    await subscribeStore.deleteOne(staleCopy);
+    await subscribeStore.deleteMany({ label: "stale" });
+
+    assert.deepEqual(calls, [
+      ["deleteByKey", "1", undefined],
+      ["deleteMany", { label: "stale" }],
+    ]);
   });
 });

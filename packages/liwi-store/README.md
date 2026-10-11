@@ -52,12 +52,37 @@ interface BaseModel {
 | `insertOne(object)`                                                          | Inserts, returns the model with `created` / `updated` set                                     |
 | `replaceOne(object)` / `replaceSeveral(objects)`                             | Full replace; throws [`NotFoundError`](#errors) when a key does not exist                     |
 | `upsertOne(object, setOnInsert?)`                                            | Inserts or updates; `upsertOneWithInfo` returns an `UpsertResult` (below)                     |
-| `partialUpdateByKey(key, update, criteria?)`                                 | Partial update by key, returns the updated model; throws `NotFoundError` when nothing matches |
-| `partialUpdateOne(object, update)`                                           | Partial update of an already-loaded model, by its key; throws `NotFoundError` when it is gone |
-| `partialUpdateMany(criteria, update)`                                        | Bulk partial update                                                                           |
+| `partialUpdateByKey(key, update, criteria?, options?)`                       | Partial update by key, returns the updated model; throws `NotFoundError` when nothing matches |
+| `partialUpdateOne(object, update, options?)`                                 | Partial update of an already-loaded model, by its key; throws `NotFoundError` when it is gone |
+| `partialUpdateMany(criteria, update, options?)`                              | Bulk partial update                                                                           |
 | `deleteByKey(key, criteria?)` / `deleteOne(object)` / `deleteMany(criteria)` | Deletions; deleting a missing key is a no-op                                                  |
 
 `criteria`, `sort` and `update` (`$set`, `$push`, `$setOnInsert`, …) follow the mongo query/update shape, typed against the model.
+
+### `created` and `updated`
+
+`updated` means "last written". Every write sets it to the write time, read from the app clock (`new Date()` in the process doing the write):
+
+| Write                           | `updated`                                                         | `created`                                         |
+| ------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------- |
+| `insertOne`                     | set unless the object has one                                     | set unless the object has one                     |
+| `upsertOne(WithInfo)`           | set unless the object has one                                     | set on insert only                                |
+| `replaceOne` / `replaceSeveral` | always set                                                        | the stored value is kept, the object's is ignored |
+| `partialUpdate*`                | set, unless the update sets it or `touchUpdated: false` is passed | can not be updated                                |
+
+A partial update may set `updated` itself with `$set`, `$currentDate` or `$max`. Any other operator on `updated`, and any operator on `created`, throws [`ProtectedFieldUpdateError`](#errors) before anything is written.
+
+For an upsert, `updated` from the object wins: do not spread a loaded document into an upsert, or its stale `updated` is kept.
+
+Two processes stamp from their own clocks, so `updated` may be a few milliseconds off between them, and two writes in the same millisecond get the same value. It is fit for retention rules, not for ordering concurrent events.
+
+```ts
+interface PartialUpdateOptions {
+  // false: leave `updated` as stored, for backfills, migrations and technical
+  // flags that must not count as a change. Defaults to true. Costs nothing.
+  touchUpdated?: boolean;
+}
+```
 
 `UpsertResult` tells how the upsert resolved. `prev` is the document as it was before the update, read atomically with the write. `inserted` is a shorthand for `resolvedAs === "inserted"`.
 
@@ -101,7 +126,9 @@ An implementation must read `prev` atomically with the write (in mongo, `findOne
 
 ### Errors
 
-Both are exported as classes, so they can be checked with `instanceof`.
+They are exported as classes, so they can be checked with `instanceof`.
+
+- **`ProtectedFieldUpdateError`**: a partial update touched `created`, or touched `updated` with an operator other than `$set`, `$currentDate` or `$max` (see [`created` and `updated`](#created-and-updated)); an upsert passed `updated` in `setOnInsert`. Thrown before anything is written.
 
 - **`NotFoundError`**: the document targeted by the write does not exist, or no longer matches `criteria`. Thrown by `replaceOne`, `replaceSeveral`, `partialUpdateByKey` and `partialUpdateOne`. Deletions do not throw it. It states that the document is gone.
 - **`DeletedAfterUpdateError`** extends `NotFoundError`: the partial update **was applied**, then a concurrent write deleted the document before it could be read back. The document is gone either way, so it is a `NotFoundError`; check for the subclass only when you need to know whether the update happened. Thrown by the subscribe store's `partialUpdateByKey` / `partialUpdateOne`.
