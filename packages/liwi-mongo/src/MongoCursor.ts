@@ -55,12 +55,10 @@ export default class MongoCursor<
     return Promise.resolve(this._result);
   }
 
-  close(): Promise<void> {
+  async close(): Promise<void> {
     if (this.cursor) {
-      this.cursor.close();
+      await this.cursor.close();
     }
-
-    return Promise.resolve();
   }
 
   toArray(): Promise<Result[]> {

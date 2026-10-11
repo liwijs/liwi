@@ -58,6 +58,22 @@ export interface DeleteResult<Model extends BaseModel> {
   prev: Model;
 }
 
+export interface PartialUpdateOptions {
+  /**
+   * Set `updated` to the write time (the app clock). Defaults to `true`.
+   *
+   * Pass `false` for writes that must not count as a change to the document:
+   * backfills, migrations, technical flags. `updated` then keeps its stored value,
+   * so rules based on it ("delete what has not changed in 12 months") are not reset.
+   * It costs nothing: the update is sent as is, in the same single operation.
+   *
+   * The caller can still set `updated` explicitly with `$set`, `$currentDate` or
+   * `$max`; any other operator on `updated`, or any operator on `created`, throws
+   * `ProtectedFieldUpdateError` whatever this option.
+   */
+  touchUpdated?: boolean;
+}
+
 export interface Store<
   KeyPath extends keyof Model,
   KeyValue extends AllowedKeyValue,
@@ -131,6 +147,7 @@ export interface Store<
     key: KeyValue,
     partialUpdate: Update<Model>,
     criteria?: Criteria<Model>,
+    options?: PartialUpdateOptions,
   ) => Promise<Model>;
 
   /** Resolves `undefined` when no stored document matches the key and criteria. */
@@ -138,16 +155,19 @@ export interface Store<
     key: KeyValue,
     partialUpdate: Update<Model>,
     criteria?: Criteria<Model>,
+    options?: PartialUpdateOptions,
   ) => Promise<PartialUpdateResult<Model> | undefined>;
 
   partialUpdateOne: (
     object: Model,
     partialUpdate: Update<Model>,
+    options?: PartialUpdateOptions,
   ) => Promise<Model>;
 
   partialUpdateMany: (
     criteria: Criteria<Model>,
     partialUpdate: Update<Model>,
+    options?: PartialUpdateOptions,
   ) => Promise<void>;
 
   deleteByKey: (key: KeyValue, criteria?: Criteria<Model>) => Promise<void>;

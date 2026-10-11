@@ -1,4 +1,4 @@
-import { NotFoundError } from "liwi-store";
+import { NotFoundError, ProtectedFieldUpdateError } from "liwi-store";
 import type {
   AllowedKeyValue,
   CreateQueryOptions,
@@ -6,6 +6,7 @@ import type {
   DeleteResult,
   Fields,
   OptionalBaseModelKeysForInsert,
+  PartialUpdateOptions,
   PartialUpdateResult,
   QueryParams,
   Sort,
@@ -42,6 +43,20 @@ import type {
   MongoIndexSyncResult,
   SyncIndexesOptions,
 } from "./indexes/types.ts";
+import { createReplacePipeline } from "./writes/createReplacePipeline.ts";
+import { stampPartialUpdate } from "./writes/stampPartialUpdate.ts";
+
+const resolveWriteTime = (options?: PartialUpdateOptions): Date | undefined =>
+  options?.touchUpdated === false ? undefined : new Date();
+
+// the driver stores `undefined` as `null` (`ignoreUndefined` is off)
+const toStoredValues = <T extends object>(values: T): T =>
+  Object.fromEntries(
+    Object.entries(values).map(([field, value]: [string, unknown]) => [
+      field,
+      value === undefined ? null : value,
+    ]),
+  ) as T;
 
 export type MongoUpsertResult<
   KeyValue extends AllowedKeyValue,
@@ -201,34 +216,42 @@ export default class MongoStore<
     return object as Model;
   }
 
+  /**
+   * Always sets `updated` to the write time and keeps the stored `created`: the
+   * object's own `created` and `updated` are ignored. The object is not mutated.
+   */
   async replaceOne(object: Model): Promise<Model> {
-    if (!object.updated) object.updated = new Date();
-
     const collection = await this.collection;
-    const { matchedCount } = await collection.replaceOne(
+    const next = await collection.findOneAndUpdate(
       { _id: object._id } as Filter<Model>,
-      object,
+      createReplacePipeline({ ...object, updated: new Date() }),
+      { returnDocument: "after" },
     );
-    if (matchedCount === 0) {
+    if (!next) {
       throw new NotFoundError(`Document not found: ${String(object._id)}`);
     }
-    return { ...object };
+    return next as Model;
   }
 
+  /** Same rules as `replaceOne`; `next` is derived from the atomic `prev`, no read back. */
   async replaceOneWithInfo(
     object: Model,
   ): Promise<WriteResult<Model> | undefined> {
-    if (!object.updated) object.updated = new Date();
+    const replacement: Model = { ...object, updated: new Date() };
 
     const collection = await this.collection;
-    const prev = await collection.findOneAndReplace(
+    const prev = await collection.findOneAndUpdate(
       { _id: object._id } as Filter<Model>,
-      object,
+      createReplacePipeline(replacement),
       { returnDocument: "before" },
     );
     if (!prev) return undefined;
 
-    return { prev: prev as Model, next: { ...object } };
+    const storedCreated = prev.created as Date | null | undefined;
+    return {
+      prev: prev as Model,
+      next: { ...replacement, created: storedCreated ?? replacement.created },
+    };
   }
 
   async upsertOne<
@@ -256,6 +279,12 @@ export default class MongoStore<
     object: UpsertPartialObject<MongoKeyPath, KeyValue, Model, K>,
     setOnInsertPartialObject?: Update<Model>["$setOnInsert"],
   ): Promise<MongoUpsertResult<KeyValue, Model>> {
+    if (setOnInsertPartialObject && "updated" in setOnInsertPartialObject) {
+      throw new ProtectedFieldUpdateError(
+        'Cannot use $setOnInsert on "updated": upsert always sets it with $set, pass it in the object instead',
+      );
+    }
+
     const $setOnInsert: Update<Model>["$setOnInsert"] = {
       // @ts-expect-error -- created is Date as set in BaseModel
       created: object.created || new Date(),
@@ -286,7 +315,7 @@ export default class MongoStore<
       };
     }
 
-    const next = { ...prev, ...$set };
+    const next = { ...prev, ...toStoredValues($set) };
 
     return {
       resolvedAs: "updated",
@@ -304,11 +333,13 @@ export default class MongoStore<
     key: KeyValue,
     partialUpdate: Update<Model>,
     criteria?: Criteria<Model>,
+    options?: PartialUpdateOptions,
   ): Promise<Model> {
+    const update = stampPartialUpdate(partialUpdate, resolveWriteTime(options));
     const collection = await this.collection;
     const next = await collection.findOneAndUpdate(
       { _id: key, ...criteria } as Filter<Model>,
-      partialUpdate as UpdateFilter<Model>,
+      update as UpdateFilter<Model>,
       { returnDocument: "after" },
     );
     if (!next) throw new NotFoundError(`Document not found: ${String(key)}`);
@@ -324,11 +355,13 @@ export default class MongoStore<
     key: KeyValue,
     partialUpdate: Update<Model>,
     criteria?: Criteria<Model>,
+    options?: PartialUpdateOptions,
   ): Promise<PartialUpdateResult<Model> | undefined> {
+    const update = stampPartialUpdate(partialUpdate, resolveWriteTime(options));
     const collection = await this.collection;
     const prev = await collection.findOneAndUpdate(
       { _id: key, ...criteria } as Filter<Model>,
-      partialUpdate as UpdateFilter<Model>,
+      update as UpdateFilter<Model>,
       { returnDocument: "before" },
     );
     if (!prev) return undefined;
@@ -339,20 +372,28 @@ export default class MongoStore<
   partialUpdateOne(
     object: Model,
     partialUpdate: Update<Model>,
+    options?: PartialUpdateOptions,
   ): Promise<Model> {
-    return this.partialUpdateByKey(object._id, partialUpdate);
+    return this.partialUpdateByKey(
+      object._id,
+      partialUpdate,
+      undefined,
+      options,
+    );
   }
 
-  partialUpdateMany(
+  /** One `updateMany` command; every document gets the same `updated`. */
+  async partialUpdateMany(
     criteria: Criteria<Model>,
     partialUpdate: Update<Model>,
+    options?: PartialUpdateOptions,
   ): Promise<void> {
-    return this.collection
-      .then((collection) =>
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        collection.updateMany(criteria as Filter<Model>, partialUpdate as any),
-      )
-      .then((res) => undefined); // TODO return updated object
+    const update = stampPartialUpdate(partialUpdate, resolveWriteTime(options));
+    const collection = await this.collection;
+    await collection.updateMany(
+      criteria as Filter<Model>,
+      update as UpdateFilter<Model>,
+    );
   }
 
   async deleteByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<void> {

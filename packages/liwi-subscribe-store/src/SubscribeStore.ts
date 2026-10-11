@@ -8,6 +8,7 @@ import type {
   Criteria,
   InsertType,
   OptionalBaseModelKeysForInsert,
+  PartialUpdateOptions,
   PartialUpdateResult,
   QueryParams,
   Sort,
@@ -70,6 +71,23 @@ export default class SubscribeStore<
     this.listeners.forEach((listener) => listener(action));
   }
 
+  /**
+   * Nobody needs `prev` without listeners: writes then go straight to the wrapped
+   * store, skipping the per-document reads and loops.
+   */
+  private hasListeners(): boolean {
+    return this.listeners.size > 0;
+  }
+
+  private async findKeys(criteria: Criteria<Model>): Promise<KeyValue[]> {
+    const cursor = await this.store.cursor(criteria);
+    const keys: KeyValue[] = [];
+    await cursor.forEach((model) => {
+      keys.push(model[this.keyPath]);
+    });
+    return keys;
+  }
+
   private async replaceOneAndGetChange(object: Model): Promise<[Model, Model]> {
     const key = object[this.keyPath];
     if (this.store.replaceOneWithInfo) {
@@ -88,12 +106,14 @@ export default class SubscribeStore<
     key: KeyValue,
     partialUpdate: Update<Model>,
     criteria?: Criteria<Model>,
+    options?: PartialUpdateOptions,
   ): Promise<PartialUpdateResult<Model> | undefined> {
     if (this.store.partialUpdateByKeyWithInfo) {
       return this.store.partialUpdateByKeyWithInfo(
         key,
         partialUpdate,
         criteria,
+        options,
       );
     }
     const prev = await this.store.findOne({
@@ -103,7 +123,12 @@ export default class SubscribeStore<
     if (!prev) return undefined;
     return {
       prev,
-      next: await this.store.partialUpdateByKey(key, partialUpdate, criteria),
+      next: await this.store.partialUpdateByKey(
+        key,
+        partialUpdate,
+        criteria,
+        options,
+      ),
     };
   }
 
@@ -196,12 +221,16 @@ export default class SubscribeStore<
   }
 
   async replaceOne(object: Model): Promise<Model> {
+    if (!this.hasListeners()) return this.store.replaceOne(object);
+
     const change = await this.replaceOneAndGetChange(object);
     this.callSubscribed({ type: "updated", changes: [change] });
     return change[1];
   }
 
   async replaceSeveral(objects: Model[]): Promise<Model[]> {
+    if (!this.hasListeners()) return this.store.replaceSeveral(objects);
+
     const results = await Promise.allSettled(
       objects.map((object) => this.replaceOneAndGetChange(object)),
     );
@@ -258,11 +287,22 @@ export default class SubscribeStore<
     key: KeyValue,
     partialUpdate: Update<Model>,
     criteria?: Criteria<Model>,
+    options?: PartialUpdateOptions,
   ): Promise<Model> {
+    if (!this.hasListeners()) {
+      return this.store.partialUpdateByKey(
+        key,
+        partialUpdate,
+        criteria,
+        options,
+      );
+    }
+
     const result = await this.partialUpdateByKeyAndGetResult(
       key,
       partialUpdate,
       criteria,
+      options,
     );
     if (!result) throw new NotFoundError(`Document not found: ${String(key)}`);
     if (!result.next) {
@@ -280,32 +320,56 @@ export default class SubscribeStore<
   partialUpdateOne(
     object: Model,
     partialUpdate: Update<Model>,
+    options?: PartialUpdateOptions,
   ): Promise<Model> {
-    return this.partialUpdateByKey(object[this.keyPath], partialUpdate);
+    return this.partialUpdateByKey(
+      object[this.keyPath],
+      partialUpdate,
+      undefined,
+      options,
+    );
   }
 
+  /**
+   * Without listeners, one command on the wrapped store. With listeners, the keys
+   * matching `criteria` are read first, then each document is updated on its own
+   * (re-checking `criteria`) so that every change carries its true `prev`: N + 1
+   * round trips. A document inserted after the keys were read is not updated.
+   */
   async partialUpdateMany(
     criteria: Criteria<Model>,
     partialUpdate: Update<Model>,
+    options?: PartialUpdateOptions,
   ): Promise<void> {
-    const cursor = await this.store.cursor(criteria);
+    if (!this.hasListeners()) {
+      await this.store.partialUpdateMany(criteria, partialUpdate, options);
+      return;
+    }
+
+    const keys = await this.findKeys(criteria);
     const changes: [Model, Model][] = [];
 
     try {
-      await cursor.forEach(async (model) => {
+      for (const key of keys) {
         const result = await this.partialUpdateByKeyAndGetResult(
-          model[this.keyPath],
+          key,
           partialUpdate,
           criteria,
+          options,
         );
         if (result?.next) changes.push([result.prev, result.next]);
-      });
+      }
     } finally {
       if (changes.length > 0) this.callSubscribed({ type: "updated", changes });
     }
   }
 
   async deleteByKey(key: KeyValue, criteria?: Criteria<Model>): Promise<void> {
+    if (!this.hasListeners()) {
+      await this.store.deleteByKey(key, criteria);
+      return;
+    }
+
     const prev = await this.deleteByKeyAndGetPrev(key, criteria);
     if (!prev) return;
     this.callSubscribed({ type: "deleted", prev: [prev] });
@@ -315,11 +379,38 @@ export default class SubscribeStore<
     return this.deleteByKey(object[this.keyPath]);
   }
 
+  /**
+   * Without listeners, one command on the wrapped store. With listeners and a store
+   * implementing `deleteByKeyWithInfo`, the keys matching `criteria` are read first,
+   * then each document is deleted on its own (re-checking `criteria`), so that the
+   * emitted documents are exactly the deleted ones: N + 1 round trips. A document
+   * inserted after the keys were read is not deleted.
+   */
   async deleteMany(criteria: Criteria<Model>): Promise<void> {
-    const cursor = await this.store.cursor(criteria);
-    const prev: Model[] = await cursor.toArray();
-    await this.store.deleteMany(criteria);
-    this.callSubscribed({ type: "deleted", prev });
+    if (!this.hasListeners()) {
+      await this.store.deleteMany(criteria);
+      return;
+    }
+
+    if (!this.store.deleteByKeyWithInfo) {
+      const cursor = await this.store.cursor(criteria);
+      const prev: Model[] = await cursor.toArray();
+      await this.store.deleteMany(criteria);
+      this.callSubscribed({ type: "deleted", prev });
+      return;
+    }
+
+    const keys = await this.findKeys(criteria);
+    const prev: Model[] = [];
+
+    try {
+      for (const key of keys) {
+        const result = await this.store.deleteByKeyWithInfo(key, criteria);
+        if (result) prev.push(result.prev);
+      }
+    } finally {
+      if (prev.length > 0) this.callSubscribed({ type: "deleted", prev });
+    }
   }
 
   async count(criteria?: Criteria<Model>): Promise<number> {

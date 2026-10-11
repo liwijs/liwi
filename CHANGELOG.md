@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.0.0](https://github.com/christophehurpeau/liwi/compare/v13.4.0...v14.0.0) (2026-10-11)
+
+### ⚠ BREAKING CHANGES
+
+* `updated` now moves on partial updates and replace. Replace ignores
+the caller's `created` and no longer mutates the object. Partial updates touching
+`created`, or `updated` with an operator other than $set / $currentDate / $max,
+throw ProtectedFieldUpdateError. Requires MongoDB >= 4.2.
+* MongoStore and SubscribeStore replaceOne, replaceSeveral,
+partialUpdateByKey and partialUpdateOne throw NotFoundError when the key does not
+exist instead of silently resolving. SubscribeStore deleteByKey / deleteOne on a
+missing key no longer emit a deleted action.
+
+### Features
+
+* emit stored prev in subscribe store writes, throw NotFoundError on missing keys
+* stamp updated on every write, protect created/updated, exact bulk emits
+
+### Bug Fixes
+
+* **liwi-mongo:** await cursor close
+
 ## [13.4.0](https://github.com/christophehurpeau/liwi/compare/v13.3.3...v13.4.0) (2026-10-06)
 
 ### Features

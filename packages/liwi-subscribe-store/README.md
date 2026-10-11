@@ -83,22 +83,32 @@ type Actions<Model> =
 
 `prev` is always the **stored** document, never the object passed by the caller: queries decide whether a document entered or left their result by testing `prev` and `next` against their criteria, so a stale copy would leave rows in lists they no longer belong to.
 
-| Write                                     | Where `prev` comes from                                                                                                 |
-| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `partialUpdateByKey` / `partialUpdateOne` | `partialUpdateByKeyWithInfo` of the wrapped store (atomic with the write), else `findOne` just before the write         |
-| `replaceOne` / `replaceSeveral`           | `replaceOneWithInfo` (atomic), else `findByKey` just before the write                                                   |
-| `deleteByKey` / `deleteOne`               | `deleteByKeyWithInfo` (atomic), else `findByKey` just before the write                                                  |
-| `upsertOne` / `upsertOneWithInfo`         | `upsertOneWithInfo` of the wrapped store                                                                                |
-| `partialUpdateMany`                       | per document, as `partialUpdateByKey`; documents that no longer match `criteria` when their turn comes are skipped      |
-| `deleteMany`                              | a cursor read before the delete: not atomic, a document inserted or changed in between can be missed or wrongly emitted |
+| Write                                     | Where `prev` comes from                                                                                                                                                            |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `partialUpdateByKey` / `partialUpdateOne` | `partialUpdateByKeyWithInfo` of the wrapped store (atomic with the write), else `findOne` just before the write                                                                    |
+| `replaceOne` / `replaceSeveral`           | `replaceOneWithInfo` (atomic), else `findByKey` just before the write                                                                                                              |
+| `deleteByKey` / `deleteOne`               | `deleteByKeyWithInfo` (atomic), else `findByKey` just before the write                                                                                                             |
+| `upsertOne` / `upsertOneWithInfo`         | `upsertOneWithInfo` of the wrapped store                                                                                                                                           |
+| `partialUpdateMany`                       | the matching keys are read first, then each document is updated as by `partialUpdateByKey`, re-checking `criteria`                                                                 |
+| `deleteMany`                              | the matching keys are read first, then each document is deleted with `deleteByKeyWithInfo`, re-checking `criteria`; without it, a cursor read before one `deleteMany` (not atomic) |
 
 See [Writes with info](../liwi-store#writes-with-info) for the `…WithInfo` contract.
+
+For `partialUpdateMany` and `deleteMany`, the emitted documents are exactly the ones written: a document that stopped matching `criteria` after the keys were read is left alone and not emitted, and a document inserted after the keys were read is not written. This costs one round trip per document instead of a single command.
+
+### Without listeners
+
+When nothing is subscribed (no `subscribe` listener and no open query subscription), nobody needs `prev`, so writes go straight to the wrapped store: `partialUpdateMany` and `deleteMany` are a single command again, and `partialUpdateByKey`, `replaceOne` and `deleteByKey` use the plain methods (one round trip for a partial update by key instead of two). Behaviour is otherwise the same, including `NotFoundError` on a missing key.
 
 ### Missing keys and failures
 
 - A write on a key that does not exist emits nothing. `partialUpdateByKey`, `partialUpdateOne`, `replaceOne` and `replaceSeveral` throw [`NotFoundError`](../liwi-store#errors); `deleteByKey` and `deleteOne` resolve.
 - When a concurrent delete lands between a partial update and its read-back, the update was applied but there is no `next`: nothing is emitted (the delete emits its own `deleted` action) and `partialUpdateByKey` / `partialUpdateOne` throw `DeletedAfterUpdateError`, a subclass of `NotFoundError`. `partialUpdateMany` skips that document.
-- `replaceSeveral` and `partialUpdateMany` emit the writes that succeeded before rethrowing the first failure, so listeners stay in sync with what was written.
+- `replaceSeveral`, `partialUpdateMany` and `deleteMany` emit the writes that succeeded before rethrowing the first failure, so listeners stay in sync with what was written.
+
+### `updated`
+
+Stamping `updated` and rejecting protected field updates is done by the wrapped store (see [`created` and `updated`](../liwi-store#created-and-updated)); partial update `options` such as `touchUpdated` are passed through. Because `partialUpdateMany` writes document by document here, each document gets its own write time, where a plain `MongoStore` gives the whole command one.
 
 ### `AbstractSubscribableStoreQuery`
 
