@@ -13,8 +13,6 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v6
-        with:
-          version: 12
 
       - uses: actions/setup-node@v7
         with:
@@ -37,8 +35,6 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v6
-        with:
-          version: 12
 
       - uses: actions/setup-node@v7
         with:
@@ -74,8 +70,6 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v6
-        with:
-          version: 12
 
       - uses: actions/setup-node@v7
         with:
@@ -102,8 +96,6 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v6
-        with:
-          version: 12
 
       - uses: actions/setup-node@v7
         with:
