@@ -71,9 +71,9 @@ type MatchKeysAndValues<Model extends BaseModel> = Partial<
     any
   >
 > & {
-  [Property in `${NestedPathsOfType<Model, any[]>}.$${
-    | ""
-    | `[${string}]`}`]?: ArrayElement<
+  [
+    Property in `${NestedPathsOfType<Model, any[]>}.$${"" | `[${string}]`}`
+  ]?: ArrayElement<
     PropertyType<
       Model,
       Property extends `${infer Key}.$${string}` ? Key : never
