@@ -20,6 +20,7 @@ Client side of the liwi resources layer. From a service interface it builds a ty
 It defines the `TransportClient` interface but ships no transport — pick one:
 
 - [`liwi-resources-websocket-client`](../liwi-resources-websocket-client) — browser to server over websocket.
+- [`liwi-resources-http-client`](../liwi-resources-http-client) — `fetch` and `do` over plain HTTP, no subscriptions.
 - [`liwi-resources-direct-client`](../liwi-resources-direct-client) — in-process, no network.
 - [`liwi-resources-void-client`](../liwi-resources-void-client) — no-op, for SSR and tests.
 

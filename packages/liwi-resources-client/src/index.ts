@@ -3,8 +3,11 @@ export { ResourcesServerError } from "liwi-resources";
 export { createResourceClientService } from "./createResourceClientService.ts";
 export type {
   AckError,
+  ToClientHttpResponse,
   ToClientMessage,
+  ToServerHttpRequest,
   ToServerMessages,
+  ToServerSimpleMessages,
   ToServerSubscribeMessages,
   ToServerQueryPayload,
   ToServerSubscribeQueryPayload,

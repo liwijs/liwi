@@ -22,6 +22,7 @@ Resources (client/server RPC + subscriptions over the store):
 - `liwi-resources-direct-client` — in-process transport (no network).
 - `liwi-resources-websocket-client` / `liwi-resources-websocket-server` — WebSocket transport. The client is host-agnostic: the `WebSocket` implementation and the page-visibility capability are injectable.
 - `liwi-resources-websocket-client-node` — the WebSocket client wired for node: connects through `ws` (so handshake auth headers are possible) and disables visibility awareness.
+- `liwi-resources-http-client` / `liwi-resources-http-server` — stateless HTTP transport for `fetch` and `do` only (no subscriptions): one `POST` per call, auth evaluated per request.
 - `liwi-resources-void-client` — no-op transport (SSR / tests).
 
 React:

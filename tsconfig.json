@@ -18,6 +18,8 @@
     { "path": "packages/react-liwi/tsconfig.json" },
     { "path": "@todo-example/server/tsconfig.json" },
     { "path": "@todo-example/vite/tsconfig.json" },
-    { "path": "packages/liwi-resources-websocket-client-node/tsconfig.json" }
+    { "path": "packages/liwi-resources-websocket-client-node/tsconfig.json" },
+    { "path": "packages/liwi-resources-http-client/tsconfig.json" },
+    { "path": "packages/liwi-resources-http-server/tsconfig.json" }
   ]
 }

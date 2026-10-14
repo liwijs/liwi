@@ -67,6 +67,11 @@ export type ToClientMessage<T = ExtendedJsonValue> = [
   T, // result
 ];
 
+export type ToClientHttpResponse<T = ExtendedJsonValue> = [
+  AckError | null, // error
+  T, // result
+];
+
 export interface DoPayload {
   resourceName: string;
   operationKey: string;
@@ -158,6 +163,10 @@ export type ToServerMessage = {
       payload: ToServerSubscribeMessages["fetchAndSubscribe"][0];
     }
 );
+
+export type ToServerHttpRequest =
+  | ["do", ToServerSimpleMessages["do"][0]]
+  | ["fetch", ToServerSimpleMessages["fetch"][0]];
 
 export class ResourcesServerError extends Error {
   code: string;

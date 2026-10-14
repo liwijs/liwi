@@ -304,6 +304,47 @@ importers:
         specifier: npm:@typescript/typescript6@6.0.2
         version: '@typescript/typescript6@6.0.2'
 
+  packages/liwi-resources-http-client:
+    dependencies:
+      extended-json:
+        specifier: workspace:*
+        version: link:../extended-json
+      liwi-resources-client:
+        specifier: workspace:*
+        version: link:../liwi-resources-client
+    devDependencies:
+      '@pob/rollup-esbuild':
+        specifier: 10.2.0
+        version: 10.2.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@typescript/native':
+        specifier: npm:typescript@7.0.2
+        version: typescript@7.0.2
+      typescript:
+        specifier: npm:@typescript/typescript6@6.0.2
+        version: '@typescript/typescript6@6.0.2'
+
+  packages/liwi-resources-http-server:
+    dependencies:
+      extended-json:
+        specifier: workspace:*
+        version: link:../extended-json
+      liwi-resources-server:
+        specifier: workspace:*
+        version: link:../liwi-resources-server
+      nightingale-logger:
+        specifier: ^18.2.0
+        version: 18.2.0
+    devDependencies:
+      '@pob/rollup-esbuild':
+        specifier: 10.2.0
+        version: 10.2.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@typescript/native':
+        specifier: npm:typescript@7.0.2
+        version: typescript@7.0.2
+      typescript:
+        specifier: npm:@typescript/typescript6@6.0.2
+        version: '@typescript/typescript6@6.0.2'
+
   packages/liwi-resources-server:
     dependencies:
       extended-json:

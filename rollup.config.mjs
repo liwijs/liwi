@@ -15,6 +15,8 @@ import configs13 from "./packages/liwi-resources-websocket-server/rollup.config.
 import configs14 from "./packages/react-liwi/rollup.config.mjs";
 import configs15 from "./@todo-example/server/rollup.config.mjs";
 import configs16 from "./packages/liwi-resources-websocket-client-node/rollup.config.mjs";
+import configs17 from "./packages/liwi-resources-http-client/rollup.config.mjs";
+import configs18 from "./packages/liwi-resources-http-server/rollup.config.mjs";
 
 export default [
   ...configs1,
@@ -33,4 +35,6 @@ export default [
   ...configs14,
   ...configs15,
   ...configs16,
+  ...configs17,
+  ...configs18,
 ];
