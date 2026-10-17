@@ -254,6 +254,23 @@ describe("MongoQuerySingleItem subscription", () => {
     assert.deepEqual(received, []);
   });
 
+  it("reconciles a subscription without initial result when a write raced with its fetch", async () => {
+    const received: Changes<string, { _id: string } | null>[] = [];
+    const subscription = createItemQuery().subscribe((error, changes) => {
+      if (error) throw error;
+      received.push(changes);
+    });
+
+    await store.deleteByKey("1");
+    await subscription;
+    await settle();
+
+    assert.ok(
+      received.some((changes) => changes[0]?.type === "initial"),
+      "the fetch result should be sent",
+    );
+  });
+
   it("refetches on resync", async () => {
     const { received } = await subscribe(createItemQuery());
 
@@ -330,6 +347,59 @@ describe("MongoQueryCollection subscription edge cases", () => {
 
     assert.equal(received.length, 1);
     assert.deepEqual(getInitial(received[0]!), { ids: ["1"], total: 2 });
+  });
+
+  it("refetches when a document past a limit leaves the criteria, for the total", async () => {
+    const { received } = await subscribe(
+      store.createQueryCollection({
+        criteria: { group: "a" },
+        sort: { rank: 1 },
+        limit: 1,
+      }),
+    );
+
+    await store.partialUpdateByKey("2", { $set: { group: "b" } });
+    await settle();
+
+    assert.equal(received.length, 1);
+    assert.deepEqual(getInitial(received[0]!), { ids: ["1"], total: 1 });
+  });
+
+  it("does not refetch a limited result holding every match for an unrelated write", async () => {
+    const { received } = await subscribe(
+      store.createQueryCollection({
+        criteria: { group: "a" },
+        sort: { rank: 1 },
+        limit: 5,
+      }),
+    );
+
+    await store.partialUpdateByKey("3", { $set: { rank: 30 } });
+    await settle();
+
+    assert.deepEqual(received, []);
+  });
+
+  it("reconciles a subscription without initial result when a write raced with its fetch", async () => {
+    const received: ItemChanges[] = [];
+    const subscription = store
+      .createQueryCollection({ criteria: { group: "a" } })
+      .subscribe((error, changes) => {
+        if (error) throw error;
+        received.push(changes);
+      });
+
+    await store.deleteByKey("1");
+    await subscription;
+    await settle();
+
+    const initial = received.find((changes) => changes[0]?.type === "initial");
+    assert.ok(initial, "the fetch result should be sent");
+    const initialIds = getInitial(initial).ids;
+    assert.deepEqual(
+      initialIds.includes("1") ? received.at(-1) : [],
+      initialIds.includes("1") ? [{ type: "deleted", keys: ["1"] }] : [],
+    );
   });
 
   it("keeps the last state when one action holds a key twice", async () => {

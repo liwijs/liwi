@@ -102,7 +102,7 @@ describe(
       const query = subscribeStore.createQueryCollection<Item, never>({
         criteria: { flag: true },
       });
-      query.subscribe((error, changes) => {
+      await query.subscribe((error, changes) => {
         if (error) throw error;
         received.push(changes);
       });

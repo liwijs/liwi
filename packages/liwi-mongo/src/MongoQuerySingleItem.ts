@@ -182,10 +182,15 @@ export default class MongoQuerySingleItem<
         return result;
       });
 
+    // without its initial result, the client holds what it fetched itself: a
+    // write racing with this fetch may be in neither, so the result reconciles it
+    let isInitializing = true;
+    let hasActionDuringInit = false;
     const initialPromise: Promise<void> = refetch().then(
       ({ result, meta, info }) => {
+        isInitializing = false;
         currentKey = result?.[keyPath] ?? null;
-        if (_includeInitial) {
+        if (_includeInitial || hasActionDuringInit) {
           send([{ type: "initial", initial: result, queryInfo: info, meta }]);
         }
       },
@@ -222,6 +227,7 @@ export default class MongoQuerySingleItem<
       if (!isStopped) callback(error as Error, []);
     });
     const unsubscribe = store.subscribe((action: Actions<Model>) => {
+      if (isInitializing) hasActionDuringInit = true;
       enqueue(() => handleAction(action));
     });
 

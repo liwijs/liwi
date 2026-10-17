@@ -151,9 +151,10 @@ export default class MongoQueryCollection<
    * notification (written by another process) is re-read here, in this
    * subscription's order, if it concerns it: a repeated, late or crossing
    * notification leaves the client equal to a fresh fetch. A subscription opened
-   * without its initial result still fetches it, to know those keys. With
-   * `limit` or `skip`, a document entering or leaving refetches instead: only the
-   * server knows what fills or leaves the window.
+   * without its initial result still fetches it, to know those keys, and sends it
+   * when a write raced with that fetch. With `limit` or `skip`, a document
+   * entering or leaving refetches instead: only the server knows what fills or
+   * leaves the window.
    */
   _subscribe(
     callback: SubscribeCallback<KeyValue, Item[]>,
@@ -163,8 +164,11 @@ export default class MongoQueryCollection<
     const keyPath = this.store.keyPath;
     const testCriteria = this.createTestCriteria();
     let sentKeys = new Set<KeyValue>();
+    let total = 0;
     // false until a fetch succeeded: before, the held keys are unknown
     let isReady = false;
+    let isInitializing = true;
+    let hasActionDuringInit = false;
     let isStopped = false;
 
     const send = (changes: Changes<KeyValue, Item[]>): void => {
@@ -174,12 +178,16 @@ export default class MongoQueryCollection<
     const refetch = (): Promise<Changes<KeyValue, Item[]>> =>
       this.fetch(({ result, meta, info }: QueryResult<Item[]>) => {
         sentKeys = new Set(result.map((item) => item[keyPath]));
+        total = meta.total;
         isReady = true;
         return [{ type: "initial", initial: result, queryInfo: info, meta }];
       });
 
+    // without its initial result, the client holds what it fetched itself: a
+    // write racing with this fetch may be in neither, so the result reconciles it
     const initialPromise: Promise<void> = refetch().then((changes) => {
-      if (_includeInitial) send(changes);
+      isInitializing = false;
+      if (_includeInitial || hasActionDuringInit) send(changes);
     });
 
     const applyStates = (
@@ -216,9 +224,10 @@ export default class MongoQueryCollection<
       if (action.type === "resync") return refetch().then(send);
       if (!isReady || !this.canTestCriteria()) return undefined;
 
-      // a document before the window, matching or not, may have entered or left
-      // it and shifted the page: neither its key nor its new state can tell
-      if (this.options.skip) {
+      // a document the client does not hold may have left the matching set
+      // (before a skipped window: shifting the page; past a limit: changing the
+      // total), and neither its key nor its new state can tell
+      if (this.options.skip || (this.options.limit && total > sentKeys.size)) {
         const keys =
           action.type === "changed"
             ? (action.keys as KeyValue[])
@@ -247,6 +256,7 @@ export default class MongoQueryCollection<
       if (!isStopped) callback(error as Error, []);
     });
     const unsubscribe = store.subscribe((action: Actions<Model>) => {
+      if (isInitializing) hasActionDuringInit = true;
       enqueue(() => handleAction(action));
     });
 
