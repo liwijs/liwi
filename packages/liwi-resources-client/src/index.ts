@@ -1,6 +1,13 @@
 export type { ServiceInterface as ClientServiceInterface } from "liwi-resources";
 export { ResourcesServerError } from "liwi-resources";
 export { createResourceClientService } from "./createResourceClientService.ts";
+export {
+  connectStoreRelay,
+  type ConnectStoreRelayOptions,
+  type RelayTargetStore,
+  type StoreRelayConnection,
+  type StoreRelayState,
+} from "./connectStoreRelay.ts";
 export type {
   AckError,
   ToClientHttpResponse,
@@ -19,6 +26,8 @@ export type {
   SubscribeCallback,
   ServiceQuery,
   ServiceOperation,
+  StoreRelayBatch,
+  StoreRelayService,
 } from "liwi-resources";
 export type { ClientQuery } from "./ClientQuery";
 export type {

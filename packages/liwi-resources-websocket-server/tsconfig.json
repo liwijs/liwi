@@ -22,12 +22,24 @@
       "liwi-store": ["../../packages/liwi-store/src"],
       "liwi-store/*": ["../../packages/liwi-store/src/*"],
       "liwi-resources-server": ["../../packages/liwi-resources-server/src"],
-      "liwi-resources-server/*": ["../../packages/liwi-resources-server/src/*"]
+      "liwi-resources-server/*": ["../../packages/liwi-resources-server/src/*"],
+      "liwi-resources-client": ["../../packages/liwi-resources-client/src"],
+      "liwi-resources-client/*": ["../../packages/liwi-resources-client/src/*"],
+      "liwi-resources-websocket-client-node": [
+        "../../packages/liwi-resources-websocket-client-node/src"
+      ],
+      "liwi-resources-websocket-client-node/*": [
+        "../../packages/liwi-resources-websocket-client-node/src/*"
+      ]
     }
   },
   "references": [
     { "path": "../../packages/extended-json/tsconfig.json" },
     { "path": "../../packages/liwi-store/tsconfig.json" },
-    { "path": "../../packages/liwi-resources-server/tsconfig.json" }
+    { "path": "../../packages/liwi-resources-server/tsconfig.json" },
+    { "path": "../../packages/liwi-resources-client/tsconfig.json" },
+    {
+      "path": "../../packages/liwi-resources-websocket-client-node/tsconfig.json"
+    }
   ]
 }

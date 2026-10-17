@@ -9,7 +9,7 @@
 Core:
 
 - `liwi-store` — abstract `Store` / `SubscribableStore` interfaces, `Query`, cursors, connection. The contract every DB implementation satisfies.
-- `liwi-subscribe-store` — proxy that adds subscription support on top of a store.
+- `liwi-subscribe-store` — proxy that adds subscription support on top of a store. Writes from another process reach it by key (`notifyChanged`, `resync`) through the store relay: `createStoreRelayResource` in `liwi-resources-server` on the writing side, `connectStoreRelay` in `liwi-resources-client` on the subscribed side. Query subscriptions decide from the keys their client holds and the stored document, never from the emitted `prev`; a `changed` notification is re-read by each concerned subscription, in its order.
 - `liwi-mongo` — MongoDB implementation of the store (uses `mingo` for in-memory query matching to drive subscriptions), plus declarative index management: stores declare `indexes`, `MongoRegistry` syncs them explicitly. Its `liwi-mongo/memory` entry is an in-process fake of the `mongodb` driver surface `MongoStore` uses (mingo-based), plugged via `new MongoConnection({ client })`, for fast tests and e2e servers; `src/memory/contract.test.ts` runs the same scenarios against it and a real mongod (`LIWI_MONGO_INTEGRATION=1`): add a scenario there for any behaviour it must match.
 - `extended-json` — JSON with `Date` support via reviver; the wire format across the transport.
 - `liwi` — umbrella package.
@@ -36,4 +36,4 @@ Examples: `@todo-example/*` (workspace), plus `packages/liwi-mongo-example`.
 - ESM only, TypeScript.
 - Package entry points are `src/index.ts`; each package re-exports its public surface there.
 - Files ending in `.ts.txt` are intentionally disabled/legacy source, not compiled.
-- Tests are colocated next to the source they cover.
+- Tests are colocated next to the source they cover. A test importing another workspace package runs against its `dist`: `pnpm build` first.

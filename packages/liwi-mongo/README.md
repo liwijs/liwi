@@ -290,13 +290,31 @@ const subscription = query.fetchAndSubscribe((error, changes) => {
 subscription.stop();
 ```
 
-`createQuerySingleItem` behaves the same but resolves a single item. Without `sort`, its criteria must match at most one document: when one update moves several matching documents, the subscription reports the error `should not match more than 1, use sort if you can have multiple match` through its callback. With `sort`, it refetches on every relevant update.
+`createQuerySingleItem` behaves the same but resolves a single item. It keeps the key of the item its client holds: a write concerns it when it is about that key or the written document matches. Without `sort`, its criteria must match at most one document: when one update moves several matching documents, the subscription reports the error `should not match more than 1, use sort if you can have multiple match` through its callback. With `sort`, it refetches on every relevant update, and when its item is deleted.
 
 Subscriptions are driven in-process: writes going through the subscribe store are matched against the query criteria with [mingo](https://github.com/kofrasa/mingo).
 
+Each collection subscription keeps the keys its client holds, and decides from them and the stored document, not from the write's `prev`:
+
+| Held by the client | Document matches the criteria | Sent       |
+| ------------------ | ----------------------------- | ---------- |
+| yes                | yes                           | `updated`  |
+| yes                | no, or deleted                | `deleted`  |
+| no                 | yes                           | `inserted` |
+| no                 | no, or deleted                | nothing    |
+
+A `changed` notification ([writes from another process](../liwi-subscribe-store#writes-from-another-process)) is re-read by each concerned subscription, in its order, so a repeated or late one is harmless.
+
+With `limit` or `skip`, a document entering or leaving the result refetches it (`find` and `count`) and sends `initial` instead: only the server knows which document fills or leaves the window. With `limit`, when more documents match than the query shows (a 101st matching document exists for `limit: 100`), and with `skip`, a write to any document the client does not hold refetches, matching or not: a matching one may enter the window, and one that left the criteria may have shifted a skipped page or changed `meta.total`, which neither its key nor its new state shows. When a limited result holds every match, only a write making a document match refetches. Each such write costs one refetch per open subscription of that query.
+
+`resync()` on the store refetches every subscription and sends `initial`, also to one opened with `subscribe`. Such a subscription (no initial result) still fetches once, to know the keys: its thenable resolves after that fetch, and rejects when it fails. When a write happens during that fetch, it sends the fetch result as `initial` anyway: the client's own earlier result may hold a document the fetch no longer sees, or miss one it does. Until a fetch succeeded, writes are ignored; a `resync` retries.
+
+Changes are computed one action at a time per subscription, so a refetch is never overtaken by an older change. While nothing is pending they reach the callback during the write call, as before; behind a refetch (and the initial fetch) they wait for it.
+
 Caveats:
 
-- Writes performed outside this process (other services, mongo shell, migrations) are not detected.
+- Writes performed outside a subscribe store (mongo shell, migrations) are not detected. Another process writing through its own subscribe store can relay its keys.
+- Updated rows of a sorted query are sent as `updated`: the client keeps their position.
 - `$text` criteria cannot be matched in memory: such queries fetch correctly but never emit updates.
 - Queries returned by the subscribe store are fixed — `changeParams` throws; build a new query when parameters change.
 

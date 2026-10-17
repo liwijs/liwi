@@ -38,6 +38,12 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      # once, before the test files start in parallel: each would download the
+      # binary on a cache miss and race on its lock file
+      - name: Download mongod
+        working-directory: packages/liwi-mongo
+        run: node --input-type=module -e "import { MongoBinary } from 'mongodb-memory-server-core'; await MongoBinary.getPath();"
+
       - name: Integration tests
         run: node --test 'packages/liwi-mongo/src/**/*.integration.test.ts'
         env:

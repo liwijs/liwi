@@ -32,6 +32,8 @@ interface Subscription<
   type: T;
   message: Message;
   callback: TransportClientSubscribeCallback<U>;
+  /** once settled, failures go to `callback`: its promise has nobody left to tell */
+  isSettled: boolean;
 }
 
 export type WebsocketTransportClientOptions = Omit<
@@ -99,9 +101,7 @@ class SubscribeResultPromise<
   }
 }
 
-// TODO handle resubscriptions after reconnect (or in useEffect ?)
 // TODO handle send before connected
-// TODO reject on connection close OR keep promise hang ?
 
 const createSafeError = (error: AckError): ResourcesServerError => {
   return new ResourcesServerError(error.code, error.message);
@@ -201,6 +201,29 @@ export default function createResourcesWebsocketClient({
     });
   };
 
+  /**
+   * A failure caused by a disconnection is retried on the next connection, and
+   * settles nothing. A refusal by the server rejects the subscription's promise
+   * the first time, and reaches its callback after a re-subscription.
+   */
+  const sendSubscription = (subscription: Subscription<any, any>): void => {
+    sendWithAck(subscription.type, subscription.message).then(
+      (result) => {
+        subscription.isSettled = true;
+        subscription.resolve(result);
+      },
+      (error: unknown) => {
+        if (!wsClient.isConnected()) return;
+        if (subscription.isSettled) {
+          subscription.callback(error as Error, null);
+        } else {
+          subscription.isSettled = true;
+          subscription.reject(error);
+        }
+      },
+    );
+  };
+
   const sendThrowNotConnected = (): never => {
     const error = new Error("Websocket not connected");
     error.name = "NetworkError";
@@ -238,23 +261,22 @@ export default function createResourcesWebsocketClient({
 
       return new SubscribeResultPromise<Result, Payload>({
         executor: (resolve, reject) => {
-          subscriptions.set(subscriptionId, {
+          const subscription: Subscription<any, any> = {
             type,
             message,
             resolve,
             reject,
             callback,
-          });
-          if (wsClient.isConnected()) {
-            // TODO reject should remove subscription ?
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            sendWithAck(type, message).then(resolve as any, reject);
-          }
+            isSettled: false,
+          };
+          subscriptions.set(subscriptionId, subscription);
+          if (wsClient.isConnected()) sendSubscription(subscription);
         },
         stop: (): void => {
           acks.delete(id);
           subscriptions.delete(subscriptionId);
-          // TODO what if reconnect (backend keeps subscription) and closed at this time ?
+          // the server drops a socket's subscriptions when it closes: nothing to
+          // tell it while disconnected
           if (wsClient.isConnected()) {
             sendMessage("subscribe:close", null, { subscriptionId });
           }
@@ -283,12 +305,7 @@ export default function createResourcesWebsocketClient({
     logger.info("newState", { newState });
     if (newState === "connected") {
       resourcesClient.send = sendWithAck as TransportClient["send"];
-      subscriptions.forEach((subscription, subscriptionId) => {
-        sendWithAck(subscription.type, subscription.message).then(
-          subscription.resolve,
-          subscription.reject,
-        );
-      });
+      subscriptions.forEach(sendSubscription);
     } else {
       resourcesClient.send = sendThrowNotConnected;
       acks.forEach((ack) => {
@@ -298,10 +315,12 @@ export default function createResourcesWebsocketClient({
       });
       acks.clear();
 
+      // closed is final: a later connect() does not resume them
       if (newState === "closed") {
         subscriptions.forEach((subscription) => {
           subscription.reject(new Error("Subscription closed"));
         });
+        subscriptions.clear();
       }
     }
   });

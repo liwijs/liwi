@@ -110,6 +110,42 @@ Returns `{ messageHandler, close }` for one client connection.
 
 Transports own encoding, ids and auth; this handler is transport-agnostic.
 
+### Store relay
+
+`createStoreRelayResource({ stores, authorize, heartbeatIntervalMs })` exposes the writes of this process to another one, which applies them to its own subscribe stores with [`connectStoreRelay`](../liwi-resources-client#store-relay). Use it when two processes write the same collections and only one serves the subscriptions:
+
+```ts
+import { createStoreRelayResource } from "liwi-resources-server";
+import { createWsServer } from "liwi-resources-websocket-server";
+
+const relayService = new ResourcesServerService({
+  serviceResources: new Map([
+    [
+      "storeRelay",
+      createStoreRelayResource({
+        stores: { tasks: tasksStore, users: usersStore },
+        authorize: (user) => user === "relay",
+      }),
+    ],
+  ]),
+});
+
+// on a listener the other process alone can reach
+createWsServer(internalServer, "/relay", relayService, (request) =>
+  request.headers.authorization === `Bearer ${secret}` ? "relay" : null,
+);
+```
+
+- `stores`: subscribe stores (anything with `subscribeChangedKeys`), by name. The consumer uses the same names.
+- `authorize(loggedInUser)`: the resources server accepts unauthenticated connections, so the relay checks who reads it; a refusal throws `ResourcesServerError("FORBIDDEN")`.
+- `heartbeatIntervalMs` (default 15 s): an empty batch is sent this often, so the consumer can tell a quiet producer from a dead one by its `lastMessageAt`.
+
+Its query, `queryChanges`, sends an empty `initial` once it listens, then an `inserted` change per flush whose result is the list of `{ store, keys }` written since the previous one (deduplicated, flushed once per macrotask). Each key is `JSON.stringify`-ed, so that `extended-json` does not revive a date-like string key as a `Date`.
+
+Only keys are sent: the consumer re-reads the documents. Subscribing makes every write to `stores` read its `prev`, like any [`SubscribeStore`](../liwi-subscribe-store#without-listeners) listener: a partial update costs two round trips instead of one, `partialUpdateMany` and `deleteMany` one plus two per document.
+
+Writes made while the consumer is disconnected are not replayed: it resyncs on reconnection. One producer per consumer: several instances on either side need a broker.
+
 ### Errors
 
 ```ts

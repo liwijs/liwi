@@ -20,12 +20,43 @@ import type {
   UpsertResult,
 } from "liwi-store";
 
+/**
+ * `changed`: documents written elsewhere (another process), re-read by key; a key
+ * missing from `next` was deleted. `resync`: notifications may have been missed,
+ * every subscription must refetch.
+ */
 export type Actions<Model> =
+  | { type: "changed"; keys: AllowedKeyValue[]; next: Model[] }
   | { type: "deleted"; prev: Model[] }
   | { type: "inserted"; next: Model[] }
+  | { type: "resync" }
   | { type: "updated"; changes: [Model, Model][] };
 
 export type Listener<Model> = (action: Actions<Model>) => unknown;
+
+export type ChangedKeysListener<KeyValue extends AllowedKeyValue> = (
+  keys: KeyValue[],
+) => unknown;
+
+const getActionKeys = <Model, KeyValue extends AllowedKeyValue>(
+  action: Actions<Model>,
+  getKey: (model: Model) => KeyValue,
+): KeyValue[] => {
+  switch (action.type) {
+    case "deleted":
+      return action.prev.map(getKey);
+    case "inserted":
+      return action.next.map(getKey);
+    case "updated":
+      return action.changes.map(([, next]) => getKey(next));
+    // written elsewhere: relaying them back would loop between two relays
+    case "changed":
+    case "resync":
+      return [];
+    default:
+      throw new Error("Unsupported action type");
+  }
+};
 
 export default class SubscribeStore<
   KeyPath extends keyof Model,
@@ -67,8 +98,39 @@ export default class SubscribeStore<
     return () => this.listeners.delete(callback);
   }
 
+  /**
+   * The keys of every document written through this store, not those notified
+   * with `notifyChanged`. Like any listener, it makes writes read their `prev`.
+   */
+  subscribeChangedKeys(callback: ChangedKeysListener<KeyValue>): () => void {
+    return this.subscribe((action) => {
+      const keys = getActionKeys(action, (model) => model[this.keyPath]);
+      if (keys.length > 0) callback(keys);
+    });
+  }
+
   callSubscribed(action: Actions<Model>): void {
     this.listeners.forEach((listener) => listener(action));
+  }
+
+  /**
+   * For documents written outside this store, by another process: re-reads them
+   * and emits `changed`. `next` is only a hint of who is concerned: a query
+   * subscription holding one of the keys, or matching one of the documents,
+   * re-reads them in its own order, so a notification repeated, late or crossing
+   * a local write is harmless.
+   */
+  async notifyChanged(keys: KeyValue[]): Promise<void> {
+    if (keys.length === 0 || !this.hasListeners()) return;
+    const next = await this.store.findAll({
+      [this.keyPath]: { $in: keys },
+    } as Criteria<Model>);
+    this.callSubscribed({ type: "changed", keys, next });
+  }
+
+  /** Every subscription refetches and sends its whole result again. */
+  resync(): void {
+    this.callSubscribed({ type: "resync" });
   }
 
   /**

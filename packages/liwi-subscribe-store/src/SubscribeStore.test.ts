@@ -608,3 +608,72 @@ describe("SubscribeStore without listeners", () => {
     ]);
   });
 });
+
+describe("SubscribeStore notifyChanged", () => {
+  it("re-reads the keys and emits changed with the stored documents", async () => {
+    const stored: TestModel = { _id: "1", label: "a", created, updated };
+    const criteriaSeen: unknown[] = [];
+    const { subscribeStore, actions } = createSubscribeStore({
+      findAll: (criteria) => {
+        criteriaSeen.push(criteria);
+        return Promise.resolve([stored]);
+      },
+    });
+
+    await subscribeStore.notifyChanged(["1", "2"]);
+
+    assert.deepEqual(criteriaSeen, [{ _id: { $in: ["1", "2"] } }]);
+    assert.deepEqual(actions, [
+      { type: "changed", keys: ["1", "2"], next: [stored] },
+    ]);
+  });
+
+  it("reads nothing without listeners", async () => {
+    let readCount = 0;
+    const subscribeStore: TestSubscribeStore = new SubscribeStore({
+      keyPath: "_id",
+      findAll: () => {
+        readCount++;
+        return Promise.resolve([]);
+      },
+    } as unknown as TestStore);
+
+    await subscribeStore.notifyChanged(["1"]);
+
+    assert.equal(readCount, 0);
+  });
+});
+
+describe("SubscribeStore resync", () => {
+  it("emits resync", () => {
+    const { subscribeStore, actions } = createSubscribeStore({});
+
+    subscribeStore.resync();
+
+    assert.deepEqual(actions, [{ type: "resync" }]);
+  });
+});
+
+describe("SubscribeStore subscribeChangedKeys", () => {
+  it("receives the keys of every write, not of notified documents", async () => {
+    const object: TestModel = { _id: "1", label: "a", created, updated };
+    const subscribeStore: TestSubscribeStore = new SubscribeStore({
+      keyPath: "_id",
+      insertOne: () => Promise.resolve(object),
+      findAll: () => Promise.resolve([]),
+    } as unknown as TestStore);
+    const receivedKeys: string[][] = [];
+    subscribeStore.subscribeChangedKeys((keys) => receivedKeys.push(keys));
+
+    await subscribeStore.insertOne(object);
+    subscribeStore.callSubscribed({ type: "deleted", prev: [object] });
+    subscribeStore.callSubscribed({
+      type: "updated",
+      changes: [[object, { ...object, label: "b" }]],
+    });
+    await subscribeStore.notifyChanged(["2"]);
+    subscribeStore.resync();
+
+    assert.deepEqual(receivedKeys, [["1"], ["1"], ["1"]]);
+  });
+});

@@ -168,6 +168,25 @@ export type ToServerHttpRequest =
   | ["do", ToServerSimpleMessages["do"][0]]
   | ["fetch", ToServerSimpleMessages["fetch"][0]];
 
+/** The keys written in one store since the previous batch. */
+export interface StoreRelayBatch {
+  store: string;
+  /** each `JSON.stringify`-ed: `extended-json` would revive a date-like string key as a `Date` */
+  keys: string[];
+}
+
+/**
+ * Store relay: one query whose subscription sends an empty `initial` once the
+ * producer listens, then an `inserted` change per flush, its result a list of
+ * batches (empty for a heartbeat).
+ */
+export interface StoreRelayService {
+  queries: {
+    queryChanges: ServiceQuery<StoreRelayBatch[], Record<string, never>>;
+  };
+  operations: Record<string, never>;
+}
+
 export class ResourcesServerError extends Error {
   code: string;
 
