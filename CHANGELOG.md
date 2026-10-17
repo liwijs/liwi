@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.1.0](https://github.com/christophehurpeau/liwi/compare/v14.0.1...v14.1.0) (2026-10-17)
+
+### Features
+
+* add http transport for fetch and do
+* **deps:** update mingo to v7
+* **liwi-mongo:** add in-memory mongo client for tests
+
 ## [14.0.1](https://github.com/christophehurpeau/liwi/compare/v14.0.0...v14.0.1) (2026-10-11)
 
 ### Bug Fixes

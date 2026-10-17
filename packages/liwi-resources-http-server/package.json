@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-http-server",
-  "version": "1.0.0-pre",
+  "version": "14.1.0",
   "description": "liwi resources server implementation for http",
   "keywords": [
     "http",

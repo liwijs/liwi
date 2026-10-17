@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.1.0](https://github.com/christophehurpeau/liwi/compare/v14.0.1...v14.1.0) (2026-10-17)
+
+### Features
+
+* **deps:** update mingo to v7
+* **liwi-mongo:** add in-memory mongo client for tests
+
+Version bump for dependency: liwi-store
+Version bump for dependency: liwi-subscribe-store
+
+
 ## [14.0.0](https://github.com/christophehurpeau/liwi/compare/v13.4.0...v14.0.0) (2026-10-11)
 
 ### ⚠ BREAKING CHANGES
