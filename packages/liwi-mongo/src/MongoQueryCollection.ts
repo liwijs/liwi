@@ -216,6 +216,18 @@ export default class MongoQueryCollection<
       if (action.type === "resync") return refetch().then(send);
       if (!isReady || !this.canTestCriteria()) return undefined;
 
+      // a document before the window, matching or not, may have entered or left
+      // it and shifted the page: neither its key nor its new state can tell
+      if (this.options.skip) {
+        const keys =
+          action.type === "changed"
+            ? (action.keys as KeyValue[])
+            : [...getWrittenStates<Model, KeyValue>(action, keyPath).keys()];
+        if (keys.some((key) => !sentKeys.has(key))) {
+          return refetch().then(send);
+        }
+      }
+
       if (action.type === "changed") {
         const matchingKeys = new Set(
           action.next.filter(testCriteria).map((model) => model[keyPath]),
