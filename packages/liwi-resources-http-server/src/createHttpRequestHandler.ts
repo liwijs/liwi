@@ -84,11 +84,15 @@ export type HttpRequestHandler = (
   response: ServerResponse,
 ) => void;
 
+interface HttpResponse {
+  statusCode: number;
+  body: ToClientHttpResponse;
+  headers?: OutgoingHttpHeaders;
+}
+
 const sendResponse = (
   response: ServerResponse,
-  statusCode: number,
-  body: ToClientHttpResponse,
-  headers?: OutgoingHttpHeaders,
+  { statusCode, body, headers }: HttpResponse,
 ): void => {
   response.writeHead(statusCode, {
     ...headers,
@@ -102,7 +106,7 @@ const sendFailure = (
   response: ServerResponse,
   { statusCode, error, headers }: RequestFailure,
 ): void => {
-  sendResponse(response, statusCode, [error, null], headers);
+  sendResponse(response, { statusCode, body: [error, null], headers });
 };
 
 const isJsonContentType = (contentType: string | undefined): boolean =>
@@ -198,7 +202,7 @@ export const createHttpRequestHandler = <AuthenticatedUser>({
   const handleMessage = async (
     [type, payload]: ToServerHttpRequest,
     authenticatedUser: AuthenticatedUser | null,
-  ): Promise<{ statusCode: number; body: ToClientHttpResponse }> => {
+  ): Promise<HttpResponse> => {
     const { messageHandler } = createMessageHandler(
       resourcesServerService,
       authenticatedUser,
@@ -246,11 +250,10 @@ export const createHttpRequestHandler = <AuthenticatedUser>({
 
     logger.debug("received", { type: httpRequest.value[0] });
     const authenticatedUser = await resolveAuthenticatedUser(request);
-    const { statusCode, body: responseBody } = await handleMessage(
-      httpRequest.value,
-      authenticatedUser,
+    sendResponse(
+      response,
+      await handleMessage(httpRequest.value, authenticatedUser),
     );
-    sendResponse(response, statusCode, responseBody);
   };
 
   return (request, response) => {
@@ -259,7 +262,10 @@ export const createHttpRequestHandler = <AuthenticatedUser>({
       if (response.headersSent) {
         response.end();
       } else {
-        sendResponse(response, 500, [INTERNAL_SERVER_ERROR, null]);
+        sendResponse(response, {
+          statusCode: 500,
+          body: [INTERNAL_SERVER_ERROR, null],
+        });
       }
     });
   };
