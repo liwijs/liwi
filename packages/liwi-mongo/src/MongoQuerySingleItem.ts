@@ -1,5 +1,6 @@
 import type {
   AllowedKeyValue,
+  Change,
   Changes,
   QueryOptions,
   QueryParams,
@@ -18,6 +19,7 @@ import type {
 } from "./MongoBaseModel";
 import type MongoCursor from "./MongoCursor";
 import type MongoStore from "./MongoStore";
+import { createActionQueue } from "./createActionQueue.ts";
 
 const identityTransformer = <
   Model extends MongoBaseModel<any>,
@@ -90,10 +92,11 @@ export default class MongoQuerySingleItem<
     });
   }
 
-  private async computeChanges(
-    action: Actions<Model>,
+  /** `refetch` when the result can only be known by querying again */
+  private computeChanges(
+    action: Exclude<Actions<Model>, { type: "changed" | "resync" }>,
     testCriteria: TestCriteria,
-  ): Promise<Changes<KeyValue, Result>> {
+  ): Changes<KeyValue, Result> | "refetch" {
     switch (action.type) {
       case "inserted": {
         const filtered = action.next.filter(testCriteria);
@@ -116,10 +119,7 @@ export default class MongoQuerySingleItem<
         );
         if (filtered.length === 0) return [];
 
-        if (this.options.sort) {
-          const { result } = await this.fetch((res) => res);
-          return [{ type: "updated", result }];
-        }
+        if (this.options.sort) return "refetch";
 
         if (filtered.length > 1) {
           throw new Error(
@@ -146,41 +146,87 @@ export default class MongoQuerySingleItem<
   ): QuerySubscription {
     const store = super.getSubscribeStore();
     const testCriteria: TestCriteria = this.createMingoTestCriteria();
+    const keyPath = this.store.keyPath;
+    let currentKey: KeyValue | null = null;
+    let isStopped = false;
 
-    const promise: Promise<void> = _includeInitial
-      ? this.fetch(({ result, meta, info }: QueryResult<Result>) => {
-          callback(null, [
-            {
-              type: "initial",
-              initial: result,
-              queryInfo: info,
-              meta,
-            },
-          ]);
-        })
-      : Promise.resolve();
-
-    const unsubscribe = store.subscribe(async (action: Actions<Model>) => {
-      let changes: Changes<KeyValue, Result>;
-      try {
-        changes = await this.computeChanges(action, testCriteria);
-      } catch (error: unknown) {
-        callback(error as Error, []);
-        return;
+    const getKeyAfter = (change: Change<KeyValue, Result>): KeyValue | null => {
+      switch (change.type) {
+        case "initial":
+          return change.initial?.[keyPath] ?? null;
+        case "inserted":
+        case "updated":
+          return change.result?.[keyPath] ?? null;
+        case "deleted":
+          return null;
+        default:
+          throw new Error("Unsupported type");
       }
+    };
 
-      if (changes.length === 0) return;
-
+    const send = (changes: Changes<KeyValue, Result>): void => {
+      if (isStopped || changes.length === 0) return;
+      currentKey = getKeyAfter(changes.at(-1)!);
       callback(null, changes);
+    };
+
+    const refetch = (): Promise<QueryResult<Result>> =>
+      this.fetch((result) => result);
+
+    const initialPromise: Promise<void> = refetch().then(
+      ({ result, meta, info }) => {
+        currentKey = result?.[keyPath] ?? null;
+        if (_includeInitial) {
+          send([{ type: "initial", initial: result, queryInfo: info, meta }]);
+        }
+      },
+    );
+
+    const refetchAsUpdated = (): Promise<void> =>
+      refetch().then(({ result }) => {
+        send([{ type: "updated", result }]);
+      });
+
+    const handleAction = (
+      action: Actions<Model>,
+    ): Promise<void> | undefined => {
+      if (isStopped) return undefined;
+      if (action.type === "resync") {
+        return refetch().then(({ result, meta, info }) => {
+          send([{ type: "initial", initial: result, queryInfo: info, meta }]);
+        });
+      }
+      if (action.type === "changed") {
+        const isConcerned =
+          (currentKey !== null && action.keys.includes(currentKey)) ||
+          action.next.some(testCriteria);
+        return isConcerned ? refetchAsUpdated() : undefined;
+      }
+      const changes = this.computeChanges(action, testCriteria);
+      if (changes === "refetch") return refetchAsUpdated();
+      send(changes);
+      return undefined;
+    };
+
+    const enqueue = createActionQueue(initialPromise, (error) => {
+      if (!isStopped) callback(error as Error, []);
+    });
+    const unsubscribe = store.subscribe((action: Actions<Model>) => {
+      enqueue(() => handleAction(action));
     });
 
+    const stop = (): void => {
+      isStopped = true;
+      unsubscribe();
+    };
+
     return {
-      stop: unsubscribe,
-      cancel: unsubscribe,
+      stop,
+      cancel: stop,
       then: <T, U>(
         onFulfilled: () => Promise<T> | T,
         onRejected?: (error: any) => Promise<U> | U,
-      ): Promise<T | U> => promise.then(onFulfilled, onRejected),
+      ): Promise<T | U> => initialPromise.then(onFulfilled, onRejected),
     };
   }
 

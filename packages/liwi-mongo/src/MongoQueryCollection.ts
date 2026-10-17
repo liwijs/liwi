@@ -19,6 +19,7 @@ import type {
 } from "./MongoBaseModel";
 import type MongoCursor from "./MongoCursor";
 import type MongoStore from "./MongoStore";
+import { createActionQueue } from "./createActionQueue.ts";
 
 const identityTransformer = <
   Model extends MongoBaseModel<any>,
@@ -28,6 +29,53 @@ const identityTransformer = <
 ): Transformed => model as unknown as Transformed;
 
 type TestCriteria = (obj: any) => boolean;
+
+interface Memberships<KeyValue, Item> {
+  deleted: KeyValue[];
+  updated: Item[];
+  inserted: Item[];
+}
+
+/** the stored state of each document an action is about, `undefined` once deleted */
+const getLatestStates = <
+  Model extends MongoBaseModel<KeyValue>,
+  KeyValue extends AllowedKeyValue,
+>(
+  action: Exclude<Actions<Model>, { type: "resync" }>,
+  keyPath: MongoKeyPath,
+): Map<KeyValue, Model | undefined> => {
+  const states = new Map<KeyValue, Model | undefined>();
+  switch (action.type) {
+    case "inserted":
+      action.next.forEach((next) => states.set(next[keyPath], next));
+      break;
+    case "deleted":
+      action.prev.forEach((prev) => states.set(prev[keyPath], undefined));
+      break;
+    case "updated":
+      action.changes.forEach(([, next]) => states.set(next[keyPath], next));
+      break;
+    case "changed":
+      action.keys.forEach((key) => states.set(key as KeyValue, undefined));
+      action.next.forEach((next) => states.set(next[keyPath], next));
+      break;
+    default:
+      throw new Error("Unsupported type");
+  }
+  return states;
+};
+
+const toCollectionChanges = <KeyValue, Item>({
+  deleted,
+  updated,
+  inserted,
+}: Memberships<KeyValue, Item>): Changes<KeyValue, Item[]> => {
+  const changes: Changes<KeyValue, Item[]> = [];
+  if (deleted.length > 0) changes.push({ type: "deleted", keys: deleted });
+  if (updated.length > 0) changes.push({ type: "updated", result: updated });
+  if (inserted.length > 0) changes.push({ type: "inserted", result: inserted });
+  return changes;
+};
 
 export default class MongoQueryCollection<
   Model extends MongoBaseModel<KeyValue>,
@@ -95,120 +143,114 @@ export default class MongoQueryCollection<
     });
   }
 
+  /**
+   * Each subscription keeps the keys its client holds, and decides from them and
+   * the stored document alone, never from the emitted `prev`: a repeated, late
+   * or foreign (`changed`) notification leaves the client equal to a fresh fetch.
+   * A subscription opened without its initial result still fetches it, to know
+   * those keys. With `limit` or `skip`, a document entering or leaving refetches
+   * instead: only the server knows what fills or leaves the window.
+   */
   _subscribe(
     callback: SubscribeCallback<KeyValue, Item[]>,
     _includeInitial: boolean,
   ): QuerySubscription {
     const store = super.getSubscribeStore();
-    const testCriteria: TestCriteria = this.createTestCriteria();
+    const keyPath = this.store.keyPath;
+    let sentKeys = new Set<KeyValue>();
+    let isStopped = false;
 
-    const promise: Promise<void> = _includeInitial
-      ? this.fetch(({ result, meta, info }: QueryResult<Item[]>) => {
-          callback(null, [
-            {
-              type: "initial",
-              initial: result,
-              queryInfo: info,
-              meta,
-            },
-          ]);
-        })
-      : Promise.resolve();
+    const send = (changes: Changes<KeyValue, Item[]>): void => {
+      if (!isStopped && changes.length > 0) callback(null, changes);
+    };
 
-    const unsubscribe = store.subscribe((action: Actions<Model>) => {
-      const changes: Changes<KeyValue, Item[]> = [];
-      switch (action.type) {
-        case "inserted": {
-          const filtered = action.next.filter(testCriteria);
-          if (filtered.length > 0) {
-            changes.push({
-              type: "inserted",
-              result: filtered.map(this.transformer),
-            });
-          }
-          break;
-        }
-        case "deleted": {
-          const filtered = action.prev.filter(testCriteria);
-          if (filtered.length > 0) {
-            changes.push({
-              type: "deleted",
-              keys: filtered.map((object) => object[this.store.keyPath]),
-            });
-          }
-          break;
-        }
-        case "updated": {
-          const {
-            deleted,
-            updated,
-            inserted,
-          }: {
-            deleted: KeyValue[];
-            updated: Item[];
-            inserted: Item[];
-          } = { deleted: [], updated: [], inserted: [] };
+    const refetch = (): Promise<Changes<KeyValue, Item[]>> =>
+      this.fetch(({ result, meta, info }: QueryResult<Item[]>) => {
+        sentKeys = new Set(result.map((item) => item[keyPath]));
+        return [{ type: "initial", initial: result, queryInfo: info, meta }];
+      });
 
-          action.changes.forEach(([prevObject, nextObject]: [Model, Model]) => {
-            if (testCriteria(prevObject)) {
-              if (!testCriteria(nextObject)) {
-                deleted.push(prevObject[this.store.keyPath]);
-              } else {
-                updated.push(this.transformer(nextObject));
-              }
-            } else if (testCriteria(nextObject)) {
-              inserted.push(this.transformer(nextObject));
-            }
-          });
+    const initialPromise: Promise<void> = refetch().then((changes) => {
+      if (_includeInitial) send(changes);
+    });
 
-          if (deleted.length > 0) {
-            changes.push({ type: "deleted", keys: deleted });
-          }
-          if (updated.length > 0) {
-            changes.push({ type: "updated", result: updated });
-          }
-          if (inserted.length > 0) {
-            changes.push({ type: "inserted", result: inserted });
-          }
+    const handleAction = (
+      action: Actions<Model>,
+    ): Promise<void> | undefined => {
+      if (isStopped) return undefined;
+      if (action.type === "resync") return refetch().then(send);
+      if (!this.canTestCriteria()) return undefined;
 
-          break;
-        }
-        default:
-          throw new Error("Unsupported type");
+      const memberships = this.computeMemberships(action, sentKeys);
+      if (
+        this.isWindowed() &&
+        (memberships.inserted.length > 0 || memberships.deleted.length > 0)
+      ) {
+        return refetch().then(send);
       }
 
-      if (changes.length === 0) return;
+      memberships.deleted.forEach((key) => sentKeys.delete(key));
+      memberships.inserted.forEach((item) => sentKeys.add(item[keyPath]));
+      send(toCollectionChanges(memberships));
+      return undefined;
+    };
 
-      callback(null, changes);
+    const enqueue = createActionQueue(initialPromise, (error) => {
+      if (!isStopped) callback(error as Error, []);
     });
-    // let _feed;
-    // const promise = this.queryCallback(this.store.query(), this.store.r)
-    //   .changes({
-    //     includeInitial: _includeInitial,
-    //     includeStates: true,
-    //     includeTypes: true,
-    //     includeOffsets: true,
-    //   })
-    //   .then((feed) => {
-    //     if (args.length === 0) {
-    //       _feed = feed;
-    //       delete this._promise;
-    //     }
-    //
-    //     feed.each(callback);
-    //     return feed;
-    //   });
-    //
-    // if (args.length === 0) this._promise = promise;
+    const unsubscribe = store.subscribe((action: Actions<Model>) => {
+      enqueue(() => handleAction(action));
+    });
+
+    const stop = (): void => {
+      isStopped = true;
+      unsubscribe();
+    };
 
     return {
-      stop: unsubscribe,
-      cancel: unsubscribe,
+      stop,
+      cancel: stop,
       then: <T, U>(
         onFulfilled: () => Promise<T> | T,
         onRejected?: (error: any) => Promise<U> | U,
-      ): Promise<T | U> => promise.then(onFulfilled, onRejected),
+      ): Promise<T | U> => initialPromise.then(onFulfilled, onRejected),
     };
+  }
+
+  private canTestCriteria(): boolean {
+    return !this.options.criteria || !("$text" in this.options.criteria);
+  }
+
+  private isWindowed(): boolean {
+    return !!this.options.limit || !!this.options.skip;
+  }
+
+  private computeMemberships(
+    action: Exclude<Actions<Model>, { type: "resync" }>,
+    sentKeys: ReadonlySet<KeyValue>,
+  ): Memberships<KeyValue, Item> {
+    const testCriteria = this.createTestCriteria();
+    const memberships: Memberships<KeyValue, Item> = {
+      deleted: [],
+      updated: [],
+      inserted: [],
+    };
+
+    getLatestStates<Model, KeyValue>(action, this.store.keyPath).forEach(
+      (next, key) => {
+        const isSent = sentKeys.has(key);
+        const isMatching = next !== undefined && testCriteria(next);
+        if (isSent && isMatching) {
+          memberships.updated.push(this.transformer(next));
+        } else if (isSent) {
+          memberships.deleted.push(key);
+        } else if (isMatching) {
+          memberships.inserted.push(this.transformer(next));
+        }
+      },
+    );
+
+    return memberships;
   }
 
   private async createMongoCursor(): Promise<

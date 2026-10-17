@@ -106,6 +106,36 @@ interface TransportClient {
 
 `ConnectionStates` is `"opening" | "connecting" | "connected" | "reconnect-scheduled" | "wait-for-visibility" | "closed"`.
 
+### Store relay
+
+`connectStoreRelay({ transportClient, resourceName, stores, onStateChange, onError })` feeds this process's subscribe stores with the writes of another process, exposed there with [`createStoreRelayResource`](../liwi-resources-server#store-relay):
+
+```ts
+import { connectStoreRelay } from "liwi-resources-client";
+import { createNodeWebsocketTransportClient } from "liwi-resources-websocket-client-node";
+
+const transportClient = createNodeWebsocketTransportClient({
+  url: "ws://127.0.0.1:3002/relay",
+  headers: { authorization: `Bearer ${secret}` },
+});
+transportClient.connect();
+
+const relay = connectStoreRelay({
+  transportClient,
+  resourceName: "storeRelay",
+  stores: { tasks: tasksStore, users: usersStore },
+  onError: (error) => logger.error(error),
+});
+
+relay.getState(); // { isLive, lastMessageAt }, for a health check
+relay.close();
+```
+
+- Each batch calls `notifyChanged(keys)` on the store of that name; an unknown name is reported to `onError`.
+- Every `initial`, sent each time the subscription is (re)established, calls `resync()` on every store: writes made while disconnected are not replayed, open subscriptions refetch instead.
+- `isLive` is true from that `initial` until the transport leaves `connected`. `lastMessageAt` moves with every batch and heartbeat.
+- The transport is created and connected by the caller.
+
 ### Errors
 
 Server errors thrown as `ResourcesServerError` are rebuilt client-side with their `code` and `message`; anything else arrives as `INTERNAL_SERVER_ERROR`.

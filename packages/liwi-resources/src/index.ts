@@ -1,5 +1,5 @@
 import type { ExtendedJsonValue } from "extended-json";
-import type { Query, QueryParams } from "liwi-store";
+import type { AllowedKeyValue, Query, QueryParams } from "liwi-store";
 
 export type {
   Query,
@@ -167,6 +167,24 @@ export type ToServerMessage = {
 export type ToServerHttpRequest =
   | ["do", ToServerSimpleMessages["do"][0]]
   | ["fetch", ToServerSimpleMessages["fetch"][0]];
+
+/** The keys written in one store since the previous batch. */
+export interface StoreRelayBatch {
+  store: string;
+  keys: AllowedKeyValue[];
+}
+
+/**
+ * Store relay: one query whose subscription sends an empty `initial` once the
+ * producer listens, then an `inserted` change per flush, its result a list of
+ * batches (empty for a heartbeat).
+ */
+export interface StoreRelayService {
+  queries: {
+    queryChanges: ServiceQuery<StoreRelayBatch[], Record<string, never>>;
+  };
+  operations: Record<string, never>;
+}
 
 export class ResourcesServerError extends Error {
   code: string;

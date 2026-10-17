@@ -469,6 +469,12 @@ importers:
       '@typescript/native':
         specifier: npm:typescript@7.0.2
         version: typescript@7.0.2
+      liwi-resources-client:
+        specifier: workspace:*
+        version: link:../liwi-resources-client
+      liwi-resources-websocket-client-node:
+        specifier: workspace:*
+        version: link:../liwi-resources-websocket-client-node
       typescript:
         specifier: npm:@typescript/typescript6@6.0.2
         version: '@typescript/typescript6@6.0.2'

@@ -17,7 +17,7 @@
 
 A proxy around a [`liwi-store`](../liwi-store) `Store` that adds live query subscriptions. It implements the full `Store` interface, so it is a drop-in replacement: every write goes through to the wrapped store and then notifies listeners, which is how open queries learn about inserts, updates and deletes.
 
-Only writes made **through this proxy, in this process** are observed. Changes written directly to the database (another process, mongo shell, migrations) are not detected.
+Only writes made **through this proxy, in this process** are observed. Changes written directly to the database (mongo shell, migrations) are not detected; another process writing through its own subscribe store can [relay them](#writes-from-another-process).
 
 ## Install
 
@@ -70,7 +70,10 @@ subscription.stop();
 Wraps a `SubscribableStore`. Beyond the `Store` interface it adds:
 
 - `subscribe(listener): () => void` — listen to every write going through the proxy; returns an unsubscribe function.
-- `callSubscribed(action): void` — dispatch an action to listeners manually (used by the store implementation, e.g. after an out-of-band write you want queries to see).
+- `subscribeChangedKeys(callback): () => void` — the keys of every written or notified document, for relaying them to another process (see [Writes from another process](#writes-from-another-process)). Like any listener, it makes writes read their `prev`.
+- `notifyChanged(keys): Promise<void>` — documents were written outside this store: re-reads them in one query and emits `changed`. Reads nothing when nobody listens.
+- `resync(): void` — emits `resync`: every open query subscription refetches and sends its whole result again as `initial`.
+- `callSubscribed(action): void` — dispatch an action to listeners manually.
 
 ### `Actions<Model>`
 
@@ -78,8 +81,12 @@ Wraps a `SubscribableStore`. Beyond the `Store` interface it adds:
 type Actions<Model> =
   | { type: "inserted"; next: Model[] }
   | { type: "updated"; changes: [Model, Model][] } // [previous, next]
-  | { type: "deleted"; prev: Model[] };
+  | { type: "deleted"; prev: Model[] }
+  | { type: "changed"; keys: AllowedKeyValue[]; next: Model[] } // a key missing from next was deleted
+  | { type: "resync" };
 ```
+
+`changed` and `resync` come from `notifyChanged` and `resync`; a listener with an exhaustive `switch` must handle them.
 
 `prev` is always the **stored** document, never the object passed by the caller: queries decide whether a document entered or left their result by testing `prev` and `next` against their criteria, so a stale copy would leave rows in lists they no longer belong to.
 
@@ -109,6 +116,12 @@ When nothing is subscribed (no `subscribe` listener and no open query subscripti
 ### `updated`
 
 Stamping `updated` and rejecting protected field updates is done by the wrapped store (see [`created` and `updated`](../liwi-store#created-and-updated)); partial update `options` such as `touchUpdated` are passed through. Because `partialUpdateMany` writes document by document here, each document gets its own write time, where a plain `MongoStore` gives the whole command one.
+
+### Writes from another process
+
+Listeners only see writes going through this proxy, in this process. When another process writes the same collection, relay its keys: that process exposes `subscribeChangedKeys` with `createStoreRelayResource` ([`liwi-resources-server`](../liwi-resources-server#store-relay)), this one feeds them to `notifyChanged` and `resync` with `connectStoreRelay` ([`liwi-resources-client`](../liwi-resources-client#store-relay)).
+
+Only keys travel: `notifyChanged` re-reads the documents, and each query subscription compares them with what its client already holds, so a notification repeated, late, or crossing a local write leaves the client equal to a fresh fetch.
 
 ### `AbstractSubscribableStoreQuery`
 

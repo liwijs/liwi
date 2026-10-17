@@ -294,9 +294,23 @@ subscription.stop();
 
 Subscriptions are driven in-process: writes going through the subscribe store are matched against the query criteria with [mingo](https://github.com/kofrasa/mingo).
 
+Each collection subscription keeps the keys its client holds, and decides from them and the stored document, not from the write's `prev`:
+
+| Held by the client | Document matches the criteria | Sent       |
+| ------------------ | ----------------------------- | ---------- |
+| yes                | yes                           | `updated`  |
+| yes                | no, or deleted                | `deleted`  |
+| no                 | yes                           | `inserted` |
+| no                 | no, or deleted                | nothing    |
+
+So a notification repeated or out of order (see [writes from another process](../liwi-subscribe-store#writes-from-another-process)) is harmless. With `limit` or `skip`, a document entering or leaving the result refetches it and sends `initial` instead: only the server knows which document fills or leaves the window. `resync()` on the store refetches every subscription. A subscription opened with `subscribe` (no initial result) still fetches once, to know the keys.
+
+Changes are computed one action at a time per subscription, so a refetch is never overtaken by an older change. While nothing is pending they reach the callback during the write call, as before; behind a refetch (and the initial fetch) they wait for it.
+
 Caveats:
 
-- Writes performed outside this process (other services, mongo shell, migrations) are not detected.
+- Writes performed outside a subscribe store (mongo shell, migrations) are not detected. Another process writing through its own subscribe store can relay its keys.
+- Updated rows of a sorted query are sent as `updated`: the client keeps their position.
 - `$text` criteria cannot be matched in memory: such queries fetch correctly but never emit updates.
 - Queries returned by the subscribe store are fixed — `changeParams` throws; build a new query when parameters change.
 
