@@ -1,6 +1,6 @@
 {
   "name": "liwi-resources-http-client",
-  "version": "1.0.0-pre",
+  "version": "14.1.0",
   "description": "http client implementation for liwi",
   "keywords": [
     "http",
