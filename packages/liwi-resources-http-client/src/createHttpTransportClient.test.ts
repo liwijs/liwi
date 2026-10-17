@@ -4,8 +4,8 @@ import { decode, encode } from "extended-json";
 import { ResourcesServerError } from "liwi-resources-client";
 import type { ConnectionStates } from "liwi-resources-client";
 import {
+  HttpTransportError,
   createHttpTransportClient,
-  isHttpTransportError,
 } from "./createHttpTransportClient.ts";
 
 interface RecordedRequest {
@@ -113,7 +113,8 @@ describe("createHttpTransportClient", () => {
         operationKey: "x",
         params: {},
       }),
-      (error: unknown) => isHttpTransportError(error) && error.status === 502,
+      (error: unknown) =>
+        error instanceof HttpTransportError && error.status === 502,
     );
   });
 

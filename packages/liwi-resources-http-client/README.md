@@ -61,5 +61,5 @@ Pass `headers` as a **function** when the token can expire: it is evaluated befo
 - `connect()` moves the state to `connected` and `close()` to `closed`; there is no connection, the state only exists so `react-liwi` reports the client as ready. `send` works in any state.
 - `close()` aborts in-flight requests: their promises reject with an `AbortError`.
 - An error returned by the server rejects with a `ResourcesServerError` carrying its `code`.
-- A response that is not a protocol tuple (a proxy's 502 page, a 401 from an auth middleware in front) rejects with an `HttpTransportError` carrying the HTTP `status`; test it with `isHttpTransportError(error)`.
+- A response that is not a protocol tuple (a proxy's 502 page, a 401 from an auth middleware in front) rejects with an `HttpTransportError` carrying the HTTP `status`; test it with `error instanceof HttpTransportError`.
 - Network failures reject with `fetch`'s own error.

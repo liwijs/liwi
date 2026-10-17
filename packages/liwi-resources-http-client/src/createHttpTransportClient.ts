@@ -20,23 +20,21 @@ export interface HttpTransportClientOptions {
   fetch?: typeof globalThis.fetch;
 }
 
-export interface HttpTransportError extends Error {
-  name: "HttpTransportError";
+export class HttpTransportError extends Error {
   status: number;
+
+  constructor(response: Response) {
+    super(
+      `Unexpected HTTP response: ${response.status} ${response.statusText}`,
+    );
+    this.name = "HttpTransportError";
+    this.status = response.status;
+  }
 }
 
 export const isHttpTransportError = (
   error: unknown,
-): error is HttpTransportError =>
-  error instanceof Error && error.name === "HttpTransportError";
-
-const createHttpTransportError = (response: Response): HttpTransportError =>
-  Object.assign(
-    new Error(
-      `Unexpected HTTP response: ${response.status} ${response.statusText}`,
-    ),
-    { name: "HttpTransportError" as const, status: response.status },
-  );
+): error is HttpTransportError => error instanceof HttpTransportError;
 
 const isHttpResponse = (value: unknown): value is ToClientHttpResponse =>
   Array.isArray(value) && value.length === 2;
@@ -49,7 +47,7 @@ const parseResponse = async (
     const decoded = decode<unknown>(text);
     if (isHttpResponse(decoded)) return decoded;
   } catch {}
-  throw createHttpTransportError(response);
+  throw new HttpTransportError(response);
 };
 
 // browsers throw "Illegal invocation" when fetch is called detached from globalThis
