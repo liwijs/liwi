@@ -143,6 +143,17 @@ describe("MongoQueryCollection subscription", () => {
     assert.deepEqual(received, [[{ type: "deleted", keys: ["1"] }]]);
   });
 
+  it("re-reads a notified document instead of trusting a stale notification", async () => {
+    const { received } = await subscribe(createGroupQuery());
+    const stale = (await mongoStore.findByKey("1"))!;
+
+    await mongoStore.partialUpdateByKey("1", { $set: { group: "b" } });
+    store.callSubscribed({ type: "changed", keys: ["1"], next: [stale] });
+    await settle();
+
+    assert.deepEqual(received, [[{ type: "deleted", keys: ["1"] }]]);
+  });
+
   it("refetches when a document leaves a limited result", async () => {
     await mongoStore.partialUpdateByKey("3", { $set: { group: "a" } });
     const { received } = await subscribe(createGroupQuery(2));
@@ -224,6 +235,20 @@ describe("MongoQuerySingleItem subscription", () => {
     const { received } = await subscribe(createItemQuery());
 
     await store.notifyChanged(["2"]);
+    await settle();
+
+    assert.deepEqual(received, []);
+  });
+
+  it("ignores the deletion of a document it does not show", async () => {
+    const { received } = await subscribe(
+      store.createQuerySingleItem({
+        criteria: { group: "a" },
+        sort: { rank: 1 },
+      }),
+    );
+
+    await store.deleteByKey("2");
     await settle();
 
     assert.deepEqual(received, []);

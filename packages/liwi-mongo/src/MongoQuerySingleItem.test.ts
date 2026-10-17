@@ -14,20 +14,41 @@ interface TestModel extends MongoBaseModel {
 const created = new Date("2020-01-01");
 const updated = new Date("2021-01-01");
 
+type FetchResult = Error | TestModel[];
+
+/** each fetch, the initial one first, answers the next result */
+const createCursor = (
+  fetchResults: FetchResult[],
+): MongoStore<TestModel>["cursor"] => {
+  const remaining = [...fetchResults];
+  return (() => {
+    const result = remaining.shift() ?? new Error("unexpected fetch");
+    if (result instanceof Error) return Promise.reject(result);
+    const cursor = {
+      limit: () => Promise.resolve(cursor),
+      toArray: () => Promise.resolve(result),
+    };
+    return Promise.resolve(cursor);
+  }) as unknown as MongoStore<TestModel>["cursor"];
+};
+
 interface SubscribeSingleItemOptions {
-  cursor?: MongoStore<TestModel>["cursor"];
+  fetchResults?: FetchResult[];
   sort?: Record<string, -1 | 1>;
 }
 
-const subscribeSingleItem = ({
-  cursor = () => Promise.reject(new Error("unexpected fetch")),
+const subscribeSingleItem = async ({
+  fetchResults = [[]],
   sort,
-}: SubscribeSingleItemOptions = {}): {
+}: SubscribeSingleItemOptions = {}): Promise<{
   subscribeStore: SubscribeStore<any, any, TestModel, any, any, any>;
   received: Changes<string, TestModel | null>[];
   errors: Error[];
-} => {
-  const store = { keyPath: "_id", cursor } as unknown as MongoStore<TestModel>;
+}> => {
+  const store = {
+    keyPath: "_id",
+    cursor: createCursor(fetchResults),
+  } as unknown as MongoStore<TestModel>;
   const subscribeStore = new SubscribeStore<any, any, TestModel, any, any, any>(
     store,
   );
@@ -39,23 +60,15 @@ const subscribeSingleItem = ({
 
   const received: Changes<string, TestModel | null>[] = [];
   const errors: Error[] = [];
-  query.subscribe((error, changes) => {
+  const subscription = query.subscribe((error, changes) => {
     if (error) errors.push(error);
     else received.push(changes);
   });
+  await subscription.then(undefined, (error: unknown) => {
+    errors.push(error as Error);
+  });
   return { subscribeStore, received, errors };
 };
-
-const createCursor = (
-  documents: TestModel[],
-): MongoStore<TestModel>["cursor"] =>
-  (() => {
-    const cursor = {
-      limit: () => Promise.resolve(cursor),
-      toArray: () => Promise.resolve(documents),
-    };
-    return Promise.resolve(cursor);
-  }) as unknown as MongoStore<TestModel>["cursor"];
 
 const draft: TestModel = { _id: "1", status: "draft", created, updated };
 const open: TestModel = { _id: "1", status: "open", created, updated };
@@ -65,7 +78,7 @@ const open2: TestModel = { ...open, _id: "2" };
 
 describe("MongoQuerySingleItem subscription", () => {
   it("pushes a document that enters the criteria through an update", async () => {
-    const { subscribeStore, received } = subscribeSingleItem();
+    const { subscribeStore, received } = await subscribeSingleItem();
 
     subscribeStore.callSubscribed({
       type: "updated",
@@ -77,7 +90,9 @@ describe("MongoQuerySingleItem subscription", () => {
   });
 
   it("pushes null when the document leaves the criteria", async () => {
-    const { subscribeStore, received } = subscribeSingleItem();
+    const { subscribeStore, received } = await subscribeSingleItem({
+      fetchResults: [[open]],
+    });
 
     subscribeStore.callSubscribed({
       type: "updated",
@@ -89,7 +104,7 @@ describe("MongoQuerySingleItem subscription", () => {
   });
 
   it("ignores an update outside the criteria before and after", async () => {
-    const { subscribeStore, received, errors } = subscribeSingleItem();
+    const { subscribeStore, received, errors } = await subscribeSingleItem();
 
     subscribeStore.callSubscribed({
       type: "updated",
@@ -102,7 +117,7 @@ describe("MongoQuerySingleItem subscription", () => {
   });
 
   it("reports several matches without sort through the callback", async () => {
-    const { subscribeStore, received, errors } = subscribeSingleItem();
+    const { subscribeStore, received, errors } = await subscribeSingleItem();
 
     subscribeStore.callSubscribed({
       type: "updated",
@@ -121,8 +136,8 @@ describe("MongoQuerySingleItem subscription", () => {
   });
 
   it("refetches with a sort when several documents enter the criteria", async () => {
-    const { subscribeStore, received, errors } = subscribeSingleItem({
-      cursor: createCursor([open2]),
+    const { subscribeStore, received, errors } = await subscribeSingleItem({
+      fetchResults: [[], [open2]],
       sort: { _id: -1 },
     });
 
@@ -140,7 +155,8 @@ describe("MongoQuerySingleItem subscription", () => {
   });
 
   it("reports a failed refetch through the callback", async () => {
-    const { subscribeStore, received, errors } = subscribeSingleItem({
+    const { subscribeStore, received, errors } = await subscribeSingleItem({
+      fetchResults: [[], new Error("refetch failed")],
       sort: { _id: -1 },
     });
 
@@ -156,7 +172,30 @@ describe("MongoQuerySingleItem subscription", () => {
     assert.deepEqual(received, []);
     assert.deepEqual(
       errors.map((error) => error.message),
-      ["unexpected fetch"],
+      ["refetch failed"],
     );
+  });
+
+  it("ignores writes after a failed initial fetch, until a resync succeeds", async () => {
+    const { subscribeStore, received, errors } = await subscribeSingleItem({
+      fetchResults: [new Error("initial failed"), [open]],
+    });
+
+    subscribeStore.callSubscribed({
+      type: "updated",
+      changes: [[draft, open]],
+    });
+    await setImmediate();
+    assert.equal(received.length, 0);
+
+    subscribeStore.resync();
+    await setImmediate();
+
+    assert.deepEqual(
+      errors.map((error) => error.message),
+      ["initial failed"],
+    );
+    assert.equal(received.length, 1);
+    assert.equal(received[0]![0]!.type, "initial");
   });
 });

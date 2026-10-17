@@ -166,6 +166,17 @@ new `initial`; a `stop` while disconnected leaves no subscription on the server.
   `notifyChanged` and `resync`.
 - **`SubscribeStore.subscribeChangedKeys(callback)`** was added, so that the producer does not
   re-derive keys from each action type.
+- **`changed` is re-read per subscription.** `notifyChanged` reads once to find the concerned
+  subscriptions (holding a key, or matching a document); each re-reads the concerned keys in
+  its action queue. Concurrent reads of the store-level `notifyChanged` would otherwise apply
+  out of order. Cost: one read per concerned subscription. `subscribeChangedKeys` does not
+  report `changed` keys, so two relays cannot loop.
+- **Relay keys are `JSON.stringify`-ed** on the wire: `extended-json` revives date-like strings.
+- **A failed initial fetch** leaves the subscription ignoring writes until a `resync` succeeds.
+- **The single item** decides from its held key too, `deleted` included.
+- **`connectStoreRelay`** reports a `closed` transport to `onError`: the relay is over.
+- **Windowed queries**: once the window is full, a write to any matching document outside it
+  refetches. Documented as a cost; avoiding it needs the sort values of the last held row.
 - **Key tracking applies to every action**, not only `changed`: a local `updated` is decided
   from the held keys and `next`, its `prev` is ignored. `$text` queries still never emit
   pushed changes (mingo cannot test them); `resync` still refetches them.
@@ -175,8 +186,9 @@ new `initial`; a `stop` while disconnected leaves no subscription on the server.
 - **`MongoQuerySingleItem`** tracks the key it sent; `resync` sends `initial`.
 - **Batches** travel as `inserted` changes of a log-like result, so the existing `Changes`
   typing needed no widening; a heartbeat is an empty batch.
-- **L4.** The first failure of a subscription still rejects its thenable (unchanged); later,
-  a refusal while connected reaches the callback, a disconnection is retried. TODO line 103
+- **L4.** A disconnection no longer settles a subscription: it is retried, its thenable still
+  pending. A refusal rejects the thenable the first time, reaches the callback after a
+  re-subscription. TODO line 103
   (send before connected) is kept: unrelated to reconnection.
 - **End-to-end test**: `liwi-resources-websocket-server/src/storeRelay.integration.test.ts`
   (real `createWsServer`, node client, fake stores). Store-side behaviour is tested on the

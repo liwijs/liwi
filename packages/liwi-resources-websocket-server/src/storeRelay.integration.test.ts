@@ -154,6 +154,26 @@ describe("store relay over websocket (integration)", () => {
     assert.deepEqual(errors, []);
   });
 
+  test("keeps a date-like string key a string", async () => {
+    const { targetStore } = connect(secret);
+    await waitFor(() => targetStore.resyncCount === 1);
+
+    producerStore.write(["2020-01-01T00:00:00Z", 4]);
+
+    await waitFor(() => targetStore.notified.length > 0);
+    assert.deepEqual(targetStore.notified, [["2020-01-01T00:00:00Z", 4]]);
+  });
+
+  test("reports a closed transport", async () => {
+    const { targetStore, errors } = connect(secret);
+    await waitFor(() => targetStore.resyncCount === 1);
+
+    transportClient!.close();
+
+    assert.match(String(errors.at(-1)), /Store relay transport closed/);
+    assert.equal(relay!.getState().isLive, false);
+  });
+
   test("heartbeats keep lastMessageAt moving", async () => {
     const { targetStore } = connect(secret);
     await waitFor(() => targetStore.resyncCount === 1);

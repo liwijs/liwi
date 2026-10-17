@@ -1,5 +1,5 @@
 import type { ExtendedJsonValue } from "extended-json";
-import type { AllowedKeyValue, Query, QueryParams } from "liwi-store";
+import type { Query, QueryParams } from "liwi-store";
 
 export type {
   Query,
@@ -171,7 +171,8 @@ export type ToServerHttpRequest =
 /** The keys written in one store since the previous batch. */
 export interface StoreRelayBatch {
   store: string;
-  keys: AllowedKeyValue[];
+  /** each `JSON.stringify`-ed: `extended-json` would revive a date-like string key as a `Date` */
+  keys: string[];
 }
 
 /**

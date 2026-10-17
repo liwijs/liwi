@@ -290,7 +290,7 @@ const subscription = query.fetchAndSubscribe((error, changes) => {
 subscription.stop();
 ```
 
-`createQuerySingleItem` behaves the same but resolves a single item. Without `sort`, its criteria must match at most one document: when one update moves several matching documents, the subscription reports the error `should not match more than 1, use sort if you can have multiple match` through its callback. With `sort`, it refetches on every relevant update.
+`createQuerySingleItem` behaves the same but resolves a single item. It keeps the key of the item its client holds: a write concerns it when it is about that key or the written document matches. Without `sort`, its criteria must match at most one document: when one update moves several matching documents, the subscription reports the error `should not match more than 1, use sort if you can have multiple match` through its callback. With `sort`, it refetches on every relevant update, and when its item is deleted.
 
 Subscriptions are driven in-process: writes going through the subscribe store are matched against the query criteria with [mingo](https://github.com/kofrasa/mingo).
 
@@ -303,7 +303,11 @@ Each collection subscription keeps the keys its client holds, and decides from t
 | no                 | yes                           | `inserted` |
 | no                 | no, or deleted                | nothing    |
 
-So a notification repeated or out of order (see [writes from another process](../liwi-subscribe-store#writes-from-another-process)) is harmless. With `limit` or `skip`, a document entering or leaving the result refetches it and sends `initial` instead: only the server knows which document fills or leaves the window. `resync()` on the store refetches every subscription. A subscription opened with `subscribe` (no initial result) still fetches once, to know the keys.
+A `changed` notification ([writes from another process](../liwi-subscribe-store#writes-from-another-process)) is re-read by each concerned subscription, in its order, so a repeated or late one is harmless.
+
+With `limit` or `skip`, a document entering or leaving the result refetches it (`find` and `count`) and sends `initial` instead: only the server knows which document fills or leaves the window. Once the window is full, a write to any matching document outside it refetches too, since the subscription cannot tell where it sorts: on a large result, each such write costs one refetch per open subscription.
+
+`resync()` on the store refetches every subscription and sends `initial`, also to one opened with `subscribe`. Such a subscription (no initial result) still fetches once, to know the keys: its thenable resolves after that fetch, and rejects when it fails. Until a fetch succeeded, writes are ignored; a `resync` retries.
 
 Changes are computed one action at a time per subscription, so a refetch is never overtaken by an older change. While nothing is pending they reach the callback during the write call, as before; behind a refetch (and the initial fetch) they wait for it.
 

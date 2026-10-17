@@ -236,6 +236,28 @@ describe("createWebsocketTransportClient reconnection", () => {
     client.close();
   });
 
+  test("a first subscription cut by a disconnection resolves after the reconnection", async () => {
+    const { client, lastInstance, instances, connectLastSocket } =
+      createConnectedClient();
+    let isRejected = false;
+
+    const subscription = client.subscribe(
+      "fetchAndSubscribe",
+      subscribePayload,
+      () => {},
+    );
+    subscription.then(undefined, () => {
+      isRejected = true;
+    });
+
+    await reconnect(lastInstance, instances, connectLastSocket);
+    assert.equal(isRejected, false);
+    ackLastMessage(lastInstance());
+    await subscription;
+
+    client.close();
+  });
+
   test("a re-subscription refused by the server reaches the callback", async () => {
     const { client, lastInstance, instances, connectLastSocket } =
       createConnectedClient();

@@ -12,9 +12,9 @@ export interface RelayTargetStore<
 }
 
 export interface StoreRelayState {
-  /** the producer listens and nothing was missed since the last resync */
+  /** the producer listens and nothing was missed since the last resync, as far as the transport knows */
   isLive: boolean;
-  /** last batch or heartbeat */
+  /** last batch or heartbeat: compare it with the producer's heartbeat interval to detect a half-open connection */
   lastMessageAt: Date | null;
 }
 
@@ -38,7 +38,8 @@ export interface StoreRelayConnection {
  * Feeds `stores` with the writes of another process, exposed there with
  * `createStoreRelayResource` (`liwi-resources-server`). Writes made while
  * disconnected are lost: every `initial`, sent on each (re)subscription, resyncs
- * every store instead.
+ * every store instead. Once the transport is `closed` (`close()`, or a failure it
+ * does not retry), the relay is over: `onError` is told, connect a new one.
  */
 export const connectStoreRelay = ({
   transportClient,
@@ -71,7 +72,9 @@ export const connectStoreRelay = ({
         onError(new Error(`Unknown relayed store: ${storeName}`));
         return;
       }
-      store.notifyChanged(keys).catch(onError);
+      store
+        .notifyChanged(keys.map((key) => JSON.parse(key) as AllowedKeyValue))
+        .catch(onError);
     });
   };
 
@@ -96,6 +99,11 @@ export const connectStoreRelay = ({
 
   const stopListeningState = transportClient.listenStateChange((newState) => {
     if (newState !== "connected" && state.isLive) setState({ isLive: false });
+    if (newState === "closed") {
+      onError(
+        new Error("Store relay transport closed: no more changes will arrive"),
+      );
+    }
   });
 
   return {

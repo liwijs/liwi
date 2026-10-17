@@ -138,9 +138,9 @@ createWsServer(internalServer, "/relay", relayService, (request) =>
 
 - `stores`: subscribe stores (anything with `subscribeChangedKeys`), by name. The consumer uses the same names.
 - `authorize(loggedInUser)`: the resources server accepts unauthenticated connections, so the relay checks who reads it; a refusal throws `ResourcesServerError("FORBIDDEN")`.
-- `heartbeatIntervalMs` (default 15 s): an empty batch is sent this often, so the consumer can tell a quiet producer from a dead one.
+- `heartbeatIntervalMs` (default 15 s): an empty batch is sent this often, so the consumer can tell a quiet producer from a dead one by its `lastMessageAt`.
 
-Its query, `queryChanges`, sends an empty `initial` once it listens, then an `inserted` change per flush whose result is the list of `{ store, keys }` written since the previous one (deduplicated, flushed once per macrotask).
+Its query, `queryChanges`, sends an empty `initial` once it listens, then an `inserted` change per flush whose result is the list of `{ store, keys }` written since the previous one (deduplicated, flushed once per macrotask). Each key is `JSON.stringify`-ed, so that `extended-json` does not revive a date-like string key as a `Date`.
 
 Only keys are sent: the consumer re-reads the documents. Subscribing makes every write to `stores` read its `prev`, like any [`SubscribeStore`](../liwi-subscribe-store#without-listeners) listener: a partial update costs two round trips instead of one, `partialUpdateMany` and `deleteMany` one plus two per document.
 

@@ -2,6 +2,7 @@
 import type {
   AllowedKeyValue,
   Changes,
+  Criteria,
   QueryOptions,
   QueryParams,
   QueryResult,
@@ -36,12 +37,17 @@ interface Memberships<KeyValue, Item> {
   inserted: Item[];
 }
 
-/** the stored state of each document an action is about, `undefined` once deleted */
-const getLatestStates = <
+type LocalAction<Model> = Exclude<
+  Actions<Model>,
+  { type: "changed" } | { type: "resync" }
+>;
+
+/** the stored state of each document a local write is about, `undefined` once deleted */
+const getWrittenStates = <
   Model extends MongoBaseModel<KeyValue>,
   KeyValue extends AllowedKeyValue,
 >(
-  action: Exclude<Actions<Model>, { type: "resync" }>,
+  action: LocalAction<Model>,
   keyPath: MongoKeyPath,
 ): Map<KeyValue, Model | undefined> => {
   const states = new Map<KeyValue, Model | undefined>();
@@ -54,10 +60,6 @@ const getLatestStates = <
       break;
     case "updated":
       action.changes.forEach(([, next]) => states.set(next[keyPath], next));
-      break;
-    case "changed":
-      action.keys.forEach((key) => states.set(key as KeyValue, undefined));
-      action.next.forEach((next) => states.set(next[keyPath], next));
       break;
     default:
       throw new Error("Unsupported type");
@@ -145,11 +147,13 @@ export default class MongoQueryCollection<
 
   /**
    * Each subscription keeps the keys its client holds, and decides from them and
-   * the stored document alone, never from the emitted `prev`: a repeated, late
-   * or foreign (`changed`) notification leaves the client equal to a fresh fetch.
-   * A subscription opened without its initial result still fetches it, to know
-   * those keys. With `limit` or `skip`, a document entering or leaving refetches
-   * instead: only the server knows what fills or leaves the window.
+   * the stored document alone, never from the emitted `prev`. A `changed`
+   * notification (written by another process) is re-read here, in this
+   * subscription's order, if it concerns it: a repeated, late or crossing
+   * notification leaves the client equal to a fresh fetch. A subscription opened
+   * without its initial result still fetches it, to know those keys. With
+   * `limit` or `skip`, a document entering or leaving refetches instead: only the
+   * server knows what fills or leaves the window.
    */
   _subscribe(
     callback: SubscribeCallback<KeyValue, Item[]>,
@@ -157,7 +161,10 @@ export default class MongoQueryCollection<
   ): QuerySubscription {
     const store = super.getSubscribeStore();
     const keyPath = this.store.keyPath;
+    const testCriteria = this.createTestCriteria();
     let sentKeys = new Set<KeyValue>();
+    // false until a fetch succeeded: before, the held keys are unknown
+    let isReady = false;
     let isStopped = false;
 
     const send = (changes: Changes<KeyValue, Item[]>): void => {
@@ -167,6 +174,7 @@ export default class MongoQueryCollection<
     const refetch = (): Promise<Changes<KeyValue, Item[]>> =>
       this.fetch(({ result, meta, info }: QueryResult<Item[]>) => {
         sentKeys = new Set(result.map((item) => item[keyPath]));
+        isReady = true;
         return [{ type: "initial", initial: result, queryInfo: info, meta }];
       });
 
@@ -174,14 +182,10 @@ export default class MongoQueryCollection<
       if (_includeInitial) send(changes);
     });
 
-    const handleAction = (
-      action: Actions<Model>,
+    const applyStates = (
+      states: Map<KeyValue, Model | undefined>,
     ): Promise<void> | undefined => {
-      if (isStopped) return undefined;
-      if (action.type === "resync") return refetch().then(send);
-      if (!this.canTestCriteria()) return undefined;
-
-      const memberships = this.computeMemberships(action, sentKeys);
+      const memberships = this.computeMemberships(states, sentKeys);
       if (
         this.isWindowed() &&
         (memberships.inserted.length > 0 || memberships.deleted.length > 0)
@@ -193,6 +197,38 @@ export default class MongoQueryCollection<
       memberships.inserted.forEach((item) => sentKeys.add(item[keyPath]));
       send(toCollectionChanges(memberships));
       return undefined;
+    };
+
+    const rereadAndApply = async (keys: KeyValue[]): Promise<void> => {
+      const states = new Map<KeyValue, Model | undefined>(
+        keys.map((key) => [key, undefined]),
+      );
+      const byKeys: Record<string, unknown> = { [keyPath]: { $in: keys } };
+      const stored = await this.store.findAll(byKeys as Criteria<Model>);
+      stored.forEach((model) => states.set(model[keyPath], model));
+      if (!isStopped) await applyStates(states);
+    };
+
+    const handleAction = (
+      action: Actions<Model>,
+    ): Promise<void> | undefined => {
+      if (isStopped) return undefined;
+      if (action.type === "resync") return refetch().then(send);
+      if (!isReady || !this.canTestCriteria()) return undefined;
+
+      if (action.type === "changed") {
+        const matchingKeys = new Set(
+          action.next.filter(testCriteria).map((model) => model[keyPath]),
+        );
+        const concernedKeys = (action.keys as KeyValue[]).filter(
+          (key) => sentKeys.has(key) || matchingKeys.has(key),
+        );
+        return concernedKeys.length > 0
+          ? rereadAndApply(concernedKeys)
+          : undefined;
+      }
+
+      return applyStates(getWrittenStates<Model, KeyValue>(action, keyPath));
     };
 
     const enqueue = createActionQueue(initialPromise, (error) => {
@@ -226,7 +262,7 @@ export default class MongoQueryCollection<
   }
 
   private computeMemberships(
-    action: Exclude<Actions<Model>, { type: "resync" }>,
+    states: Map<KeyValue, Model | undefined>,
     sentKeys: ReadonlySet<KeyValue>,
   ): Memberships<KeyValue, Item> {
     const testCriteria = this.createTestCriteria();
@@ -236,19 +272,17 @@ export default class MongoQueryCollection<
       inserted: [],
     };
 
-    getLatestStates<Model, KeyValue>(action, this.store.keyPath).forEach(
-      (next, key) => {
-        const isSent = sentKeys.has(key);
-        const isMatching = next !== undefined && testCriteria(next);
-        if (isSent && isMatching) {
-          memberships.updated.push(this.transformer(next));
-        } else if (isSent) {
-          memberships.deleted.push(key);
-        } else if (isMatching) {
-          memberships.inserted.push(this.transformer(next));
-        }
-      },
-    );
+    states.forEach((next, key) => {
+      const isSent = sentKeys.has(key);
+      const isMatching = next !== undefined && testCriteria(next);
+      if (isSent && isMatching) {
+        memberships.updated.push(this.transformer(next));
+      } else if (isSent) {
+        memberships.deleted.push(key);
+      } else if (isMatching) {
+        memberships.inserted.push(this.transformer(next));
+      }
+    });
 
     return memberships;
   }

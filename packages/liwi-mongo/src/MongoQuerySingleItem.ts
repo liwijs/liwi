@@ -92,11 +92,16 @@ export default class MongoQuerySingleItem<
     });
   }
 
-  /** `refetch` when the result can only be known by querying again */
+  /**
+   * From the key the client holds and the written documents, not from `prev`.
+   * `refetch` when the result can only be known by querying again.
+   */
   private computeChanges(
     action: Exclude<Actions<Model>, { type: "changed" | "resync" }>,
     testCriteria: TestCriteria,
+    currentKey: KeyValue | null,
   ): Changes<KeyValue, Result> | "refetch" {
+    const keyPath = this.store.keyPath;
     switch (action.type) {
       case "inserted": {
         const filtered = action.next.filter(testCriteria);
@@ -104,18 +109,17 @@ export default class MongoQuerySingleItem<
         return [{ type: "updated", result: this.transformer(filtered[0]!) }];
       }
       case "deleted": {
-        const filtered = action.prev.filter(testCriteria);
-        if (filtered.length === 0) return [];
-        return [
-          {
-            type: "deleted",
-            keys: filtered.map((object) => object[this.store.keyPath]),
-          },
-        ];
+        const isCurrentDeleted =
+          currentKey !== null &&
+          action.prev.some((prev) => prev[keyPath] === currentKey);
+        if (!isCurrentDeleted) return [];
+        // another document may match
+        if (this.options.sort) return "refetch";
+        return [{ type: "deleted", keys: [currentKey] }];
       }
       case "updated": {
         const filtered = action.changes.filter(
-          ([prev, next]) => testCriteria(prev) || testCriteria(next),
+          ([, next]) => next[keyPath] === currentKey || testCriteria(next),
         );
         if (filtered.length === 0) return [];
 
@@ -148,6 +152,8 @@ export default class MongoQuerySingleItem<
     const testCriteria: TestCriteria = this.createMingoTestCriteria();
     const keyPath = this.store.keyPath;
     let currentKey: KeyValue | null = null;
+    // false until a fetch succeeded: before, the held key is unknown
+    let isReady = false;
     let isStopped = false;
 
     const getKeyAfter = (change: Change<KeyValue, Result>): KeyValue | null => {
@@ -171,7 +177,10 @@ export default class MongoQuerySingleItem<
     };
 
     const refetch = (): Promise<QueryResult<Result>> =>
-      this.fetch((result) => result);
+      this.fetch((result) => {
+        isReady = true;
+        return result;
+      });
 
     const initialPromise: Promise<void> = refetch().then(
       ({ result, meta, info }) => {
@@ -196,13 +205,14 @@ export default class MongoQuerySingleItem<
           send([{ type: "initial", initial: result, queryInfo: info, meta }]);
         });
       }
+      if (!isReady) return undefined;
       if (action.type === "changed") {
         const isConcerned =
           (currentKey !== null && action.keys.includes(currentKey)) ||
           action.next.some(testCriteria);
         return isConcerned ? refetchAsUpdated() : undefined;
       }
-      const changes = this.computeChanges(action, testCriteria);
+      const changes = this.computeChanges(action, testCriteria, currentKey);
       if (changes === "refetch") return refetchAsUpdated();
       send(changes);
       return undefined;

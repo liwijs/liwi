@@ -54,7 +54,7 @@ const subscribeToStores = (
     flushTimeout = undefined;
     const batches = [...pendingKeysByStore].map(([store, keys]) => ({
       store,
-      keys: [...keys],
+      keys: [...keys].map((key) => JSON.stringify(key)),
     }));
     pendingKeysByStore.clear();
     sendBatches(batches);

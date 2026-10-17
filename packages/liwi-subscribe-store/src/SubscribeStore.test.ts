@@ -655,7 +655,7 @@ describe("SubscribeStore resync", () => {
 });
 
 describe("SubscribeStore subscribeChangedKeys", () => {
-  it("receives the keys of every action carrying documents", async () => {
+  it("receives the keys of every write, not of notified documents", async () => {
     const object: TestModel = { _id: "1", label: "a", created, updated };
     const subscribeStore: TestSubscribeStore = new SubscribeStore({
       keyPath: "_id",
@@ -674,6 +674,6 @@ describe("SubscribeStore subscribeChangedKeys", () => {
     await subscribeStore.notifyChanged(["2"]);
     subscribeStore.resync();
 
-    assert.deepEqual(receivedKeys, [["1"], ["1"], ["1"], ["2"]]);
+    assert.deepEqual(receivedKeys, [["1"], ["1"], ["1"]]);
   });
 });

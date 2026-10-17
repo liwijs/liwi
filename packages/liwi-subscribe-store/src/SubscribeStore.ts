@@ -43,14 +43,14 @@ const getActionKeys = <Model, KeyValue extends AllowedKeyValue>(
   getKey: (model: Model) => KeyValue,
 ): KeyValue[] => {
   switch (action.type) {
-    case "changed":
-      return action.keys as KeyValue[];
     case "deleted":
       return action.prev.map(getKey);
     case "inserted":
       return action.next.map(getKey);
     case "updated":
       return action.changes.map(([, next]) => getKey(next));
+    // written elsewhere: relaying them back would loop between two relays
+    case "changed":
     case "resync":
       return [];
     default:
@@ -99,8 +99,8 @@ export default class SubscribeStore<
   }
 
   /**
-   * The keys of every document written through this store, or notified with
-   * `notifyChanged`. Like any listener, it makes writes read their `prev`.
+   * The keys of every document written through this store, not those notified
+   * with `notifyChanged`. Like any listener, it makes writes read their `prev`.
    */
   subscribeChangedKeys(callback: ChangedKeysListener<KeyValue>): () => void {
     return this.subscribe((action) => {
@@ -115,8 +115,10 @@ export default class SubscribeStore<
 
   /**
    * For documents written outside this store, by another process: re-reads them
-   * and lets each subscription compare them with what it already sent, so a
-   * notification repeated or out of order is harmless.
+   * and emits `changed`. `next` is only a hint of who is concerned: a query
+   * subscription holding one of the keys, or matching one of the documents,
+   * re-reads them in its own order, so a notification repeated, late or crossing
+   * a local write is harmless.
    */
   async notifyChanged(keys: KeyValue[]): Promise<void> {
     if (keys.length === 0 || !this.hasListeners()) return;

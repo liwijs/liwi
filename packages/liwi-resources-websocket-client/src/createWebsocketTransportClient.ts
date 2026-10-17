@@ -202,10 +202,9 @@ export default function createResourcesWebsocketClient({
   };
 
   /**
-   * The first failure rejects the subscription's promise. Later, a failure while
-   * still connected (the server refused a re-subscription) reaches its callback;
-   * one caused by a disconnection is retried on the next connection, like any
-   * failure.
+   * A failure caused by a disconnection is retried on the next connection, and
+   * settles nothing. A refusal by the server rejects the subscription's promise
+   * the first time, and reaches its callback after a re-subscription.
    */
   const sendSubscription = (subscription: Subscription<any, any>): void => {
     sendWithAck(subscription.type, subscription.message).then(
@@ -214,11 +213,12 @@ export default function createResourcesWebsocketClient({
         subscription.resolve(result);
       },
       (error: unknown) => {
-        if (!subscription.isSettled) {
+        if (!wsClient.isConnected()) return;
+        if (subscription.isSettled) {
+          subscription.callback(error as Error, null);
+        } else {
           subscription.isSettled = true;
           subscription.reject(error);
-        } else if (wsClient.isConnected()) {
-          subscription.callback(error as Error, null);
         }
       },
     );

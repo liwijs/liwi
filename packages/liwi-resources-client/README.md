@@ -133,7 +133,8 @@ relay.close();
 
 - Each batch calls `notifyChanged(keys)` on the store of that name; an unknown name is reported to `onError`.
 - Every `initial`, sent each time the subscription is (re)established, calls `resync()` on every store: writes made while disconnected are not replayed, open subscriptions refetch instead.
-- `isLive` is true from that `initial` until the transport leaves `connected`. `lastMessageAt` moves with every batch and heartbeat.
+- `isLive` is true from that `initial` until the transport leaves `connected`. `lastMessageAt` moves with every batch and heartbeat: a half-open connection keeps `isLive` true, compare `lastMessageAt` with the producer's heartbeat interval to detect it.
+- Once the transport is `closed` (its `close()`, or a failure it does not retry), the relay is over and `onError` is told: connect a new one. Call `relay.close()` before closing the transport to stop without that error.
 - The transport is created and connected by the caller.
 
 ### Errors

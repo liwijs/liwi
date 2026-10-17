@@ -70,8 +70,8 @@ subscription.stop();
 Wraps a `SubscribableStore`. Beyond the `Store` interface it adds:
 
 - `subscribe(listener): () => void` — listen to every write going through the proxy; returns an unsubscribe function.
-- `subscribeChangedKeys(callback): () => void` — the keys of every written or notified document, for relaying them to another process (see [Writes from another process](#writes-from-another-process)). Like any listener, it makes writes read their `prev`.
-- `notifyChanged(keys): Promise<void>` — documents were written outside this store: re-reads them in one query and emits `changed`. Reads nothing when nobody listens.
+- `subscribeChangedKeys(callback): () => void` — the keys of every document written through this store (not those notified with `notifyChanged`, so two relays cannot loop), for relaying them to another process (see [Writes from another process](#writes-from-another-process)). Like any listener, it makes writes read their `prev`.
+- `notifyChanged(keys): Promise<void>` — documents were written outside this store: re-reads them in one query and emits `changed`. Reads nothing when nobody listens. Its `next` only tells subscriptions whether they are concerned: each concerned one re-reads the documents in its own order.
 - `resync(): void` — emits `resync`: every open query subscription refetches and sends its whole result again as `initial`.
 - `callSubscribed(action): void` — dispatch an action to listeners manually.
 
@@ -121,7 +121,7 @@ Stamping `updated` and rejecting protected field updates is done by the wrapped 
 
 Listeners only see writes going through this proxy, in this process. When another process writes the same collection, relay its keys: that process exposes `subscribeChangedKeys` with `createStoreRelayResource` ([`liwi-resources-server`](../liwi-resources-server#store-relay)), this one feeds them to `notifyChanged` and `resync` with `connectStoreRelay` ([`liwi-resources-client`](../liwi-resources-client#store-relay)).
 
-Only keys travel: `notifyChanged` re-reads the documents, and each query subscription compares them with what its client already holds, so a notification repeated, late, or crossing a local write leaves the client equal to a fresh fetch.
+Only keys travel. `notifyChanged` reads the documents once to find the concerned query subscriptions (holding one of the keys, or matching one of the documents); each of them re-reads those documents in its own action order and compares them with what its client holds. So a notification repeated, late, or crossing a local write or a refetch leaves the client equal to a fresh fetch, at the cost of one read per concerned subscription.
 
 ### `AbstractSubscribableStoreQuery`
 
