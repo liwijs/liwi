@@ -199,6 +199,38 @@ describe("applyCollectionChanges", () => {
           ["z", "a", "b"],
         );
       });
+
+      test("sorts dates and dotted paths, a missing value first ascending", () => {
+        interface Event {
+          _id: string;
+          at: Date;
+          owner: { rank?: number };
+        }
+        const event = (id: string, day: number, rank?: number): Event => ({
+          _id: id,
+          at: new Date(Date.UTC(2026, 0, day)),
+          owner: rank === undefined ? {} : { rank },
+        });
+        const changes: Changes<string, Event[]> = [
+          { type: "inserted", result: [event("new", 2, 1)] },
+        ];
+
+        const sortBy = (sort: Record<string, -1 | 1>): string[] | undefined =>
+          applyCollectionChanges(
+            [event("a", 3, 2), event("b", 1), event("c", 2, 1)],
+            changes,
+            makeMeta(3),
+            { keyPath, sort },
+          ).state?.map(({ _id }) => _id);
+
+        assert.deepEqual(sortBy({ at: -1 }), ["a", "new", "c", "b"]);
+        assert.deepEqual(sortBy({ "owner.rank": 1, at: 1 }), [
+          "b",
+          "new",
+          "c",
+          "a",
+        ]);
+      });
     });
 
     describe("limit", () => {
